@@ -15,7 +15,7 @@ namespace BusinessLogic.Reservation
     interface IReservation
     {
         // unique ID per reservation, should be generated in the constructor
-        long confirmationNumber { get; }
+        Guid confirmationNumber { get; }
         IBillingInfo billInfo { get; }
         List<ICustomer> guests { get; }
         DateTime startDate { get; }
