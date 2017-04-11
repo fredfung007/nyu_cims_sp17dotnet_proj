@@ -21,9 +21,7 @@
         <AssociationConnector Association="HotelDataModel.ReservationGuest" />
       </Diagram>
       <Diagram DiagramId="50f5c5a66c044c3ab2463f32f3a94b34" Name="User" >
-        <EntityTypeShape EntityType="HotelDataModel.User" Width="1.5" PointX="0.875" PointY="0.75" />
-        <EntityTypeShape EntityType="HotelDataModel.Staff" Width="1.5" PointX="0.875" PointY="2.75" />
-        <InheritanceConnector EntityType="HotelDataModel.Staff" />
+        <EntityTypeShape EntityType="HotelDataModel.User" Width="1.5" PointX="2.875" PointY="1.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,7 +14,6 @@
     <EntitySet Name="BillingInfoes" EntityType="HotelDataModel.Store.BillingInfoes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhoneNumbers" EntityType="HotelDataModel.Store.PhoneNumbers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DailyPrices" EntityType="HotelDataModel.Store.DailyPrices" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Users_Staff" EntityType="HotelDataModel.Store.Users_Staff" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="ReservationUser" Association="HotelDataModel.Store.ReservationUser">
       <End Role="Reservation" EntitySet="Reservations" />
       <End Role="User" EntitySet="Users" />
@@ -43,16 +42,16 @@
       <End Role="Reservation" EntitySet="Reservations" />
       <End Role="Guest" EntitySet="Guests" />
     </AssociationSet>
-    <AssociationSet Name="FK_Staff_inherits_User" Association="HotelDataModel.Store.FK_Staff_inherits_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="Staff" EntitySet="Users_Staff" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Users">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isStaff" Type="bit" Nullable="false" />
+    <Property Name="isRegistered" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Addresses">
     <Key>
@@ -78,7 +77,7 @@
     <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
-    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Guests">
@@ -116,12 +115,6 @@
     <Property Name="BillingPrice" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="Reservation_Id" Type="uniqueidentifier" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Users_Staff">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="ReservationUser">
     <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="*" />
@@ -207,20 +200,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Staff_inherits_User">
-    <End Role="User" Type="HotelDataModel.Store.Users" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Staff" Type="HotelDataModel.Store.Users_Staff" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Staff">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -262,15 +241,18 @@
             <End Role="Reservation" EntitySet="Reservations" />
             <End Role="Guest" EntitySet="Guests" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationUser" FromRole="User" ToRole="Reservation" />
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Reservations" Relationship="HotelDataModel.ReservationUser" FromRole="User" ToRole="Reservation" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="HashedPassword" Type="String" Nullable="false" />
+          <Property Name="isStaff" Type="Boolean" Nullable="false" />
+          <Property Name="isRegistered" Type="String" Nullable="false" />
         </EntityType>
-        <EntityType Name="Staff" BaseType="HotelDataModel.User" />
         <EnumType Name="US_STATE" />
         <EntityType Name="Address">
           <Key>
@@ -304,7 +286,7 @@
           <NavigationProperty Name="Guests" Relationship="HotelDataModel.ReservationGuest" FromRole="Reservation" ToRole="Guest" />
         </EntityType>
         <Association Name="ReservationUser">
-          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="*" />
           <End Type="HotelDataModel.User" Role="User" Multiplicity="1" />
         </Association>
         <EntityType Name="Guest">
@@ -379,11 +361,10 @@
       <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.User)">
         <MappingFragment StoreEntitySet="Users">
           <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Staff)">
-        <MappingFragment StoreEntitySet="Users_Staff">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
+          <ScalarProperty Name="isStaff" ColumnName="isStaff" />
+          <ScalarProperty Name="isRegistered" ColumnName="isRegistered" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

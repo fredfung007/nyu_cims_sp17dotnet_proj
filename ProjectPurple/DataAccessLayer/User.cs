@@ -18,11 +18,30 @@ using System;
 public partial class User
 {
 
-    public int Id { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public User()
+    {
+
+        this.Reservations = new HashSet<Reservation>();
+
+    }
+
+
+    public System.Guid Id { get; set; }
+
+    public string Username { get; set; }
+
+    public string HashedPassword { get; set; }
+
+    public bool isStaff { get; set; }
+
+    public string isRegistered { get; set; }
 
 
 
-    public virtual Reservation Reservation { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Reservation> Reservations { get; set; }
 
 }
 

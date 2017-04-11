@@ -2,12 +2,14 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2017 17:36:20
+-- Date Created: 04/11/2017 17:57:08
 -- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
+DROP DATABASE [HotelDataDevelop];
+CREATE DATABASE [HotelDataDevelop];
 USE [HotelDataDevelop];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
@@ -29,20 +31,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_BillingInfoAddress]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoAddress];
 GO
-IF OBJECT_ID(N'[dbo].[FK_CustomerBillingInfo]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_CustomerBillingInfo];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReservationCustomer]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Customers] DROP CONSTRAINT [FK_ReservationCustomer];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationBillingInfo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationBillingInfo];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationDailyPrice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DailyPrices] DROP CONSTRAINT [FK_ReservationDailyPrice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_Staff_inherits_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Users_Staff] DROP CONSTRAINT [FK_Staff_inherits_User];
+IF OBJECT_ID(N'[dbo].[FK_ReservationGuest]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Guests] DROP CONSTRAINT [FK_ReservationGuest];
 GO
 
 -- --------------------------------------------------
@@ -61,8 +57,8 @@ GO
 IF OBJECT_ID(N'[dbo].[Reservations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Reservations];
 GO
-IF OBJECT_ID(N'[dbo].[Customers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Customers];
+IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Guests];
 GO
 IF OBJECT_ID(N'[dbo].[BillingInfoes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[BillingInfoes];
@@ -73,9 +69,6 @@ GO
 IF OBJECT_ID(N'[dbo].[DailyPrices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DailyPrices];
 GO
-IF OBJECT_ID(N'[dbo].[Users_Staff]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Users_Staff];
-GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -83,7 +76,11 @@ GO
 
 -- Creating table 'Users'
 CREATE TABLE [dbo].[Users] (
-    [Id] int IDENTITY(1,1) NOT NULL
+    [Id] uniqueidentifier  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [HashedPassword] nvarchar(max)  NOT NULL,
+    [isStaff] bit  NOT NULL,
+    [isRegistered] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -109,7 +106,7 @@ CREATE TABLE [dbo].[Reservations] (
     [Id] uniqueidentifier  NOT NULL,
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
-    [User_Id] int  NOT NULL,
+    [User_Id] uniqueidentifier  NOT NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -147,12 +144,6 @@ CREATE TABLE [dbo].[DailyPrices] (
     [BillingPrice] int  NOT NULL,
     [Date] datetime  NOT NULL,
     [Reservation_Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'Users_Staff'
-CREATE TABLE [dbo].[Users_Staff] (
-    [Id] int  NOT NULL
 );
 GO
 
@@ -205,12 +196,6 @@ GO
 -- Creating primary key on [Id] in table 'DailyPrices'
 ALTER TABLE [dbo].[DailyPrices]
 ADD CONSTRAINT [PK_DailyPrices]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Users_Staff'
-ALTER TABLE [dbo].[Users_Staff]
-ADD CONSTRAINT [PK_Users_Staff]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -321,15 +306,6 @@ GO
 CREATE INDEX [IX_FK_ReservationGuest]
 ON [dbo].[Guests]
     ([Reservation_Id]);
-GO
-
--- Creating foreign key on [Id] in table 'Users_Staff'
-ALTER TABLE [dbo].[Users_Staff]
-ADD CONSTRAINT [FK_Staff_inherits_User]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Users]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
