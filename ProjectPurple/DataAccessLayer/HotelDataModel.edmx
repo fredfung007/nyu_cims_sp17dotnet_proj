@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HotelDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="HotelDataModelStoreContainer">
+    <EntitySet Name="Users" EntityType="HotelDataModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Addresses" EntityType="HotelDataModel.Store.Addresses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Emails" EntityType="HotelDataModel.Store.Emails" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Reservations" EntityType="HotelDataModel.Store.Reservations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Customers" EntityType="HotelDataModel.Store.Customers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BillingInfoes" EntityType="HotelDataModel.Store.BillingInfoes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PhoneNumbers" EntityType="HotelDataModel.Store.PhoneNumbers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DailyPrices" EntityType="HotelDataModel.Store.DailyPrices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users_Staff" EntityType="HotelDataModel.Store.Users_Staff" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ReservationUser" Association="HotelDataModel.Store.ReservationUser">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="BillingInfoPhoneNumber" Association="HotelDataModel.Store.BillingInfoPhoneNumber">
+      <End Role="BillingInfo" EntitySet="BillingInfoes" />
+      <End Role="PhoneNumber" EntitySet="PhoneNumbers" />
+    </AssociationSet>
+    <AssociationSet Name="BillingInfoEmail" Association="HotelDataModel.Store.BillingInfoEmail">
+      <End Role="BillingInfo" EntitySet="BillingInfoes" />
+      <End Role="Email" EntitySet="Emails" />
+    </AssociationSet>
+    <AssociationSet Name="BillingInfoAddress" Association="HotelDataModel.Store.BillingInfoAddress">
+      <End Role="BillingInfo" EntitySet="BillingInfoes" />
+      <End Role="Address" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="CustomerBillingInfo" Association="HotelDataModel.Store.CustomerBillingInfo">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="BillingInfo" EntitySet="BillingInfoes" />
+    </AssociationSet>
+    <AssociationSet Name="ReservationCustomer" Association="HotelDataModel.Store.ReservationCustomer">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="Customer" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="ReservationBillingInfo" Association="HotelDataModel.Store.ReservationBillingInfo">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="BillingInfo" EntitySet="BillingInfoes" />
+    </AssociationSet>
+    <AssociationSet Name="ReservationDailyPrice" Association="HotelDataModel.Store.ReservationDailyPrice">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="DailyPrice" EntitySet="DailyPrices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Staff_inherits_User" Association="HotelDataModel.Store.FK_Staff_inherits_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Staff" EntitySet="Users_Staff" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstLine" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="APT" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Emails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reservations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="startDate" Type="datetime" Nullable="false" />
+    <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReservationId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BillingInfoes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="PhoneNumbers_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Emails_Id" Type="int" Nullable="false" />
+    <Property Name="Addresses_Id" Type="int" Nullable="false" />
+    <Property Name="Customer_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhoneNumbers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DailyPrices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="BillingPrice" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Reservation_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users_Staff">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="ReservationUser">
+    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="*" />
+    <End Role="User" Type="HotelDataModel.Store.Users" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BillingInfoPhoneNumber">
+    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="*" />
+    <End Role="PhoneNumber" Type="HotelDataModel.Store.PhoneNumbers" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneNumber">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BillingInfo">
+        <PropertyRef Name="PhoneNumbers_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BillingInfoEmail">
+    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="*" />
+    <End Role="Email" Type="HotelDataModel.Store.Emails" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Email">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BillingInfo">
+        <PropertyRef Name="Emails_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BillingInfoAddress">
+    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="*" />
+    <End Role="Address" Type="HotelDataModel.Store.Addresses" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BillingInfo">
+        <PropertyRef Name="Addresses_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CustomerBillingInfo">
+    <End Role="Customer" Type="HotelDataModel.Store.Customers" Multiplicity="1" />
+    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BillingInfo">
+        <PropertyRef Name="Customer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReservationCustomer">
+    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="1" />
+    <End Role="Customer" Type="HotelDataModel.Store.Customers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="ReservationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReservationBillingInfo">
+    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="*" />
+    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="BillingInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="BillingInfo_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReservationDailyPrice">
+    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="1" />
+    <End Role="DailyPrice" Type="HotelDataModel.Store.DailyPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DailyPrice">
+        <PropertyRef Name="Reservation_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Staff_inherits_User">
+    <End Role="User" Type="HotelDataModel.Store.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staff" Type="HotelDataModel.Store.Users_Staff" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staff">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="HotelDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="HotelDataModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="HotelDataModel.User" />
+          <EntitySet Name="Addresses" EntityType="HotelDataModel.Address" />
+          <EntitySet Name="Emails" EntityType="HotelDataModel.Email" />
+          <EntitySet Name="Reservations" EntityType="HotelDataModel.Reservation" />
+          <AssociationSet Name="ReservationUser" Association="HotelDataModel.ReservationUser">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Customers" EntityType="HotelDataModel.Customer" />
+          <EntitySet Name="BillingInfoes" EntityType="HotelDataModel.BillingInfo" />
+          <EntitySet Name="PhoneNumbers" EntityType="HotelDataModel.PhoneNumber" />
+          <AssociationSet Name="BillingInfoPhoneNumber" Association="HotelDataModel.BillingInfoPhoneNumber">
+            <End Role="BillingInfo" EntitySet="BillingInfoes" />
+            <End Role="PhoneNumber" EntitySet="PhoneNumbers" />
+          </AssociationSet>
+          <AssociationSet Name="BillingInfoEmail" Association="HotelDataModel.BillingInfoEmail">
+            <End Role="BillingInfo" EntitySet="BillingInfoes" />
+            <End Role="Email" EntitySet="Emails" />
+          </AssociationSet>
+          <AssociationSet Name="BillingInfoAddress" Association="HotelDataModel.BillingInfoAddress">
+            <End Role="BillingInfo" EntitySet="BillingInfoes" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerBillingInfo" Association="HotelDataModel.CustomerBillingInfo">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="BillingInfo" EntitySet="BillingInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="ReservationCustomer" Association="HotelDataModel.ReservationCustomer">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="ReservationBillingInfo" Association="HotelDataModel.ReservationBillingInfo">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="BillingInfo" EntitySet="BillingInfoes" />
+          </AssociationSet>
+          <EntitySet Name="DailyPrices" EntityType="HotelDataModel.DailyPrice" />
+          <AssociationSet Name="ReservationDailyPrice" Association="HotelDataModel.ReservationDailyPrice">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="DailyPrice" EntitySet="DailyPrices" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationUser" FromRole="User" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Staff" BaseType="HotelDataModel.User" />
+        <EnumType Name="US_STATE" />
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstLine" Type="String" Nullable="false" />
+          <Property Name="APT" Type="String" Nullable="false" />
+          <Property Name="State" Type="HotelDataModel.US_STATE" Nullable="false" />
+          <Property Name="ZipCode" Type="String" Nullable="false" />
+          <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoAddress" FromRole="Address" ToRole="BillingInfo" />
+        </EntityType>
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" Nullable="false" />
+          <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoEmail" FromRole="Email" ToRole="BillingInfo" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="HotelDataModel.ReservationUser" FromRole="Reservation" ToRole="User" />
+          <NavigationProperty Name="Customers" Relationship="HotelDataModel.ReservationCustomer" FromRole="Reservation" ToRole="Customer" />
+          <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="Reservation" ToRole="BillingInfo" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="DailyPrices" Relationship="HotelDataModel.ReservationDailyPrice" FromRole="Reservation" ToRole="DailyPrice" />
+        </EntityType>
+        <Association Name="ReservationUser">
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.User" Role="User" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <NavigationProperty Name="BillingInfoes" Relationship="HotelDataModel.CustomerBillingInfo" FromRole="Customer" ToRole="BillingInfo" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationCustomer" FromRole="Customer" ToRole="Reservation" />
+          <Property Name="ReservationId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BillingInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="PhoneNumbers" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
+          <NavigationProperty Name="Emails" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
+          <NavigationProperty Name="Addresses" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
+          <NavigationProperty Name="Customer" Relationship="HotelDataModel.CustomerBillingInfo" FromRole="BillingInfo" ToRole="Customer" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="BillingInfo" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="PhoneNumber">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="PhoneNumber" ToRole="BillingInfo" />
+        </EntityType>
+        <Association Name="BillingInfoPhoneNumber">
+          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
+          <End Type="HotelDataModel.PhoneNumber" Role="PhoneNumber" Multiplicity="1" />
+        </Association>
+        <Association Name="BillingInfoEmail">
+          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
+          <End Type="HotelDataModel.Email" Role="Email" Multiplicity="1" />
+        </Association>
+        <Association Name="BillingInfoAddress">
+          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
+          <End Type="HotelDataModel.Address" Role="Address" Multiplicity="1" />
+        </Association>
+        <Association Name="CustomerBillingInfo">
+          <End Type="HotelDataModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ReservationCustomer">
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="ReservationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ReservationBillingInfo">
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
+        </Association>
+        <EntityType Name="DailyPrice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="BillingPrice" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationDailyPrice" FromRole="DailyPrice" ToRole="Reservation" />
+        </EntityType>
+        <Association Name="ReservationDailyPrice">
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.DailyPrice" Role="DailyPrice" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HotelDataModelStoreContainer" CdmEntityContainer="HotelDataModelContainer">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Staff)">
+        <MappingFragment StoreEntitySet="Users_Staff">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Addresses">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Address)">
+        <MappingFragment StoreEntitySet="Addresses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstLine" ColumnName="FirstLine" />
+          <ScalarProperty Name="APT" ColumnName="APT" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Emails">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Email)">
+        <MappingFragment StoreEntitySet="Emails">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reservations">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Reservation)">
+        <MappingFragment StoreEntitySet="Reservations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Customer)">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="ReservationId" ColumnName="ReservationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BillingInfoes">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.BillingInfo)">
+        <MappingFragment StoreEntitySet="BillingInfoes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhoneNumbers">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.PhoneNumber)">
+        <MappingFragment StoreEntitySet="PhoneNumbers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DailyPrices">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.DailyPrice)">
+        <MappingFragment StoreEntitySet="DailyPrices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BillingPrice" ColumnName="BillingPrice" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ReservationUser" TypeName="HotelDataModel.ReservationUser" StoreEntitySet="Reservations">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="User_Id" />
+      </EndProperty>
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BillingInfoPhoneNumber" TypeName="HotelDataModel.BillingInfoPhoneNumber" StoreEntitySet="BillingInfoes">
+      <EndProperty Name="PhoneNumber">
+        <ScalarProperty Name="Id" ColumnName="PhoneNumbers_Id" />
+      </EndProperty>
+      <EndProperty Name="BillingInfo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BillingInfoEmail" TypeName="HotelDataModel.BillingInfoEmail" StoreEntitySet="BillingInfoes">
+      <EndProperty Name="Email">
+        <ScalarProperty Name="Id" ColumnName="Emails_Id" />
+      </EndProperty>
+      <EndProperty Name="BillingInfo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BillingInfoAddress" TypeName="HotelDataModel.BillingInfoAddress" StoreEntitySet="BillingInfoes">
+      <EndProperty Name="Address">
+        <ScalarProperty Name="Id" ColumnName="Addresses_Id" />
+      </EndProperty>
+      <EndProperty Name="BillingInfo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CustomerBillingInfo" TypeName="HotelDataModel.CustomerBillingInfo" StoreEntitySet="BillingInfoes">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="Customer_Id" />
+      </EndProperty>
+      <EndProperty Name="BillingInfo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ReservationBillingInfo" TypeName="HotelDataModel.ReservationBillingInfo" StoreEntitySet="Reservations">
+      <EndProperty Name="BillingInfo">
+        <ScalarProperty Name="Id" ColumnName="BillingInfo_Id" />
+      </EndProperty>
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ReservationDailyPrice" TypeName="HotelDataModel.ReservationDailyPrice" StoreEntitySet="DailyPrices">
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Reservation_Id" />
+      </EndProperty>
+      <EndProperty Name="DailyPrice">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
