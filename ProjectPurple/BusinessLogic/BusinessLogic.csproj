@@ -40,9 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAddress.cs" />
+    <Compile Include="Address\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
+    <Compile Include="Interfaces\ICustomer.cs" />
+    <Compile Include="Interfaces\IEmail.cs" />
+    <Compile Include="Interfaces\IPhoneNumber.cs" />
+    <Compile Include="Interfaces\IStaff.cs" />
+    <Compile Include="Interfaces\IStateConverter.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
