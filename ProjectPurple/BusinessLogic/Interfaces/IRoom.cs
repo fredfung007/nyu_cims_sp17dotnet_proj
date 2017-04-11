@@ -7,7 +7,9 @@ using BusinessLogic.Constants;
 
 namespace BusinessLogic.Interfaces
 {
+    /// <summary>
     /// Interface for room inventory management, price query
+    /// </summary>
     interface IRoom
     {
         /// <summary>
@@ -28,12 +30,20 @@ namespace BusinessLogic.Interfaces
         double getRoomPrice(roomType type, DateTime date);
 
         /// <summary>
-        ///  Get current room availibility
+        /// Get current room availibility
         /// </summary>
         /// <param name="type"></param>
         /// <param name="date"></param>
         /// <returns>current available rooms</returns>
         int getCurrentRoomAvailability(roomType type, DateTime date);
+
+        /// <summary>
+        /// Get booked room on a sepcifiic date
+        /// </summary>
+        /// <param name="type">room type of roomType</param>
+        /// <param name="date">date of DateTime</param>
+        /// <returns>booked room amount</returns>
+        int getBookedRoomOnDate(roomType type, DateTime date);
 
         /// <summary>
         /// Set room inventory
