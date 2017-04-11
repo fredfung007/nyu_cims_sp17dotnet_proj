@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IPhoneNumber.cs" />
+    <Compile Include="Interfaces\IReservation.cs" />
     <Compile Include="Interfaces\IStaff.cs" />
     <Compile Include="Interfaces\IStateConverter.cs" />
     <Compile Include="Interfaces\IUser.cs" />
