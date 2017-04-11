@@ -2,15 +2,15 @@
 {
     class RegisteredUser : IUser
     {
-        private string userName;
+        private string username;
 
-        RegisteredUser(string userName)
+        public RegisteredUser(string username)
         {
-            this.userName = userName;
+            this.username = username;
         }
-        public string getUserName()
+        public string getUsername()
         {
-            return this.userName;
+            return this.username;
         }
     }
 }
