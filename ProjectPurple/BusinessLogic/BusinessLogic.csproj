@@ -45,6 +45,8 @@
     <Compile Include="Interfaces\IAddress.cs" />
     <Compile Include="Address\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
+    <Compile Include="Interfaces\IBillingInfo.cs" />
+    <Compile Include="Interfaces\IReservation.cs" />
     <Compile Include="Customer\ICustomer.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IPhoneNumber.cs" />
