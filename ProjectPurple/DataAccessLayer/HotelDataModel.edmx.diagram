@@ -4,21 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="45414f87036542b0bd4419f5c07568f1" Name="Customer" >
+      <Diagram DiagramId="45414f87036542b0bd4419f5c07568f1" Name="BillingInfo" >
         <EntityTypeShape EntityType="HotelDataModel.Address" Width="1.5" PointX="8.875" PointY="0.75" />
         <EntityTypeShape EntityType="HotelDataModel.Email" Width="1.5" PointX="10.625" PointY="2.5" />
-        <EntityTypeShape EntityType="HotelDataModel.Customer" Width="1.5" PointX="4.125" PointY="1.375" />
         <EntityTypeShape EntityType="HotelDataModel.BillingInfo" Width="1.5" PointX="6.5" PointY="2" />
         <EntityTypeShape EntityType="HotelDataModel.PhoneNumber" Width="1.5" PointX="8.625" PointY="3.625" />
         <AssociationConnector Association="HotelDataModel.BillingInfoPhoneNumber" />
         <AssociationConnector Association="HotelDataModel.BillingInfoEmail" />
         <AssociationConnector Association="HotelDataModel.BillingInfoAddress" />
-        <AssociationConnector Association="HotelDataModel.CustomerBillingInfo" />
         </Diagram>
-      <Diagram DiagramId="049dfdf8db104f16b966a96fb74bf737" Name="Reservation" DisplayType="true" >
+      <Diagram DiagramId="049dfdf8db104f16b966a96fb74bf737" Name="Reservation" DisplayType="true" ZoomLevel="71" >
         <EntityTypeShape EntityType="HotelDataModel.Reservation" Width="1.5" PointX="2" PointY="1.25" />
         <EntityTypeShape EntityType="HotelDataModel.DailyPrice" Width="1.5" PointX="6" PointY="1.25" />
         <AssociationConnector Association="HotelDataModel.ReservationDailyPrice" />
+        <EntityTypeShape EntityType="HotelDataModel.Guest" Width="1.5" PointX="4.25" PointY="4.5" />
+        <AssociationConnector Association="HotelDataModel.ReservationGuest" />
       </Diagram>
       <Diagram DiagramId="50f5c5a66c044c3ab2463f32f3a94b34" Name="User" >
         <EntityTypeShape EntityType="HotelDataModel.User" Width="1.5" PointX="0.875" PointY="0.75" />

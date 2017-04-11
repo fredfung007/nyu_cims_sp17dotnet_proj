@@ -10,7 +10,7 @@
     <EntitySet Name="Addresses" EntityType="HotelDataModel.Store.Addresses" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Emails" EntityType="HotelDataModel.Store.Emails" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Reservations" EntityType="HotelDataModel.Store.Reservations" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Customers" EntityType="HotelDataModel.Store.Customers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Guests" EntityType="HotelDataModel.Store.Guests" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="BillingInfoes" EntityType="HotelDataModel.Store.BillingInfoes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhoneNumbers" EntityType="HotelDataModel.Store.PhoneNumbers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DailyPrices" EntityType="HotelDataModel.Store.DailyPrices" store:Type="Tables" Schema="dbo" />
@@ -31,14 +31,6 @@
       <End Role="BillingInfo" EntitySet="BillingInfoes" />
       <End Role="Address" EntitySet="Addresses" />
     </AssociationSet>
-    <AssociationSet Name="CustomerBillingInfo" Association="HotelDataModel.Store.CustomerBillingInfo">
-      <End Role="Customer" EntitySet="Customers" />
-      <End Role="BillingInfo" EntitySet="BillingInfoes" />
-    </AssociationSet>
-    <AssociationSet Name="ReservationCustomer" Association="HotelDataModel.Store.ReservationCustomer">
-      <End Role="Reservation" EntitySet="Reservations" />
-      <End Role="Customer" EntitySet="Customers" />
-    </AssociationSet>
     <AssociationSet Name="ReservationBillingInfo" Association="HotelDataModel.Store.ReservationBillingInfo">
       <End Role="Reservation" EntitySet="Reservations" />
       <End Role="BillingInfo" EntitySet="BillingInfoes" />
@@ -46,6 +38,10 @@
     <AssociationSet Name="ReservationDailyPrice" Association="HotelDataModel.Store.ReservationDailyPrice">
       <End Role="Reservation" EntitySet="Reservations" />
       <End Role="DailyPrice" EntitySet="DailyPrices" />
+    </AssociationSet>
+    <AssociationSet Name="ReservationGuest" Association="HotelDataModel.Store.ReservationGuest">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="Guest" EntitySet="Guests" />
     </AssociationSet>
     <AssociationSet Name="FK_Staff_inherits_User" Association="HotelDataModel.Store.FK_Staff_inherits_User">
       <End Role="User" EntitySet="Users" />
@@ -64,7 +60,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FirstLine" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="APT" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SecondLine" Type="nvarchar(max)" Nullable="true" />
     <Property Name="State" Type="int" Nullable="false" />
     <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -85,30 +81,32 @@
     <Property Name="User_Id" Type="int" Nullable="false" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
-  <EntityType Name="Customers">
+  <EntityType Name="Guests">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReservationId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Reservation_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="BillingInfoes">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="PhoneNumbers_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Emails_Id" Type="int" Nullable="false" />
-    <Property Name="Addresses_Id" Type="int" Nullable="false" />
-    <Property Name="Customer_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PhoneNumber_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Email_Id" Type="int" Nullable="false" />
+    <Property Name="Addresse_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PhoneNumbers">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="DailyPrices">
     <Key>
@@ -145,7 +143,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="PhoneNumbers_Id" />
+        <PropertyRef Name="PhoneNumber_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -157,7 +155,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="Emails_Id" />
+        <PropertyRef Name="Email_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -169,31 +167,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="Addresses_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="CustomerBillingInfo">
-    <End Role="Customer" Type="HotelDataModel.Store.Customers" Multiplicity="1" />
-    <End Role="BillingInfo" Type="HotelDataModel.Store.BillingInfoes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Customer">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="BillingInfo">
-        <PropertyRef Name="Customer_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ReservationCustomer">
-    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="1" />
-    <End Role="Customer" Type="HotelDataModel.Store.Customers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Reservation">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Customer">
-        <PropertyRef Name="ReservationId" />
+        <PropertyRef Name="Addresse_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -217,6 +191,18 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="DailyPrice">
+        <PropertyRef Name="Reservation_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReservationGuest">
+    <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="1" />
+    <End Role="Guest" Type="HotelDataModel.Store.Guests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Guest">
         <PropertyRef Name="Reservation_Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -248,7 +234,7 @@
             <End Role="Reservation" EntitySet="Reservations" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <EntitySet Name="Customers" EntityType="HotelDataModel.Customer" />
+          <EntitySet Name="Guests" EntityType="HotelDataModel.Guest" />
           <EntitySet Name="BillingInfoes" EntityType="HotelDataModel.BillingInfo" />
           <EntitySet Name="PhoneNumbers" EntityType="HotelDataModel.PhoneNumber" />
           <AssociationSet Name="BillingInfoPhoneNumber" Association="HotelDataModel.BillingInfoPhoneNumber">
@@ -263,14 +249,6 @@
             <End Role="BillingInfo" EntitySet="BillingInfoes" />
             <End Role="Address" EntitySet="Addresses" />
           </AssociationSet>
-          <AssociationSet Name="CustomerBillingInfo" Association="HotelDataModel.CustomerBillingInfo">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="BillingInfo" EntitySet="BillingInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="ReservationCustomer" Association="HotelDataModel.ReservationCustomer">
-            <End Role="Reservation" EntitySet="Reservations" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
           <AssociationSet Name="ReservationBillingInfo" Association="HotelDataModel.ReservationBillingInfo">
             <End Role="Reservation" EntitySet="Reservations" />
             <End Role="BillingInfo" EntitySet="BillingInfoes" />
@@ -279,6 +257,10 @@
           <AssociationSet Name="ReservationDailyPrice" Association="HotelDataModel.ReservationDailyPrice">
             <End Role="Reservation" EntitySet="Reservations" />
             <End Role="DailyPrice" EntitySet="DailyPrices" />
+          </AssociationSet>
+          <AssociationSet Name="ReservationGuest" Association="HotelDataModel.ReservationGuest">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="Guest" EntitySet="Guests" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
@@ -296,7 +278,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstLine" Type="String" Nullable="false" />
-          <Property Name="APT" Type="String" Nullable="false" />
+          <Property Name="SecondLine" Type="String" Nullable="true" />
           <Property Name="State" Type="HotelDataModel.US_STATE" Nullable="false" />
           <Property Name="ZipCode" Type="String" Nullable="false" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoAddress" FromRole="Address" ToRole="BillingInfo" />
@@ -315,37 +297,36 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="User" Relationship="HotelDataModel.ReservationUser" FromRole="Reservation" ToRole="User" />
-          <NavigationProperty Name="Customers" Relationship="HotelDataModel.ReservationCustomer" FromRole="Reservation" ToRole="Customer" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="Reservation" ToRole="BillingInfo" />
           <Property Name="startDate" Type="DateTime" Nullable="false" />
           <Property Name="endDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="DailyPrices" Relationship="HotelDataModel.ReservationDailyPrice" FromRole="Reservation" ToRole="DailyPrice" />
+          <NavigationProperty Name="Guests" Relationship="HotelDataModel.ReservationGuest" FromRole="Reservation" ToRole="Guest" />
         </EntityType>
         <Association Name="ReservationUser">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.User" Role="User" Multiplicity="1" />
         </Association>
-        <EntityType Name="Customer">
+        <EntityType Name="Guest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <Property Name="LastName" Type="String" Nullable="false" />
-          <NavigationProperty Name="BillingInfoes" Relationship="HotelDataModel.CustomerBillingInfo" FromRole="Customer" ToRole="BillingInfo" />
-          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationCustomer" FromRole="Customer" ToRole="Reservation" />
-          <Property Name="ReservationId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationGuest" FromRole="Guest" ToRole="Reservation" />
         </EntityType>
         <EntityType Name="BillingInfo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="PhoneNumbers" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
-          <NavigationProperty Name="Emails" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
-          <NavigationProperty Name="Addresses" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
-          <NavigationProperty Name="Customer" Relationship="HotelDataModel.CustomerBillingInfo" FromRole="BillingInfo" ToRole="Customer" />
+          <NavigationProperty Name="PhoneNumber" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
+          <NavigationProperty Name="Email" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
+          <NavigationProperty Name="Addresse" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="BillingInfo" ToRole="Reservation" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="PhoneNumber">
           <Key>
@@ -353,6 +334,7 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="PhoneNumber" ToRole="BillingInfo" />
+          <Property Name="Number" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="BillingInfoPhoneNumber">
           <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
@@ -365,22 +347,6 @@
         <Association Name="BillingInfoAddress">
           <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="1" />
           <End Type="HotelDataModel.Address" Role="Address" Multiplicity="1" />
-        </Association>
-        <Association Name="CustomerBillingInfo">
-          <End Type="HotelDataModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="HotelDataModel.BillingInfo" Role="BillingInfo" Multiplicity="0..1" />
-        </Association>
-        <Association Name="ReservationCustomer">
-          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
-          <End Type="HotelDataModel.Customer" Role="Customer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Reservation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Customer">
-              <PropertyRef Name="ReservationId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <Association Name="ReservationBillingInfo">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
@@ -398,6 +364,10 @@
         <Association Name="ReservationDailyPrice">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.DailyPrice" Role="DailyPrice" Multiplicity="*" />
+        </Association>
+        <Association Name="ReservationGuest">
+          <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="HotelDataModel.Guest" Role="Guest" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -422,7 +392,7 @@
         <MappingFragment StoreEntitySet="Addresses">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FirstLine" ColumnName="FirstLine" />
-          <ScalarProperty Name="APT" ColumnName="APT" />
+          <ScalarProperty Name="SecondLine" ColumnName="SecondLine" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
         </MappingFragment>
@@ -445,13 +415,12 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Customers">
-      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Customer)">
-        <MappingFragment StoreEntitySet="Customers">
+    <EntitySetMapping Name="Guests">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Guest)">
+        <MappingFragment StoreEntitySet="Guests">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="ReservationId" ColumnName="ReservationId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -459,6 +428,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.BillingInfo)">
         <MappingFragment StoreEntitySet="BillingInfoes">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -466,6 +437,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.PhoneNumber)">
         <MappingFragment StoreEntitySet="PhoneNumbers">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -488,7 +460,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoPhoneNumber" TypeName="HotelDataModel.BillingInfoPhoneNumber" StoreEntitySet="BillingInfoes">
       <EndProperty Name="PhoneNumber">
-        <ScalarProperty Name="Id" ColumnName="PhoneNumbers_Id" />
+        <ScalarProperty Name="Id" ColumnName="PhoneNumber_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />
@@ -496,7 +468,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoEmail" TypeName="HotelDataModel.BillingInfoEmail" StoreEntitySet="BillingInfoes">
       <EndProperty Name="Email">
-        <ScalarProperty Name="Id" ColumnName="Emails_Id" />
+        <ScalarProperty Name="Id" ColumnName="Email_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />
@@ -504,15 +476,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoAddress" TypeName="HotelDataModel.BillingInfoAddress" StoreEntitySet="BillingInfoes">
       <EndProperty Name="Address">
-        <ScalarProperty Name="Id" ColumnName="Addresses_Id" />
-      </EndProperty>
-      <EndProperty Name="BillingInfo">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="CustomerBillingInfo" TypeName="HotelDataModel.CustomerBillingInfo" StoreEntitySet="BillingInfoes">
-      <EndProperty Name="Customer">
-        <ScalarProperty Name="Id" ColumnName="Customer_Id" />
+        <ScalarProperty Name="Id" ColumnName="Addresse_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />
@@ -531,6 +495,14 @@
         <ScalarProperty Name="Id" ColumnName="Reservation_Id" />
       </EndProperty>
       <EndProperty Name="DailyPrice">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ReservationGuest" TypeName="HotelDataModel.ReservationGuest" StoreEntitySet="Guests">
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Reservation_Id" />
+      </EndProperty>
+      <EndProperty Name="Guest">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

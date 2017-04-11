@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2017 16:29:30
+-- Date Created: 04/11/2017 17:36:20
 -- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -17,11 +17,65 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_ReservationUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationUser];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BillingInfoPhoneNumber]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoPhoneNumber];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BillingInfoEmail]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoEmail];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BillingInfoAddress]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoAddress];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CustomerBillingInfo]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_CustomerBillingInfo];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationCustomer]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Customers] DROP CONSTRAINT [FK_ReservationCustomer];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationBillingInfo]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationBillingInfo];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationDailyPrice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DailyPrices] DROP CONSTRAINT [FK_ReservationDailyPrice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Staff_inherits_User]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Users_Staff] DROP CONSTRAINT [FK_Staff_inherits_User];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Users];
+GO
+IF OBJECT_ID(N'[dbo].[Addresses]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Addresses];
+GO
+IF OBJECT_ID(N'[dbo].[Emails]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Emails];
+GO
+IF OBJECT_ID(N'[dbo].[Reservations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Reservations];
+GO
+IF OBJECT_ID(N'[dbo].[Customers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Customers];
+GO
+IF OBJECT_ID(N'[dbo].[BillingInfoes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BillingInfoes];
+GO
+IF OBJECT_ID(N'[dbo].[PhoneNumbers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PhoneNumbers];
+GO
+IF OBJECT_ID(N'[dbo].[DailyPrices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DailyPrices];
+GO
+IF OBJECT_ID(N'[dbo].[Users_Staff]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Users_Staff];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -37,7 +91,7 @@ GO
 CREATE TABLE [dbo].[Addresses] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FirstLine] nvarchar(max)  NOT NULL,
-    [APT] nvarchar(max)  NOT NULL,
+    [SecondLine] nvarchar(max)  NULL,
     [State] int  NOT NULL,
     [ZipCode] nvarchar(max)  NOT NULL
 );
@@ -60,28 +114,30 @@ CREATE TABLE [dbo].[Reservations] (
 );
 GO
 
--- Creating table 'Customers'
-CREATE TABLE [dbo].[Customers] (
+-- Creating table 'Guests'
+CREATE TABLE [dbo].[Guests] (
     [Id] uniqueidentifier  NOT NULL,
     [FirstName] nvarchar(max)  NOT NULL,
     [LastName] nvarchar(max)  NOT NULL,
-    [ReservationId] uniqueidentifier  NOT NULL
+    [Reservation_Id] uniqueidentifier  NOT NULL
 );
 GO
 
 -- Creating table 'BillingInfoes'
 CREATE TABLE [dbo].[BillingInfoes] (
     [Id] uniqueidentifier  NOT NULL,
-    [PhoneNumbers_Id] uniqueidentifier  NOT NULL,
-    [Emails_Id] int  NOT NULL,
-    [Addresses_Id] int  NOT NULL,
-    [Customer_Id] uniqueidentifier  NOT NULL
+    [FirstName] nvarchar(max)  NOT NULL,
+    [LastName] nvarchar(max)  NOT NULL,
+    [PhoneNumber_Id] uniqueidentifier  NOT NULL,
+    [Email_Id] int  NOT NULL,
+    [Addresse_Id] int  NOT NULL
 );
 GO
 
 -- Creating table 'PhoneNumbers'
 CREATE TABLE [dbo].[PhoneNumbers] (
-    [Id] uniqueidentifier  NOT NULL
+    [Id] uniqueidentifier  NOT NULL,
+    [Number] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -128,9 +184,9 @@ ADD CONSTRAINT [PK_Reservations]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Customers'
-ALTER TABLE [dbo].[Customers]
-ADD CONSTRAINT [PK_Customers]
+-- Creating primary key on [Id] in table 'Guests'
+ALTER TABLE [dbo].[Guests]
+ADD CONSTRAINT [PK_Guests]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -177,10 +233,10 @@ ON [dbo].[Reservations]
     ([User_Id]);
 GO
 
--- Creating foreign key on [PhoneNumbers_Id] in table 'BillingInfoes'
+-- Creating foreign key on [PhoneNumber_Id] in table 'BillingInfoes'
 ALTER TABLE [dbo].[BillingInfoes]
 ADD CONSTRAINT [FK_BillingInfoPhoneNumber]
-    FOREIGN KEY ([PhoneNumbers_Id])
+    FOREIGN KEY ([PhoneNumber_Id])
     REFERENCES [dbo].[PhoneNumbers]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -189,13 +245,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoPhoneNumber'
 CREATE INDEX [IX_FK_BillingInfoPhoneNumber]
 ON [dbo].[BillingInfoes]
-    ([PhoneNumbers_Id]);
+    ([PhoneNumber_Id]);
 GO
 
--- Creating foreign key on [Emails_Id] in table 'BillingInfoes'
+-- Creating foreign key on [Email_Id] in table 'BillingInfoes'
 ALTER TABLE [dbo].[BillingInfoes]
 ADD CONSTRAINT [FK_BillingInfoEmail]
-    FOREIGN KEY ([Emails_Id])
+    FOREIGN KEY ([Email_Id])
     REFERENCES [dbo].[Emails]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -204,13 +260,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoEmail'
 CREATE INDEX [IX_FK_BillingInfoEmail]
 ON [dbo].[BillingInfoes]
-    ([Emails_Id]);
+    ([Email_Id]);
 GO
 
--- Creating foreign key on [Addresses_Id] in table 'BillingInfoes'
+-- Creating foreign key on [Addresse_Id] in table 'BillingInfoes'
 ALTER TABLE [dbo].[BillingInfoes]
 ADD CONSTRAINT [FK_BillingInfoAddress]
-    FOREIGN KEY ([Addresses_Id])
+    FOREIGN KEY ([Addresse_Id])
     REFERENCES [dbo].[Addresses]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -219,37 +275,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoAddress'
 CREATE INDEX [IX_FK_BillingInfoAddress]
 ON [dbo].[BillingInfoes]
-    ([Addresses_Id]);
-GO
-
--- Creating foreign key on [Customer_Id] in table 'BillingInfoes'
-ALTER TABLE [dbo].[BillingInfoes]
-ADD CONSTRAINT [FK_CustomerBillingInfo]
-    FOREIGN KEY ([Customer_Id])
-    REFERENCES [dbo].[Customers]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CustomerBillingInfo'
-CREATE INDEX [IX_FK_CustomerBillingInfo]
-ON [dbo].[BillingInfoes]
-    ([Customer_Id]);
-GO
-
--- Creating foreign key on [ReservationId] in table 'Customers'
-ALTER TABLE [dbo].[Customers]
-ADD CONSTRAINT [FK_ReservationCustomer]
-    FOREIGN KEY ([ReservationId])
-    REFERENCES [dbo].[Reservations]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ReservationCustomer'
-CREATE INDEX [IX_FK_ReservationCustomer]
-ON [dbo].[Customers]
-    ([ReservationId]);
+    ([Addresse_Id]);
 GO
 
 -- Creating foreign key on [BillingInfo_Id] in table 'Reservations'
@@ -279,6 +305,21 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_ReservationDailyPrice'
 CREATE INDEX [IX_FK_ReservationDailyPrice]
 ON [dbo].[DailyPrices]
+    ([Reservation_Id]);
+GO
+
+-- Creating foreign key on [Reservation_Id] in table 'Guests'
+ALTER TABLE [dbo].[Guests]
+ADD CONSTRAINT [FK_ReservationGuest]
+    FOREIGN KEY ([Reservation_Id])
+    REFERENCES [dbo].[Reservations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ReservationGuest'
+CREATE INDEX [IX_FK_ReservationGuest]
+ON [dbo].[Guests]
     ([Reservation_Id]);
 GO
 

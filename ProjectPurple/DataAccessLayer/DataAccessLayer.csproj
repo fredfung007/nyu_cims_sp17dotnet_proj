@@ -57,13 +57,13 @@
     <Compile Include="BillingInfo.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Customer.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DailyPrice.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Email.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Guest.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="HotelDataModel.Context.cs">
