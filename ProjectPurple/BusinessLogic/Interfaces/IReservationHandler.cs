@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.ReservationHandler
 {
     interface IReservationHandler
-    {   
+    {
         /// <summary>
         /// Method to check in a reservation by its confirmation number
         /// </summary>
