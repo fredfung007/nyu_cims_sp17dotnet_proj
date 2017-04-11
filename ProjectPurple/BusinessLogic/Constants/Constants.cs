@@ -16,4 +16,12 @@ namespace BusinessLogic.Constants
         KING_BED_ROOM,
         SUITE
     };
+
+    public enum cancelStatus
+    {
+        SUCCESS,
+        FAILED_NON_EXIST,
+        FAILED_ALREADY_CHECKED_IN,
+        FAILED_EXPIRED
+    };
 }
