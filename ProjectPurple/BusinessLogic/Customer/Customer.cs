@@ -1,6 +1,8 @@
 ﻿namespace BusinessLogic.Customer
 {
-    // Implementation of ICustomer, a customer who will stay at the hotel.
+    /// <summary>
+    /// Implementation of ICustomer, a customer who will stay at the hotel.
+    /// </summary>
     class Customer : ICustomer
     {
         string first;

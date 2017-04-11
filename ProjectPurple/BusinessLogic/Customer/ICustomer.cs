@@ -2,12 +2,19 @@
 
 namespace BusinessLogic.Customer
 {
-    // Interface for customer/guest who will stay at the hotel. 
+    /// <summary>
+    /// Interface for customer/guest who will stay at the hotel. 
+    /// </summary>
     interface ICustomer
     {
-        // First name of the customer. 
+        /// <summary>
+        /// First name of the customer. 
+        /// </summary>
         String firstName { get; }
-        // Last name of the customer. 
+        
+        /// <summary>
+        /// Last name of the customer. 
+        /// </summary>
         String lastName { get; }
     }
 }
