@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BusinessLogic.Customer;
 using BusinessLogic.BillingInfo;
-using BusinessLogic.Constants;
+
 namespace BusinessLogic.Reservation
 {
     /// <summary>
@@ -17,7 +17,7 @@ namespace BusinessLogic.Reservation
         List<ICustomer> guests { get; }
         DateTime startDate { get; }
         DateTime endDate { get; }
-        roomType type { get; }
+        int duration { get; }
         List<int> pricePerDay { get; }
         int getTotalPrice();
     }

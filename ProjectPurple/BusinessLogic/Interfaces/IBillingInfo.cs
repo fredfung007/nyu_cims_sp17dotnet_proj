@@ -15,12 +15,10 @@ namespace BusinessLogic.BillingInfo
     /// Can be different with information of the user
     /// who creates the reservation.
     /// </summary>
-    interface IBillingInfo
+    interface IBillingInfo : ICustomer
     {
         IAddress address { get; }
         IPhoneNumber phoneNumber { get; }
         IEmail email { get; }
-        string firstName { get; }
-        string lastName { get; }
     }
 }
