@@ -55,13 +55,13 @@
     <Compile Include="Interfaces\IStateConverter.cs" />
     <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffLogic\StaffHandler.cs" />
     <Compile Include="Users\AnonymousUser.cs" />
     <Compile Include="Users\RegisteredUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Auth\" />
     <Folder Include="Public\" />
-    <Folder Include="StaffLogic\" />
     <Folder Include="UserLogic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
