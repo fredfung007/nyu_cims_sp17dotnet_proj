@@ -40,16 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Customer\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Interfaces\IAddress.cs" />
     <Compile Include="Address\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
     <Compile Include="Interfaces\IBillingInfo.cs" />
-    <Compile Include="Interfaces\ICustomer.cs" />
+    <Compile Include="Interfaces\IReservation.cs" />
+    <Compile Include="Customer\ICustomer.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IPhoneNumber.cs" />
     <Compile Include="Interfaces\IRoom.cs" />
-    <Compile Include="Interfaces\IReservation.cs" />
     <Compile Include="Interfaces\IStaff.cs" />
     <Compile Include="Interfaces\IStateConverter.cs" />
     <Compile Include="Interfaces\IUser.cs" />
