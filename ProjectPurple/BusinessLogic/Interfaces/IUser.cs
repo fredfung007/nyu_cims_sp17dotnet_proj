@@ -5,6 +5,6 @@ namespace BusinessLogic.Users
     interface IUser
     {
         // Return the user name of the user
-        string getUserName();
+        string getUsername();
     }
 }
