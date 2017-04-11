@@ -9,6 +9,11 @@ using BusinessLogic.Email;
 
 namespace BusinessLogic.BillingInfo
 {
+    /// <summary>
+    /// Used to store billing information of one reservation.
+    /// Can be different with information of the user
+    /// who creates the reservation.
+    /// </summary>
     interface IBillingInfo
     {
         IAddress address { get; }
