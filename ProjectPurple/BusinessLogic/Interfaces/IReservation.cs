@@ -8,6 +8,10 @@ using BusinessLogic.BillingInfo;
 
 namespace BusinessLogic.Reservation
 {
+    /// <summary>
+    /// The class that is used to store all information of one reservation.
+    /// Immutable. Created once the reservation is submitted.
+    /// </summary>
     interface IReservation
     {
         // unique ID per reservation, should be generated in the constructor
