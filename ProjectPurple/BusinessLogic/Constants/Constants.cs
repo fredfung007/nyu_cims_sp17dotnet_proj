@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Constants
 { 
+    /// <summary>
+    /// Enum type of room type
+    /// </summary>
     public enum roomType
     {
         DOUBLE_BED_ROOM,
@@ -13,8 +16,4 @@ namespace BusinessLogic.Constants
         KING_BED_ROOM,
         SUITE
     };
-    class Constants
-    {
-
-    }
 }
