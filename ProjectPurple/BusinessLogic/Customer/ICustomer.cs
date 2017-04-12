@@ -16,5 +16,7 @@ namespace BusinessLogic.Customer
         /// Last name of the customer. 
         /// </summary>
         String lastName { get; }
+
+        int userId { get; }
     }
 }

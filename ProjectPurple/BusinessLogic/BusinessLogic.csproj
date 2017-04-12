@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Customer\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="Interfaces\IAddress.cs" />
     <Compile Include="Address\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
@@ -51,20 +52,22 @@
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IPhoneNumber.cs" />
     <Compile Include="Interfaces\IReservationHandler.cs" />
-    <Compile Include="Interfaces\IRoom.cs" />
+    <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Interfaces\IStaff.cs" />
     <Compile Include="Interfaces\IStateConverter.cs" />
     <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Interfaces\IReservationCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaffLogic\StaffHandler.cs" />
+    <Compile Include="Handlers\ReservationHandler.cs" />
     <Compile Include="Users\AnonymousUser.cs" />
     <Compile Include="Users\RegisteredUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Auth\" />
     <Folder Include="Public\" />
-    <Folder Include="UserLogic\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Handlers\CustomerHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

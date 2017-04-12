@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BusinessLogic.Customer;
 using BusinessLogic.BillingInfo;
+using BusinessLogic.Constants;
 
 namespace BusinessLogic.Reservation
 {
@@ -20,5 +21,6 @@ namespace BusinessLogic.Reservation
         int duration { get; }
         List<int> pricePerDay { get; }
         int getTotalPrice();
+        roomType getRoomType { get; set; }
     }
 }
