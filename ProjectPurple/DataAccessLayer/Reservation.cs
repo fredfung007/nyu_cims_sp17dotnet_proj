@@ -49,6 +49,8 @@ public partial class Reservation
 
     public virtual ICollection<Guest> Guests { get; set; }
 
+    public virtual RoomType RoomType { get; set; }
+
 }
 
 }

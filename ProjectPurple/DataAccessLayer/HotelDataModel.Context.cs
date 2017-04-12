@@ -50,6 +50,8 @@ public partial class HotelDataModelContainer : DbContext
 
     public virtual DbSet<Staff> Staffs { get; set; }
 
+    public virtual DbSet<RoomType> RoomTypes { get; set; }
+
 }
 
 }

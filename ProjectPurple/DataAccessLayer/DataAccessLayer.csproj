@@ -88,6 +88,9 @@
     <Compile Include="Reservation.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RoomType.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Staff.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
