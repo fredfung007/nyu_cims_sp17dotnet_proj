@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Constants;
+using System.Data.Entity;
 
 namespace BusinessLogic.Handlers
 {
@@ -12,6 +13,11 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class RoomHandler
     {
+        DbContext context;
+        public RoomHandler(DbContext context)
+        {
+            this.context = context;
+        }
         List<roomType> checkAvailableTypeForDuration(DateTime start, DateTime end)
         {
             return null;

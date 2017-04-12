@@ -7,6 +7,7 @@ using BusinessLogic.Address;
 using BusinessLogic.Email;
 using BusinessLogic.PhoneNumber;
 using BusinessLogic.Customer;
+using System.Data.Entity;
 
 namespace BusinessLogic.Handlers
 {
@@ -17,6 +18,11 @@ namespace BusinessLogic.Handlers
     // loyalty program status
     class ProfileHandler
     {
+        DbContext context;
+        public ProfileHandler(DbContext context)
+        {
+            this.context = context;
+        }
         ICustomer getCustomerInfo(int userId)
         {
             return null;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Customer;
+using System.Data.Entity;
 
 namespace BusinessLogic.Handlers
 {
@@ -12,6 +13,11 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class CustomerHandler
     {
+        DbContext context;
+        public CustomerHandler(DbContext context) {
+            this.context = context;
+        }
+
         //TODO check using userId or ICustomer
         bool checkIn(int userId, DateTime date)
         {

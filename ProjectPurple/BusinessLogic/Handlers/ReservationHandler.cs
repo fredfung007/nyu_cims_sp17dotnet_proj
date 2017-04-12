@@ -8,6 +8,7 @@ using BusinessLogic.Constants;
 using BusinessLogic.Customer;
 using BusinessLogic.Reservation;
 using BusinessLogic.Users;
+using System.Data.Entity;
 
 namespace BusinessLogic.Handlers
 {
@@ -16,6 +17,11 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class ReservationHandler
     {
+        DbContext context;
+        public ReservationHandler(DbContext context)
+        {
+            this.context = context;
+        }
         Guid makeReservation(int userId, roomType type, DateTime start, DateTime end)
         {
             return Guid.Empty;
