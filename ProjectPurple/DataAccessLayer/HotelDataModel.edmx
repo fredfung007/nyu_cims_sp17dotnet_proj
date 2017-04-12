@@ -348,6 +348,7 @@
           <NavigationProperty Name="DailyPrices" Relationship="HotelDataModel.ReservationDailyPrice" FromRole="Reservation" ToRole="DailyPrice" />
           <NavigationProperty Name="Guests" Relationship="HotelDataModel.ReservationGuest" FromRole="Reservation" ToRole="Guest" />
           <NavigationProperty Name="RoomType" Relationship="HotelDataModel.ReservationRoomType" FromRole="Reservation" ToRole="RoomType" />
+          <Property Name="isPaid" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="ReservationUser">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="*" />

@@ -35,6 +35,8 @@ public partial class Reservation
 
     public System.DateTime endDate { get; set; }
 
+    public bool isPaid { get; set; }
+
 
 
     public virtual User User { get; set; }
