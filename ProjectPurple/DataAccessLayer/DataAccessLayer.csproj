@@ -54,9 +54,6 @@
     <Compile Include="Address.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="BillingInfo.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DailyPrice.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
@@ -84,8 +81,14 @@
     <Compile Include="PhoneNumber.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Profile.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reservation.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Staff.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
