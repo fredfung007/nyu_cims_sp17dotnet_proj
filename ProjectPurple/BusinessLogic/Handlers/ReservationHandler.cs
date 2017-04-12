@@ -20,7 +20,7 @@ namespace BusinessLogic.Handlers
         {
             return Guid.Empty;
         }
-        bool cancelReservation(Guid confirmationNumber)
+        bool cancelReservation(int userId, Guid confirmationNumber)
         {
             return false;
         }
