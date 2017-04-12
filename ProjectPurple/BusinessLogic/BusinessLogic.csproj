@@ -49,23 +49,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\IAuthRepository.cs" />
+    <Compile Include="DAL\IRoomRepository.cs" />
+    <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
-    <Compile Include="DAL\IAddressRepository.cs" />
+    <Compile Include="DAL\obsolete\IAddressRepository.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
     <Compile Include="DAL\IProfileRepository.cs" />
     <Compile Include="DAL\IReservationRepository.cs" />
     <Compile Include="obsolete\ICustomer.cs" />
-    <Compile Include="DAL\IEmailRepository.cs" />
-    <Compile Include="DAL\IPhoneNumberRepository.cs" />
-    <Compile Include="DAL\IGuestRepository.cs" />
+    <Compile Include="DAL\obsolete\IEmailRepository.cs" />
+    <Compile Include="DAL\obsolete\IPhoneNumberRepository.cs" />
+    <Compile Include="DAL\obsolete\IGuestRepository.cs" />
     <Compile Include="obsolete\IReservationHandler.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
-    <Compile Include="DAL\IStaffRepository.cs" />
+    <Compile Include="DAL\obsolete\IStaffRepository.cs" />
     <Compile Include="Helpers\IStateConverter.cs" />
-    <Compile Include="DAL\IUserRepository.cs" />
+    <Compile Include="DAL\obsolete\IUserRepository.cs" />
     <Compile Include="obsolete\IReservationCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\ReservationHandler.cs" />

@@ -13,6 +13,16 @@ namespace BusinessLogic.DAL
     {
         Profile getProfile(Guid Id);
         IEnumerable<Profile> getProfiles();
+        Address getAddress(int Id);
+        IEnumerable<Address> getAddresses();
+        Email getEmail(int Id);
+        IEnumerable<Email> getEmails();
+        Guest getGuest(Guid Id);
+        IEnumerable<Guest> getGuests();
+        PhoneNumber getPhoneNumber(Guid Id);
+        IEnumerable<PhoneNumber> getPhoneNumbers();
+
+
         void save();
     }
 }
