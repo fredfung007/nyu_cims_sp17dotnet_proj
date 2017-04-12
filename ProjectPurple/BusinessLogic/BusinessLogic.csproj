@@ -61,6 +61,10 @@
     <Compile Include="Users\RegisteredUser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{9bdb5846-c2e4-4270-a7c4-a9971b32262c}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
     <Folder Include="Auth\" />
     <Folder Include="Public\" />
     <Folder Include="StaffLogic\" />

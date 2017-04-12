@@ -1,11 +1,13 @@
-﻿namespace BusinessLogic.Address
+﻿using DataAccessLayer;
+
+namespace BusinessLogic.Address
 {
     // Interface for converters from string to state enum
     interface IStateConverter
     {
         // Convert states to its full names.
-        string GetState(State state);
+        string GetState(US_STATE state);
         // Convert string to the state enum.
-        State GetStateByName(string name);
+        US_STATE GetStateByName(string name);
     }
 }
