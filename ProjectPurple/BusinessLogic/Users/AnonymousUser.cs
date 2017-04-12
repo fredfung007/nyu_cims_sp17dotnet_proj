@@ -1,10 +1,11 @@
-﻿namespace BusinessLogic.Users
+﻿using System;
+
+namespace BusinessLogic.Users
 {
-    class AnonymousUser : IUser
+    class AnonymousUser : RegisteredUser
     {
-        public string getUserName()
+        public AnonymousUser() : base ("anonymous_" + Guid.NewGuid())
         {
-            return "Anonymous User";
         }
     }
 }
