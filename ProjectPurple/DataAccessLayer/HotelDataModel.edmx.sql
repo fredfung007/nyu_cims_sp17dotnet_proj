@@ -2,14 +2,12 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2017 17:57:08
+-- Date Created: 04/12/2017 14:10:29
 -- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-DROP DATABASE [HotelDataDevelop];
-CREATE DATABASE [HotelDataDevelop];
 USE [HotelDataDevelop];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
@@ -79,8 +77,8 @@ CREATE TABLE [dbo].[Users] (
     [Id] uniqueidentifier  NOT NULL,
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL,
-    [isStaff] bit  NOT NULL,
-    [isRegistered] nvarchar(max)  NOT NULL
+    [isRegistered] nvarchar(max)  NOT NULL,
+    [LoyalProgramNumber] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -120,14 +118,15 @@ CREATE TABLE [dbo].[Guests] (
 );
 GO
 
--- Creating table 'BillingInfoes'
-CREATE TABLE [dbo].[BillingInfoes] (
+-- Creating table 'Profiles'
+CREATE TABLE [dbo].[Profiles] (
     [Id] uniqueidentifier  NOT NULL,
     [FirstName] nvarchar(max)  NOT NULL,
     [LastName] nvarchar(max)  NOT NULL,
     [PhoneNumber_Id] uniqueidentifier  NOT NULL,
     [Email_Id] int  NOT NULL,
-    [Addresse_Id] int  NOT NULL
+    [Addresse_Id] int  NOT NULL,
+    [User_Id] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -144,6 +143,14 @@ CREATE TABLE [dbo].[DailyPrices] (
     [BillingPrice] int  NOT NULL,
     [Date] datetime  NOT NULL,
     [Reservation_Id] uniqueidentifier  NOT NULL
+);
+GO
+
+-- Creating table 'Staffs'
+CREATE TABLE [dbo].[Staffs] (
+    [Id] uniqueidentifier  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [HashedPassword] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -181,9 +188,9 @@ ADD CONSTRAINT [PK_Guests]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'BillingInfoes'
-ALTER TABLE [dbo].[BillingInfoes]
-ADD CONSTRAINT [PK_BillingInfoes]
+-- Creating primary key on [Id] in table 'Profiles'
+ALTER TABLE [dbo].[Profiles]
+ADD CONSTRAINT [PK_Profiles]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -196,6 +203,12 @@ GO
 -- Creating primary key on [Id] in table 'DailyPrices'
 ALTER TABLE [dbo].[DailyPrices]
 ADD CONSTRAINT [PK_DailyPrices]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Staffs'
+ALTER TABLE [dbo].[Staffs]
+ADD CONSTRAINT [PK_Staffs]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -218,8 +231,8 @@ ON [dbo].[Reservations]
     ([User_Id]);
 GO
 
--- Creating foreign key on [PhoneNumber_Id] in table 'BillingInfoes'
-ALTER TABLE [dbo].[BillingInfoes]
+-- Creating foreign key on [PhoneNumber_Id] in table 'Profiles'
+ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoPhoneNumber]
     FOREIGN KEY ([PhoneNumber_Id])
     REFERENCES [dbo].[PhoneNumbers]
@@ -229,12 +242,12 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoPhoneNumber'
 CREATE INDEX [IX_FK_BillingInfoPhoneNumber]
-ON [dbo].[BillingInfoes]
+ON [dbo].[Profiles]
     ([PhoneNumber_Id]);
 GO
 
--- Creating foreign key on [Email_Id] in table 'BillingInfoes'
-ALTER TABLE [dbo].[BillingInfoes]
+-- Creating foreign key on [Email_Id] in table 'Profiles'
+ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoEmail]
     FOREIGN KEY ([Email_Id])
     REFERENCES [dbo].[Emails]
@@ -244,12 +257,12 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoEmail'
 CREATE INDEX [IX_FK_BillingInfoEmail]
-ON [dbo].[BillingInfoes]
+ON [dbo].[Profiles]
     ([Email_Id]);
 GO
 
--- Creating foreign key on [Addresse_Id] in table 'BillingInfoes'
-ALTER TABLE [dbo].[BillingInfoes]
+-- Creating foreign key on [Addresse_Id] in table 'Profiles'
+ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoAddress]
     FOREIGN KEY ([Addresse_Id])
     REFERENCES [dbo].[Addresses]
@@ -259,7 +272,7 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoAddress'
 CREATE INDEX [IX_FK_BillingInfoAddress]
-ON [dbo].[BillingInfoes]
+ON [dbo].[Profiles]
     ([Addresse_Id]);
 GO
 
@@ -267,7 +280,7 @@ GO
 ALTER TABLE [dbo].[Reservations]
 ADD CONSTRAINT [FK_ReservationBillingInfo]
     FOREIGN KEY ([BillingInfo_Id])
-    REFERENCES [dbo].[BillingInfoes]
+    REFERENCES [dbo].[Profiles]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -306,6 +319,21 @@ GO
 CREATE INDEX [IX_FK_ReservationGuest]
 ON [dbo].[Guests]
     ([Reservation_Id]);
+GO
+
+-- Creating foreign key on [User_Id] in table 'Profiles'
+ALTER TABLE [dbo].[Profiles]
+ADD CONSTRAINT [FK_UserProfile]
+    FOREIGN KEY ([User_Id])
+    REFERENCES [dbo].[Users]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfile'
+CREATE INDEX [IX_FK_UserProfile]
+ON [dbo].[Profiles]
+    ([User_Id]);
 GO
 
 -- --------------------------------------------------

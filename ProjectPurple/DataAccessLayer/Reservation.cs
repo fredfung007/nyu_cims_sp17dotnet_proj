@@ -39,7 +39,7 @@ public partial class Reservation
 
     public virtual User User { get; set; }
 
-    public virtual BillingInfo BillingInfo { get; set; }
+    public virtual Profile BillingInfo { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

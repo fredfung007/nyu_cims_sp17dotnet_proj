@@ -15,24 +15,14 @@ namespace DataAccessLayer
 using System;
     using System.Collections.Generic;
     
-public partial class BillingInfo
+public partial class Staff
 {
 
     public System.Guid Id { get; set; }
 
-    public string FirstName { get; set; }
+    public string Username { get; set; }
 
-    public string LastName { get; set; }
-
-
-
-    public virtual PhoneNumber PhoneNumber { get; set; }
-
-    public virtual Email Email { get; set; }
-
-    public virtual Address Addresse { get; set; }
-
-    public virtual Reservation Reservation { get; set; }
+    public string HashedPassword { get; set; }
 
 }
 

@@ -33,15 +33,17 @@ public partial class User
 
     public string HashedPassword { get; set; }
 
-    public bool isStaff { get; set; }
-
     public string isRegistered { get; set; }
+
+    public string LoyalProgramNumber { get; set; }
 
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Reservation> Reservations { get; set; }
+
+    public virtual Profile Profile { get; set; }
 
 }
 

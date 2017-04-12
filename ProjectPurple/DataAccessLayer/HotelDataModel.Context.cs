@@ -42,11 +42,13 @@ public partial class HotelDataModelContainer : DbContext
 
     public virtual DbSet<Guest> Guests { get; set; }
 
-    public virtual DbSet<BillingInfo> BillingInfoes { get; set; }
+    public virtual DbSet<Profile> Profiles { get; set; }
 
     public virtual DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
     public virtual DbSet<DailyPrice> DailyPrices { get; set; }
+
+    public virtual DbSet<Staff> Staffs { get; set; }
 
 }
 

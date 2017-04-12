@@ -24,7 +24,7 @@ public partial class Email
 
 
 
-    public virtual BillingInfo BillingInfo { get; set; }
+    public virtual Profile BillingInfo { get; set; }
 
 }
 
