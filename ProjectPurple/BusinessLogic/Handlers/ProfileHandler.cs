@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Address;
-using BusinessLogic.Email;
-using BusinessLogic.PhoneNumber;
-using BusinessLogic.Customer;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using DataAccessLayer;
 
 namespace BusinessLogic.Handlers
 {
@@ -23,23 +15,23 @@ namespace BusinessLogic.Handlers
         {
             this.context = context;
         }
-        ICustomer getCustomerInfo(int userId)
+        Guest getCustomerInfo(int userId)
         {
             return null;
         }
 
         //TODO? use ICustomer or userId
-        IAddress getAddress(int userId)
+        DataAccessLayer.Address getAddress(int userId)
         {
             return null;
         }
 
-        IEmail getEmail(int userId)
+        Email getEmail(int userId)
         {
             return null;
         }
 
-        IPhoneNumber getPhoneNumber(int userId)
+        PhoneNumber getPhoneNumber(int userId)
         {
             return null;
         }
@@ -47,17 +39,17 @@ namespace BusinessLogic.Handlers
         // get room preference
         // get loyalty program number
 
-        bool setAddress(int userId, IAddress address)
+        bool setAddress(int userId, DataAccessLayer.Address address)
         {
             return false;
         }
 
-        bool setEmail(int userId, IEmail email)
+        bool setEmail(int userId, DataAccessLayer.Email email)
         {
             return false;
         }
 
-        bool setPhoneNumber(int userId, IPhoneNumber phoneNumber)
+        bool setPhoneNumber(int userId, PhoneNumber phoneNumber)
         {
             return false;
         }

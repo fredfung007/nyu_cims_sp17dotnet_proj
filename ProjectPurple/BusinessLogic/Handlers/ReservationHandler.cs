@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.BillingInfo;
 using BusinessLogic.Constants;
-using BusinessLogic.Customer;
-using BusinessLogic.Reservation;
-using BusinessLogic.Users;
 using System.Data.Entity;
+using DataAccessLayer;
 
 namespace BusinessLogic.Handlers
 {
@@ -31,17 +25,17 @@ namespace BusinessLogic.Handlers
             return false;
         }
 
-        IReservation getReservation(Guid confirmationNumber)
+        Reservation getReservation(Guid confirmationNumber)
         {
             return null;
         }
 
-        List<IReservation> getUpComingReservations(ICustomer customer)
+        List<Reservation> getUpComingReservations(Guest customer)
         {
             return null;
         }
 
-        bool fillGuestInfo(IReservation reservation, List<ICustomer> customers)
+        bool fillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
         }

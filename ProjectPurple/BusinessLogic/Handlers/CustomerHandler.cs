@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Customer;
 using System.Data.Entity;
+using DataAccessLayer;
 
 namespace BusinessLogic.Handlers
 {
@@ -29,12 +26,12 @@ namespace BusinessLogic.Handlers
             return false;
         }
 
-        List<ICustomer> getCheckOutCustomersOnDate(DateTime date)
+        List<Guest> getCheckOutCustomersOnDate(DateTime date)
         {
             return null;
         }
 
-        List<ICustomer> getCheckInCustomersOnDate(DateTime date)
+        List<Guest> getCheckInCustomersOnDate(DateTime date)
         {
             return null;
         }

@@ -49,23 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Customer\Customer.cs" />
+    <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
-    <Compile Include="Interfaces\IAddress.cs" />
-    <Compile Include="Address\StateConverter.cs" />
+    <Compile Include="DAL\IAddressRepository.cs" />
+    <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
-    <Compile Include="Interfaces\IBillingInfo.cs" />
-    <Compile Include="Interfaces\IReservation.cs" />
-    <Compile Include="Customer\ICustomer.cs" />
-    <Compile Include="Interfaces\IEmail.cs" />
-    <Compile Include="Interfaces\IPhoneNumber.cs" />
-    <Compile Include="Interfaces\IReservationHandler.cs" />
+    <Compile Include="DAL\IProfileRepository.cs" />
+    <Compile Include="DAL\IReservationRepository.cs" />
+    <Compile Include="obsolete\ICustomer.cs" />
+    <Compile Include="DAL\IEmailRepository.cs" />
+    <Compile Include="DAL\IPhoneNumberRepository.cs" />
+    <Compile Include="DAL\IGuestRepository.cs" />
+    <Compile Include="obsolete\IReservationHandler.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
-    <Compile Include="Interfaces\IStaff.cs" />
-    <Compile Include="Interfaces\IStateConverter.cs" />
-    <Compile Include="Interfaces\IUser.cs" />
-    <Compile Include="Interfaces\IReservationCreator.cs" />
+    <Compile Include="DAL\IStaffRepository.cs" />
+    <Compile Include="Helpers\IStateConverter.cs" />
+    <Compile Include="DAL\IUserRepository.cs" />
+    <Compile Include="obsolete\IReservationCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\ReservationHandler.cs" />
     <Compile Include="Users\AnonymousUser.cs" />
@@ -76,8 +77,6 @@
       <Project>{9bdb5846-c2e4-4270-a7c4-a9971b32262c}</Project>
       <Name>DataAccessLayer</Name>
     </ProjectReference>
-    <Folder Include="Auth\" />
-    <Folder Include="Public\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\CustomerHandler.cs" />
@@ -85,6 +84,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Auth\" />
+    <Folder Include="Public\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

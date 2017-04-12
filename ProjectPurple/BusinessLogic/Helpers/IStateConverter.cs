@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer;
 
-namespace BusinessLogic.Address
+namespace BusinessLogic.Helpers
 {
     // Interface for converters from string to state enum
     interface IStateConverter

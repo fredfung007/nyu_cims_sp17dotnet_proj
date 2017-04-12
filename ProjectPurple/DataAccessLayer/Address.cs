@@ -24,7 +24,7 @@ public partial class Address
 
     public string SecondLine { get; set; }
 
-    public DataAccessLayer.US_STATES State { get; set; }
+    public DataAccessLayer.US_STATE State { get; set; }
 
     public string ZipCode { get; set; }
 

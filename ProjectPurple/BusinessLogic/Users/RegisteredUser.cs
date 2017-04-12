@@ -1,6 +1,8 @@
-﻿namespace BusinessLogic.Users
+﻿using DataAccessLayer;
+
+namespace BusinessLogic.Users
 {
-    class RegisteredUser : IUser
+    class RegisteredUser : User
     {
         private string username;
 
