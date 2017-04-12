@@ -7,11 +7,13 @@
     {
         string first;
         string last;
+        int id;
 
-        Customer(string firstName, string lastName)
+        Customer(string firstName, string lastName, int userId)
         {
             first = firstName;
             last = lastName;
+            id = userId;
         }
 
         public string firstName
@@ -27,6 +29,14 @@
             get
             {
                 return last;
+            }
+        }
+
+        public int userId
+        {
+            get
+            {
+                return id;
             }
         }
     }
