@@ -16,6 +16,11 @@ namespace BusinessLogic.DAL
             this.context = context;
         }
 
+        public void save()
+        {
+            context.SaveChanges();
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
@@ -49,11 +54,6 @@ namespace BusinessLogic.DAL
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
-        }
-
-        public void save()
-        {
-            context.SaveChanges();
         }
         #endregion
 

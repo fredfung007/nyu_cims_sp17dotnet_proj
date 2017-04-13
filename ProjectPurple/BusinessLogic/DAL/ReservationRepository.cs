@@ -7,6 +7,7 @@ using DataAccessLayer;
 
 namespace BusinessLogic.DAL
 {
+    // TODO using async
     class ReservationRepository:IReservationRepository, IDisposable
     {
         private HotelDataModelContainer context;
@@ -18,14 +19,55 @@ namespace BusinessLogic.DAL
 
         public Reservation getReservation(Guid Id)
         {
-            throw new NotImplementedException();
+            return context.Reservations.Find(Id);
         }
 
         public IEnumerable<Reservation> getReservations()
         {
+            return context.Reservations.ToList();
+        }
+
+        public void InsertReservation(Reservation reservation)
+        {
+            context.Reservations.Add(reservation);
+        }
+
+        public void DeleteReservation(Guid Id)
+        {
             throw new NotImplementedException();
         }
 
+        public void UpdateReservation(Reservation reservation)
+        {
+            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        public IEnumerable<Reservation> getReservationsByConfirmNum(Guid ConfirmationNumber)
+        {
+            return context.Reservations.Where(reservation => reservation.Id == ConfirmationNumber).ToList();
+        }
+
+        public IEnumerable<Reservation> getReservationsByUserId(Guid UserId)
+        {
+            return context.Reservations.Where(reservation => reservation.User.Id == UserId).ToList();
+        }
+
+        public IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate)
+        {
+            return context.Reservations.Where(reservatoin => reservatoin.endDate == CheckOutDate).ToList();
+        }
+
+        public IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate)
+        {
+            return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
+        }
+
+        public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
+        {
+            return context.Reservations
+                        .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
+                        .ToList();
+        }
         public void save()
         {
             context.SaveChanges();
@@ -63,21 +105,6 @@ namespace BusinessLogic.DAL
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
-        }
-
-        public void InsertReservation(Reservation reservation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteReservation(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateReservation(Reservation reservation)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

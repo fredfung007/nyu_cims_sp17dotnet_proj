@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using System.Data.Entity;
 
 namespace BusinessLogic.DAL
 {
@@ -18,7 +19,7 @@ namespace BusinessLogic.DAL
 
         public Staff getStaff(Guid Id)
         {
-            throw new NotImplementedException();
+            return context.Staffs.Find(Id);
         }
 
         public IEnumerable<Staff> getStaffs()
@@ -28,12 +29,43 @@ namespace BusinessLogic.DAL
 
         public IEnumerable<User> getUers()
         {
-            throw new NotImplementedException();
+            return context.Users.ToList();
         }
 
         public User getUser(Guid Id)
         {
+            return context.Users.Find(Id);
+        }
+
+        public void InsertStaff(Staff staff)
+        {
+            context.Staffs.Add(staff);
+        }
+
+        public void DeleteStaff(int Id)
+        {
+            Staff staff = context.Staffs.Find(Id);
+            context.Staffs.Remove(staff);
+        }
+
+        public void UpdateStaff(Staff staff)
+        {
             throw new NotImplementedException();
+        }
+
+        public void InsertUser(User user)
+        {
+            context.Users.Add(user);
+        }
+
+        public void DeleteUser(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUser(User user)
+        {
+            context.Entry(user).State = EntityState.Modified;
         }
 
         public void save()
@@ -73,36 +105,6 @@ namespace BusinessLogic.DAL
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
-        }
-
-        public void InsertStaff(Staff staff)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteStaff(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateStaff(Staff staff)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteUser(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateUser(User user)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
