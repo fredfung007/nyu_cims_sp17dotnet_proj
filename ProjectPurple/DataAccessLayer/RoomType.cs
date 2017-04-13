@@ -12,11 +12,15 @@ namespace DataAccessLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class Email
+    public partial class RoomType
     {
-        public int Id { get; set; }
-        public string Address { get; set; }
+        public System.Guid Id { get; set; }
+        public int BaseRate { get; set; }
+        public int Inventory { get; set; }
+        public string Type { get; set; }
+        public string Ameneties { get; set; }
+        public string Description { get; set; }
     
-        public virtual Profile BillingInfo { get; set; }
+        public virtual Reservation Reservation { get; set; }
     }
 }
