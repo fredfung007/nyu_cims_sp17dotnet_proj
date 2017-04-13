@@ -87,6 +87,7 @@
     <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="isPaid" Type="bit" Nullable="false" />
     <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoomType_Id" Type="uniqueidentifier" Nullable="false" />
@@ -144,6 +145,8 @@
     <Property Name="BaseRate" Type="int" Nullable="false" />
     <Property Name="Inventory" Type="int" Nullable="false" />
     <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Ameneties" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <Association Name="ReservationUser">
     <End Role="Reservation" Type="HotelDataModel.Store.Reservations" Multiplicity="*" />
@@ -439,6 +442,8 @@
           <Property Name="Inventory" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationRoomType" FromRole="RoomType" ToRole="Reservation" />
           <Property Name="Type" Type="String" Nullable="false" />
+          <Property Name="Ameneties" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="ReservationRoomType">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
@@ -487,6 +492,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isPaid" ColumnName="isPaid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -541,6 +547,8 @@
           <ScalarProperty Name="BaseRate" ColumnName="BaseRate" />
           <ScalarProperty Name="Inventory" ColumnName="Inventory" />
           <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Ameneties" ColumnName="Ameneties" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

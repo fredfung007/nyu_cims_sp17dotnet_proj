@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/12/2017 14:57:55
--- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+-- Date Created: 04/13/2017 18:04:37
+-- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -41,6 +41,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserProfile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_UserProfile];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationRoomType]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationRoomType];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -72,6 +75,9 @@ IF OBJECT_ID(N'[dbo].[DailyPrices]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Staffs]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Staffs];
+GO
+IF OBJECT_ID(N'[dbo].[RoomTypes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RoomTypes];
 GO
 
 -- --------------------------------------------------
@@ -110,6 +116,7 @@ CREATE TABLE [dbo].[Reservations] (
     [Id] uniqueidentifier  NOT NULL,
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
+    [isPaid] bit  NOT NULL,
     [User_Id] uniqueidentifier  NOT NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL
@@ -166,7 +173,9 @@ CREATE TABLE [dbo].[RoomTypes] (
     [Id] uniqueidentifier  NOT NULL,
     [BaseRate] int  NOT NULL,
     [Inventory] int  NOT NULL,
-    [Type] nvarchar(max)  NOT NULL
+    [Type] nvarchar(max)  NOT NULL,
+    [Ameneties] nvarchar(max)  NOT NULL,
+    [Description] nvarchar(max)  NOT NULL
 );
 GO
 
