@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using DataAccessLayer;
+using BusinessLogic.DAL;
 
 namespace BusinessLogic.Handlers
 {
@@ -10,10 +11,10 @@ namespace BusinessLogic.Handlers
     // loyalty program status
     class ProfileHandler
     {
-        DbContext context;
-        public ProfileHandler(DbContext context)
+        IProfileRepository profileRepository;
+        public ProfileHandler()
         {
-            this.context = context;
+            profileRepository = new ProfileRepository(new HotelDataModelContainer());
         }
         Guest getCustomerInfo(int userId)
         {

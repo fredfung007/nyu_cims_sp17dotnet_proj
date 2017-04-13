@@ -9,8 +9,16 @@ namespace BusinessLogic.DAL
     {
         Staff getStaff(Guid Id);
         IEnumerable<Staff> getStaffs();
+        void InsertStaff(Staff staff);
+        void DeleteStaff(int Id);
+        void UpdateStaff(Staff staff);
+
         User getUser(Guid Id);
         IEnumerable<User> getUers();
+        void InsertUser(User user);
+        void DeleteUser(int Id);
+        void UpdateUser(User user);
+
         void save();
     }
 }

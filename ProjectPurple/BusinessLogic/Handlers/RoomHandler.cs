@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Constants;
 using System.Data.Entity;
+using BusinessLogic.DAL;
+using DataAccessLayer;
 
 namespace BusinessLogic.Handlers
 {
@@ -13,10 +15,10 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class RoomHandler
     {
-        DbContext context;
-        public RoomHandler(DbContext context)
+        IRoomRepository roomRepository;
+        public RoomHandler()
         {
-            this.context = context;
+            roomRepository = new RoomRepository(new HotelDataModelContainer());
         }
         List<roomType> checkAvailableTypeForDuration(DateTime start, DateTime end)
         {

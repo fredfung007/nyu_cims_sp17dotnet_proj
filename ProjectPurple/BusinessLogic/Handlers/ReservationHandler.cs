@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BusinessLogic.Constants;
 using System.Data.Entity;
 using DataAccessLayer;
+using BusinessLogic.DAL;
 
 namespace BusinessLogic.Handlers
 {
@@ -11,10 +12,10 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class ReservationHandler
     {
-        DbContext context;
-        public ReservationHandler(DbContext context)
+        IReservationRepository reservationRepository;
+        public ReservationHandler()
         {
-            this.context = context;
+            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
         Guid makeReservation(int userId, roomType type, DateTime start, DateTime end)
         {

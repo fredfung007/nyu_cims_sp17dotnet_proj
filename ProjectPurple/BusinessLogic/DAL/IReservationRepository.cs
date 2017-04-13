@@ -13,6 +13,9 @@ namespace BusinessLogic.DAL
         // unique ID per reservation, should be generated in the constructor
         Reservation getReservation(Guid Id);
         IEnumerable<Reservation> getReservations();
+        void InsertReservation(Reservation reservation);
+        void DeleteReservation(Guid Id);
+        void UpdateReservation(Reservation reservation);
         void save();
     }
 }
