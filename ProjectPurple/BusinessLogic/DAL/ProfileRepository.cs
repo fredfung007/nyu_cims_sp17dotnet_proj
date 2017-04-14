@@ -67,7 +67,6 @@ namespace BusinessLogic.DAL
             return context.Profiles.ToList();
         }
 
-
         public void InsertProfile(Profile profile)
         {
             context.Profiles.Add(profile);
@@ -84,36 +83,6 @@ namespace BusinessLogic.DAL
             context.Entry(profile).State = EntityState.Modified;
         }
 
-        public void InsertAddress(Address address)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteAddress(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateAddress(Address address)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertEmail(Email email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteEmail(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateEmail(Email email)
-        {
-            throw new NotImplementedException();
-        }
-
         public void InsertGuest(Guest guest)
         {
             throw new NotImplementedException();
@@ -125,21 +94,6 @@ namespace BusinessLogic.DAL
         }
 
         public void UpdateGuest(Guest guest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertPhoneNumber(PhoneNumber phoneNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeletePhoneNumber(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdatePhoneNumber(PhoneNumber phoneNumber)
         {
             throw new NotImplementedException();
         }

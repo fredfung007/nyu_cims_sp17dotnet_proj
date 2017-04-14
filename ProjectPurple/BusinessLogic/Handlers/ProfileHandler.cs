@@ -26,17 +26,17 @@ namespace BusinessLogic.Handlers
         //TODO? use ICustomer or userId
         Address GetAddress(Guid profileId)
         {
-            return profileRepository.getAddress(profileId);
+            return profileRepository.getProfile(profileId).Addresse;
         }
 
         Email GetEmail(Guid profileId)
         {
-            return profileRepository.getEmail(profileId);
+            return profileRepository.getProfile(profileId).Email;
         }
 
         PhoneNumber GetPhoneNumber(Guid profileId)
         {
-            return profileRepository.getPhoneNumber(profileId);
+            return profileRepository.getProfile(profileId).PhoneNumber;
         }
 
         // get room preference
