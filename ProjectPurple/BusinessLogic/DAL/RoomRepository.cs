@@ -16,6 +16,51 @@ namespace BusinessLogic.DAL
             this.context = context;
         }
 
+        public void InsertRoom(RoomType room)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteRoom(Guid Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRoom(RoomType room)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RoomType getRoomType(Guid Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RoomType> getRoomTypes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRoomInventory(RoomType room, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRoomUsage(RoomType room, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetRoomReservationAmount(RoomType room, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetRoomTotalAmount(RoomType room)
+        {
+            throw new NotImplementedException();
+        }
+
         public void save()
         {
             context.SaveChanges();
@@ -55,8 +100,7 @@ namespace BusinessLogic.DAL
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
+
         #endregion
-
-
     }
 }

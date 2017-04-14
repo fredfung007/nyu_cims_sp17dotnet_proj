@@ -34,7 +34,8 @@ namespace BusinessLogic.DAL
 
         public void DeleteReservation(Guid Id)
         {
-            throw new NotImplementedException();
+            Reservation reservation = context.Reservations.Find(Id);
+            context.Reservations.Remove(reservation);
         }
 
         public void UpdateReservation(Reservation reservation)

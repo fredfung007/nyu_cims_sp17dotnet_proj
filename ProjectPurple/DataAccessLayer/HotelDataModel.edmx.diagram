@@ -13,7 +13,7 @@
         <AssociationConnector Association="HotelDataModel.BillingInfoEmail" />
         <AssociationConnector Association="HotelDataModel.BillingInfoAddress" />
         </Diagram>
-      <Diagram DiagramId="049dfdf8db104f16b966a96fb74bf737" Name="Reservation" DisplayType="true" ZoomLevel="19" >
+      <Diagram DiagramId="049dfdf8db104f16b966a96fb74bf737" Name="Reservation" DisplayType="true" ZoomLevel="100" >
         <EntityTypeShape EntityType="HotelDataModel.Reservation" Width="1.5" PointX="2" PointY="1.25" />
         <EntityTypeShape EntityType="HotelDataModel.DailyPrice" Width="1.5" PointX="6" PointY="1.25" />
         <AssociationConnector Association="HotelDataModel.ReservationDailyPrice" />

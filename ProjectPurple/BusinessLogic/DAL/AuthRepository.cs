@@ -24,7 +24,7 @@ namespace BusinessLogic.DAL
 
         public IEnumerable<Staff> getStaffs()
         {
-            throw new NotImplementedException();
+            return context.Staffs.ToList();
         }
 
         public IEnumerable<User> getUers()
@@ -42,7 +42,7 @@ namespace BusinessLogic.DAL
             context.Staffs.Add(staff);
         }
 
-        public void DeleteStaff(int Id)
+        public void DeleteStaff(Guid Id)
         {
             Staff staff = context.Staffs.Find(Id);
             context.Staffs.Remove(staff);
@@ -50,7 +50,7 @@ namespace BusinessLogic.DAL
 
         public void UpdateStaff(Staff staff)
         {
-            throw new NotImplementedException();
+            context.Entry(staff).State = EntityState.Modified;
         }
 
         public void InsertUser(User user)
@@ -58,14 +58,20 @@ namespace BusinessLogic.DAL
             context.Users.Add(user);
         }
 
-        public void DeleteUser(int Id)
+        public void DeleteUser(Guid Id)
         {
-            throw new NotImplementedException();
+            User user = context.Users.Find(Id);
+            context.Users.Remove(user);
         }
 
         public void UpdateUser(User user)
         {
             context.Entry(user).State = EntityState.Modified;
+        }
+
+        public int GetLoyaltyProgressByUserId(Guid Id)
+        {
+            throw new NotImplementedException();
         }
 
         public void save()
@@ -106,7 +112,7 @@ namespace BusinessLogic.DAL
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
-        #endregion
 
+        #endregion
     }
 }

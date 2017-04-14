@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using System.Data.Entity;
 
 namespace BusinessLogic.DAL
 {
@@ -18,7 +19,7 @@ namespace BusinessLogic.DAL
 
         public Address getAddress(int Id)
         {
-            throw new NotImplementedException();
+            return context.Addresses.Find(Id);
         }
 
         public IEnumerable<Address> getAddresses()
@@ -28,7 +29,7 @@ namespace BusinessLogic.DAL
 
         public Email getEmail(int Id)
         {
-            throw new NotImplementedException();
+            return context.Emails.Find(Id);
         }
 
         public IEnumerable<Email> getEmails()
@@ -38,12 +39,12 @@ namespace BusinessLogic.DAL
 
         public Guest getGuest(Guid Id)
         {
-            throw new NotImplementedException();
+            return context.Guests.Find(Id);
         }
 
         public IEnumerable<Guest> getGuests()
         {
-            throw new NotImplementedException();
+            return context.Guests.ToList();
         }
 
         public PhoneNumber getPhoneNumber(Guid Id)
@@ -58,28 +59,29 @@ namespace BusinessLogic.DAL
 
         public Profile getProfile(Guid Id)
         {
-            throw new NotImplementedException();
+            return context.Profiles.Find(Id);
         }
 
         public IEnumerable<Profile> getProfiles()
         {
-            throw new NotImplementedException();
+            return context.Profiles.ToList();
         }
 
 
         public void InsertProfile(Profile profile)
         {
-            throw new NotImplementedException();
+            context.Profiles.Add(profile);
         }
 
         public void DeleteProfile(Guid Id)
         {
-            throw new NotImplementedException();
+            Profile profile = context.Profiles.Find(Id);
+            context.Profiles.Remove(profile);
         }
 
         public void UpdateProfile(Profile profile)
         {
-            throw new NotImplementedException();
+            context.Entry(profile).State = EntityState.Modified;
         }
 
         public void InsertAddress(Address address)
