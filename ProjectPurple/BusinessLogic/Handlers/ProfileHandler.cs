@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using DataAccessLayer;
 using BusinessLogic.DAL;
+using System;
 
 namespace BusinessLogic.Handlers
 {
@@ -16,43 +17,45 @@ namespace BusinessLogic.Handlers
         {
             profileRepository = new ProfileRepository(new HotelDataModelContainer());
         }
-        Guest getCustomerInfo(int userId)
+
+        Profile GetProfile(Guid profileId)
         {
-            return null;
+            return profileRepository.getProfile(profileId);
         }
 
         //TODO? use ICustomer or userId
-        DataAccessLayer.Address getAddress(int userId)
+        Address GetAddress(Guid profileId)
         {
-            return null;
+            return profileRepository.getAddress(profileId);
         }
 
-        Email getEmail(int userId)
+        Email GetEmail(Guid profileId)
         {
-            return null;
+            return profileRepository.getEmail(profileId);
         }
 
-        PhoneNumber getPhoneNumber(int userId)
+        PhoneNumber GetPhoneNumber(Guid profileId)
         {
-            return null;
+            return profileRepository.getPhoneNumber(profileId);
         }
 
         // get room preference
         // get loyalty program number
 
-        bool setAddress(int userId, DataAccessLayer.Address address)
+        void SetAddress(Guid profileId, Address address)
         {
-            return false;
+            Profile profile = profileRepository.getProfile(profileId);
+            profile.Addresse = address;
+            profileRepository.UpdateProfile(profile);
+            profileRepository.save();
         }
 
-        bool setEmail(int userId, DataAccessLayer.Email email)
-        {
-            return false;
+        void SetEmail(Guid profileId, Email email)
+        { 
         }
 
-        bool setPhoneNumber(int userId, PhoneNumber phoneNumber)
+        void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
         {
-            return false;
         }
 
         // set room preference

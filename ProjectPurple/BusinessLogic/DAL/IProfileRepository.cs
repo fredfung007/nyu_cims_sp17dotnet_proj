@@ -17,16 +17,16 @@ namespace BusinessLogic.DAL
         void DeleteProfile(Guid Id);
         void UpdateProfile(Profile profile);
 
-        Address getAddress(int Id);
+        Address getAddress(Guid Id);
         IEnumerable<Address> getAddresses();
         void InsertAddress(Address address);
-        void DeleteAddress(int Id);
+        void DeleteAddress(Guid Id);
         void UpdateAddress(Address address);
 
-        Email getEmail(int Id);
+        Email getEmail(Guid Id);
         IEnumerable<Email> getEmails();
         void InsertEmail(Email email);
-        void DeleteEmail(int Id);
+        void DeleteEmail(Guid Id);
         void UpdateEmail(Email email);
 
         Guest getGuest(Guid Id);

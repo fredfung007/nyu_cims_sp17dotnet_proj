@@ -46,7 +46,18 @@ namespace BusinessLogic.DAL
             throw new NotImplementedException();
         }
 
-        public void UpdateRoomUsage(RoomType room, int quantity)
+        public void CheckIn(RoomType room, DateTime date)
+        {
+            UpdateRoomUsage(room, date, -1);
+        }
+
+        public void CheckOut(RoomType room, DateTime date)
+        {
+            UpdateRoomUsage(room, date, 1);
+        }
+
+
+        public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
         {
             throw new NotImplementedException();
         }

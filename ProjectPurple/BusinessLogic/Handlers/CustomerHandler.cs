@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using DataAccessLayer;
- 
+using BusinessLogic.DAL;
+
 namespace BusinessLogic.Handlers
 {
     /// <summary>
@@ -10,9 +11,9 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class CustomerHandler
     {
-        DbContext context;
-        public CustomerHandler(DbContext context) {
-            this.context = context;
+        IRoomRepository roomRepository;
+        public CustomerHandler() {
+            roomRepository = new RoomRepository(new HotelDataModelContainer());
         }
 
         //TODO check using userId or ICustomer

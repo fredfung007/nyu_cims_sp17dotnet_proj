@@ -17,26 +17,26 @@ namespace BusinessLogic.Handlers
         {
             reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
-        Guid makeReservation(int userId, roomType type, DateTime start, DateTime end)
+        Guid MakeReservation(int userId, roomType type, DateTime start, DateTime end)
         {
             return Guid.Empty;
         }
-        bool cancelReservation(int userId, Guid confirmationNumber)
+        bool CancelReservation(int userId, Guid confirmationNumber)
         {
             return false;
         }
 
-        Reservation getReservation(Guid confirmationNumber)
+        Reservation GetReservation(Guid confirmationNumber)
         {
             return null;
         }
 
-        List<Reservation> getUpComingReservations(Guest customer)
+        List<Reservation> GetUpComingReservations(Guest customer)
         {
             return null;
         }
 
-        bool fillGuestInfo(Reservation reservation, List<Guest> customers)
+        bool FillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
         }
