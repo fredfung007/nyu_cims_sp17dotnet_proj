@@ -33,7 +33,7 @@ public partial class RoomType
 
     public int Inventory { get; set; }
 
-    public string Type { get; set; }
+    public DataAccessLayer.Constants.ROOM_TYPE Type { get; set; }
 
     public string Ameneties { get; set; }
 

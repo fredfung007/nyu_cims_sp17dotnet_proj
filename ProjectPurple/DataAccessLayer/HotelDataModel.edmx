@@ -149,7 +149,7 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="BaseRate" Type="int" Nullable="false" />
     <Property Name="Inventory" Type="int" Nullable="false" />
-    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
     <Property Name="Ameneties" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -341,9 +341,8 @@
           </EntityContainer>
         <EntityType Name="User">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Username" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Reservations" Relationship="HotelDataModel.ReservationUser" FromRole="User" ToRole="Reservation" />
           <Property Name="Username" Type="String" Nullable="false" />
           <Property Name="HashedPassword" Type="String" Nullable="false" />
@@ -451,12 +450,11 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.Guest" Role="Guest" Multiplicity="*" />
         </Association>
-        <EnumType Name="STATES" cg:ExternalTypeName="DataAccessLayer.US_STATE" />
+        <EnumType Name="STATES" cg:ExternalTypeName="DataAccessLayer.Constants.US_STATE" />
         <EntityType Name="Staff">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Username" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Username" Type="String" Nullable="false" />
           <Property Name="HashedPassword" Type="String" Nullable="false" />
         </EntityType>
@@ -472,7 +470,7 @@
           <Property Name="BaseRate" Type="Int32" Nullable="false" />
           <Property Name="Inventory" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationRoomType" FromRole="RoomType" ToRole="Reservation" />
-          <Property Name="Type" Type="String" Nullable="false" />
+          <Property Name="Type" Type="HotelDataModel.TYPE" Nullable="false" />
           <Property Name="Ameneties" Type="String" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="RoomOccupancies" Relationship="HotelDataModel.RoomTypeRoomOccupancy" FromRole="RoomType" ToRole="RoomOccupancy" />
@@ -481,7 +479,7 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.RoomType" Role="RoomType" Multiplicity="1" />
         </Association>
-        <EnumType Name="TYPE" cg:ExternalTypeName="DataAccessType.ROOM_TYPE" />
+        <EnumType Name="TYPE" cg:ExternalTypeName="DataAccessLayer.Constants.ROOM_TYPE" />
         <EntityType Name="RoomOccupancy" >
           <Key>
             <PropertyRef Name="Id" />
@@ -504,7 +502,6 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.User)">
         <MappingFragment StoreEntitySet="Users">
-          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
           <ScalarProperty Name="isRegistered" ColumnName="isRegistered" />
@@ -579,7 +576,6 @@
     <EntitySetMapping Name="Staffs">
       <EntityTypeMapping TypeName="IsTypeOf(HotelDataModel.Staff)">
         <MappingFragment StoreEntitySet="Staffs">
-          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
         </MappingFragment>
@@ -607,9 +603,6 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <AssociationSetMapping Name="ReservationUser" TypeName="HotelDataModel.ReservationUser" StoreEntitySet="Reservations">
-      <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="User_Id" />
-      </EndProperty>
       <EndProperty Name="Reservation">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
@@ -663,9 +656,6 @@
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="UserProfile" TypeName="HotelDataModel.UserProfile" StoreEntitySet="Profiles">
-      <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="User_Id" />
-      </EndProperty>
       <EndProperty Name="Profile">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
