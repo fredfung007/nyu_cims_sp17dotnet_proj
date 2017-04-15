@@ -1,6 +1,6 @@
-﻿using System;
-using DataAccessLayer.Repositories;
+﻿using DataAccessLayer.Repositories;
 using DataAccessLayer;
+using System.Web.Helpers;
 
 namespace BusinessLogic.Handlers
 {
@@ -20,18 +20,20 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public bool loginUser(string username, string inputPassword)
         {
-            throw new NotImplementedException();
+            User user = authRepository.getUser(username);
+            return Crypto.VerifyHashedPassword(user.HashedPassword, inputPassword);
         }
 
         /// <summary>
         /// Verify the input password for given username versus the password in DB.
         /// </summary>
-        /// <param name="userName">username of a staff</param>
+        /// <param name="username">username of a staff</param>
         /// <param name="inputPassword">input password</param>
         /// <returns></returns>
-        public bool loginStaff(string userName, string inputPassword)
+        public bool loginStaff(string username, string inputPassword)
         {
-            throw new NotImplementedException();
+            Staff staff = authRepository.getStaff(username);
+            return Crypto.VerifyHashedPassword(staff.HashedPassword, inputPassword);
         }
     }
 }
