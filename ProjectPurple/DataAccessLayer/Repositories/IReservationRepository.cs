@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DataAccessLayer;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
     /// <summary>
     /// The class that is used to store all information of one reservation.
@@ -18,8 +18,8 @@ namespace BusinessLogic.DAL
         IEnumerable<Reservation> getReservationsByUserId(Guid UserId);
         IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate);
         IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate);
-        // we need two of this functions, one for checkIn dates in period, one for checkOut dates in period
-        IEnumerable<Reservation> getReservationsByPeriod(DateTime start, DateTime end);
+        // commentted for now, did not find use cases for this method
+        // IEnumerable<Reservation> getReservationsByPeriod(DateTime start, DateTime end);
 
         void InsertReservation(Reservation reservation);
         void DeleteReservation(Guid Id);

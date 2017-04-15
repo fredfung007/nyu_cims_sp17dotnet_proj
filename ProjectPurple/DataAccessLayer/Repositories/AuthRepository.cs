@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using DataAccessLayer;
 using System.Data.Entity;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
-    class AuthRepository : IAuthRepository, IDisposable
+    public class AuthRepository : IAuthRepository, IDisposable
     {
         private HotelDataModelContainer context;
 

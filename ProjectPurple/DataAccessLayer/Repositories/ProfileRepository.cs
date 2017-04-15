@@ -4,70 +4,96 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using System.Data.Entity;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
-    class RoomRepository : IRoomRepository, IDisposable
+    public class ProfileRepository:IProfileRepository, IDisposable
     {
         private HotelDataModelContainer context;
 
-        public RoomRepository(HotelDataModelContainer context)
+        public ProfileRepository(HotelDataModelContainer context)
         {
             this.context = context;
         }
 
-        public void InsertRoom(RoomType room)
+        public Address getAddress(int Id)
+        {
+            return context.Addresses.Find(Id);
+        }
+
+        public IEnumerable<Address> getAddresses()
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteRoom(Guid Id)
+        public Email getEmail(int Id)
+        {
+            return context.Emails.Find(Id);
+        }
+
+        public IEnumerable<Email> getEmails()
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateRoom(RoomType room)
+        public Guest getGuest(Guid Id)
+        {
+            return context.Guests.Find(Id);
+        }
+
+        public IEnumerable<Guest> getGuests()
+        {
+            return context.Guests.ToList();
+        }
+
+        public PhoneNumber getPhoneNumber(Guid Id)
         {
             throw new NotImplementedException();
         }
 
-        public RoomType getRoomType(Guid Id)
+        public IEnumerable<PhoneNumber> getPhoneNumbers()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RoomType> getRoomTypes()
+        public Profile getProfile(Guid Id)
+        {
+            return context.Profiles.Find(Id);
+        }
+
+        public IEnumerable<Profile> getProfiles()
+        {
+            return context.Profiles.ToList();
+        }
+
+        public void InsertProfile(Profile profile)
+        {
+            context.Profiles.Add(profile);
+        }
+
+        public void DeleteProfile(Guid Id)
+        {
+            Profile profile = context.Profiles.Find(Id);
+            context.Profiles.Remove(profile);
+        }
+
+        public void UpdateProfile(Profile profile)
+        {
+            context.Entry(profile).State = EntityState.Modified;
+        }
+
+        public void InsertGuest(Guest guest)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateRoomInventory(RoomType room, int quantity)
+        public void DeleteGuest(Guid Id)
         {
             throw new NotImplementedException();
         }
 
-        public void CheckIn(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, -1);
-        }
-
-        public void CheckOut(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, 1);
-        }
-
-
-        public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetRoomReservationAmount(RoomType room, DateTime date)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetRoomTotalAmount(RoomType room)
+        public void UpdateGuest(Guest guest)
         {
             throw new NotImplementedException();
         }
@@ -87,7 +113,6 @@ namespace BusinessLogic.DAL
                 if (disposing)
                 {
                     context.Dispose();
-                    // TODO: dispose managed state (managed objects).
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -98,7 +123,7 @@ namespace BusinessLogic.DAL
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~RoomRepository() {
+        // ~ProfileRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
@@ -111,7 +136,6 @@ namespace BusinessLogic.DAL
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
-
         #endregion
     }
 }

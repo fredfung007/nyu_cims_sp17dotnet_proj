@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using DataAccessLayer;
-using BusinessLogic.DAL;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {

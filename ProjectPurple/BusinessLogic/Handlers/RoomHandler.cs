@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Constants;
 using System.Data.Entity;
-using BusinessLogic.DAL;
 using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {

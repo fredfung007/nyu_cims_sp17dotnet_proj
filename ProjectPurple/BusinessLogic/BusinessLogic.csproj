@@ -49,12 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\IAuthRepository.cs" />
-    <Compile Include="DAL\IRoomRepository.cs" />
-    <Compile Include="DAL\AuthRepository.cs" />
-    <Compile Include="DAL\ProfileRepository.cs" />
-    <Compile Include="DAL\ReservationRepository.cs" />
-    <Compile Include="DAL\RoomRepository.cs" />
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
@@ -62,8 +56,6 @@
     <Compile Include="obsolete\IAddressRepository.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="BusinessLogic.cs" />
-    <Compile Include="DAL\IProfileRepository.cs" />
-    <Compile Include="DAL\IReservationRepository.cs" />
     <Compile Include="obsolete\ICustomer.cs" />
     <Compile Include="obsolete\IEmailRepository.cs" />
     <Compile Include="obsolete\IPhoneNumberRepository.cs" />

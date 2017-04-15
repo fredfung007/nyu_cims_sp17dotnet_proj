@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using DataAccessLayer;
-using BusinessLogic.DAL;
 using System;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {

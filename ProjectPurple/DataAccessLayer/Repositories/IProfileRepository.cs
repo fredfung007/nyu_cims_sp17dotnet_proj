@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DataAccessLayer;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
     /// <summary>
     /// Used to store billing information of one reservation.

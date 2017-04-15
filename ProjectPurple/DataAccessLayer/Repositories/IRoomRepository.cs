@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
-    interface IRoomRepository : IDisposable
+    public interface IRoomRepository : IDisposable
     {
         RoomType getRoomType(Guid Id);
         IEnumerable<RoomType> getRoomTypes();

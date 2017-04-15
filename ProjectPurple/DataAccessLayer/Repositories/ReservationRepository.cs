@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 
-namespace BusinessLogic.DAL
+namespace DataAccessLayer.Repositories
 {
     // TODO using async
-    class ReservationRepository:IReservationRepository, IDisposable
+    public class ReservationRepository:IReservationRepository, IDisposable
     {
         private HotelDataModelContainer context;
 
@@ -63,12 +63,13 @@ namespace BusinessLogic.DAL
             return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
         }
 
-        public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
-        {
-            return context.Reservations
-                        .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
-                        .ToList();
-        }
+        // commentted for now, did not find use cases for this method
+        // public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
+        // {
+        //     return context.Reservations
+        //                 .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
+        //                 .ToList();
+        // }
         public void save()
         {
             context.SaveChanges();

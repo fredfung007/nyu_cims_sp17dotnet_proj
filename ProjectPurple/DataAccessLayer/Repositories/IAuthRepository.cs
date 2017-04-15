@@ -2,10 +2,10 @@
 using DataAccessLayer;
 using System.Collections.Generic;
 
-namespace BusinessLogic.DAL       
+namespace DataAccessLayer.Repositories
 {
     // Interface for staff, which should also be a user.
-    interface IAuthRepository : IDisposable
+    public interface IAuthRepository : IDisposable
     {
         Staff getStaff(Guid Id);
         IEnumerable<Staff> getStaffs();
@@ -14,7 +14,7 @@ namespace BusinessLogic.DAL
         void UpdateStaff(Staff staff);
 
         User getUser(Guid Id);
-        IEnumerable<User> getUers();
+        IEnumerable<User> getUsers();
         void InsertUser(User user);
         void DeleteUser(Guid Id);
         void UpdateUser(User user);
