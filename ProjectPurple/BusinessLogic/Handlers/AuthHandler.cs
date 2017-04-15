@@ -18,7 +18,7 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of a user</param>
         /// <param name="inputPassword">input password</param>
         /// <returns></returns>
-        public bool loginUser(string username, string inputPassword)
+        public bool verifyUserPassword(string username, string inputPassword)
         {
             User user = authRepository.getUser(username);
             return Crypto.VerifyHashedPassword(user.HashedPassword, inputPassword);
@@ -30,7 +30,7 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of a staff</param>
         /// <param name="inputPassword">input password</param>
         /// <returns></returns>
-        public bool loginStaff(string username, string inputPassword)
+        public bool verifyStaffPassword(string username, string inputPassword)
         {
             Staff staff = authRepository.getStaff(username);
             return Crypto.VerifyHashedPassword(staff.HashedPassword, inputPassword);
