@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2017 18:04:37
--- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+-- Date Created: 04/15/2017 15:08:00
+-- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -44,6 +44,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationRoomType]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationRoomType];
 GO
+IF OBJECT_ID(N'[dbo].[FK_RoomTypeRoomOccupancy]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RoomOccupancies] DROP CONSTRAINT [FK_RoomTypeRoomOccupancy];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -78,6 +81,9 @@ IF OBJECT_ID(N'[dbo].[Staffs]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[RoomTypes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RoomTypes];
+GO
+IF OBJECT_ID(N'[dbo].[RoomOccupancies]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RoomOccupancies];
 GO
 
 -- --------------------------------------------------
@@ -179,6 +185,15 @@ CREATE TABLE [dbo].[RoomTypes] (
 );
 GO
 
+-- Creating table 'RoomOccupancies'
+CREATE TABLE [dbo].[RoomOccupancies] (
+    [Date] datetime  NOT NULL,
+    [Id] uniqueidentifier  NOT NULL,
+    [Occupancy] int  NOT NULL,
+    [RoomType_Id] uniqueidentifier  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -240,6 +255,12 @@ GO
 -- Creating primary key on [Id] in table 'RoomTypes'
 ALTER TABLE [dbo].[RoomTypes]
 ADD CONSTRAINT [PK_RoomTypes]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'RoomOccupancies'
+ALTER TABLE [dbo].[RoomOccupancies]
+ADD CONSTRAINT [PK_RoomOccupancies]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -379,6 +400,21 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_ReservationRoomType'
 CREATE INDEX [IX_FK_ReservationRoomType]
 ON [dbo].[Reservations]
+    ([RoomType_Id]);
+GO
+
+-- Creating foreign key on [RoomType_Id] in table 'RoomOccupancies'
+ALTER TABLE [dbo].[RoomOccupancies]
+ADD CONSTRAINT [FK_RoomTypeRoomOccupancy]
+    FOREIGN KEY ([RoomType_Id])
+    REFERENCES [dbo].[RoomTypes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoomTypeRoomOccupancy'
+CREATE INDEX [IX_FK_RoomTypeRoomOccupancy]
+ON [dbo].[RoomOccupancies]
     ([RoomType_Id]);
 GO
 
