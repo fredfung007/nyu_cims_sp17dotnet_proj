@@ -27,8 +27,6 @@ public partial class User
     }
 
 
-    public System.Guid Id { get; set; }
-
     public string Username { get; set; }
 
     public string HashedPassword { get; set; }
