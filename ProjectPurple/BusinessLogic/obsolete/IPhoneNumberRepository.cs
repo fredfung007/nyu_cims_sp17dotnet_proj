@@ -2,7 +2,7 @@
 using DataAccessLayer;
 using System.Collections.Generic;
 
-namespace BusinessLogic.DAL
+namespace BusinessLogic.obsolete
 {
     // Interface for Phone Number.
     interface IPhoneNumberRepository:IDisposable

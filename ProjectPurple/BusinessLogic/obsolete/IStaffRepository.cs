@@ -2,7 +2,7 @@
 using DataAccessLayer;
 using System.Collections.Generic;
 
-namespace BusinessLogic.DAL       
+namespace BusinessLogic.obsolete       
 {
     // Interface for staff, which should also be a user.
     interface IStaffRepository : IDisposable
