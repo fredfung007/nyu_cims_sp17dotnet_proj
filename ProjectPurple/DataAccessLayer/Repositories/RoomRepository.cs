@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using System.Data.Entity;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
 {
@@ -20,6 +18,10 @@ namespace DataAccessLayer.Repositories
         public void InsertRoom(RoomType room)
         {
             throw new NotImplementedException();
+        }
+        RoomType getRoomTypeByEnum(Constants.ROOM_TYPE type)
+        {
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
         }
 
         public void DeleteRoom(Guid Id)
@@ -40,21 +42,6 @@ namespace DataAccessLayer.Repositories
         public IEnumerable<RoomType> getRoomTypes()
         {
             throw new NotImplementedException();
-        }
-
-        public void UpdateRoomInventory(string type, int quantity)
-        {
-            RoomType newRoom = context.RoomTypes.Where(room => room.Type == type)
-                        .FirstOrDefault();
-
-            if (newRoom == null)
-            {
-                return;
-            }
-
-            newRoom.Inventory = quantity;
-
-            context.Entry(newRoom).State = EntityState.Modified;
         }
 
         public void CheckIn(RoomType room, DateTime date)
@@ -86,6 +73,21 @@ namespace DataAccessLayer.Repositories
         public void save()
         {
             context.SaveChanges();
+        }
+
+        public void UpdateRoomInventory(Constants.ROOM_TYPE type, int quantity)
+        {
+            RoomType newRoom = context.RoomTypes.Where(room => room.Type == type)
+                        .FirstOrDefault();
+
+            if (newRoom == null)
+            {
+                return;
+            }
+
+            newRoom.Inventory = quantity;
+
+            context.Entry(newRoom).State = EntityState.Modified;
         }
 
         #region IDisposable Support
@@ -121,6 +123,11 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
+        }
+
+        RoomType IRoomRepository.getRoomTypeByEnum(ROOM_TYPE type)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

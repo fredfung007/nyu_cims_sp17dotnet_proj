@@ -10,6 +10,7 @@ namespace DataAccessLayer.Repositories
     public interface IRoomRepository : IDisposable
     {
         RoomType getRoomType(Guid Id);
+        RoomType getRoomTypeByEnum(Constants.ROOM_TYPE type);
         IEnumerable<RoomType> getRoomTypes();
         void InsertRoom(RoomType room);
         void DeleteRoom(Guid Id);
@@ -17,7 +18,7 @@ namespace DataAccessLayer.Repositories
         
         // room inventory
         // TODO
-        void UpdateRoomInventory(string type, int quantity);
+        void UpdateRoomInventory(Constants.ROOM_TYPE type, int quantity);
 
         void CheckIn(RoomType room, DateTime date);
         void CheckOut(RoomType room, DateTime date);
