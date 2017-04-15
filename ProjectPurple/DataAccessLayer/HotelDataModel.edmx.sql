@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/12/2017 14:10:29
+-- Date Created: 04/15/2017 15:08:00
 -- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -21,13 +21,13 @@ IF OBJECT_ID(N'[dbo].[FK_ReservationUser]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationUser];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BillingInfoPhoneNumber]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoPhoneNumber];
+    ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_BillingInfoPhoneNumber];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BillingInfoEmail]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoEmail];
+    ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_BillingInfoEmail];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BillingInfoAddress]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BillingInfoes] DROP CONSTRAINT [FK_BillingInfoAddress];
+    ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_BillingInfoAddress];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationBillingInfo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationBillingInfo];
@@ -37,6 +37,15 @@ IF OBJECT_ID(N'[dbo].[FK_ReservationDailyPrice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationGuest]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Guests] DROP CONSTRAINT [FK_ReservationGuest];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfile]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_UserProfile];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationRoomType]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationRoomType];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoomTypeRoomOccupancy]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RoomOccupancies] DROP CONSTRAINT [FK_RoomTypeRoomOccupancy];
 GO
 
 -- --------------------------------------------------
@@ -58,14 +67,23 @@ GO
 IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Guests];
 GO
-IF OBJECT_ID(N'[dbo].[BillingInfoes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BillingInfoes];
+IF OBJECT_ID(N'[dbo].[Profiles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Profiles];
 GO
 IF OBJECT_ID(N'[dbo].[PhoneNumbers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PhoneNumbers];
 GO
 IF OBJECT_ID(N'[dbo].[DailyPrices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DailyPrices];
+GO
+IF OBJECT_ID(N'[dbo].[Staffs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Staffs];
+GO
+IF OBJECT_ID(N'[dbo].[RoomTypes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RoomTypes];
+GO
+IF OBJECT_ID(N'[dbo].[RoomOccupancies]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RoomOccupancies];
 GO
 
 -- --------------------------------------------------
@@ -104,8 +122,10 @@ CREATE TABLE [dbo].[Reservations] (
     [Id] uniqueidentifier  NOT NULL,
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
+    [isPaid] bit  NOT NULL,
     [User_Id] uniqueidentifier  NOT NULL,
-    [BillingInfo_Id] uniqueidentifier  NOT NULL
+    [BillingInfo_Id] uniqueidentifier  NOT NULL,
+    [RoomType_Id] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -151,6 +171,26 @@ CREATE TABLE [dbo].[Staffs] (
     [Id] uniqueidentifier  NOT NULL,
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'RoomTypes'
+CREATE TABLE [dbo].[RoomTypes] (
+    [Id] uniqueidentifier  NOT NULL,
+    [BaseRate] int  NOT NULL,
+    [Inventory] int  NOT NULL,
+    [Type] nvarchar(max)  NOT NULL,
+    [Ameneties] nvarchar(max)  NOT NULL,
+    [Description] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'RoomOccupancies'
+CREATE TABLE [dbo].[RoomOccupancies] (
+    [Date] datetime  NOT NULL,
+    [Id] uniqueidentifier  NOT NULL,
+    [Occupancy] int  NOT NULL,
+    [RoomType_Id] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -209,6 +249,18 @@ GO
 -- Creating primary key on [Id] in table 'Staffs'
 ALTER TABLE [dbo].[Staffs]
 ADD CONSTRAINT [PK_Staffs]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'RoomTypes'
+ALTER TABLE [dbo].[RoomTypes]
+ADD CONSTRAINT [PK_RoomTypes]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'RoomOccupancies'
+ALTER TABLE [dbo].[RoomOccupancies]
+ADD CONSTRAINT [PK_RoomOccupancies]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -334,6 +386,36 @@ GO
 CREATE INDEX [IX_FK_UserProfile]
 ON [dbo].[Profiles]
     ([User_Id]);
+GO
+
+-- Creating foreign key on [RoomType_Id] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_ReservationRoomType]
+    FOREIGN KEY ([RoomType_Id])
+    REFERENCES [dbo].[RoomTypes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ReservationRoomType'
+CREATE INDEX [IX_FK_ReservationRoomType]
+ON [dbo].[Reservations]
+    ([RoomType_Id]);
+GO
+
+-- Creating foreign key on [RoomType_Id] in table 'RoomOccupancies'
+ALTER TABLE [dbo].[RoomOccupancies]
+ADD CONSTRAINT [FK_RoomTypeRoomOccupancy]
+    FOREIGN KEY ([RoomType_Id])
+    REFERENCES [dbo].[RoomTypes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoomTypeRoomOccupancy'
+CREATE INDEX [IX_FK_RoomTypeRoomOccupancy]
+ON [dbo].[RoomOccupancies]
+    ([RoomType_Id]);
 GO
 
 -- --------------------------------------------------

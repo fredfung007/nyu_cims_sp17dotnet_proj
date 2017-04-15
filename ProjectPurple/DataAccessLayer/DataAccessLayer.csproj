@@ -88,13 +88,19 @@
     <Compile Include="Reservation.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RoomOccupancy.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomType.cs">
+      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Staff.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="US_STATES.cs" />
+    <Compile Include="US_STATE.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

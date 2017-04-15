@@ -15,43 +15,37 @@ namespace DataAccessLayer
 using System;
     using System.Collections.Generic;
     
-public partial class Reservation
+public partial class RoomType
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Reservation()
+    public RoomType()
     {
 
-        this.DailyPrices = new HashSet<DailyPrice>();
-
-        this.Guests = new HashSet<Guest>();
+        this.RoomOccupancies = new HashSet<RoomOccupancy>();
 
     }
 
 
     public System.Guid Id { get; set; }
 
-    public System.DateTime startDate { get; set; }
+    public int BaseRate { get; set; }
 
-    public System.DateTime endDate { get; set; }
+    public int Inventory { get; set; }
 
-    public bool isPaid { get; set; }
+    public string Type { get; set; }
+
+    public string Ameneties { get; set; }
+
+    public string Description { get; set; }
 
 
 
-    public virtual User User { get; set; }
-
-    public virtual Profile BillingInfo { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<DailyPrice> DailyPrices { get; set; }
+    public virtual Reservation Reservation { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Guest> Guests { get; set; }
-
-    public virtual RoomType RoomType { get; set; }
+    public virtual ICollection<RoomOccupancy> RoomOccupancies { get; set; }
 
 }
 

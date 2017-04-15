@@ -15,22 +15,18 @@ namespace DataAccessLayer
 using System;
     using System.Collections.Generic;
     
-public partial class Address
+public partial class RoomOccupancy
 {
 
-    public int Id { get; set; }
+    public System.DateTime Date { get; set; }
 
-    public string FirstLine { get; set; }
+    public System.Guid Id { get; set; }
 
-    public string SecondLine { get; set; }
-
-    public DataAccessLayer.US_STATE State { get; set; }
-
-    public string ZipCode { get; set; }
+    public int Occupancy { get; set; }
 
 
 
-    public virtual Profile BillingInfo { get; set; }
+    public virtual RoomType RoomType { get; set; }
 
 }
 
