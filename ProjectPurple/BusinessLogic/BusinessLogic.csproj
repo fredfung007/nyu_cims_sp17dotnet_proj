@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\AuthHandler.cs" />
-    <Compile Include="Handlers\RoomListHandler.cs" />
     <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
