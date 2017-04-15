@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using System.Data.Entity;
 
 namespace DataAccessLayer.Repositories
@@ -17,9 +14,9 @@ namespace DataAccessLayer.Repositories
             this.context = context;
         }
 
-        public Staff getStaff(Guid Id)
+        public Staff getStaff(string username)
         {
-            return context.Staffs.Find(Id);
+            return context.Staffs.Find(username);
         }
 
         public IEnumerable<Staff> getStaffs()
@@ -32,9 +29,9 @@ namespace DataAccessLayer.Repositories
             return context.Users.ToList();
         }
 
-        public User getUser(Guid Id)
+        public User getUser(string username)
         {
-            return context.Users.Find(Id);
+            return context.Users.Find(username);
         }
 
         public void InsertStaff(Staff staff)
@@ -42,9 +39,9 @@ namespace DataAccessLayer.Repositories
             context.Staffs.Add(staff);
         }
 
-        public void DeleteStaff(Guid Id)
+        public void DeleteStaff(string username)
         {
-            Staff staff = context.Staffs.Find(Id);
+            Staff staff = context.Staffs.Find(username);
             context.Staffs.Remove(staff);
         }
 
@@ -58,9 +55,9 @@ namespace DataAccessLayer.Repositories
             context.Users.Add(user);
         }
 
-        public void DeleteUser(Guid Id)
+        public void DeleteUser(string username)
         {
-            User user = context.Users.Find(Id);
+            User user = context.Users.Find(username);
             context.Users.Remove(user);
         }
 
@@ -69,7 +66,7 @@ namespace DataAccessLayer.Repositories
             context.Entry(user).State = EntityState.Modified;
         }
 
-        public int GetLoyaltyProgressByUserId(Guid Id)
+        public int GetLoyaltyProgressByUserId(string username)
         {
             throw new NotImplementedException();
         }
