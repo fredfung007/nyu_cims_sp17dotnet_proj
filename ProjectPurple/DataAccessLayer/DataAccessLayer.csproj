@@ -85,6 +85,14 @@
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuthRepository.cs" />
+    <Compile Include="Repositories\IAuthRepository.cs" />
+    <Compile Include="Repositories\IProfileRepository.cs" />
+    <Compile Include="Repositories\IReservationRepository.cs" />
+    <Compile Include="Repositories\IRoomRepository.cs" />
+    <Compile Include="Repositories\ProfileRepository.cs" />
+    <Compile Include="Repositories\ReservationRepository.cs" />
+    <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Reservation.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>

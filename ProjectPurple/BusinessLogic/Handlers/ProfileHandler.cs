@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Address;
-using BusinessLogic.Email;
-using BusinessLogic.PhoneNumber;
-using BusinessLogic.Customer;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using System;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
@@ -18,48 +12,50 @@ namespace BusinessLogic.Handlers
     // loyalty program status
     class ProfileHandler
     {
-        DbContext context;
-        public ProfileHandler(DbContext context)
+        IProfileRepository profileRepository;
+        public ProfileHandler()
         {
-            this.context = context;
+            profileRepository = new ProfileRepository(new HotelDataModelContainer());
         }
-        ICustomer getCustomerInfo(int userId)
+
+        Profile GetProfile(Guid profileId)
         {
-            return null;
+            return profileRepository.getProfile(profileId);
         }
 
         //TODO? use ICustomer or userId
-        IAddress getAddress(int userId)
+        Address GetAddress(Guid profileId)
         {
-            return null;
+            return profileRepository.getProfile(profileId).Addresse;
         }
 
-        IEmail getEmail(int userId)
+        Email GetEmail(Guid profileId)
         {
-            return null;
+            return profileRepository.getProfile(profileId).Email;
         }
 
-        IPhoneNumber getPhoneNumber(int userId)
+        PhoneNumber GetPhoneNumber(Guid profileId)
         {
-            return null;
+            return profileRepository.getProfile(profileId).PhoneNumber;
         }
 
         // get room preference
         // get loyalty program number
 
-        bool setAddress(int userId, IAddress address)
+        void SetAddress(Guid profileId, Address address)
         {
-            return false;
+            Profile profile = profileRepository.getProfile(profileId);
+            profile.Addresse = address;
+            profileRepository.UpdateProfile(profile);
+            profileRepository.save();
         }
 
-        bool setEmail(int userId, IEmail email)
-        {
-            return false;
+        void SetEmail(Guid profileId, Email email)
+        { 
         }
 
-        bool setPhoneNumber(int userId, IPhoneNumber phoneNumber)
+        void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
         {
-            return false;
         }
 
         // set room preference

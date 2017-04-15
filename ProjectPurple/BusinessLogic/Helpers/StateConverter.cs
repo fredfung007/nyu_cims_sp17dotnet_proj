@@ -1,7 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 
-namespace BusinessLogic.Address
+namespace BusinessLogic.Helpers
 {
     // Name Converter for U.S. States.
     public class StateConverter : IStateConverter

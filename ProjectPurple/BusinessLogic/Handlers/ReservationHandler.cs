@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.BillingInfo;
 using BusinessLogic.Constants;
-using BusinessLogic.Customer;
-using BusinessLogic.Reservation;
-using BusinessLogic.Users;
 using System.Data.Entity;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
@@ -17,31 +12,31 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class ReservationHandler
     {
-        DbContext context;
-        public ReservationHandler(DbContext context)
+        IReservationRepository reservationRepository;
+        public ReservationHandler()
         {
-            this.context = context;
+            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
-        Guid makeReservation(int userId, roomType type, DateTime start, DateTime end)
+        Guid MakeReservation(int userId, roomType type, DateTime start, DateTime end)
         {
             return Guid.Empty;
         }
-        bool cancelReservation(int userId, Guid confirmationNumber)
+        bool CancelReservation(int userId, Guid confirmationNumber)
         {
             return false;
         }
 
-        IReservation getReservation(Guid confirmationNumber)
+        Reservation GetReservation(Guid confirmationNumber)
         {
             return null;
         }
 
-        List<IReservation> getUpComingReservations(ICustomer customer)
+        List<Reservation> GetUpComingReservations(Guest customer)
         {
             return null;
         }
 
-        bool fillGuestInfo(IReservation reservation, List<ICustomer> customers)
+        bool FillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
         }

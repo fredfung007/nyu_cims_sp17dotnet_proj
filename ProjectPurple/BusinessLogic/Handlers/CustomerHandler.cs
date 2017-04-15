@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Customer;
 using System.Data.Entity;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
@@ -13,9 +11,9 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class CustomerHandler
     {
-        DbContext context;
-        public CustomerHandler(DbContext context) {
-            this.context = context;
+        IRoomRepository roomRepository;
+        public CustomerHandler() {
+            roomRepository = new RoomRepository(new HotelDataModelContainer());
         }
 
         //TODO check using userId or ICustomer
@@ -29,12 +27,12 @@ namespace BusinessLogic.Handlers
             return false;
         }
 
-        List<ICustomer> getCheckOutCustomersOnDate(DateTime date)
+        List<Guest> getCheckOutCustomersOnDate(DateTime date)
         {
             return null;
         }
 
-        List<ICustomer> getCheckInCustomersOnDate(DateTime date)
+        List<Guest> getCheckInCustomersOnDate(DateTime date)
         {
             return null;
         }

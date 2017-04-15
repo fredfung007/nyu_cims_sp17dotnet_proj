@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Constants;
 using System.Data.Entity;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
@@ -13,12 +15,12 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class RoomHandler
     {
-        DbContext context;
-        public RoomHandler(DbContext context)
+        IRoomRepository roomRepository;
+        public RoomHandler()
         {
-            this.context = context;
+            roomRepository = new RoomRepository(new HotelDataModelContainer());
         }
-        List<roomType> checkAvailableTypeForDuration(DateTime start, DateTime end)
+        List<roomType> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
             return null;
         }
@@ -29,7 +31,7 @@ namespace BusinessLogic.Handlers
         /// <param name="start">Start date of DateTime</param>
         /// <param name="end">End date of DateTime</param>
         /// <returns>list for price</returns>
-        List<double> getRoomPriceList(roomType type, DateTime start, DateTime end)
+        List<double> GetRoomPriceList(roomType type, DateTime start, DateTime end)
         {
             return null;
         }
@@ -40,7 +42,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="date">Date for DateTime</param>
         /// <returns>room price</returns>
-        double getRoomPrice(roomType type, DateTime date)
+        double GetRoomPrice(roomType type, DateTime date)
         {
             //TODO add base price
             return 0.0;
@@ -52,7 +54,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type"></param>
         /// <param name="date"></param>
         /// <returns>current available rooms</returns>
-        int getCurrentRoomAvailability(roomType type, DateTime date)
+        int GetCurrentRoomAvailability(roomType type, DateTime date)
         {
             return 0;
         }
@@ -62,7 +64,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="date"></param>
         /// <returns>occupancy percentage</returns>
-        double getHotelOccupancy(DateTime date)
+        double GetHotelOccupancy(DateTime date)
         {
             return 0.0;
         }
@@ -73,7 +75,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">room type of roomType</param>
         /// <param name="date">date of DateTime</param>
         /// <returns>booked room amount</returns>
-        int getBookedRoomOnDate(roomType type, DateTime date)
+        int GetBookedRoomOnDate(roomType type, DateTime date)
         {
             return 0;
         }
@@ -84,9 +86,8 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="amount">Room amount</param>
         /// <returns>true if succeeded</returns>
-        bool setRoomInventory(roomType type, int amount)
+        void SetRoomInventory(roomType type, int amount)
         {
-            return false;
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of roomType</param>
         /// <returns>number of rooms</returns>
-        int getRooomInventory(roomType type)
+        int GetRooomInventory(roomType type)
         {
             return 0;
         }
@@ -104,7 +105,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of roomType</param>
         /// <returns>description string</returns>
-        string getRoomDescription(roomType type)
+        string GetRoomDescription(roomType type)
         {
             return null;
         }
@@ -115,9 +116,9 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="description">Description string</param>
         /// <returns>true if succeeded</returns>
-        bool updateRoomDescription(roomType type, string description)
+        void UpdateRoomDescription(roomType type, string description)
         {
-            return false;
+
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of roomType</param>
         /// <returns>Ameneties string</returns>
-        string getRoomAmeneties(roomType type)
+        string GetRoomAmeneties(roomType type)
         {
             return null;
         }
@@ -135,7 +136,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of roomType</param>
         /// <returns>url list</returns>
-        List<string> getRoomPictureUrls(roomType type)
+        List<string> GetRoomPictureUrls(roomType type)
         {
             return null;
         }
@@ -146,7 +147,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="urls">Url List</param>
         /// <returns>true if succeeded</returns>
-        bool updateRoomPictureUrls(roomType type, List<string> urls)
+        bool UpdateRoomPictureUrls(roomType type, List<string> urls)
         {
             return false;
         }
@@ -157,7 +158,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="url">picture url</param>
         /// <returns>true if succeded</returns>
-        bool insertPictureUrl(roomType type, string url)
+        bool InsertPictureUrl(roomType type, string url)
         {
             return false;
         }
