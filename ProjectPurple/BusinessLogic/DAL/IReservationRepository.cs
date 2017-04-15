@@ -18,6 +18,7 @@ namespace BusinessLogic.DAL
         IEnumerable<Reservation> getReservationsByUserId(Guid UserId);
         IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate);
         IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate);
+        // we need two of this functions, one for checkIn dates in period, one for checkOut dates in period
         IEnumerable<Reservation> getReservationsByPeriod(DateTime start, DateTime end);
 
         void InsertReservation(Reservation reservation);
