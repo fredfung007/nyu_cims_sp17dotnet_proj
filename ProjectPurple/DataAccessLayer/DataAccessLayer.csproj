@@ -102,13 +102,14 @@
     <Compile Include="RoomType.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Constants\ROOM_TYPE.cs" />
     <Compile Include="Staff.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="US_STATE.cs" />
+    <Compile Include="Constants\US_STATE.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

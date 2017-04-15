@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="obsolete\Customer.cs" />
-    <Compile Include="Constants\Constants.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="obsolete\IAddressRepository.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
