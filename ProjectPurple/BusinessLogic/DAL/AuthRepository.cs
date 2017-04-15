@@ -27,7 +27,7 @@ namespace BusinessLogic.DAL
             return context.Staffs.ToList();
         }
 
-        public IEnumerable<User> getUers()
+        public IEnumerable<User> getUsers()
         {
             return context.Users.ToList();
         }
