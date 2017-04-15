@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DataAccessLayer;
 
-namespace BusinessLogic.obsolete
+namespace BusinessLogic.DAL
 {
     // Interface for physical addresses.
     public interface IAddressRepository:IDisposable

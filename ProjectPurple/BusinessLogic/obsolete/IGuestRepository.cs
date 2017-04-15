@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DataAccessLayer;
 
-namespace BusinessLogic.obsolete
+namespace BusinessLogic.DAL
 {
     public interface IGuestRepository:IDisposable
     {

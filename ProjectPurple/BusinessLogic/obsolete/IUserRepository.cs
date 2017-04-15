@@ -2,7 +2,7 @@
 using DataAccessLayer;
 using System.Collections.Generic;
 
-namespace BusinessLogic.obsolete
+namespace BusinessLogic.DAL
 {
     // Interface for System User.
     interface IUserRepository:IDisposable
