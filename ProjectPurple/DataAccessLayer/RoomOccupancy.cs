@@ -15,14 +15,18 @@ namespace DataAccessLayer
 using System;
     using System.Collections.Generic;
     
-public partial class Staff
+public partial class RoomOccupancy
 {
+
+    public System.DateTime Date { get; set; }
 
     public System.Guid Id { get; set; }
 
-    public string Username { get; set; }
+    public int Occupancy { get; set; }
 
-    public string HashedPassword { get; set; }
+
+
+    public virtual RoomType RoomType { get; set; }
 
 }
 
