@@ -9,7 +9,7 @@ namespace BusinessLogic.DAL
     {
         // Return the user name of the user
         User getUser(Guid Id);
-        IEnumerable<User> getUers();
+        IEnumerable<User> getUsers();
         void save();
     }
 }

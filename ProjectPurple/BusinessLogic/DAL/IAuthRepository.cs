@@ -14,7 +14,7 @@ namespace BusinessLogic.DAL
         void UpdateStaff(Staff staff);
 
         User getUser(Guid Id);
-        IEnumerable<User> getUers();
+        IEnumerable<User> getUsers();
         void InsertUser(User user);
         void DeleteUser(Guid Id);
         void UpdateUser(User user);
