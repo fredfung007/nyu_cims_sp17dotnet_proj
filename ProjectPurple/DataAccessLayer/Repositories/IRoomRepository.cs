@@ -16,7 +16,8 @@ namespace DataAccessLayer.Repositories
         void UpdateRoom(RoomType room);
         
         // room inventory
-        void UpdateRoomInventory(RoomType room, int quantity);
+        // TODO
+        void UpdateRoomInventory(string type, int quantity);
 
         void CheckIn(RoomType room, DateTime date);
         void CheckOut(RoomType room, DateTime date);

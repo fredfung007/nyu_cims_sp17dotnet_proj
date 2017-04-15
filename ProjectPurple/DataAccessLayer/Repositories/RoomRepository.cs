@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using System.Data.Entity;
 
 namespace DataAccessLayer.Repositories
 {
@@ -41,9 +42,19 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public void UpdateRoomInventory(RoomType room, int quantity)
+        public void UpdateRoomInventory(string type, int quantity)
         {
-            throw new NotImplementedException();
+            RoomType newRoom = context.RoomTypes.Where(room => room.Type == type)
+                        .FirstOrDefault();
+
+            if (newRoom == null)
+            {
+                return;
+            }
+
+            newRoom.Inventory = quantity;
+
+            context.Entry(newRoom).State = EntityState.Modified;
         }
 
         public void CheckIn(RoomType room, DateTime date)
@@ -56,7 +67,6 @@ namespace DataAccessLayer.Repositories
             UpdateRoomUsage(room, date, 1);
         }
 
-
         public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
         {
             throw new NotImplementedException();
@@ -64,12 +74,13 @@ namespace DataAccessLayer.Repositories
 
         public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
-            throw new NotImplementedException();
+            return context.RoomOccupancies
+                    .Count(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType == room);
         }
 
         public int GetRoomTotalAmount(RoomType room)
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.Find(room).Inventory;
         }
 
         public void save()
