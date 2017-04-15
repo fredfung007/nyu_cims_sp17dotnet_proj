@@ -149,7 +149,7 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="BaseRate" Type="int" Nullable="false" />
     <Property Name="Inventory" Type="int" Nullable="false" />
-    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
     <Property Name="Ameneties" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -451,7 +451,7 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.Guest" Role="Guest" Multiplicity="*" />
         </Association>
-        <EnumType Name="STATES" cg:ExternalTypeName="DataAccessLayer.US_STATE" />
+        <EnumType Name="STATES" cg:ExternalTypeName="DataAccessLayer.Constants.US_STATE" />
         <EntityType Name="Staff">
           <Key>
             <PropertyRef Name="Id" />
@@ -472,7 +472,7 @@
           <Property Name="BaseRate" Type="Int32" Nullable="false" />
           <Property Name="Inventory" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationRoomType" FromRole="RoomType" ToRole="Reservation" />
-          <Property Name="Type" Type="String" Nullable="false" />
+          <Property Name="Type" Type="HotelDataModel.TYPE" Nullable="false" />
           <Property Name="Ameneties" Type="String" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="RoomOccupancies" Relationship="HotelDataModel.RoomTypeRoomOccupancy" FromRole="RoomType" ToRole="RoomOccupancy" />
@@ -481,7 +481,7 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.RoomType" Role="RoomType" Multiplicity="1" />
         </Association>
-        <EnumType Name="TYPE" cg:ExternalTypeName="DataAccessType.ROOM_TYPE" />
+        <EnumType Name="TYPE" cg:ExternalTypeName="DataAccessLayer.Constants.ROOM_TYPE" />
         <EntityType Name="RoomOccupancy" >
           <Key>
             <PropertyRef Name="Id" />

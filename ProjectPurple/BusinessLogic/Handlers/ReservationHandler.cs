@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessLogic.Constants;
 using System.Data.Entity;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using DataAccessLayer.Constants;
 
 namespace BusinessLogic.Handlers
 {
@@ -17,7 +17,7 @@ namespace BusinessLogic.Handlers
         {
             reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
-        Guid MakeReservation(int userId, roomType type, DateTime start, DateTime end)
+        Guid MakeReservation(int userId, ROOM_TYPE type, DateTime start, DateTime end)
         {
             return Guid.Empty;
         }

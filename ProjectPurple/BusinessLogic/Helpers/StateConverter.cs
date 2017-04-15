@@ -1,4 +1,4 @@
-﻿using DataAccessLayer;
+﻿using DataAccessLayer.Constants;
 using System;
 
 namespace BusinessLogic.Helpers
