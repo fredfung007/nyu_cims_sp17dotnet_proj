@@ -17,17 +17,17 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteUser(string username)
         {
-            throw new NotImplementedException();
+            context.Users.Remove(context.Users.Find(username));
         }
 
         public User GetUser(string username)
         {
-            throw new NotImplementedException();
+            return context.Users.Find(username);
         }
 
         public void InsertUser(User u)
         {
-            throw new NotImplementedException();
+            context.Users.Add(u);
         }
 
         public void save()
@@ -37,7 +37,7 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateUser(User u)
         {
-            throw new NotImplementedException();
+            context.Entry(u).State = System.Data.Entity.EntityState.Modified;
         }
         
         #region IDisposable Support
