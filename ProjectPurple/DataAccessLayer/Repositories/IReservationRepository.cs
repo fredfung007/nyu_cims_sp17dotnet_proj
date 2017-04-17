@@ -15,7 +15,7 @@ namespace DataAccessLayer.Repositories
         IEnumerable<Reservation> getReservations();
 
         IEnumerable<Reservation> getReservationsByConfirmNum(Guid ConfirmationNumber);
-        IEnumerable<Reservation> getReservationsByUserId(Guid UserId);
+        IEnumerable<Reservation> getReservationsByUserId(String Username);
         IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate);
         IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate);
         // commentted for now, did not find use cases for this method
