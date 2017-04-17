@@ -72,6 +72,7 @@ namespace BusinessLogic.Handlers
             while(start.CompareTo(end) < 1)
             {
                 priceList.Add(this.GetRoomPrice(type, start));
+                start.AddDays(1);
             }
             return priceList;
         }
