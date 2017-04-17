@@ -71,7 +71,7 @@ namespace BusinessLogic.Handlers
             List<int> priceList = new List<int>();
             while(start.CompareTo(end) < 1)
             {
-                priceList.Add(this.GetRoomPrice(type, start));
+                priceList.Add(GetRoomPrice(type, start));
                 start.AddDays(1);
             }
             return priceList;
@@ -99,8 +99,8 @@ namespace BusinessLogic.Handlers
         /// <returns>current available rooms</returns>
         public int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
-            RoomType r = roomRepository.getRoomType(type);
-            return roomRepository.GetRoomTotalAmount(r) - roomRepository.GetRoomReservationAmount(r, date);
+            RoomType room = roomRepository.getRoomType(type);
+            return roomRepository.GetRoomTotalAmount(room) - roomRepository.GetRoomReservationAmount(room, date);
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace BusinessLogic.Handlers
             int totalQuantity = 0;
             int totalOccupation = 0;
             IEnumerable<RoomType> types = roomRepository.getRoomTypes();
-            foreach(RoomType r in types)
+            foreach(RoomType room in types)
             {
-                totalQuantity += roomRepository.GetRoomTotalAmount(r);
-                totalOccupation += roomRepository.GetRoomReservationAmount(r, date);
+                totalQuantity += roomRepository.GetRoomTotalAmount(room);
+                totalOccupation += roomRepository.GetRoomReservationAmount(room, date);
             }
             return totalOccupation * 1.0 / totalQuantity;
         }

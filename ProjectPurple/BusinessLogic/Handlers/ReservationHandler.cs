@@ -28,22 +28,22 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
         {
-            Reservation r = new Reservation();
-            r.Id = Guid.NewGuid();
-            r.startDate = start;
-            r.endDate = end;
-            r.Guests = guests;
-            r.isPaid = false;
-            r.DailyPrices = new List<DailyPrice>();
+            Reservation r = new Reservation
+            {
+                Id = Guid.NewGuid(),
+                startDate = start,
+                endDate = end,
+                Guests = guests,
+                isPaid = false,
+                DailyPrices = new List<DailyPrice>()
+            };
+
             List<int> prices = (new RoomHandler()).GetRoomPriceList(type, start, end);
             foreach (int price in prices)
             {
-                DailyPrice dp = new DailyPrice();
-                dp.Id = r.Id;
-                dp.Date = start;
-                dp.BillingPrice = price;
+                DailyPrice dailyPrice = new DailyPrice { Id = r.Id, Date = start, BillingPrice = price};
                 start.AddDays(1);
-                r.DailyPrices.Add(dp);
+                r.DailyPrices.Add(dailyPrice);
             }
 
             reservationRepository.InsertReservation(r);
