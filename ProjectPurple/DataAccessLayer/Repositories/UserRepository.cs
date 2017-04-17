@@ -25,9 +25,9 @@ namespace DataAccessLayer.Repositories
             return context.Users.Find(username);
         }
 
-        public void InsertUser(User u)
+        public void InsertUser(User user)
         {
-            context.Users.Add(u);
+            context.Users.Add(user);
         }
 
         public void save()
@@ -35,9 +35,9 @@ namespace DataAccessLayer.Repositories
             context.SaveChanges();
         }
 
-        public void UpdateUser(User u)
+        public void UpdateUser(User user)
         {
-            context.Entry(u).State = System.Data.Entity.EntityState.Modified;
+            context.Entry(user).State = System.Data.Entity.EntityState.Modified;
         }
         
         #region IDisposable Support
