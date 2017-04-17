@@ -62,7 +62,7 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// Get the price list for a room type during [start, end).
         /// </summary>
-        /// <param name="type">Room type of roomType</param>
+        /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns>list for price</returns>
