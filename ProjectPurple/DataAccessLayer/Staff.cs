@@ -18,8 +18,6 @@ using System;
 public partial class Staff
 {
 
-    public System.Guid Id { get; set; }
-
     public string Username { get; set; }
 
     public string HashedPassword { get; set; }

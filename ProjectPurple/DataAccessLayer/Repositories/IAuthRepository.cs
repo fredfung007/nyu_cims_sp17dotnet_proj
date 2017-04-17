@@ -1,5 +1,4 @@
 ﻿using System;
-using DataAccessLayer;
 using System.Collections.Generic;
 
 namespace DataAccessLayer.Repositories
@@ -7,18 +6,18 @@ namespace DataAccessLayer.Repositories
     // Interface for staff, which should also be a user.
     public interface IAuthRepository : IDisposable
     {
-        Staff getStaff(Guid Id);
+        Staff getStaff(string username);
         IEnumerable<Staff> getStaffs();
         void InsertStaff(Staff staff);
-        void DeleteStaff(Guid Id);
+        void DeleteStaff(string username);
         void UpdateStaff(Staff staff);
 
-        User getUser(Guid Id);
+        User getUser(string username);
         IEnumerable<User> getUsers();
         void InsertUser(User user);
-        void DeleteUser(Guid Id);
+        void DeleteUser(string username);
         void UpdateUser(User user);
-        int GetLoyaltyProgressByUserId(Guid Id);
+        int GetLoyaltyProgressByUserId(string username);
 
         void save();
     }
