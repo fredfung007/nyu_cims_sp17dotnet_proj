@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
@@ -19,17 +18,33 @@ namespace BusinessLogic.Handlers
         }
         Guid MakeReservation(int userId, ROOM_TYPE type, DateTime start, DateTime end)
         {
+            Reservation r = new Reservation();
             return Guid.Empty;
         }
-        bool CancelReservation(int userId, Guid confirmationNumber)
+        /// <summary>
+        /// Cacnel a reservation by its creator's username and confirmation number
+        /// </summary>
+        /// <param name="username">username of the User who created the reservation</param>
+        /// <param name="confirmationNumber">confirmation number of the reservation</param>
+        /// <returns>true if successfully cancelled</returns>
+        bool CancelReservation(string username, Guid confirmationNumber)
         {
-            return false;
+            bool isValid = false;
+            Reservation r = reservationRepository.getReservation(confirmationNumber);
+            if (r.User.Username == username)
+            {
+                reservationRepository.DeleteReservation(confirmationNumber);
+                isValid = true;
+            }
+            else { }
+            return isValid;
         }
 
-        Reservation GetReservation(Guid confirmationNumber)
-        {
-            return null;
-        }
+        // obsolete
+        //Reservation GetReservation(Guid confirmationNumber)
+        //{
+        //    return null;
+        //}
 
         List<Reservation> GetUpComingReservations(Guest customer)
         {

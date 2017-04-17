@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
-using BusinessLogic.Exceptions;
-using System.Diagnostics;
 
 namespace BusinessLogic.Handlers
 {
