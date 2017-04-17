@@ -46,7 +46,7 @@ namespace BusinessLogic.Handlers
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns>a list of RoomTypes that are available during the given date</returns>
-        List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
+        public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
             List<ROOM_TYPE> roomList = new List<ROOM_TYPE>();
             foreach(RoomType r in roomRepository.getRoomTypes())
@@ -66,7 +66,7 @@ namespace BusinessLogic.Handlers
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns>list for price</returns>
-        List<int> GetRoomPriceList(ROOM_TYPE type, DateTime start, DateTime end)
+        public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime start, DateTime end)
         {
             List<int> priceList = new List<int>();
             while(start.CompareTo(end) < 1)
@@ -83,7 +83,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="date">Date for DateTime</param>
         /// <returns>room price</returns>
-        int GetRoomPrice(ROOM_TYPE type, DateTime date)
+        private int GetRoomPrice(ROOM_TYPE type, DateTime date)
         {
             // compute price multipler
             double rate = 1.0 + GetHotelOccupancy(date);
@@ -96,7 +96,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type"></param>
         /// <param name="date"></param>
         /// <returns>current available rooms</returns>
-        int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
+        public int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
             RoomType r = roomRepository.getRoomType(type);
             return roomRepository.GetRoomTotalAmount(r) - roomRepository.GetRoomReservationAmount(r, date);
@@ -107,7 +107,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="date"></param>
         /// <returns>occupency percentage</returns>
-        double GetHotelOccupancy(DateTime date)
+        private double GetHotelOccupancy(DateTime date)
         {
             int totalQuantity = 0;
             int totalOccupation = 0;
@@ -126,7 +126,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">room type of ROOM_TYPE</param>
         /// <param name="date">date of DateTime</param>
         /// <returns>booked room amount</returns>
-        int GetBookedRoomOnDate(ROOM_TYPE type, DateTime date)
+        public int GetBookedRoomOnDate(ROOM_TYPE type, DateTime date)
         {
             return roomRepository.GetRoomReservationAmount(roomRepository.getRoomType(type), date);
         }
