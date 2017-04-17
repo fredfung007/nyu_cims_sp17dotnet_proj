@@ -41,7 +41,7 @@ namespace BusinessLogic.Handlers
             List<int> prices = (new RoomHandler()).GetRoomPriceList(type, start, end);
             foreach (int price in prices)
             {
-                DailyPrice dailyPrice = new DailyPrice { Id = r.Id, Date = start, BillingPrice = price};
+                DailyPrice dailyPrice = new DailyPrice { Id = reservation.Id, Date = start, BillingPrice = price};
                 start.AddDays(1);
                 reservation.DailyPrices.Add(dailyPrice);
             }
@@ -76,9 +76,9 @@ namespace BusinessLogic.Handlers
         //    return null;
         //}
 
-        List<Reservation> GetUpComingReservations(User u)
+        List<Reservation> GetUpComingReservations(User user)
         {
-            return reservationRepository.getReservationsByUserId(u.Username);
+            return reservationRepository.getReservationsByUserId(user.username);
         }
 
         // obsolete
