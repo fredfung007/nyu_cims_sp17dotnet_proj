@@ -28,7 +28,7 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
         {
-            Reservation r = new Reservation
+            Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
                 startDate = start,
@@ -43,20 +43,20 @@ namespace BusinessLogic.Handlers
             {
                 DailyPrice dailyPrice = new DailyPrice { Id = r.Id, Date = start, BillingPrice = price};
                 start.AddDays(1);
-                r.DailyPrices.Add(dailyPrice);
+                reservation.DailyPrices.Add(dailyPrice);
             }
 
-            reservationRepository.InsertReservation(r);
-            return r.Id;
+            reservationRepository.InsertReservation(reservation);
+            return reservation.Id;
         }
 
         void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
-            Reservation r = reservationRepository.getReservation(confirmationNumber);
-            if (r != null)
+            Reservation reservation = reservationRepository.getReservation(confirmationNumber);
+            if (reservation != null)
             {
-                r.BillingInfo = billingInfo;
-                r.isPaid = true;
+                reservation.BillingInfo = billingInfo;
+                reservation.isPaid = true;
             }
         }
 
