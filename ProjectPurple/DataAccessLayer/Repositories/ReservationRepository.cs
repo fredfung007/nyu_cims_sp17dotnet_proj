@@ -48,9 +48,9 @@ namespace DataAccessLayer.Repositories
             return context.Reservations.Where(reservation => reservation.Id == ConfirmationNumber).ToList();
         }
 
-        public IEnumerable<Reservation> getReservationsByUserId(Guid UserId)
+        public IEnumerable<Reservation> getReservationsByUserId(String Username)
         {
-            return context.Reservations.Where(reservation => reservation.User.Id == UserId).ToList();
+            return context.Reservations.Where(reservation => reservation.User.Username == Username).ToList();
         }
 
         public IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate)
