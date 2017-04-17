@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/15/2017 16:44:24
--- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+-- Date Created: 04/17/2017 15:45:40
+-- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -92,7 +92,6 @@ GO
 
 -- Creating table 'Users'
 CREATE TABLE [dbo].[Users] (
-    [Id] uniqueidentifier  NOT NULL,
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL,
     [isRegistered] nvarchar(max)  NOT NULL,
@@ -123,7 +122,7 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
-    [User_Id] uniqueidentifier  NOT NULL,
+    [User_Username] nvarchar(max)  NOT NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL
 );
@@ -146,7 +145,7 @@ CREATE TABLE [dbo].[Profiles] (
     [PhoneNumber_Id] uniqueidentifier  NOT NULL,
     [Email_Id] int  NOT NULL,
     [Addresse_Id] int  NOT NULL,
-    [User_Id] uniqueidentifier  NOT NULL
+    [User_Username] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -168,7 +167,6 @@ GO
 
 -- Creating table 'Staffs'
 CREATE TABLE [dbo].[Staffs] (
-    [Id] uniqueidentifier  NOT NULL,
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL
 );
@@ -198,10 +196,10 @@ GO
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [Id] in table 'Users'
+-- Creating primary key on [Username] in table 'Users'
 ALTER TABLE [dbo].[Users]
 ADD CONSTRAINT [PK_Users]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+    PRIMARY KEY CLUSTERED ([Username] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'Addresses'
@@ -246,10 +244,10 @@ ADD CONSTRAINT [PK_DailyPrices]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Staffs'
+-- Creating primary key on [Username] in table 'Staffs'
 ALTER TABLE [dbo].[Staffs]
 ADD CONSTRAINT [PK_Staffs]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+    PRIMARY KEY CLUSTERED ([Username] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'RoomTypes'
@@ -268,19 +266,19 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [User_Id] in table 'Reservations'
+-- Creating foreign key on [User_Username] in table 'Reservations'
 ALTER TABLE [dbo].[Reservations]
 ADD CONSTRAINT [FK_ReservationUser]
-    FOREIGN KEY ([User_Id])
+    FOREIGN KEY ([User_Username])
     REFERENCES [dbo].[Users]
-        ([Id])
+        ([Username])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ReservationUser'
 CREATE INDEX [IX_FK_ReservationUser]
 ON [dbo].[Reservations]
-    ([User_Id]);
+    ([User_Username]);
 GO
 
 -- Creating foreign key on [PhoneNumber_Id] in table 'Profiles'
@@ -373,19 +371,19 @@ ON [dbo].[Guests]
     ([Reservation_Id]);
 GO
 
--- Creating foreign key on [User_Id] in table 'Profiles'
+-- Creating foreign key on [User_Username] in table 'Profiles'
 ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_UserProfile]
-    FOREIGN KEY ([User_Id])
+    FOREIGN KEY ([User_Username])
     REFERENCES [dbo].[Users]
-        ([Id])
+        ([Username])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_UserProfile'
 CREATE INDEX [IX_FK_UserProfile]
 ON [dbo].[Profiles]
-    ([User_Id]);
+    ([User_Username]);
 GO
 
 -- Creating foreign key on [RoomType_Id] in table 'Reservations'

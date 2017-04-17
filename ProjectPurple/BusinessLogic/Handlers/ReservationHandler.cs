@@ -28,7 +28,9 @@ namespace BusinessLogic.Handlers
 
         Reservation GetReservation(Guid confirmationNumber)
         {
-            return null;
+
+
+            return reservationRepository.getReservationsByConfirmNum(confirmationNumber);
         }
 
         List<Reservation> GetUpComingReservations(Guest customer)

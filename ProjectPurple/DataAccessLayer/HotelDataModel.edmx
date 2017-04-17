@@ -60,9 +60,8 @@
   </EntityContainer>
   <EntityType Name="Users">
     <Key>
-      <PropertyRef Name="Id" />
+      <PropertyRef Name="Username" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
     <Property Name="isRegistered" Type="nvarchar(max)" Nullable="false" />
@@ -93,7 +92,7 @@
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
     <Property Name="isPaid" Type="bit" Nullable="false" />
-    <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoomType_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
@@ -116,7 +115,7 @@
     <Property Name="PhoneNumber_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Email_Id" Type="int" Nullable="false" />
     <Property Name="Addresse_Id" Type="int" Nullable="false" />
-    <Property Name="User_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PhoneNumbers">
     <Key>
@@ -136,9 +135,8 @@
   </EntityType>
   <EntityType Name="Staffs">
     <Key>
-      <PropertyRef Name="Id" />
+      <PropertyRef Name="Username" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -167,10 +165,10 @@
     <End Role="User" Type="HotelDataModel.Store.Users" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="User">
-        <PropertyRef Name="Id" />
+        <PropertyRef Name="Username" />
       </Principal>
       <Dependent Role="Reservation">
-        <PropertyRef Name="User_Id" />
+        <PropertyRef Name="User_Username" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -251,10 +249,10 @@
     <End Role="Profile" Type="HotelDataModel.Store.Profiles" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
-        <PropertyRef Name="Id" />
+        <PropertyRef Name="Username" />
       </Principal>
       <Dependent Role="Profile">
-        <PropertyRef Name="User_Id" />
+        <PropertyRef Name="User_Username" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -603,6 +601,9 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <AssociationSetMapping Name="ReservationUser" TypeName="HotelDataModel.ReservationUser" StoreEntitySet="Reservations">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Username" ColumnName="User_Username" />
+      </EndProperty>
       <EndProperty Name="Reservation">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
@@ -656,6 +657,9 @@
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="UserProfile" TypeName="HotelDataModel.UserProfile" StoreEntitySet="Profiles">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Username" ColumnName="User_Username" />
+      </EndProperty>
       <EndProperty Name="Profile">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>

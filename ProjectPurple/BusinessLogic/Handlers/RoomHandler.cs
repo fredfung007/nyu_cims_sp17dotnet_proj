@@ -16,6 +16,7 @@ namespace BusinessLogic.Handlers
         {
             roomRepository = new RoomRepository(new HotelDataModelContainer());
         }
+
         List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
             return null;
@@ -38,10 +39,11 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="date">Date for DateTime</param>
         /// <returns>room price</returns>
-        double GetRoomPrice(ROOM_TYPE type, DateTime date)
+        int GetRoomPrice(ROOM_TYPE type, DateTime date)
         {
-            //TODO add base price
-            return 0.0;
+            double percentage = GetHotelOccupancyPercentage(type, date);
+            int baseRate = roomRepository.GetBaseRate(type);
+            return (int)(baseRate * (1 + percentage));
         }
 
         /// <summary>
@@ -60,9 +62,16 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="date"></param>
         /// <returns>occupancy percentage</returns>
-        double GetHotelOccupancy(DateTime date)
+        double GetHotelOccupancyPercentage(ROOM_TYPE type, DateTime date)
         {
-            return 0.0;
+            int occupancy = roomRepository.GetRoomReservationAmount(type, date);
+            int totalAmount = roomRepository.GetRoomTotalAmount(type);
+
+            if (totalAmount == 0) {
+                return 0.0;
+            }
+
+            return occupancy / totalAmount;
         }
 
         /// <summary>
@@ -82,8 +91,19 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="amount">Room amount</param>
         /// <returns>true if succeeded</returns>
-        void SetRoomInventory(ROOM_TYPE type, int amount)
+        void SetRoomInventory(ROOM_TYPE type, int quantity)
         {
+            int currentQuantity = roomRepository.GetRoomTotalAmount(type);
+            if (quantity >= currentQuantity)
+            {
+                roomRepository.UpdateRoomInventory(type, quantity);
+            }
+            else
+            {
+                //TODO check future occupancy
+            }
+
+            roomRepository.save();
         }
 
         /// <summary>
@@ -93,7 +113,7 @@ namespace BusinessLogic.Handlers
         /// <returns>number of rooms</returns>
         int GetRooomInventory(ROOM_TYPE type)
         {
-            return 0;
+            return roomRepository.GetRoomTotalAmount(type);
         }
 
         /// <summary>
@@ -103,7 +123,7 @@ namespace BusinessLogic.Handlers
         /// <returns>description string</returns>
         string GetRoomDescription(ROOM_TYPE type)
         {
-            return null;
+            return roomRepository.getRoomTypeByEnum(type).Description;
         }
 
         /// <summary>
@@ -114,7 +134,10 @@ namespace BusinessLogic.Handlers
         /// <returns>true if succeeded</returns>
         void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
-
+            RoomType room = roomRepository.getRoomTypeByEnum(type);
+            room.Description = description;
+            roomRepository.UpdateRoom(room);
+            roomRepository.save();
         }
 
         /// <summary>
@@ -124,7 +147,7 @@ namespace BusinessLogic.Handlers
         /// <returns>Ameneties string</returns>
         string GetRoomAmeneties(ROOM_TYPE type)
         {
-            return null;
+            return roomRepository.getRoomTypeByEnum(type).Ameneties;
         }
 
         /// <summary>
@@ -134,6 +157,7 @@ namespace BusinessLogic.Handlers
         /// <returns>url list</returns>
         List<string> GetRoomPictureUrls(ROOM_TYPE type)
         {
+            //TODO
             return null;
         }
 

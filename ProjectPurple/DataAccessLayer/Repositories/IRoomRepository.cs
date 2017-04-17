@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
 {
@@ -28,9 +29,10 @@ namespace DataAccessLayer.Repositories
         void UpdateRoomUsage(RoomType room, DateTime date, int quantity);
 
         // How many room of the type is reserved on some date
-        int GetRoomReservationAmount(RoomType room, DateTime date);
+        int GetRoomReservationAmount(ROOM_TYPE type, DateTime date);
         // The total amount of a roomtype, roomtype.inventory
-        int GetRoomTotalAmount(RoomType room);
+        int GetRoomTotalAmount(ROOM_TYPE type);
+        int GetBaseRate(ROOM_TYPE type);
         void save();
     }
 }

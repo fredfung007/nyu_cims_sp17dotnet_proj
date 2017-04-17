@@ -59,15 +59,25 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public int GetRoomReservationAmount(RoomType room, DateTime date)
+        public int GetRoomReservationAmount(ROOM_TYPE type, DateTime date)
         {
             return context.RoomOccupancies
-                    .Count(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType == room);
+                    .Count(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType.Type == type);
         }
 
-        public int GetRoomTotalAmount(RoomType room)
+        public int GetRoomTotalAmount(ROOM_TYPE type)
         {
-            return context.RoomTypes.Find(room).Inventory;
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault().Inventory;
+        }
+
+        public int GetBaseRate(ROOM_TYPE type)
+        {
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault().BaseRate;
+        }
+
+        RoomType IRoomRepository.getRoomTypeByEnum(ROOM_TYPE type)
+        {
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
         }
 
         public void save()
@@ -123,11 +133,6 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
-        }
-
-        RoomType IRoomRepository.getRoomTypeByEnum(ROOM_TYPE type)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
