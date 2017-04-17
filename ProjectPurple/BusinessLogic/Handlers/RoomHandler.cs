@@ -34,7 +34,10 @@ namespace BusinessLogic.Handlers
             {
                 available = available && 
                     (roomRepository.GetRoomTotalAmount(r) > roomRepository.GetRoomReservationAmount(r, start));
-                if (!available) break;
+                if (!available)
+                {
+                    break;
+                }
                 start = start.AddDays(1);
             }
             return available;
