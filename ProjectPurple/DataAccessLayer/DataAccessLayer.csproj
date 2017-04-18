@@ -95,6 +95,8 @@
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Constants\ROOM_TYPE.cs" />
+    <Compile Include="Constants\US_STATE.cs" />
     <Compile Include="Reservation.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
@@ -104,14 +106,12 @@
     <Compile Include="RoomType.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Constants\ROOM_TYPE.cs" />
     <Compile Include="Staff.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Constants\US_STATE.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
