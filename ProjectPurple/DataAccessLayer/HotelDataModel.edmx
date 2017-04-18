@@ -362,7 +362,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstLine" Type="String" Nullable="false" />
           <Property Name="SecondLine" Type="String" Nullable="true" />
-          <Property Name="State" Type="HotelDataModel.STATES" Nullable="false" />
+          <Property Name="State" Type="HotelDataModel.US_STATE" Nullable="false" />
           <Property Name="ZipCode" Type="String" Nullable="false" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoAddress" FromRole="Address" ToRole="BillingInfo" />
           <Property Name="City" Type="String" Nullable="false" />
@@ -454,7 +454,7 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.Guest" Role="Guest" Multiplicity="*" />
         </Association>
-        <EnumType Name="STATES" cg:ExternalTypeName="DataAccessLayer.Constants.US_STATE" />
+        <EnumType Name="US_STATE" cg:ExternalTypeName="DataAccessLayer.Constants.US_STATE" />
         <EntityType Name="Staff">
           <Key>
             <PropertyRef Name="Username" />
@@ -474,7 +474,7 @@
           <Property Name="BaseRate" Type="Int32" Nullable="false" />
           <Property Name="Inventory" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationRoomType" FromRole="RoomType" ToRole="Reservation" />
-          <Property Name="Type" Type="HotelDataModel.TYPE" Nullable="false" />
+          <Property Name="Type" Type="HotelDataModel.ROOM_TYPE" Nullable="false" />
           <Property Name="Ameneties" Type="String" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="RoomOccupancies" Relationship="HotelDataModel.RoomTypeRoomOccupancy" FromRole="RoomType" ToRole="RoomOccupancy" />
@@ -483,7 +483,7 @@
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
           <End Type="HotelDataModel.RoomType" Role="RoomType" Multiplicity="1" />
         </Association>
-        <EnumType Name="TYPE" cg:ExternalTypeName="DataAccessLayer.Constants.ROOM_TYPE" />
+        <EnumType Name="ROOM_TYPE" cg:ExternalTypeName="DataAccessLayer.Constants.ROOM_TYPE" />
         <EntityType Name="RoomOccupancy" >
           <Key>
             <PropertyRef Name="Id" />
