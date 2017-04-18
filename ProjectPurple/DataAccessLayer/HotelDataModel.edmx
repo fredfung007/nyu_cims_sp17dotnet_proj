@@ -64,8 +64,10 @@
     </Key>
     <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="isRegistered" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="LoyalProgramNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isRegistered" Type="bit" Nullable="false" />
+    <Property Name="LoyalProgramNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LoyaltyProgress" Type="int" Nullable="true" />
+    <Property Name="LoyaltyYear" Type="datetime" Nullable="true" />
   </EntityType>
   <EntityType Name="Addresses">
     <Key>
@@ -76,6 +78,7 @@
     <Property Name="SecondLine" Type="nvarchar(max)" Nullable="true" />
     <Property Name="State" Type="int" Nullable="false" />
     <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Emails">
     <Key>
@@ -92,6 +95,8 @@
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
     <Property Name="isPaid" Type="bit" Nullable="false" />
+    <Property Name="checkInDate" Type="datetime" Nullable="true" />
+    <Property Name="checkOutDate" Type="datetime" Nullable="true" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoomType_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
@@ -114,7 +119,7 @@
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PhoneNumber_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Email_Id" Type="int" Nullable="false" />
-    <Property Name="Addresse_Id" Type="int" Nullable="false" />
+    <Property Name="Address_Id" Type="int" Nullable="false" />
     <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PhoneNumbers">
@@ -192,7 +197,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="Addresse_Id" />
+        <PropertyRef Name="Address_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -343,10 +348,12 @@
           </Key>
           <Property Name="Username" Type="String" Nullable="false" />
           <Property Name="HashedPassword" Type="String" Nullable="false" />
-          <Property Name="isRegistered" Type="String" Nullable="false" />
+          <Property Name="isRegistered" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Profile" Relationship="HotelDataModel.UserProfile" FromRole="User" ToRole="Profile" />
-          <Property Name="LoyalProgramNumber" Type="String" Nullable="false" />
+          <Property Name="LoyalProgramNumber" Type="String" Nullable="true" />
           <NavigationProperty Name="Reservations" Relationship="HotelDataModel.UserReservation" FromRole="User" ToRole="Reservation" />
+          <Property Name="LoyaltyProgress" Type="Int32" Nullable="true" />
+          <Property Name="LoyaltyYear" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
@@ -358,6 +365,7 @@
           <Property Name="State" Type="HotelDataModel.US_STATE" Nullable="false" />
           <Property Name="ZipCode" Type="String" Nullable="false" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoAddress" FromRole="Address" ToRole="BillingInfo" />
+          <Property Name="City" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Email">
           <Key>
@@ -380,6 +388,8 @@
           <NavigationProperty Name="RoomType" Relationship="HotelDataModel.ReservationRoomType" FromRole="Reservation" ToRole="RoomType" />
           <Property Name="isPaid" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="HotelDataModel.UserReservation" FromRole="Reservation" ToRole="User" />
+          <Property Name="checkInDate" Type="DateTime" Nullable="true" />
+          <Property Name="checkOutDate" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Guest">
           <Key>
@@ -397,7 +407,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="PhoneNumber" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
           <NavigationProperty Name="Email" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
-          <NavigationProperty Name="Addresse" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="BillingInfo" ToRole="Reservation" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <Property Name="LastName" Type="String" Nullable="false" />
@@ -504,6 +514,8 @@
           <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
           <ScalarProperty Name="isRegistered" ColumnName="isRegistered" />
           <ScalarProperty Name="LoyalProgramNumber" ColumnName="LoyalProgramNumber" />
+          <ScalarProperty Name="LoyaltyProgress" ColumnName="LoyaltyProgress" />
+          <ScalarProperty Name="LoyaltyYear" ColumnName="LoyaltyYear" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -515,6 +527,7 @@
           <ScalarProperty Name="SecondLine" ColumnName="SecondLine" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -533,6 +546,8 @@
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
           <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+          <ScalarProperty Name="checkInDate" ColumnName="checkInDate" />
+          <ScalarProperty Name="checkOutDate" ColumnName="checkOutDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -618,7 +633,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoAddress" TypeName="HotelDataModel.BillingInfoAddress" StoreEntitySet="Profiles">
       <EndProperty Name="Address">
-        <ScalarProperty Name="Id" ColumnName="Addresse_Id" />
+        <ScalarProperty Name="Id" ColumnName="Address_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />

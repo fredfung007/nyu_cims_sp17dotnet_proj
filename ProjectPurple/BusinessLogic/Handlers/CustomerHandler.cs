@@ -12,8 +12,9 @@ namespace BusinessLogic.Handlers
     class CustomerHandler
     {
         IRoomRepository roomRepository;
-        public CustomerHandler() {
-            roomRepository = new RoomRepository(new HotelDataModelContainer());
+        public CustomerHandler()
+        {
+            roomRepository = new RoomRepository(new HotelDataModelContainer());   
         }
 
         //TODO check using userId or ICustomer

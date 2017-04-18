@@ -25,6 +25,8 @@ namespace DataAccessLayer
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }
         public bool isPaid { get; set; }
+        public Nullable<System.DateTime> checkInDate { get; set; }
+        public Nullable<System.DateTime> checkOutDate { get; set; }
     
         public virtual Profile BillingInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

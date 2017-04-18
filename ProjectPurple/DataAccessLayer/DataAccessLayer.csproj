@@ -54,6 +54,8 @@
     <Compile Include="Address.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Constructor\AddressConstructor.cs" />
+    <Compile Include="Constructor\ProfileConstructor.cs" />
     <Compile Include="DailyPrice.cs">
       <DependentUpon>HotelDataModel.tt</DependentUpon>
     </Compile>

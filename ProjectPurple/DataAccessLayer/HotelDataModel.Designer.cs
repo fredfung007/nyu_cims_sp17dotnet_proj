@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Dropbox\workspace\net\proj\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\repository\sp17net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

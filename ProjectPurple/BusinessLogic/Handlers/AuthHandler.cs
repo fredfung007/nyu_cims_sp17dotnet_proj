@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer.Repositories;
+﻿using DataAccessLayer.Repositories;
 using DataAccessLayer;
+using System.Web.Helpers;
 
 namespace BusinessLogic.Handlers
 {
@@ -14,6 +10,44 @@ namespace BusinessLogic.Handlers
         public AuthHandler()
         {
             authRepository = new AuthRepository(new HotelDataModelContainer());
+        }
+
+        /// <summary>
+        /// Authorize username and plain text password for Staff.
+        /// </summary>
+        /// <param name="username">username of the Staff</param>
+        /// <param name="inputpassword">plain text password</param>
+        /// <returns></returns>
+        bool authorizeStaff(string username, string inputpassword)
+        {
+            Staff staff = authRepository.getStaff(username);
+            return Crypto.VerifyHashedPassword(staff.HashedPassword, inputpassword);
+        }
+
+        /// <summary>
+        /// Authorize username and plain text password for User.
+        /// </summary>
+        /// <param name="username">username of the User</param>
+        /// <param name="inputpassword">plain text password</param>
+        /// <returns></returns>
+        bool authorizeUser(string username, string inputpassword)
+        {
+            User user = authRepository.getUser(username);
+            return Crypto.VerifyHashedPassword(user.HashedPassword, inputpassword);
+        }
+
+        void createAnonymousUser(string username, string inputpassword)
+        {
+            User user = createUser(username, inputpassword);
+            user.isRegistered = false;
+        }
+
+        private User createUser(string username, string inputpassword)
+        {
+            User user = new User();
+            user.Username = username;
+            user.HashedPassword = Crypto.HashPassword(inputpassword);
+            return user;
         }
     }
 }

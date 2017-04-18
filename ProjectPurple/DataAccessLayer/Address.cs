@@ -19,6 +19,7 @@ namespace DataAccessLayer
         public string SecondLine { get; set; }
         public DataAccessLayer.Constants.US_STATE State { get; set; }
         public string ZipCode { get; set; }
+        public string City { get; set; }
     
         public virtual Profile BillingInfo { get; set; }
     }
