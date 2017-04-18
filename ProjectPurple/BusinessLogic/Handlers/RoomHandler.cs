@@ -30,13 +30,13 @@ namespace BusinessLogic.Handlers
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(RoomType r, DateTime start, DateTime end)
+        private bool IsAvailable(RoomType room, DateTime start, DateTime end)
         {
             bool available = true;
-            while (start.CompareTo(end) < 1)
+            while (start.CompareTo(end) < 0)
             {
                 available = available && 
-                    (roomRepository.GetRoomTotalAmount(r) > roomRepository.GetRoomReservationAmount(r, start));
+                    (roomRepository.GetRoomTotalAmount(room) > roomRepository.GetRoomReservationAmount(room, start));
                 if (!available)
                 {
                     break;
@@ -75,7 +75,7 @@ namespace BusinessLogic.Handlers
         public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime start, DateTime end)
         {
             List<int> priceList = new List<int>();
-            while(start.CompareTo(end) < 1)
+            while(start.CompareTo(end) < 0)
             {
                 priceList.Add(GetRoomPrice(type, start));
                 start.AddDays(1);
@@ -263,7 +263,7 @@ namespace BusinessLogic.Handlers
                 reservationRepository.getReservation(confirmationNumber);
             if (reservation != null)
             {
-                while(date.CompareTo(reservation.endDate) < 0)
+                while (date.CompareTo(reservation.endDate) < 0)
                 {
                     roomRepository.UpdateRoomUsage(reservation.RoomType, date, -1);
                 }
@@ -282,7 +282,7 @@ namespace BusinessLogic.Handlers
                 reservationRepository.getReservation(confirmationNumber);
             if (reservation != null)
             {
-                while(date.CompareTo(reservation.endDate) < 0)
+                while (date.CompareTo(reservation.endDate) < 0)
                 {
                     roomRepository.UpdateRoomUsage(reservation.RoomType, date, +1);
                 }
