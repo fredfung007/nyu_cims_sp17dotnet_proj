@@ -94,7 +94,7 @@
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
     <Property Name="isPaid" Type="bit" Nullable="false" />
-    <Property Name="checkInDate" Type="datetime" Nullable="false" />
+    <Property Name="checkInDate" Type="datetime" Nullable="true" />
     <Property Name="checkOutDate" Type="datetime" Nullable="true" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoomType_Id" Type="uniqueidentifier" Nullable="false" />
@@ -386,7 +386,7 @@
           <NavigationProperty Name="RoomType" Relationship="HotelDataModel.ReservationRoomType" FromRole="Reservation" ToRole="RoomType" />
           <Property Name="isPaid" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="HotelDataModel.UserReservation" FromRole="Reservation" ToRole="User" />
-          <Property Name="checkInDate" Type="DateTime" Nullable="false" />
+          <Property Name="checkInDate" Type="DateTime" Nullable="true" />
           <Property Name="checkOutDate" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Guest">

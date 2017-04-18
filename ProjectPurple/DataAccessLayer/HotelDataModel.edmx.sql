@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2017 14:12:57
+-- Date Created: 04/18/2017 15:10:11
 -- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
-    [checkInDate] datetime  NOT NULL,
+    [checkInDate] datetime  NULL,
     [checkOutDate] datetime  NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL,

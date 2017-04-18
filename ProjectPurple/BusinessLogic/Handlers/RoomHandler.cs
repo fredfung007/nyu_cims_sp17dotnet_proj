@@ -259,7 +259,7 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 reservationRepository.getReservation(confirmationNumber);
 
-            if (reservation == null)
+            if (reservation == null || reservation.startDate > today || reservation.endDate < today)
             {
                 return;
             }
@@ -284,7 +284,7 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 reservationRepository.getReservation(confirmationNumber);
 
-            if (reservation == null)
+            if (reservation == null || reservation.checkInDate == null || reservation.checkInDate > today)
             {
                 return;
             }
@@ -295,14 +295,15 @@ namespace BusinessLogic.Handlers
             }
             roomRepository.save();
 
-            //add loyalty program
+            // loyalty program
             int stayLength = 0;
             User user = reservation.User;
+            DateTime checkInDate = (DateTime)reservation.checkInDate;
 
             if (user.LoyaltyYear.Year == today.Year)
             {
                 // Checkout date is the same year as the loyalty program
-                stayLength = Math.Min((today - reservation.checkInDate).Days, today.DayOfYear);
+                stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
                 reservation.User.LoyaltyProgress += stayLength;
             }
             else
