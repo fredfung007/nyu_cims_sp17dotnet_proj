@@ -118,7 +118,7 @@
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PhoneNumber_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Email_Id" Type="int" Nullable="false" />
-    <Property Name="Addresse_Id" Type="int" Nullable="false" />
+    <Property Name="Address_Id" Type="int" Nullable="false" />
     <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PhoneNumbers">
@@ -196,7 +196,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="Addresse_Id" />
+        <PropertyRef Name="Address_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -405,7 +405,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="PhoneNumber" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
           <NavigationProperty Name="Email" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
-          <NavigationProperty Name="Addresse" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="BillingInfo" ToRole="Reservation" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <Property Name="LastName" Type="String" Nullable="false" />
@@ -630,7 +630,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoAddress" TypeName="HotelDataModel.BillingInfoAddress" StoreEntitySet="Profiles">
       <EndProperty Name="Address">
-        <ScalarProperty Name="Id" ColumnName="Addresse_Id" />
+        <ScalarProperty Name="Id" ColumnName="Address_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />

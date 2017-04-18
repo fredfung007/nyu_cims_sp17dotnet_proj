@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2017 15:10:11
+-- Date Created: 04/18/2017 15:50:11
 -- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -148,7 +148,7 @@ CREATE TABLE [dbo].[Profiles] (
     [LastName] nvarchar(max)  NOT NULL,
     [PhoneNumber_Id] uniqueidentifier  NOT NULL,
     [Email_Id] int  NOT NULL,
-    [Addresse_Id] int  NOT NULL,
+    [Address_Id] int  NOT NULL,
     [User_Username] nvarchar(max)  NOT NULL
 );
 GO
@@ -300,10 +300,10 @@ ON [dbo].[Profiles]
     ([Email_Id]);
 GO
 
--- Creating foreign key on [Addresse_Id] in table 'Profiles'
+-- Creating foreign key on [Address_Id] in table 'Profiles'
 ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoAddress]
-    FOREIGN KEY ([Addresse_Id])
+    FOREIGN KEY ([Address_Id])
     REFERENCES [dbo].[Addresses]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -312,7 +312,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_BillingInfoAddress'
 CREATE INDEX [IX_FK_BillingInfoAddress]
 ON [dbo].[Profiles]
-    ([Addresse_Id]);
+    ([Address_Id]);
 GO
 
 -- Creating foreign key on [BillingInfo_Id] in table 'Reservations'

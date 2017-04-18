@@ -20,7 +20,7 @@ namespace DataAccessLayer
     
         public virtual PhoneNumber PhoneNumber { get; set; }
         public virtual Email Email { get; set; }
-        public virtual Address Addresse { get; set; }
+        public virtual Address Address { get; set; }
         public virtual Reservation Reservation { get; set; }
         public virtual User User { get; set; }
     }

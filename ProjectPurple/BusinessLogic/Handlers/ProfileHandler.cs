@@ -26,7 +26,7 @@ namespace BusinessLogic.Handlers
         //TODO? use ICustomer or userId
         Address GetAddress(Guid profileId)
         {
-            return profileRepository.getProfile(profileId).Addresse;
+            return profileRepository.getProfile(profileId).Address;
         }
 
         Email GetEmail(Guid profileId)
@@ -45,7 +45,7 @@ namespace BusinessLogic.Handlers
         void SetAddress(Guid profileId, Address address)
         {
             Profile profile = profileRepository.getProfile(profileId);
-            profile.Addresse = address;
+            profile.Address = address;
             profileRepository.UpdateProfile(profile);
             profileRepository.save();
         }
