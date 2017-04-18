@@ -129,7 +129,7 @@ namespace DataAccessLayer.Repositories
             else
             {
                 throw new ArgumentOutOfRangeException(
-                    "new room inventory cannot smaller than occupaied room amount");
+                    "new room inventory cannot be smaller than the occupied room amount");
             }
         }
 
