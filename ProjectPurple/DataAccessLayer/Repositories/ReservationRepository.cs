@@ -43,11 +43,6 @@ namespace DataAccessLayer.Repositories
             context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public Reservation getReservationsByConfirmNum(Guid ConfirmationNumber)
-        {
-            return context.Reservations.Where(reservation => reservation.Id == ConfirmationNumber).FirstOrDefault();
-        }
-
         public IEnumerable<Reservation> getReservationsByUserId(String Username)
         {
             return context.Reservations.Where(reservation => reservation.User.Username == Username).ToList();
@@ -56,11 +51,6 @@ namespace DataAccessLayer.Repositories
         public IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate)
         {
             return context.Reservations.Where(reservatoin => reservatoin.endDate == CheckOutDate).ToList();
-        }
-
-        IEnumerable<Reservation> IReservationRepository.getReservationsByConfirmNum(Guid ConfirmationNumber)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate)
