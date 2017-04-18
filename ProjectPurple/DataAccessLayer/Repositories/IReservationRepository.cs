@@ -13,7 +13,6 @@ namespace DataAccessLayer.Repositories
         // unique ID per reservation, should be generated in the constructor
         Reservation getReservation(Guid Id);
         IEnumerable<Reservation> getReservations();
-
         IEnumerable<Reservation> getReservationsByUserId(String Username);
         IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate);
         IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate);
@@ -23,6 +22,11 @@ namespace DataAccessLayer.Repositories
         void InsertReservation(Reservation reservation);
         void DeleteReservation(Guid Id);
         void UpdateReservation(Reservation reservation);
+        void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
+        void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
+        IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate);
+        IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate);
+        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate);
         void save();
     }
 }

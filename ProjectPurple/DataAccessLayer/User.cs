@@ -24,7 +24,8 @@ namespace DataAccessLayer
         public string HashedPassword { get; set; }
         public string isRegistered { get; set; }
         public string LoyalProgramNumber { get; set; }
-    
+        public int LoyaltyProgress { get; set; }
+        public System.DateTime LoyaltyYear { get; set; }
         public virtual Profile Profile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservations { get; set; }
