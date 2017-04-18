@@ -358,6 +358,7 @@
           <Property Name="State" Type="HotelDataModel.STATES" Nullable="false" />
           <Property Name="ZipCode" Type="String" Nullable="false" />
           <NavigationProperty Name="BillingInfo" Relationship="HotelDataModel.BillingInfoAddress" FromRole="Address" ToRole="BillingInfo" />
+          <Property Name="City" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Email">
           <Key>
@@ -397,7 +398,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="PhoneNumber" Relationship="HotelDataModel.BillingInfoPhoneNumber" FromRole="BillingInfo" ToRole="PhoneNumber" />
           <NavigationProperty Name="Email" Relationship="HotelDataModel.BillingInfoEmail" FromRole="BillingInfo" ToRole="Email" />
-          <NavigationProperty Name="Addresse" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="HotelDataModel.BillingInfoAddress" FromRole="BillingInfo" ToRole="Address" />
           <NavigationProperty Name="Reservation" Relationship="HotelDataModel.ReservationBillingInfo" FromRole="BillingInfo" ToRole="Reservation" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <Property Name="LastName" Type="String" Nullable="false" />
