@@ -233,12 +233,12 @@ namespace BusinessLogic.Handlers
         {
             List<RoomOccupancy> roomOccupancies =
                 new List<RoomOccupancy>(roomRepository.getRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today));
-            int minOccupancy = int.MaxValue;
+            int maxOccupancy = int.MinValue;
             foreach (RoomOccupancy roomOccupancy in roomOccupancies)
             {
-                minOccupancy = Math.Min(roomOccupancy.Occupancy, minOccupancy);
+                maxOccupancy = Math.Max(roomOccupancy.Occupancy, maxOccupancy);
             }
-            if (quantity > minOccupancy)
+            if (quantity > maxOccupancy)
             {
                 RoomType room = roomRepository.getRoomType(type);
                 room.Inventory = quantity;
