@@ -258,7 +258,7 @@ namespace BusinessLogic.Handlers
         public void CheckIn(Guid confirmationNumber, DateTime date)
         {
             Reservation reservation =
-                reservationRepository.getReservationByConfirmNum(confirmationNumber);
+                reservationRepository.getReservation(confirmationNumber);
             if (reservation != null)
             {
                 while(date.CompareTo(reservation.endDate) < 0)
@@ -276,7 +276,7 @@ namespace BusinessLogic.Handlers
         public void CheckOut(Guid confirmationNumber, DateTime date)
         {
             Reservation reservation =
-                reservationRepository.getReservationByConfirmNum(confirmationNumber);
+                reservationRepository.getReservation(confirmationNumber);
             if (reservation != null)
             {
                 while(date.CompareTo(reservation.endDate) < 0)
