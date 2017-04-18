@@ -78,7 +78,7 @@ namespace BusinessLogic.Handlers
 
         List<Reservation> GetUpComingReservations(User user)
         {
-            return reservationRepository.getReservationsByUserId(user.username);
+            return new List<Reservation> (reservationRepository.getReservationsByUserId(user.Username));
         }
 
         // obsolete
