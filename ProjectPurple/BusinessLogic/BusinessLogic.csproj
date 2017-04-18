@@ -55,10 +55,8 @@
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
-    <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
-    <Compile Include="BusinessLogic.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Helpers\IStateConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,10 +75,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Auth\" />
-    <Folder Include="Public\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
