@@ -19,9 +19,9 @@ namespace DataAccessLayer.Repositories
             context.RoomTypes.Add(room);
         }
 
-        public void DeleteRoom(Guid confirmationNumber)
+        public void DeleteRoom(Guid Id)
         {
-            context.RoomTypes.Remove(context.RoomTypes.Find(confirmationNumber));
+            context.RoomTypes.Remove(context.RoomTypes.Find(Id));
         }
 
         public void UpdateRoom(RoomType room)
@@ -29,19 +29,19 @@ namespace DataAccessLayer.Repositories
             context.Entry(room).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public RoomType getRoomType(Guid confirmationNumber)
+        public RoomType getRoomType(Guid Id)
         {
-            return context.RoomTypes.Find(confirmationNumber);
+            return context.RoomTypes.Find(Id);
         }
 
         public RoomType getRoomType(ROOM_TYPE type)
         {
-            return context.RoomTypes.Where(room => room.Type == type).First();
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
         }
 
         public IEnumerable<RoomType> getRoomTypes()
         {
-            return context.RoomTypes.AsEnumerable();
+            return context.RoomTypes.ToList();
         }
 
         public void CheckIn(RoomType room, DateTime date)
@@ -59,13 +59,14 @@ namespace DataAccessLayer.Repositories
         {
             // check if record exists
             RoomOccupancy roomOccupancy =
-                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).First();
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
             if (roomOccupancy != null)
             {
                 // update the existing RoomOccupancy record
                 int newOccupancy = roomOccupancy.Occupancy + quantity;
                 if (newOccupancy >= 0 && newOccupancy <= room.Inventory)
                 {
+                    roomOccupancy.Occupancy = newOccupancy;
                     UpdateRoomOccupancy(roomOccupancy);
                 }
                 else
@@ -83,7 +84,7 @@ namespace DataAccessLayer.Repositories
                     {
                         Id = Guid.NewGuid(),
                         Date = date,
-                        Occupancy = room.Inventory += quantity,
+                        Occupancy = newOccupancy,
                         RoomType = room
                     };
                     context.RoomOccupancies.Add(roomOccupancy);
@@ -98,7 +99,7 @@ namespace DataAccessLayer.Repositories
         public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
             RoomOccupancy roomOccupancy =
-                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).First();
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
             return roomOccupancy != null ? roomOccupancy.Occupancy : 0;
         }
 
@@ -114,8 +115,8 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoomInventory(RoomType room, int quantity)
         {
-            IEnumerable<RoomOccupancy> roomOccupancies =
-                context.RoomOccupancies.Where(ro => ro.RoomType == room).AsEnumerable();
+            List<RoomOccupancy> roomOccupancies =
+                context.RoomOccupancies.Where(ro => ro.RoomType == room).ToList();
             int minOccupancy = int.MaxValue;
             foreach (RoomOccupancy roomOccupancy in roomOccupancies)
             {
