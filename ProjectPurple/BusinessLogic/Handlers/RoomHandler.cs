@@ -15,9 +15,12 @@ namespace BusinessLogic.Handlers
         /// list of RoomType that are available during given date
         /// </summary>
         IRoomRepository roomRepository;
+        IReservationRepository reservationRepository;
+
         public RoomHandler()
         {
             roomRepository = new RoomRepository(new HotelDataModelContainer());
+            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
 
         /// <summary>
@@ -216,6 +219,71 @@ namespace BusinessLogic.Handlers
         bool InsertPictureUrl(ROOM_TYPE type, string url)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Update room inventory quantity. Will first validate the new quantity
+        /// by chekcing the minimum occupancy of the specific room type: if the
+        /// new quantity value is invalid, it will throw ArgumentOutOfRangeException
+        /// </summary>
+        /// <param name="room">room type</param>
+        /// <param name="quantity">new value of inventory quantity</param>
+        public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
+        {
+            List<RoomOccupancy> roomOccupancies =
+                new List<RoomOccupancy>(roomRepository.getRoomOccupanciesByRoomType(type));
+            int minOccupancy = int.MaxValue;
+            foreach (RoomOccupancy roomOccupancy in roomOccupancies)
+            {
+                minOccupancy = Math.Min(roomOccupancy.Occupancy, minOccupancy);
+            }
+            if (quantity > minOccupancy)
+            {
+                RoomType room = roomRepository.getRoomType(type);
+                room.Inventory = quantity;
+                roomRepository.UpdateRoom(room);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(
+                    "new room inventory cannot be smaller than the occupied room amount");
+            }
+        }
+
+        /// <summary>
+        /// Check in a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the date</param>
+        /// <param name="date">check in date</param>
+        public void CheckIn(Guid confirmationNumber, DateTime date)
+        {
+            Reservation reservation =
+                reservationRepository.getReservationByConfirmNum(confirmationNumber);
+            if (reservation != null)
+            {
+                while(date.CompareTo(reservation.endDate) < 0)
+                {
+                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, -1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check out a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the reservation</param>
+        /// <param name="date">check out date</param>
+        public void CheckOut(Guid confirmationNumber, DateTime date)
+        {
+            Reservation reservation =
+                reservationRepository.getReservationByConfirmNum(confirmationNumber);
+            if (reservation != null)
+            {
+                while(date.CompareTo(reservation.endDate) < 0)
+                {
+                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, +1);
+                }
+            }
         }
     }
 }

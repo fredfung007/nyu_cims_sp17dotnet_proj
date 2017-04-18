@@ -14,10 +14,8 @@ namespace DataAccessLayer.Repositories
         void UpdateRoom(RoomType room);
         
         // room inventory
-        void UpdateRoomInventory(RoomType room, int quantity);
         void UpdateRoomOccupancy(RoomOccupancy roomOccupancy);
-        void CheckIn(RoomType room, DateTime date);
-        void CheckOut(RoomType room, DateTime date);
+        IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomType(ROOM_TYPE type);
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);

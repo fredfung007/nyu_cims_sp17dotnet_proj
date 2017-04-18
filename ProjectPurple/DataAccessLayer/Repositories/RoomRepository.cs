@@ -44,17 +44,6 @@ namespace DataAccessLayer.Repositories
             return context.RoomTypes.ToList();
         }
 
-        public void CheckIn(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, -1);
-        }
-
-        public void CheckOut(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, 1);
-        }
-
-
         public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
         {
             // check if record exists
@@ -63,36 +52,20 @@ namespace DataAccessLayer.Repositories
             if (roomOccupancy != null)
             {
                 // update the existing RoomOccupancy record
-                int newOccupancy = roomOccupancy.Occupancy + quantity;
-                if (newOccupancy >= 0 && newOccupancy <= room.Inventory)
-                {
-                    roomOccupancy.Occupancy = newOccupancy;
-                    UpdateRoomOccupancy(roomOccupancy);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("larger than the inventory or smaller than 0");
-                }
+                roomOccupancy.Occupancy += quantity;
+                UpdateRoomOccupancy(roomOccupancy);
             }
             else
             {
-                int newOccupancy = room.Inventory + quantity;
-                if (newOccupancy >= 0 && newOccupancy <= room.Inventory)
+                // create new and add it into RoomOccupancies
+                roomOccupancy = new RoomOccupancy
                 {
-                    // create new and add it into RoomOccupancies
-                    roomOccupancy = new RoomOccupancy
-                    {
-                        Id = Guid.NewGuid(),
-                        Date = date,
-                        Occupancy = newOccupancy,
-                        RoomType = room
-                    };
-                    context.RoomOccupancies.Add(roomOccupancy);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("larger than the inventory or smaller than 0");
-                }
+                    Id = Guid.NewGuid(),
+                    Date = date,
+                    Occupancy = room.Inventory + quantity,
+                    RoomType = room
+                };
+                context.RoomOccupancies.Add(roomOccupancy);
             }
         }
 
@@ -113,30 +86,16 @@ namespace DataAccessLayer.Repositories
             context.SaveChanges();
         }
 
-        public void UpdateRoomInventory(RoomType room, int quantity)
-        {
-            List<RoomOccupancy> roomOccupancies =
-                context.RoomOccupancies.Where(ro => ro.RoomType == room).ToList();
-            int minOccupancy = int.MaxValue;
-            foreach (RoomOccupancy roomOccupancy in roomOccupancies)
-            {
-                minOccupancy = Math.Min(roomOccupancy.Occupancy, minOccupancy);
-            }
-            if (quantity > minOccupancy)
-            {
-                room.Inventory = quantity;
-                UpdateRoom(room);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(
-                    "new room inventory cannot be smaller than the occupied room amount");
-            }
-        }
-
         public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
             context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        public IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomType(ROOM_TYPE type)
+        {
+            List<RoomOccupancy> roomOccupancies =
+                context.RoomOccupancies.Where(ro => ro.RoomType.Type == type).ToList();
+            return roomOccupancies;
         }
 
         #region IDisposable Support
