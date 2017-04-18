@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessLogic.Handlers
@@ -14,7 +15,7 @@ namespace BusinessLogic.Handlers
         /// Find all upcoming reservations for the user
         /// </summary>
         /// <returns>Upcoming reservations for the user.</returns>
-        IEnumerable<Reservation> findUpcomingReservations();
+        IEnumerable<Reservation> findUpcomingReservations(DateTime date);
 
         /// <summary>
         /// Calculate the loyalty program progress information of the user.

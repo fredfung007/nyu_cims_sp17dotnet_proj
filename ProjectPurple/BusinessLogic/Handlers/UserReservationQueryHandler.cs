@@ -22,13 +22,13 @@ namespace BusinessLogic.Handlers
             throw new NotImplementedException("TODO: Add Implementation for loyalty program.");
         }
 
-        public IEnumerable<Reservation> findUpcomingReservations()
+        public IEnumerable<Reservation> findUpcomingReservations(DateTime date)
         {
             IEnumerable<Reservation> reservations = reservationRepository.getReservationsByUserId(user.Username);
             List<Reservation> upcomingReservations = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.endDate.Date > DateTime.Now)
+                if (reservation.endDate.Date.CompareTo(date) > 0)
                 {
                     upcomingReservations.Add(reservation);
                 }
