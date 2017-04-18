@@ -309,7 +309,7 @@ namespace BusinessLogic.Handlers
             User user = reservation.User;
             DateTime checkInDate = (DateTime)reservation.checkInDate;
 
-            if (user.LoyaltyYear.Year == today.Year)
+            if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
             {
                 // Checkout date is the same year as the loyalty program
                 stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
@@ -318,7 +318,7 @@ namespace BusinessLogic.Handlers
             else
             {
                 // Checkout date is a new year
-                DateTime newYear = new DateTime(today.Year, 1, 1); 
+                DateTime newYear = new DateTime(today.Year, 1, 1);
                 stayLength = (today - newYear).Days;
                 reservation.User.LoyaltyProgress = stayLength;
                 reservation.User.LoyaltyYear = newYear;
