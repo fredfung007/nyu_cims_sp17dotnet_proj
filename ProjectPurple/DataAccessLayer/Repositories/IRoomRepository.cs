@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
@@ -19,7 +15,7 @@ namespace DataAccessLayer.Repositories
         
         // room inventory
         void UpdateRoomInventory(RoomType room, int quantity);
-
+        void UpdateRoomOccupancy(RoomOccupancy roomOccupancy);
         void CheckIn(RoomType room, DateTime date);
         void CheckOut(RoomType room, DateTime date);
 

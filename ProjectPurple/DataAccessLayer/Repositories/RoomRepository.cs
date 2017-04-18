@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
@@ -19,37 +16,32 @@ namespace DataAccessLayer.Repositories
 
         public void InsertRoom(RoomType room)
         {
-            throw new NotImplementedException();
+            context.RoomTypes.Add(room);
         }
 
-        public void DeleteRoom(Guid Id)
+        public void DeleteRoom(Guid confirmationNumber)
         {
-            throw new NotImplementedException();
+            context.RoomTypes.Remove(context.RoomTypes.Find(confirmationNumber));
         }
 
         public void UpdateRoom(RoomType room)
         {
-            throw new NotImplementedException();
+            context.Entry(room).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public RoomType getRoomType(Guid Id)
+        public RoomType getRoomType(Guid confirmationNumber)
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.Find(confirmationNumber);
         }
 
         public RoomType getRoomType(ROOM_TYPE type)
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.Where(room => room.Type == type).First();
         }
 
         public IEnumerable<RoomType> getRoomTypes()
         {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateRoomInventory(RoomType room, int quantity)
-        {
-            throw new NotImplementedException();
+            return context.RoomTypes.AsEnumerable();
         }
 
         public void CheckIn(RoomType room, DateTime date)
@@ -65,22 +57,54 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
         {
-            throw new NotImplementedException();
+            // check if record exists
+            RoomOccupancy roomOccupancy =
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).First();
+            if (roomOccupancy != null)
+            {
+                // update the existing RoomOccupancy record
+                roomOccupancy.Occupancy += quantity;
+                UpdateRoomOccupancy(roomOccupancy);
+            }
+            else
+            {
+                // create new and add it into RoomOccupancies
+                roomOccupancy = new RoomOccupancy {
+                    Id = Guid.NewGuid(),
+                    Date = date,
+                    Occupancy = room.Inventory += quantity,
+                    RoomType = room
+                };
+                context.RoomOccupancies.Add(roomOccupancy);
+            }
         }
 
         public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
-            throw new NotImplementedException();
+            RoomOccupancy roomOccupancy =
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).First();
+            return roomOccupancy != null ? roomOccupancy.Occupancy : 0;
         }
 
         public int GetRoomTotalAmount(RoomType room)
         {
-            throw new NotImplementedException();
+            return room.Inventory;
         }
 
         public void save()
         {
             context.SaveChanges();
+        }
+
+        void UpdateRoomInventory(RoomType room, int quantity)
+        {
+            room.Inventory = quantity;
+            UpdateRoom(room);
+        }
+
+        void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
+        {
+            context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
         }
 
         #region IDisposable Support
