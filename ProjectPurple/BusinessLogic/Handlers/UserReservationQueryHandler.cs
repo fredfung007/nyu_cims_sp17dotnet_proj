@@ -5,11 +5,11 @@ using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
-    class UserReservationQueryHandler : IUserReservationQueryHandler
+    public class UserReservationQueryHandler : IUserReservationQueryHandler
     {
         private IReservationRepository reservationRepository;
-        private User user;
-        UserReservationQueryHandler(string username)
+        private User user { get; }
+        public UserReservationQueryHandler(string username)
         {
             reservationRepository = new ReservationRepository(new HotelDataModelContainer());
             user = new AuthRepository(new HotelDataModelContainer()).getUser(username);
