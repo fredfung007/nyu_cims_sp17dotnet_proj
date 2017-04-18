@@ -231,25 +231,22 @@ namespace BusinessLogic.Handlers
         /// <param name="quantity">new value of inventory quantity</param>
         public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
-            List<RoomOccupancy> roomOccupancies =
-                new List<RoomOccupancy>(roomRepository.getRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today));
-            int maxOccupancy = int.MinValue;
-            foreach (RoomOccupancy roomOccupancy in roomOccupancies)
+            RoomType room = roomRepository.getRoomType(type);
+            int currentQuantity = roomRepository.GetRoomTotalAmount(room);
+
+            if (quantity < currentQuantity)
             {
-                maxOccupancy = Math.Max(roomOccupancy.Occupancy, maxOccupancy);
+                int maxOccupancy = roomRepository.getMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today);
+                if (maxOccupancy > quantity)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        "new room inventory cannot be smaller than the occupied room amount");
+                }
             }
-            if (quantity >= maxOccupancy)
-            {
-                RoomType room = roomRepository.getRoomType(type);
-                room.Inventory = quantity;
-                roomRepository.UpdateRoom(room);
-                roomRepository.save();
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(
-                    "new room inventory cannot be smaller than the occupied room amount");
-            }
+
+            room.Inventory = quantity;
+            roomRepository.UpdateRoom(room);
+            roomRepository.save();
         }
 
         /// <summary>

@@ -104,6 +104,12 @@ namespace DataAccessLayer.Repositories
             return roomOccupancies;
         }
 
+        public int getMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        {
+            return context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
+        }
+
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
