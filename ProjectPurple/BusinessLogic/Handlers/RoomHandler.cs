@@ -26,7 +26,7 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// Return true if the RoomType is available during [start, end).
         /// </summary>
-        /// <param name="r">RoomType instance</param>
+        /// <param name="room">RoomType instance</param>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns></returns>
