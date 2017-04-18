@@ -19,10 +19,6 @@ namespace DataAccessLayer.Repositories
         {
             context.RoomTypes.Add(room);
         }
-        RoomType getRoomTypeByEnum(Constants.ROOM_TYPE type)
-        {
-            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
-        }
 
         public void DeleteRoom(Guid Id)
         {
