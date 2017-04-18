@@ -9,7 +9,7 @@ namespace BusinessLogic.Handlers
     /// <summary>
     /// A handler class for room inventory management, price query, availability check
     /// </summary>
-    class RoomHandler
+    public class RoomHandler
     {
         /// <summary>
         /// list of RoomType that are available during given date
@@ -155,7 +155,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>number of rooms</returns>
-        int GetRooomInventory(ROOM_TYPE type)
+        public int GetRooomInventory(ROOM_TYPE type)
         {
             return roomRepository.getRoomType(type).Inventory;
         }
@@ -165,7 +165,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>description string</returns>
-        string GetRoomDescription(ROOM_TYPE type)
+        public string GetRoomDescription(ROOM_TYPE type)
         {
             return roomRepository.getRoomType(type).Description;
         }
@@ -176,7 +176,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="description">Description string</param>
         /// <returns>true if succeeded</returns>
-        void UpdateRoomDescription(ROOM_TYPE type, string description)
+        public void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
             RoomType room = roomRepository.getRoomType(type);
             room.Description = description;
@@ -189,7 +189,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>Ameneties string</returns>
-        string GetRoomAmeneties(ROOM_TYPE type)
+        public string GetRoomAmeneties(ROOM_TYPE type)
         {
             return roomRepository.getRoomType(type).Ameneties;
         }
@@ -199,7 +199,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>url list</returns>
-        List<string> GetRoomPictureUrls(ROOM_TYPE type)
+        public List<string> GetRoomPictureUrls(ROOM_TYPE type)
         {
             //TODO
             return null;
@@ -211,7 +211,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="urls">Url List</param>
         /// <returns>true if succeeded</returns>
-        bool UpdateRoomPictureUrls(ROOM_TYPE type, List<string> urls)
+        public bool UpdateRoomPictureUrls(ROOM_TYPE type, List<string> urls)
         {
             return false;
         }
@@ -222,7 +222,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="url">picture url</param>
         /// <returns>true if succeded</returns>
-        bool InsertPictureUrl(ROOM_TYPE type, string url)
+        public bool InsertPictureUrl(ROOM_TYPE type, string url)
         {
             return false;
         }
