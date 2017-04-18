@@ -22,7 +22,7 @@ namespace DataAccessLayer
     
         public string Username { get; set; }
         public string HashedPassword { get; set; }
-        public string isRegistered { get; set; }
+        public bool isRegistered { get; set; }
         public string LoyalProgramNumber { get; set; }
     
         public virtual Profile Profile { get; set; }

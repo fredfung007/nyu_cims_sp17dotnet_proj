@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/17/2017 23:50:24
--- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+-- Date Created: 04/18/2017 14:50:06
+-- Generated from EDMX file: D:\repository\sp17net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -94,8 +94,8 @@ GO
 CREATE TABLE [dbo].[Users] (
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL,
-    [isRegistered] nvarchar(max)  NOT NULL,
-    [LoyalProgramNumber] nvarchar(max)  NOT NULL
+    [isRegistered] bit  NOT NULL,
+    [LoyalProgramNumber] nvarchar(max)  NULL
 );
 GO
 

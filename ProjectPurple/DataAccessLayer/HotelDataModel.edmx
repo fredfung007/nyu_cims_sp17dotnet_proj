@@ -64,8 +64,8 @@
     </Key>
     <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="isRegistered" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="LoyalProgramNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isRegistered" Type="bit" Nullable="false" />
+    <Property Name="LoyalProgramNumber" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Addresses">
     <Key>
@@ -343,9 +343,9 @@
           </Key>
           <Property Name="Username" Type="String" Nullable="false" />
           <Property Name="HashedPassword" Type="String" Nullable="false" />
-          <Property Name="isRegistered" Type="String" Nullable="false" />
+          <Property Name="isRegistered" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Profile" Relationship="HotelDataModel.UserProfile" FromRole="User" ToRole="Profile" />
-          <Property Name="LoyalProgramNumber" Type="String" Nullable="false" />
+          <Property Name="LoyalProgramNumber" Type="String" Nullable="true" />
           <NavigationProperty Name="Reservations" Relationship="HotelDataModel.UserReservation" FromRole="User" ToRole="Reservation" />
         </EntityType>
         <EntityType Name="Address">
