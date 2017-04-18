@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer.Constants;
+using System.Data.Entity;
 
 namespace DataAccessLayer.Repositories
 {
