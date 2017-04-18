@@ -37,11 +37,11 @@ public partial class User
 
 
 
+    public virtual Profile Profile { get; set; }
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Reservation> Reservations { get; set; }
-
-    public virtual Profile Profile { get; set; }
 
 }
 
