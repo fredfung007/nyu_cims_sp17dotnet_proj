@@ -12,9 +12,13 @@ namespace BusinessLogic.Handlers
     class ReservationHandler
     {
         IReservationRepository reservationRepository;
+        IUserReservationQueryHandler userReservationQueryHandler;
         public ReservationHandler()
         {
+            // username should come from cookies
+            string username = "";
             reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
         /// <summary>
@@ -31,6 +35,7 @@ namespace BusinessLogic.Handlers
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
+                User = userReservationQueryHandler.user,
                 startDate = start,
                 endDate = end,
                 Guests = guests,
