@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
 {
     public interface IRoomRepository : IDisposable
     {
         RoomType getRoomType(Guid Id);
+        RoomType getRoomType(ROOM_TYPE type);
         IEnumerable<RoomType> getRoomTypes();
         void InsertRoom(RoomType room);
         void DeleteRoom(Guid Id);
