@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
@@ -17,30 +16,75 @@ namespace BusinessLogic.Handlers
         {
             reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
-        Guid MakeReservation(int userId, ROOM_TYPE type, DateTime start, DateTime end)
+
+        /// <summary>
+        /// Create a new Reservation.
+        /// !!!!!!!! Not set User yet !!!!!!!
+        /// </summary>
+        /// <param name="type">ROOM_TYPE</param>
+        /// <param name="start">check-in date</param>
+        /// <param name="end">check-out date</param>
+        /// <param name="guests">list of guests attending</param>
+        /// <returns></returns>
+        Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
         {
-            return Guid.Empty;
-        }
-        bool CancelReservation(int userId, Guid confirmationNumber)
-        {
-            return false;
+            Reservation reservation = new Reservation
+            {
+                Id = Guid.NewGuid(),
+                startDate = start,
+                endDate = end,
+                Guests = guests,
+                isPaid = false,
+                DailyPrices = new List<DailyPrice>()
+            };
+
+            List<int> prices = (new RoomHandler()).GetRoomPriceList(type, start, end);
+            foreach (int price in prices)
+            {
+                DailyPrice dailyPrice = new DailyPrice { Id = reservation.Id, Date = start, BillingPrice = price};
+                start.AddDays(1);
+                reservation.DailyPrices.Add(dailyPrice);
+            }
+
+            reservationRepository.InsertReservation(reservation);
+            return reservation.Id;
         }
 
-        Reservation GetReservation(Guid confirmationNumber)
+        void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
-
-
-            return reservationRepository.getReservationsByConfirmNum(confirmationNumber);
+            Reservation reservation = reservationRepository.getReservation(confirmationNumber);
+            if (reservation != null)
+            {
+                reservation.BillingInfo = billingInfo;
+                reservation.isPaid = true;
+            }
         }
 
-        List<Reservation> GetUpComingReservations(Guest customer)
+        /// <summary>
+        /// Cacnel a reservation by its creator's username and confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the reservation</param>
+        /// <returns>true if successfully cancelled</returns>
+        void CancelReservation(Guid confirmationNumber)
         {
-            return null;
+            reservationRepository.DeleteReservation(confirmationNumber);
         }
 
-        bool FillGuestInfo(Reservation reservation, List<Guest> customers)
+        // obsolete
+        //Reservation GetReservation(Guid confirmationNumber)
+        //{
+        //    return null;
+        //}
+
+        List<Reservation> GetUpComingReservations(User user)
         {
-            return false;
+            return reservationRepository.getReservationsByUserId(user.username);
         }
+
+        // obsolete
+        //bool FillGuestInfo(Reservation reservation, List<Guest> customers)
+        //{
+        //    return false;
+        //}
     }
 }

@@ -11,7 +11,7 @@ namespace DataAccessLayer.Repositories
     public interface IRoomRepository : IDisposable
     {
         RoomType getRoomType(Guid Id);
-        RoomType getRoomTypeByEnum(Constants.ROOM_TYPE type);
+        RoomType getRoomType(ROOM_TYPE type);
         IEnumerable<RoomType> getRoomTypes();
         void InsertRoom(RoomType room);
         void DeleteRoom(Guid Id);

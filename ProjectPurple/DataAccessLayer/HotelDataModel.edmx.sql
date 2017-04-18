@@ -2,8 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
+<<<<<<< HEAD
 -- Date Created: 04/17/2017 15:45:40
 -- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+=======
+-- Date Created: 04/17/2017 16:18:09
+-- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+>>>>>>> develop
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,9 +22,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_ReservationUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationUser];
-GO
 IF OBJECT_ID(N'[dbo].[FK_BillingInfoPhoneNumber]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Profiles] DROP CONSTRAINT [FK_BillingInfoPhoneNumber];
 GO
@@ -122,9 +124,13 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
+<<<<<<< HEAD
     [User_Username] nvarchar(max)  NOT NULL,
+=======
+>>>>>>> develop
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
-    [RoomType_Id] uniqueidentifier  NOT NULL
+    [RoomType_Id] uniqueidentifier  NOT NULL,
+    [User_Username] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -266,6 +272,7 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
+<<<<<<< HEAD
 -- Creating foreign key on [User_Username] in table 'Reservations'
 ALTER TABLE [dbo].[Reservations]
 ADD CONSTRAINT [FK_ReservationUser]
@@ -281,6 +288,8 @@ ON [dbo].[Reservations]
     ([User_Username]);
 GO
 
+=======
+>>>>>>> develop
 -- Creating foreign key on [PhoneNumber_Id] in table 'Profiles'
 ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoPhoneNumber]
@@ -414,6 +423,21 @@ GO
 CREATE INDEX [IX_FK_RoomTypeRoomOccupancy]
 ON [dbo].[RoomOccupancies]
     ([RoomType_Id]);
+GO
+
+-- Creating foreign key on [User_Username] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_UserReservation]
+    FOREIGN KEY ([User_Username])
+    REFERENCES [dbo].[Users]
+        ([Username])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserReservation'
+CREATE INDEX [IX_FK_UserReservation]
+ON [dbo].[Reservations]
+    ([User_Username]);
 GO
 
 -- --------------------------------------------------

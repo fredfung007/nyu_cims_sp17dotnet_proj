@@ -29,7 +29,7 @@
         <EntityTypeShape EntityType="HotelDataModel.Staff" Width="1.5" PointX="5.25" PointY="1.125" />
         <EntityTypeShape EntityType="HotelDataModel.Address" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="HotelDataModel.Reservation" Width="1.5" PointX="0.75" PointY="0.875" />
-        <AssociationConnector Association="HotelDataModel.ReservationUser" />
+        <AssociationConnector Association="HotelDataModel.UserReservation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

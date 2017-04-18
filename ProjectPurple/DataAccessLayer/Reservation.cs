@@ -34,4 +34,30 @@ namespace DataAccessLayer
         public virtual ICollection<Guest> Guests { get; set; }
         public virtual RoomType RoomType { get; set; }
     }
+
+
+    public System.Guid Id { get; set; }
+
+    public System.DateTime startDate { get; set; }
+
+    public System.DateTime endDate { get; set; }
+
+    public bool isPaid { get; set; }
+
+
+
+    public virtual Profile BillingInfo { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<DailyPrice> DailyPrices { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Guest> Guests { get; set; }
+
+    public virtual RoomType RoomType { get; set; }
+
+    public virtual User User { get; set; }
+
 }

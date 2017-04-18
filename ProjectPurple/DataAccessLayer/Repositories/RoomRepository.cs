@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
+using System.Text;
+using System.Threading.Tasks;
+using DataAccessLayer;
 using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
@@ -35,6 +37,11 @@ namespace DataAccessLayer.Repositories
         }
 
         public RoomType getRoomType(Guid Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RoomType getRoomType(ROOM_TYPE type)
         {
             throw new NotImplementedException();
         }
