@@ -258,38 +258,90 @@ namespace BusinessLogic.Handlers
         /// Check in a reservation on specific date by its confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the date</param>
-        /// <param name="date">check in date</param>
-        public void CheckIn(Guid confirmationNumber, DateTime date)
+        /// <param name="today">check in date</param>
+        public void CheckIn(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation =
                 reservationRepository.getReservation(confirmationNumber);
-            if (reservation != null)
+
+            if (reservation == null || reservation.startDate > today || reservation.endDate < today)
             {
-                while (date.CompareTo(reservation.endDate) < 0)
-                {
-                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, -1);
-                }
-                roomRepository.save();
+                return;
             }
+
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.endDate) < 0)
+            {
+                roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                checkDate.AddDays(1);
+            }
+
+            reservation.checkInDate = today;
+            reservationRepository.UpdateReservation(reservation);
+            reservationRepository.save();
         }
 
         /// <summary>
         /// Check out a reservation on specific date by its confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
-        /// <param name="date">check out date</param>
-        public void CheckOut(Guid confirmationNumber, DateTime date)
+        /// <param name="today">check out date</param>
+        public void CheckOut(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation =
                 reservationRepository.getReservation(confirmationNumber);
-            if (reservation != null)
+
+            if (reservation == null || reservation.checkInDate == null || reservation.checkInDate > today)
             {
-                while (date.CompareTo(reservation.endDate) < 0)
-                {
-                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, +1);
-                }
-                roomRepository.save();
+                return;
             }
+
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.endDate) < 0)
+            {
+                roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                checkDate.AddDays(1);
+            }
+            roomRepository.save();
+
+            // loyalty program
+            int stayLength = 0;
+            User user = reservation.User;
+            DateTime checkInDate = (DateTime)reservation.checkInDate;
+
+            if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
+            {
+                // Checkout date is the same year as the loyalty program
+                stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
+                reservation.User.LoyaltyProgress += stayLength;
+            }
+            else
+            {
+                // Checkout date is a new year
+                DateTime newYear = new DateTime(today.Year, 1, 1);
+                stayLength = (today - newYear).Days;
+                reservation.User.LoyaltyProgress = stayLength;
+                reservation.User.LoyaltyYear = newYear;
+            }
+
+            reservation.checkOutDate = today;
+            reservationRepository.UpdateReservation(reservation);
+            reservationRepository.save();
+        }
+
+        IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
+        {
+            return reservationRepository.GetReservationsByEndDate(today);
+        }
+
+        IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
+        {
+            return reservationRepository.GetReservationsByStartDate(today);
+        }
+
+        IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
+        {
+            return reservationRepository.GetReservationsCheckedInBeforeDate(today);
         }
     }
 }

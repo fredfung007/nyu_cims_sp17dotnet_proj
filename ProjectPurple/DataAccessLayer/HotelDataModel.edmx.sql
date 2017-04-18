@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2017 15:31:21
+-- Date Created: 04/18/2017 16:21:22
 -- Generated from EDMX file: D:\repository\sp17net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -95,7 +95,9 @@ CREATE TABLE [dbo].[Users] (
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL,
     [isRegistered] bit  NOT NULL,
-    [LoyalProgramNumber] nvarchar(max)  NULL
+    [LoyalProgramNumber] nvarchar(max)  NULL,
+    [LoyaltyProgress] int  NULL,
+    [LoyaltyYear] datetime  NULL
 );
 GO
 
@@ -123,6 +125,8 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
+    [checkInDate] datetime  NULL,
+    [checkOutDate] datetime  NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL,
     [User_Username] nvarchar(max)  NOT NULL
