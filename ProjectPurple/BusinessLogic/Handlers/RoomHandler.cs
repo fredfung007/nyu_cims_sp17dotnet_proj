@@ -35,7 +35,7 @@ namespace BusinessLogic.Handlers
             int totalAmount = roomRepository.GetRoomTotalAmount(room);
             DateTime checkDate = start;
 
-            while (checkDate.CompareTo(end) < 1)
+            while (checkDate.CompareTo(end) < 0)
             {
                 if (totalAmount < roomRepository.GetRoomReservationAmount(room, checkDate) + 1)
                 {
