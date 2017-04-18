@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2017 16:21:22
+-- Date Created: 04/18/2017 17:18:04
 -- Generated from EDMX file: D:\repository\sp17net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
@@ -184,7 +184,8 @@ CREATE TABLE [dbo].[RoomTypes] (
     [Inventory] int  NOT NULL,
     [Type] int  NOT NULL,
     [Ameneties] nvarchar(max)  NOT NULL,
-    [Description] nvarchar(max)  NOT NULL
+    [Description] nvarchar(max)  NOT NULL,
+    [ImageUrl] nvarchar(max)  NULL
 );
 GO
 
