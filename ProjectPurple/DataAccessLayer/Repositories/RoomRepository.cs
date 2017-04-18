@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Constants;
 using System.Data.Entity;
 
@@ -29,18 +26,17 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteRoom(Guid Id)
         {
-            RoomType toDelete = context.RoomTypes.Where(room => room.Id == Id).FirstOrDefault();
-            context.RoomTypes.Remove(toDelete);
+            context.RoomTypes.Remove(context.RoomTypes.Find(Id));
         }
 
         public void UpdateRoom(RoomType room)
         {
-            context.Entry(room).State = EntityState.Modified;
+            context.Entry(room).State = System.Data.Entity.EntityState.Modified;
         }
 
         public RoomType getRoomType(Guid Id)
         {
-            return context.RoomTypes.Where(room => room.Id == Id).FirstOrDefault();
+            return context.RoomTypes.Find(Id);
         }
 
         public RoomType getRoomType(ROOM_TYPE type)
@@ -53,44 +49,41 @@ namespace DataAccessLayer.Repositories
             return context.RoomTypes.ToList();
         }
 
-        public void CheckIn(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, -1);
-        }
-
-        public void CheckOut(RoomType room, DateTime date)
-        {
-            UpdateRoomUsage(room, date, 1);
-        }
-
         public void UpdateRoomUsage(RoomType room, DateTime date, int quantity)
         {
-            throw new NotImplementedException();
+            // check if record exists
+            RoomOccupancy roomOccupancy =
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
+            if (roomOccupancy != null)
+            {
+                // update the existing RoomOccupancy record
+                roomOccupancy.Occupancy += quantity;
+                UpdateRoomOccupancy(roomOccupancy);
+            }
+            else
+            {
+                // create new and add it into RoomOccupancies
+                roomOccupancy = new RoomOccupancy
+                {
+                    Id = Guid.NewGuid(),
+                    Date = date,
+                    Occupancy = room.Inventory + quantity,
+                    RoomType = room
+                };
+                context.RoomOccupancies.Add(roomOccupancy);
+            }
         }
 
-        public int GetRoomReservationAmount(RoomType type, DateTime date)
+        public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
-            return context.Reservations.Where(reservation => reservation.startDate <= date
-                                                        && reservation.endDate >= date).Count();
+            RoomOccupancy roomOccupancy =
+                context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
+            return roomOccupancy != null ? roomOccupancy.Occupancy : 0;
         }
 
         public int GetRoomTotalAmount(RoomType room)
         {
-            return context.RoomTypes.Find(room).Inventory;
-        }
-
-        public int GetRoomReservationAmount(ROOM_TYPE type, DateTime date)
-        {
-
-            RoomOccupancy ro = context.RoomOccupancies
-                    .Where(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType.Type == type).FirstOrDefault();
-
-            return ro != null ? ro.Occupancy : 0;
-        }
-
-        public int GetRoomTotalAmount(ROOM_TYPE type)
-        {
-            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault().Inventory;
+            return room.Inventory;
         }
 
         public void save()
@@ -98,20 +91,29 @@ namespace DataAccessLayer.Repositories
             context.SaveChanges();
         }
 
-        public void UpdateRoomInventory(Constants.ROOM_TYPE type, int quantity)
+        public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
-            RoomType newRoom = context.RoomTypes.Where(room => room.Type == type)
-                        .FirstOrDefault();
-
-            if (newRoom == null)
-            {
-                return;
-            }
-
-            newRoom.Inventory = quantity;
-
-            context.Entry(newRoom).State = EntityState.Modified;
+            context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
         }
+
+        /// <summary>
+        /// Return all RoomOccupancies including and after the date
+        /// </summary>
+        /// <param name="type">ROOM_TYPE</param>
+        /// <param name="date">date query starts</param>
+        /// <returns></returns>
+        public IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        {
+            List<RoomOccupancy> roomOccupancies =
+                context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
+            return roomOccupancies;
+        }
+
+        public int getMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        {
+            return context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
+        }
+
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
