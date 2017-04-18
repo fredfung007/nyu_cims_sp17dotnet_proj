@@ -32,18 +32,18 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         private bool IsAvailable(RoomType room, DateTime start, DateTime end)
         {
-            bool available = true;
-            while (start.CompareTo(end) < 0)
+            int totalAmount = roomRepository.GetRoomTotalAmount(room);
+            DateTime checkDate = start;
+
+            while (checkDate.CompareTo(end) < 0)
             {
-                available = available && 
-                    (roomRepository.GetRoomTotalAmount(room) > roomRepository.GetRoomReservationAmount(room, start));
-                if (!available)
+                if (totalAmount < roomRepository.GetRoomReservationAmount(room, checkDate) + 1)
                 {
-                    break;
+                    return false;
                 }
-                start = start.AddDays(1);
+                checkDate = checkDate.AddDays(1);
             }
-            return available;
+            return true;
         }
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace BusinessLogic.Handlers
         public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
             List<ROOM_TYPE> roomList = new List<ROOM_TYPE>();
-            foreach(RoomType r in roomRepository.getRoomTypes())
+            foreach (RoomType room in roomRepository.getRoomTypes())
             {
-                if(IsAvailable(r, start, end))
+                if (IsAvailable(room, start, end))
                 {
-                    roomList.Add(r.Type);
+                    roomList.Add(room.Type);
                 }
             }
             return roomList;
@@ -94,7 +94,7 @@ namespace BusinessLogic.Handlers
         {
             // compute price multipler
             double rate = 1.0 + GetHotelOccupancy(date);
-            return (int)Math.Ceiling(roomRepository.getRoomType(type).BaseRate * rate);
+            return (int) Math.Ceiling(roomRepository.getRoomType(type).BaseRate * rate);
         }
 
         /// <summary>
@@ -119,7 +119,8 @@ namespace BusinessLogic.Handlers
             int totalQuantity = 0;
             int totalOccupation = 0;
             IEnumerable<RoomType> types = roomRepository.getRoomTypes();
-            foreach(RoomType room in types)
+
+            foreach (RoomType room in types)
             {
                 totalQuantity += roomRepository.GetRoomTotalAmount(room);
                 totalOccupation += roomRepository.GetRoomReservationAmount(room, date);
@@ -177,7 +178,10 @@ namespace BusinessLogic.Handlers
         /// <returns>true if succeeded</returns>
         void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
-
+            RoomType room = roomRepository.getRoomType(type);
+            room.Description = description;
+            roomRepository.UpdateRoom(room);
+            roomRepository.save();
         }
 
         /// <summary>
@@ -197,6 +201,7 @@ namespace BusinessLogic.Handlers
         /// <returns>url list</returns>
         List<string> GetRoomPictureUrls(ROOM_TYPE type)
         {
+            //TODO
             return null;
         }
 
