@@ -238,7 +238,7 @@ namespace BusinessLogic.Handlers
             {
                 maxOccupancy = Math.Max(roomOccupancy.Occupancy, maxOccupancy);
             }
-            if (quantity > maxOccupancy)
+            if (quantity >= maxOccupancy)
             {
                 RoomType room = roomRepository.getRoomType(type);
                 room.Inventory = quantity;
