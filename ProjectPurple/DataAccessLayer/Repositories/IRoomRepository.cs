@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
@@ -18,10 +14,9 @@ namespace DataAccessLayer.Repositories
         void UpdateRoom(RoomType room);
         
         // room inventory
-        void UpdateRoomInventory(RoomType room, int quantity);
-
-        void CheckIn(RoomType room, DateTime date);
-        void CheckOut(RoomType room, DateTime date);
+        void UpdateRoomOccupancy(RoomOccupancy roomOccupancy);
+        IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
+        int getMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);

@@ -47,6 +47,7 @@ namespace BusinessLogic.Handlers
             }
 
             reservationRepository.InsertReservation(reservation);
+            reservationRepository.save();
             return reservation.Id;
         }
 
@@ -58,6 +59,8 @@ namespace BusinessLogic.Handlers
                 reservation.BillingInfo = billingInfo;
                 reservation.isPaid = true;
             }
+            reservationRepository.UpdateReservation(reservation);
+            reservationRepository.save();
         }
 
         /// <summary>
@@ -68,6 +71,7 @@ namespace BusinessLogic.Handlers
         void CancelReservation(Guid confirmationNumber)
         {
             reservationRepository.DeleteReservation(confirmationNumber);
+            reservationRepository.save();
         }
 
         // obsolete

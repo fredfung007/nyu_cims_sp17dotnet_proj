@@ -43,11 +43,6 @@ namespace DataAccessLayer.Repositories
             context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public IEnumerable<Reservation> getReservationsByConfirmNum(Guid ConfirmationNumber)
-        {
-            return context.Reservations.Where(reservation => reservation.Id == ConfirmationNumber).ToList();
-        }
-
         public IEnumerable<Reservation> getReservationsByUserId(String Username)
         {
             return context.Reservations.Where(reservation => reservation.User.Username == Username).ToList();

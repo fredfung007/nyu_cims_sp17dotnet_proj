@@ -15,25 +15,28 @@ namespace BusinessLogic.Handlers
         /// list of RoomType that are available during given date
         /// </summary>
         IRoomRepository roomRepository;
+        IReservationRepository reservationRepository;
+
         public RoomHandler()
         {
             roomRepository = new RoomRepository(new HotelDataModelContainer());
+            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
         }
 
         /// <summary>
         /// Return true if the RoomType is available during [start, end).
         /// </summary>
-        /// <param name="r">RoomType instance</param>
+        /// <param name="room">RoomType instance</param>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(RoomType r, DateTime start, DateTime end)
+        private bool IsAvailable(RoomType room, DateTime start, DateTime end)
         {
             bool available = true;
-            while (start.CompareTo(end) < 1)
+            while (start.CompareTo(end) < 0)
             {
                 available = available && 
-                    (roomRepository.GetRoomTotalAmount(r) > roomRepository.GetRoomReservationAmount(r, start));
+                    (roomRepository.GetRoomTotalAmount(room) > roomRepository.GetRoomReservationAmount(room, start));
                 if (!available)
                 {
                     break;
@@ -72,7 +75,7 @@ namespace BusinessLogic.Handlers
         public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime start, DateTime end)
         {
             List<int> priceList = new List<int>();
-            while(start.CompareTo(end) < 1)
+            while(start.CompareTo(end) < 0)
             {
                 priceList.Add(GetRoomPrice(type, start));
                 start.AddDays(1);
@@ -135,15 +138,16 @@ namespace BusinessLogic.Handlers
             return roomRepository.GetRoomReservationAmount(roomRepository.getRoomType(type), date);
         }
 
-        /// <summary>
-        /// Set room inventory
-        /// </summary>
-        /// <param name="type">Room type of ROOM_TYPE</param>
-        /// <param name="amount">Room amount</param>
-        /// <returns>true if succeeded</returns>
-        void SetRoomInventory(ROOM_TYPE type, int amount)
-        {
-        }
+        // obsolete. duplicated with UpdateRoomInventory()
+        ///// <summary>
+        ///// Set room inventory
+        ///// </summary>
+        ///// <param name="type">Room type of ROOM_TYPE</param>
+        ///// <param name="amount">Room amount</param>
+        ///// <returns>true if succeeded</returns>
+        //void SetRoomInventory(ROOM_TYPE type, int amount)
+        //{
+        //}
 
         /// <summary>
         /// Get room inventory
@@ -216,6 +220,71 @@ namespace BusinessLogic.Handlers
         bool InsertPictureUrl(ROOM_TYPE type, string url)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Update room inventory quantity. Will first validate the new quantity
+        /// by chekcing the minimum occupancy of the specific room type: if the
+        /// new quantity value is invalid, it will throw ArgumentOutOfRangeException
+        /// </summary>
+        /// <param name="room">room type</param>
+        /// <param name="quantity">new value of inventory quantity</param>
+        public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
+        {
+            RoomType room = roomRepository.getRoomType(type);
+            int currentQuantity = roomRepository.GetRoomTotalAmount(room);
+
+            if (quantity < currentQuantity)
+            {
+                int maxOccupancy = roomRepository.getMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today);
+                if (maxOccupancy > quantity)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        "new room inventory cannot be smaller than the occupied room amount");
+                }
+            }
+
+            room.Inventory = quantity;
+            roomRepository.UpdateRoom(room);
+            roomRepository.save();
+        }
+
+        /// <summary>
+        /// Check in a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the date</param>
+        /// <param name="date">check in date</param>
+        public void CheckIn(Guid confirmationNumber, DateTime date)
+        {
+            Reservation reservation =
+                reservationRepository.getReservation(confirmationNumber);
+            if (reservation != null)
+            {
+                while (date.CompareTo(reservation.endDate) < 0)
+                {
+                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, -1);
+                }
+                roomRepository.save();
+            }
+        }
+
+        /// <summary>
+        /// Check out a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the reservation</param>
+        /// <param name="date">check out date</param>
+        public void CheckOut(Guid confirmationNumber, DateTime date)
+        {
+            Reservation reservation =
+                reservationRepository.getReservation(confirmationNumber);
+            if (reservation != null)
+            {
+                while (date.CompareTo(reservation.endDate) < 0)
+                {
+                    roomRepository.UpdateRoomUsage(reservation.RoomType, date, +1);
+                }
+                roomRepository.save();
+            }
         }
     }
 }
