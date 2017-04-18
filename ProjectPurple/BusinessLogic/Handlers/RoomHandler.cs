@@ -264,9 +264,11 @@ namespace BusinessLogic.Handlers
                 return;
             }
 
-            while (today.CompareTo(reservation.endDate) < 0)
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.endDate) < 0)
             {
-                roomRepository.UpdateRoomUsage(reservation.RoomType, today, -1);
+                roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                checkDate.AddDays(1);
             }
 
             reservation.checkInDate = today;
@@ -289,9 +291,11 @@ namespace BusinessLogic.Handlers
                 return;
             }
 
-            while (today.CompareTo(reservation.endDate) < 0)
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.endDate) < 0)
             {
-                roomRepository.UpdateRoomUsage(reservation.RoomType, today, +1);
+                roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                checkDate.AddDays(1);
             }
             roomRepository.save();
 
