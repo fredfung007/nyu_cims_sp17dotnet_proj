@@ -329,16 +329,31 @@ namespace BusinessLogic.Handlers
             reservationRepository.save();
         }
 
+        /// <summary>
+        /// Get all reservations that will check out today
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
         IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
         {
             return reservationRepository.GetReservationsByEndDate(today);
         }
 
+        /// <summary>
+        /// Get all reservations that will checkin toady
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
         IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
         {
             return reservationRepository.GetReservationsByStartDate(today);
         }
 
+        /// <summary>
+        /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
         IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
         {
             return reservationRepository.GetReservationsCheckedInBeforeDate(today);

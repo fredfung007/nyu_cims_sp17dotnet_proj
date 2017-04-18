@@ -55,25 +55,12 @@
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
-    <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
-    <Compile Include="obsolete\IAddressRepository.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
-    <Compile Include="BusinessLogic.cs" />
-    <Compile Include="obsolete\ICustomer.cs" />
-    <Compile Include="obsolete\IEmailRepository.cs" />
-    <Compile Include="obsolete\IPhoneNumberRepository.cs" />
-    <Compile Include="obsolete\IGuestRepository.cs" />
-    <Compile Include="obsolete\IReservationHandler.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
-    <Compile Include="obsolete\IStaffRepository.cs" />
     <Compile Include="Helpers\IStateConverter.cs" />
-    <Compile Include="obsolete\IUserRepository.cs" />
-    <Compile Include="obsolete\IReservationCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\ReservationHandler.cs" />
-    <Compile Include="Users\AnonymousUser.cs" />
-    <Compile Include="Users\RegisteredUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
@@ -88,10 +75,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Auth\" />
-    <Folder Include="Public\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
