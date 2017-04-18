@@ -63,19 +63,35 @@ namespace DataAccessLayer.Repositories
             if (roomOccupancy != null)
             {
                 // update the existing RoomOccupancy record
-                roomOccupancy.Occupancy += quantity;
-                UpdateRoomOccupancy(roomOccupancy);
+                int newOccupancy = roomOccupancy.Occupancy + quantity;
+                if (newOccupancy >= 0 && newOccupancy <= room.Inventory)
+                {
+                    UpdateRoomOccupancy(roomOccupancy);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("larger than the inventory or smaller than 0");
+                }
             }
             else
             {
-                // create new and add it into RoomOccupancies
-                roomOccupancy = new RoomOccupancy {
-                    Id = Guid.NewGuid(),
-                    Date = date,
-                    Occupancy = room.Inventory += quantity,
-                    RoomType = room
-                };
-                context.RoomOccupancies.Add(roomOccupancy);
+                int newOccupancy = room.Inventory + quantity;
+                if (newOccupancy >= 0 && newOccupancy <= room.Inventory)
+                {
+                    // create new and add it into RoomOccupancies
+                    roomOccupancy = new RoomOccupancy
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = date,
+                        Occupancy = room.Inventory += quantity,
+                        RoomType = room
+                    };
+                    context.RoomOccupancies.Add(roomOccupancy);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("larger than the inventory or smaller than 0");
+                }
             }
         }
 
@@ -96,13 +112,28 @@ namespace DataAccessLayer.Repositories
             context.SaveChanges();
         }
 
-        void UpdateRoomInventory(RoomType room, int quantity)
+        public void UpdateRoomInventory(RoomType room, int quantity)
         {
-            room.Inventory = quantity;
-            UpdateRoom(room);
+            IEnumerable<RoomOccupancy> roomOccupancies =
+                context.RoomOccupancies.Where(ro => ro.RoomType == room).AsEnumerable();
+            int minOccupancy = int.MaxValue;
+            foreach (RoomOccupancy roomOccupancy in roomOccupancies)
+            {
+                minOccupancy = Math.Min(roomOccupancy.Occupancy, minOccupancy);
+            }
+            if (quantity > minOccupancy)
+            {
+                room.Inventory = quantity;
+                UpdateRoom(room);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(
+                    "new room inventory cannot smaller than occupaied room amount");
+            }
         }
 
-        void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
+        public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
             context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
         }
