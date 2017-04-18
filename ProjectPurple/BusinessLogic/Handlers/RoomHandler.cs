@@ -138,15 +138,16 @@ namespace BusinessLogic.Handlers
             return roomRepository.GetRoomReservationAmount(roomRepository.getRoomType(type), date);
         }
 
-        /// <summary>
-        /// Set room inventory
-        /// </summary>
-        /// <param name="type">Room type of ROOM_TYPE</param>
-        /// <param name="amount">Room amount</param>
-        /// <returns>true if succeeded</returns>
-        void SetRoomInventory(ROOM_TYPE type, int amount)
-        {
-        }
+        // obsolete. duplicated with UpdateRoomInventory()
+        ///// <summary>
+        ///// Set room inventory
+        ///// </summary>
+        ///// <param name="type">Room type of ROOM_TYPE</param>
+        ///// <param name="amount">Room amount</param>
+        ///// <returns>true if succeeded</returns>
+        //void SetRoomInventory(ROOM_TYPE type, int amount)
+        //{
+        //}
 
         /// <summary>
         /// Get room inventory
@@ -242,6 +243,7 @@ namespace BusinessLogic.Handlers
                 RoomType room = roomRepository.getRoomType(type);
                 room.Inventory = quantity;
                 roomRepository.UpdateRoom(room);
+                roomRepository.save();
             }
             else
             {
@@ -265,6 +267,7 @@ namespace BusinessLogic.Handlers
                 {
                     roomRepository.UpdateRoomUsage(reservation.RoomType, date, -1);
                 }
+                roomRepository.save();
             }
         }
 
@@ -283,6 +286,7 @@ namespace BusinessLogic.Handlers
                 {
                     roomRepository.UpdateRoomUsage(reservation.RoomType, date, +1);
                 }
+                roomRepository.save();
             }
         }
     }
