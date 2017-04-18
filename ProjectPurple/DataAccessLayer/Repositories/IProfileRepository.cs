@@ -17,10 +17,15 @@ namespace DataAccessLayer.Repositories
         void DeleteProfile(Guid Id);
         void UpdateProfile(Profile profile);
 
+        [Obsolete]
         Guest getGuest(Guid Id);
+        [Obsolete]
         IEnumerable<Guest> getGuests();
+        [Obsolete]
         void InsertGuest(Guest guest);
+        [Obsolete]
         void DeleteGuest(Guid Id);
+        [Obsolete]
         void UpdateGuest(Guest guest);
 
         void save();
