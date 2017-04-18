@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="45414f87036542b0bd4419f5c07568f1" Name="BillingInfo" ZoomLevel="89" >
+        <EntityTypeShape EntityType="HotelDataModel.Address" Width="1.5" PointX="8.875" PointY="0.75" />
+        <EntityTypeShape EntityType="HotelDataModel.Email" Width="1.5" PointX="10.625" PointY="2.5" />
+        <EntityTypeShape EntityType="HotelDataModel.Profile" Width="1.5" PointX="6.5" PointY="2" />
+        <EntityTypeShape EntityType="HotelDataModel.PhoneNumber" Width="1.5" PointX="8.625" PointY="3.625" />
+        <AssociationConnector Association="HotelDataModel.BillingInfoPhoneNumber" />
+        <AssociationConnector Association="HotelDataModel.BillingInfoEmail" />
+        <AssociationConnector Association="HotelDataModel.BillingInfoAddress" />
+        </Diagram>
+      <Diagram DiagramId="049dfdf8db104f16b966a96fb74bf737" Name="Reservation" DisplayType="true" ZoomLevel="59" >
+        <EntityTypeShape EntityType="HotelDataModel.Reservation" Width="1.5" PointX="2" PointY="1.25" />
+        <EntityTypeShape EntityType="HotelDataModel.DailyPrice" Width="1.5" PointX="6" PointY="1.25" />
+        <AssociationConnector Association="HotelDataModel.ReservationDailyPrice" />
+        <EntityTypeShape EntityType="HotelDataModel.Guest" Width="1.5" PointX="4.25" PointY="4.5" />
+        <AssociationConnector Association="HotelDataModel.ReservationGuest" />
+        <EntityTypeShape EntityType="HotelDataModel.RoomType" Width="1.5" PointX="9.25" PointY="4.125" />
+        <AssociationConnector Association="HotelDataModel.ReservationRoomType" />
+        <EntityTypeShape EntityType="HotelDataModel.RoomOccupancy" Width="1.5" PointX="10.25" PointY="1.5" />
+        <AssociationConnector Association="HotelDataModel.RoomTypeRoomOccupancy" />
+        </Diagram>
+      <Diagram DiagramId="50f5c5a66c044c3ab2463f32f3a94b34" Name="User" >
+        <EntityTypeShape EntityType="HotelDataModel.User" Width="1.5" PointX="2.875" PointY="1.125" />
+        <EntityTypeShape EntityType="HotelDataModel.Staff" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="HotelDataModel.Address" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="HotelDataModel.Reservation" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="HotelDataModel.UserReservation" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

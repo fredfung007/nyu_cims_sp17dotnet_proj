@@ -1,1 +1,4 @@
 LIST OF CITATIONS:
+1:42 PM 4/11/2017
+http://stackoverflow.com/questions/3925195/making-state-abbreviations-from-state-names
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
