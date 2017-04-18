@@ -99,6 +99,7 @@ namespace BusinessLogic.Handlers
         //    return null;
         //}
 
+        
         List<Reservation> GetUpComingReservations(User user)
         {
             return new List<Reservation> (reservationRepository.getReservationsByUserId(user.Username));
