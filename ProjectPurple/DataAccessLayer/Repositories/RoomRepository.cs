@@ -91,10 +91,16 @@ namespace DataAccessLayer.Repositories
             context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomType(ROOM_TYPE type)
+        /// <summary>
+        /// Return all RoomOccupancies including and after the date
+        /// </summary>
+        /// <param name="type">ROOM_TYPE</param>
+        /// <param name="date">date query starts</param>
+        /// <returns></returns>
+        public IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
         {
             List<RoomOccupancy> roomOccupancies =
-                context.RoomOccupancies.Where(ro => ro.RoomType.Type == type).ToList();
+                context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
             return roomOccupancies;
         }
 

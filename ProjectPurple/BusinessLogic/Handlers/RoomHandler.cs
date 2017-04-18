@@ -232,7 +232,7 @@ namespace BusinessLogic.Handlers
         public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
             List<RoomOccupancy> roomOccupancies =
-                new List<RoomOccupancy>(roomRepository.getRoomOccupanciesByRoomType(type));
+                new List<RoomOccupancy>(roomRepository.getRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today));
             int minOccupancy = int.MaxValue;
             foreach (RoomOccupancy roomOccupancy in roomOccupancies)
             {
