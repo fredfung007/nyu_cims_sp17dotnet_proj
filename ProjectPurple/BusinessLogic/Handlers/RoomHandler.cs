@@ -291,5 +291,15 @@ namespace BusinessLogic.Handlers
                 roomRepository.save();
             }
         }
+
+        public int GetAveragePrice(ROOM_TYPE type, DateTime start, DateTime end)
+        {
+            int total = 0;
+            foreach (int price in GetRoomPriceList(type, start, end))
+            {
+                total += price;
+            }
+            return total / ((int) (end - start).Days);
+        }
     }
 }
