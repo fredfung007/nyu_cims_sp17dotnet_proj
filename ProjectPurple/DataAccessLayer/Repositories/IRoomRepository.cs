@@ -11,7 +11,7 @@ namespace DataAccessLayer.Repositories
     public interface IRoomRepository : IDisposable
     {
         RoomType getRoomType(Guid Id);
-        RoomType getRoomType(ROOM_TYPE type);
+        RoomType getRoomType(Constants.ROOM_TYPE type);
         IEnumerable<RoomType> getRoomTypes();
         void InsertRoom(RoomType room);
         void DeleteRoom(Guid Id);
@@ -29,10 +29,9 @@ namespace DataAccessLayer.Repositories
         void UpdateRoomUsage(RoomType room, DateTime date, int quantity);
 
         // How many room of the type is reserved on some date
-        int GetRoomReservationAmount(ROOM_TYPE type, DateTime date);
+        int GetRoomReservationAmount(RoomType room, DateTime date);
         // The total amount of a roomtype, roomtype.inventory
-        int GetRoomTotalAmount(ROOM_TYPE type);
-        int GetBaseRate(ROOM_TYPE type);
+        int GetRoomTotalAmount(RoomType room);
         void save();
     }
 }

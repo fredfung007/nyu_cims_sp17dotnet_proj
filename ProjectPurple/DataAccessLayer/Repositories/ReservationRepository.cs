@@ -58,6 +58,11 @@ namespace DataAccessLayer.Repositories
             return context.Reservations.Where(reservatoin => reservatoin.endDate == CheckOutDate).ToList();
         }
 
+        IEnumerable<Reservation> IReservationRepository.getReservationsByConfirmNum(Guid ConfirmationNumber)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate)
         {
             return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
@@ -108,6 +113,7 @@ namespace DataAccessLayer.Repositories
             // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

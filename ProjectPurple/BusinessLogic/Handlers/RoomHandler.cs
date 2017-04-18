@@ -23,24 +23,24 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// Return true if the RoomType is available during [start, end).
         /// </summary>
-        /// <param name="r">RoomType instance</param>
+        /// <param name="room">RoomType instance</param>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(RoomType r, DateTime start, DateTime end)
+        private bool IsAvailable(RoomType room, DateTime start, DateTime end)
         {
-            bool available = true;
-            while (start.CompareTo(end) < 1)
+            int totalAmount = roomRepository.GetRoomTotalAmount(room);
+            DateTime checkDate = start;
+
+            while (checkDate.CompareTo(end) < 1)
             {
-                available = available && 
-                    (roomRepository.GetRoomTotalAmount(r) > roomRepository.GetRoomReservationAmount(r, start));
-                if (!available)
+                if (totalAmount < roomRepository.GetRoomReservationAmount(room, checkDate) + 1)
                 {
-                    break;
+                    return false;
                 }
-                start = start.AddDays(1);
+                checkDate = checkDate.AddDays(1);
             }
-            return available;
+            return true;
         }
 
         /// <summary>
@@ -52,11 +52,11 @@ namespace BusinessLogic.Handlers
         public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
             List<ROOM_TYPE> roomList = new List<ROOM_TYPE>();
-            foreach(RoomType r in roomRepository.getRoomTypes())
+            foreach (RoomType room in roomRepository.getRoomTypes())
             {
-                if(IsAvailable(r, start, end))
+                if (IsAvailable(room, start, end))
                 {
-                    roomList.Add(r.Type);
+                    roomList.Add(room.Type);
                 }
             }
             return roomList;
@@ -72,7 +72,7 @@ namespace BusinessLogic.Handlers
         public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime start, DateTime end)
         {
             List<int> priceList = new List<int>();
-            while(start.CompareTo(end) < 1)
+            while (start.CompareTo(end) < 1)
             {
                 priceList.Add(GetRoomPrice(type, start));
                 start.AddDays(1);
@@ -91,7 +91,7 @@ namespace BusinessLogic.Handlers
         {
             // compute price multipler
             double rate = 1.0 + GetHotelOccupancy(date);
-            return (int)Math.Ceiling(roomRepository.getRoomType(type).BaseRate * rate);
+            return (int) Math.Ceiling(roomRepository.getRoomType(type).BaseRate * rate);
         }
 
         /// <summary>
@@ -110,23 +110,14 @@ namespace BusinessLogic.Handlers
         /// Get occupency percentage of a room on date
         /// </summary>
         /// <param name="date"></param>
-        /// <returns>occupancy percentage</returns>
-        double GetHotelOccupancyPercentage(ROOM_TYPE type, DateTime date)
         /// <returns>occupency percentage</returns>
         private double GetHotelOccupancy(DateTime date)
         {
-            int occupancy = roomRepository.GetRoomReservationAmount(type, date);
-            int totalAmount = roomRepository.GetRoomTotalAmount(type);
-
-            if (totalAmount == 0) {
-                return 0.0;
-            }
-
-            return occupancy / totalAmount;
             int totalQuantity = 0;
             int totalOccupation = 0;
             IEnumerable<RoomType> types = roomRepository.getRoomTypes();
-            foreach(RoomType room in types)
+
+            foreach (RoomType room in types)
             {
                 totalQuantity += roomRepository.GetRoomTotalAmount(room);
                 totalOccupation += roomRepository.GetRoomReservationAmount(room, date);
@@ -153,16 +144,27 @@ namespace BusinessLogic.Handlers
         /// <returns>true if succeeded</returns>
         void SetRoomInventory(ROOM_TYPE type, int quantity)
         {
-            int currentQuantity = roomRepository.GetRoomTotalAmount(type);
-            if (quantity >= currentQuantity)
+            RoomType room = roomRepository.getRoomType(type);
+            int currentQuantity = roomRepository.GetRoomTotalAmount(room);
+
+            if (quantity < currentQuantity)
             {
-                roomRepository.UpdateRoomInventory(type, quantity);
-            }
-            else
-            {
-                //TODO check future occupancy
+                // TODO, the range of future to check
+                DateTime start = DateTime.Now;
+                DateTime end = DateTime.Now.AddMonths(2);
+                // Get uniq reservation dates list of the room type
+
+                while (start.CompareTo(end) <= 0)
+                {
+                    int amount = roomRepository.GetRoomReservationAmount(room, start);
+                    if (amount > quantity)
+                    {
+                        return;
+                    }
+                }
             }
 
+            roomRepository.UpdateRoomInventory(type, quantity);
             roomRepository.save();
         }
 
@@ -194,7 +196,7 @@ namespace BusinessLogic.Handlers
         /// <returns>true if succeeded</returns>
         void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
-            RoomType room = roomRepository.getRoomTypeByEnum(type);
+            RoomType room = roomRepository.getRoomType(type);
             room.Description = description;
             roomRepository.UpdateRoom(room);
             roomRepository.save();

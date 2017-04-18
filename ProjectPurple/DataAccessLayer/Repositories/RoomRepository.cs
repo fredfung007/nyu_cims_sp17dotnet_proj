@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using DataAccessLayer.Constants;
+using System.Data.Entity;
 
 namespace DataAccessLayer.Repositories
 {
@@ -19,7 +20,7 @@ namespace DataAccessLayer.Repositories
 
         public void InsertRoom(RoomType room)
         {
-            throw new NotImplementedException();
+            context.RoomTypes.Add(room);
         }
         RoomType getRoomTypeByEnum(Constants.ROOM_TYPE type)
         {
@@ -28,27 +29,28 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteRoom(Guid Id)
         {
-            throw new NotImplementedException();
+            RoomType toDelete = context.RoomTypes.Where(room => room.Id == Id).FirstOrDefault();
+            context.RoomTypes.Remove(toDelete);
         }
 
         public void UpdateRoom(RoomType room)
         {
-            throw new NotImplementedException();
+            context.Entry(room).State = EntityState.Modified;
         }
 
         public RoomType getRoomType(Guid Id)
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.Where(room => room.Id == Id).FirstOrDefault();
         }
 
         public RoomType getRoomType(ROOM_TYPE type)
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
         }
 
         public IEnumerable<RoomType> getRoomTypes()
         {
-            throw new NotImplementedException();
+            return context.RoomTypes.ToList();
         }
 
         public void CheckIn(RoomType room, DateTime date)
@@ -66,25 +68,29 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
+        public int GetRoomReservationAmount(RoomType type, DateTime date)
+        {
+            return context.Reservations.Where(reservation => reservation.startDate <= date
+                                                        && reservation.endDate >= date).Count();
+        }
+
+        public int GetRoomTotalAmount(RoomType room)
+        {
+            return context.RoomTypes.Find(room).Inventory;
+        }
+
         public int GetRoomReservationAmount(ROOM_TYPE type, DateTime date)
         {
-            return context.RoomOccupancies
-                    .Count(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType.Type == type);
+
+            RoomOccupancy ro = context.RoomOccupancies
+                    .Where(targetRoom => targetRoom.Date.Date == date.Date && targetRoom.RoomType.Type == type).FirstOrDefault();
+
+            return ro != null ? ro.Occupancy : 0;
         }
 
         public int GetRoomTotalAmount(ROOM_TYPE type)
         {
             return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault().Inventory;
-        }
-
-        public int GetBaseRate(ROOM_TYPE type)
-        {
-            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault().BaseRate;
-        }
-
-        RoomType IRoomRepository.getRoomTypeByEnum(ROOM_TYPE type)
-        {
-            return context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
         }
 
         public void save()

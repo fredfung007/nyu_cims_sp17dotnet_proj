@@ -2,13 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
-<<<<<<< HEAD
--- Date Created: 04/17/2017 15:45:40
+-- Date Created: 04/17/2017 23:50:24
 -- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
-=======
--- Date Created: 04/17/2017 16:18:09
--- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
->>>>>>> develop
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -48,6 +43,9 @@ IF OBJECT_ID(N'[dbo].[FK_ReservationRoomType]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomTypeRoomOccupancy]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RoomOccupancies] DROP CONSTRAINT [FK_RoomTypeRoomOccupancy];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_UserReservation];
 GO
 
 -- --------------------------------------------------
@@ -124,10 +122,6 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
-<<<<<<< HEAD
-    [User_Username] nvarchar(max)  NOT NULL,
-=======
->>>>>>> develop
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL,
     [User_Username] nvarchar(max)  NOT NULL
@@ -272,24 +266,6 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
-<<<<<<< HEAD
--- Creating foreign key on [User_Username] in table 'Reservations'
-ALTER TABLE [dbo].[Reservations]
-ADD CONSTRAINT [FK_ReservationUser]
-    FOREIGN KEY ([User_Username])
-    REFERENCES [dbo].[Users]
-        ([Username])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ReservationUser'
-CREATE INDEX [IX_FK_ReservationUser]
-ON [dbo].[Reservations]
-    ([User_Username]);
-GO
-
-=======
->>>>>>> develop
 -- Creating foreign key on [PhoneNumber_Id] in table 'Profiles'
 ALTER TABLE [dbo].[Profiles]
 ADD CONSTRAINT [FK_BillingInfoPhoneNumber]
