@@ -3,7 +3,6 @@ using BusinessLogic.Handlers;
 using DataAccessLayer.Constants;
 using System.Collections.Generic;
 using System.Text;
-using DataAccessLayer;
 
 namespace Demo
 {
@@ -23,7 +22,7 @@ namespace Demo
             stringBuilder.Append("Available Rooms:\n");
             foreach (ROOM_TYPE type in types)
             {
-                stringBuilder.Append(type.ToString())
+                stringBuilder.AppendFormat("{0}", type.ToString())
                              .Append("\tAverage Price Per Day:\t$")
                              .Append(roomHandler.GetAveragePrice(type, checkIn, checkOut)).Append("\n")
                              .Append("Description:").Append("\n")
