@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/17/2017 16:18:09
--- Generated from EDMX file: D:\repository\net_proj\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
+-- Date Created: 04/18/2017 14:12:57
+-- Generated from EDMX file: C:\Users\Mengdi\Documents\Source\Repos\SP17NET_PROJ\ProjectPurple\DataAccessLayer\HotelDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -43,6 +43,9 @@ IF OBJECT_ID(N'[dbo].[FK_ReservationRoomType]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomTypeRoomOccupancy]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RoomOccupancies] DROP CONSTRAINT [FK_RoomTypeRoomOccupancy];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_UserReservation];
 GO
 
 -- --------------------------------------------------
@@ -92,7 +95,9 @@ CREATE TABLE [dbo].[Users] (
     [Username] nvarchar(max)  NOT NULL,
     [HashedPassword] nvarchar(max)  NOT NULL,
     [isRegistered] nvarchar(max)  NOT NULL,
-    [LoyalProgramNumber] nvarchar(max)  NOT NULL
+    [LoyalProgramNumber] nvarchar(max)  NOT NULL,
+    [LoyaltyProgress] int  NOT NULL,
+    [LoyaltyYear] datetime  NOT NULL
 );
 GO
 
@@ -119,6 +124,8 @@ CREATE TABLE [dbo].[Reservations] (
     [startDate] datetime  NOT NULL,
     [endDate] datetime  NOT NULL,
     [isPaid] bit  NOT NULL,
+    [checkInDate] datetime  NOT NULL,
+    [checkOutDate] datetime  NULL,
     [BillingInfo_Id] uniqueidentifier  NOT NULL,
     [RoomType_Id] uniqueidentifier  NOT NULL,
     [User_Username] nvarchar(max)  NOT NULL

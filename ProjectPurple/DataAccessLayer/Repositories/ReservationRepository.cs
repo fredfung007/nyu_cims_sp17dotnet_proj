@@ -58,6 +58,36 @@ namespace DataAccessLayer.Repositories
             return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
         }
 
+        public void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate)
+        {
+            reservation.checkInDate = checkInDate;
+            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+        }
+        public void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate)
+        {
+            reservation.checkOutDate = checkOutDate;
+            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
+        {
+            return context.Reservations.Where(reservation => reservation.endDate == endDate
+                                            && reservation.checkInDate != null
+                                            && reservation.checkInDate < endDate).ToList();
+        }
+
+        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
+        {
+            return context.Reservations.Where(reservation => reservation.startDate == startDate).ToList();
+        }
+
+        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)
+        {
+            return context.Reservations.Where(reservation => reservation.checkInDate != null
+                                            && reservation.checkInDate < checkInDate
+                                            && reservation.endDate >= checkInDate).ToList();
+        }
+
         // commentted for now, did not find use cases for this method
         // public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
         // {

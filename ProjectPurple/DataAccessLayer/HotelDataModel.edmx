@@ -66,6 +66,8 @@
     <Property Name="HashedPassword" Type="nvarchar(max)" Nullable="false" />
     <Property Name="isRegistered" Type="nvarchar(max)" Nullable="false" />
     <Property Name="LoyalProgramNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LoyaltyProgress" Type="int" Nullable="false" />
+    <Property Name="LoyaltyYear" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Addresses">
     <Key>
@@ -92,6 +94,8 @@
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
     <Property Name="isPaid" Type="bit" Nullable="false" />
+    <Property Name="checkInDate" Type="datetime" Nullable="false" />
+    <Property Name="checkOutDate" Type="datetime" Nullable="true" />
     <Property Name="BillingInfo_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoomType_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
@@ -347,6 +351,8 @@
           <NavigationProperty Name="Profile" Relationship="HotelDataModel.UserProfile" FromRole="User" ToRole="Profile" />
           <Property Name="LoyalProgramNumber" Type="String" Nullable="false" />
           <NavigationProperty Name="Reservations" Relationship="HotelDataModel.UserReservation" FromRole="User" ToRole="Reservation" />
+          <Property Name="LoyaltyProgress" Type="Int32" Nullable="false" />
+          <Property Name="LoyaltyYear" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
@@ -380,6 +386,8 @@
           <NavigationProperty Name="RoomType" Relationship="HotelDataModel.ReservationRoomType" FromRole="Reservation" ToRole="RoomType" />
           <Property Name="isPaid" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="HotelDataModel.UserReservation" FromRole="Reservation" ToRole="User" />
+          <Property Name="checkInDate" Type="DateTime" Nullable="false" />
+          <Property Name="checkOutDate" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Guest">
           <Key>
@@ -504,6 +512,8 @@
           <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
           <ScalarProperty Name="isRegistered" ColumnName="isRegistered" />
           <ScalarProperty Name="LoyalProgramNumber" ColumnName="LoyalProgramNumber" />
+          <ScalarProperty Name="LoyaltyProgress" ColumnName="LoyaltyProgress" />
+          <ScalarProperty Name="LoyaltyYear" ColumnName="LoyaltyYear" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -533,6 +543,8 @@
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
           <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+          <ScalarProperty Name="checkInDate" ColumnName="checkInDate" />
+          <ScalarProperty Name="checkOutDate" ColumnName="checkOutDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

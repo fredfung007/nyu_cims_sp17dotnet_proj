@@ -68,8 +68,22 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <returns>true if successfully cancelled</returns>
-        void CancelReservation(Guid confirmationNumber)
+        void CancelReservation(Guid confirmationNumber, DateTime today)
         {
+            Reservation reservation = reservationRepository.getReservation(confirmationNumber);
+
+            // refuse to cancel if checkin
+            if (reservation.checkInDate != null && reservation.checkInDate < today)
+            {
+                return;
+            }
+
+            // refuse to cancel if the date is before the present date 
+            if (reservation.startDate != null && reservation.startDate < today)
+            {
+                return;
+            }
+
             reservationRepository.DeleteReservation(confirmationNumber);
             reservationRepository.save();
         }
