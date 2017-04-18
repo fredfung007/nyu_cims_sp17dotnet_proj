@@ -76,6 +76,7 @@
     <Property Name="SecondLine" Type="nvarchar(max)" Nullable="true" />
     <Property Name="State" Type="int" Nullable="false" />
     <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Emails">
     <Key>
@@ -114,7 +115,7 @@
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PhoneNumber_Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Email_Id" Type="int" Nullable="false" />
-    <Property Name="Addresse_Id" Type="int" Nullable="false" />
+    <Property Name="Address_Id" Type="int" Nullable="false" />
     <Property Name="User_Username" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PhoneNumbers">
@@ -192,7 +193,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="BillingInfo">
-        <PropertyRef Name="Addresse_Id" />
+        <PropertyRef Name="Address_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -516,6 +517,7 @@
           <ScalarProperty Name="SecondLine" ColumnName="SecondLine" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -619,7 +621,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="BillingInfoAddress" TypeName="HotelDataModel.BillingInfoAddress" StoreEntitySet="Profiles">
       <EndProperty Name="Address">
-        <ScalarProperty Name="Id" ColumnName="Addresse_Id" />
+        <ScalarProperty Name="Id" ColumnName="Address_Id" />
       </EndProperty>
       <EndProperty Name="BillingInfo">
         <ScalarProperty Name="Id" ColumnName="Id" />

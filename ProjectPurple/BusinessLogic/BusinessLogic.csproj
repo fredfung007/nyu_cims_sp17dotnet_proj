@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\AuthHandler.cs" />
+    <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
+    <Compile Include="Handlers\UserReservationQueryHandler.cs" />
     <Compile Include="obsolete\Customer.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="obsolete\IAddressRepository.cs" />
