@@ -7,9 +7,9 @@ namespace BusinessLogic.Handlers
     public class AuthHandler
     {
         IAuthRepository authRepository;
-        public AuthHandler()
+        public AuthHandler(IAuthRepository authRepository)
         {
-            authRepository = new AuthRepository(new HotelDataModelContainer());
+            this.authRepository = authRepository;
         }
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of the Staff</param>
         /// <param name="inputpassword">plain text password</param>
         /// <returns></returns>
-        bool authorizeStaff(string username, string inputpassword)
+        public bool authorizeStaff(string username, string inputpassword)
         {
             Staff staff = authRepository.getStaff(username);
             return Crypto.VerifyHashedPassword(staff.HashedPassword, inputpassword);
@@ -30,7 +30,7 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of the User</param>
         /// <param name="inputpassword">plain text password</param>
         /// <returns></returns>
-        bool authorizeUser(string username, string inputpassword)
+        public bool authorizeUser(string username, string inputpassword)
         {
             User user = authRepository.getUser(username);
             return Crypto.VerifyHashedPassword(user.HashedPassword, inputpassword);
