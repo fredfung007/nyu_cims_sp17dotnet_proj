@@ -26,6 +26,7 @@ namespace DataAccessLayer
         public DataAccessLayer.Constants.ROOM_TYPE Type { get; set; }
         public string Ameneties { get; set; }
         public string Description { get; set; }
+        public string ImageUrl { get; set; }
     
         public virtual Reservation Reservation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

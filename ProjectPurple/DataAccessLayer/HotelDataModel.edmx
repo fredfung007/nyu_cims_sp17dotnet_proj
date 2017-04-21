@@ -155,6 +155,7 @@
     <Property Name="Type" Type="int" Nullable="false" />
     <Property Name="Ameneties" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ImageUrl" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="RoomOccupancies">
     <Key>
@@ -478,6 +479,7 @@
           <Property Name="Ameneties" Type="String" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="RoomOccupancies" Relationship="HotelDataModel.RoomTypeRoomOccupancy" FromRole="RoomType" ToRole="RoomOccupancy" />
+          <Property Name="ImageUrl" Type="String" Nullable="true" />
         </EntityType>
         <Association Name="ReservationRoomType">
           <End Type="HotelDataModel.Reservation" Role="Reservation" Multiplicity="1" />
@@ -603,6 +605,7 @@
           <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="Ameneties" ColumnName="Ameneties" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
