@@ -7,11 +7,11 @@ namespace DataAccessLayer.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
-        private HotelDataModelContainer _context;
+        private readonly HotelDataModelContainer _context;
 
         public AuthRepository(HotelDataModelContainer context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public Staff GetStaff(string username)
@@ -42,7 +42,7 @@ namespace DataAccessLayer.Repositories
         public void DeleteStaff(string username)
         {
             Staff staff = _context.Staffs.Find(username);
-            _context.Staffs.Remove(staff);
+            if (staff != null) _context.Staffs.Remove(staff);
         }
 
         public void UpdateStaff(Staff staff)
@@ -58,7 +58,7 @@ namespace DataAccessLayer.Repositories
         public void DeleteUser(string username)
         {
             User user = _context.Users.Find(username);
-            _context.Users.Remove(user);
+            if (user != null) _context.Users.Remove(user);
         }
 
         public void UpdateUser(User user)
@@ -88,14 +88,10 @@ namespace DataAccessLayer.Repositories
                     _context.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
                 _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~AuthRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -106,7 +102,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 

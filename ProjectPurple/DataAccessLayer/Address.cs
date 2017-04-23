@@ -17,7 +17,7 @@ namespace DataAccessLayer
         public int Id { get; set; }
         public string FirstLine { get; set; }
         public string SecondLine { get; set; }
-        public DataAccessLayer.Constants.UsState State { get; set; }
+        public DataAccessLayer.Constants.US_STATE State { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
     

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataAccessLayer;
-using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
@@ -14,8 +15,9 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// list of RoomType that are available during given date
         /// </summary>
-        IRoomRepository _roomRepository;
-        IReservationRepository _reservationRepository;
+        private readonly IRoomRepository _roomRepository;
+
+        private readonly IReservationRepository _reservationRepository;
 
         public RoomHandler()
         {
@@ -41,7 +43,8 @@ namespace BusinessLogic.Handlers
                 {
                     return false;
                 }
-                checkDate = checkDate.AddDays(1);
+                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
+                checkDate.AddDays(1);
             }
             return true;
         }
@@ -54,15 +57,7 @@ namespace BusinessLogic.Handlers
         /// <returns>a list of RoomTypes that are available during the given date</returns>
         public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
-            List<ROOM_TYPE> roomList = new List<ROOM_TYPE>();
-            foreach (RoomType room in _roomRepository.GetRoomTypes())
-            {
-                if (IsAvailable(room, start, end))
-                {
-                    roomList.Add(room.Type);
-                }
-            }
-            return roomList;
+            return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room, start, end) select room.Type).ToList();
         }
 
         /// <summary>
@@ -78,6 +73,7 @@ namespace BusinessLogic.Handlers
             while(start.CompareTo(end) < 0)
             {
                 priceList.Add(GetRoomPrice(type, start));
+                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
                 start.AddDays(1);
             }
             return priceList;
@@ -232,7 +228,7 @@ namespace BusinessLogic.Handlers
         /// by chekcing the minimum occupancy of the specific room type: if the
         /// new quantity value is invalid, it will throw ArgumentOutOfRangeException
         /// </summary>
-        /// <param name="room">room type</param>
+        /// <param name="type">room type</param>
         /// <param name="quantity">new value of inventory quantity</param>
         public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
@@ -273,6 +269,7 @@ namespace BusinessLogic.Handlers
             while (checkDate.CompareTo(reservation.endDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
                 checkDate.AddDays(1);
             }
 
@@ -300,6 +297,7 @@ namespace BusinessLogic.Handlers
             while (checkDate.CompareTo(reservation.endDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
                 checkDate.AddDays(1);
             }
             _roomRepository.Save();
@@ -318,7 +316,7 @@ namespace BusinessLogic.Handlers
             else
             {
                 // Checkout date is a new year
-                DateTime newYear = new DateTime(today.Year, 1, 1);
+                var newYear = new DateTime(today.Year, 1, 1);
                 stayLength = (today - newYear).Days;
                 reservation.User.LoyaltyProgress = stayLength;
                 reservation.User.LoyaltyYear = newYear;
@@ -334,7 +332,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
+        private IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
         {
             return _reservationRepository.GetReservationsByEndDate(today);
         }
@@ -344,7 +342,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
+        public IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
         {
             return _reservationRepository.GetReservationsByStartDate(today);
         }
@@ -354,19 +352,15 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
+        public IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
         {
             return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
         }
 
         public int GetAveragePrice(ROOM_TYPE type, DateTime start, DateTime end)
         {
-            int total = 0;
-            foreach (int price in GetRoomPriceList(type, start, end))
-            {
-                total += price;
-            }
-            return total / ((int) (end - start).Days);
+            var total = GetRoomPriceList(type, start, end).Sum();
+            return total / (end - start).Days;
         }
     }
 }

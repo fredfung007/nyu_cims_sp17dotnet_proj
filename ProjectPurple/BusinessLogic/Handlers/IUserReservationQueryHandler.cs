@@ -7,7 +7,7 @@ namespace BusinessLogic.Handlers
     /// <summary>
     /// Handler for quering user reservation related information.
     /// </summary>
-    interface IUserReservationQueryHandler
+    public interface IUserReservationQueryHandler
     {
         User User { get; }
 

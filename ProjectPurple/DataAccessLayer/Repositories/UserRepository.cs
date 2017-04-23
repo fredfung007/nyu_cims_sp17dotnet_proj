@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
@@ -17,7 +13,8 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteUser(string username)
         {
-            _context.Users.Remove(_context.Users.Find(username));
+            User user = _context.Users.Find(username);
+            if (user != null) _context.Users.Remove(user);
         }
 
         public User GetUser(string username)
@@ -52,14 +49,10 @@ namespace DataAccessLayer.Repositories
                     _context.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
                 _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~ReservationRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -70,7 +63,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
         #endregion

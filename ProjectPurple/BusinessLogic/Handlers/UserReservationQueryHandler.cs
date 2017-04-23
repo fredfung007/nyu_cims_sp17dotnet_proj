@@ -7,7 +7,7 @@ namespace BusinessLogic.Handlers
 {
     public class UserReservationQueryHandler : IUserReservationQueryHandler
     {
-        private IReservationRepository _reservationRepository;
+        private readonly IReservationRepository _reservationRepository;
         private User User { get; }
         public UserReservationQueryHandler(string username)
         {

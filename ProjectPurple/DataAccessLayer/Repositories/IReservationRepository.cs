@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccessLayer;
 
 namespace DataAccessLayer.Repositories
 {
@@ -16,8 +15,9 @@ namespace DataAccessLayer.Repositories
         IEnumerable<Reservation> GetReservationsByUserId(String username);
         IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate);
         IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate);
-        // commentted for now, did not find use cases for this method
-        // IEnumerable<Reservation> getReservationsByPeriod(DateTime start, DateTime end);
+
+        [Obsolete]
+        IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end);
 
         void InsertReservation(Reservation reservation);
         void DeleteReservation(Guid id);

@@ -1,28 +1,28 @@
 ﻿namespace DataAccessLayer.Constructor
 {
-    class ProfileConstructor
+    public class ProfileConstructor
     {
-        private Profile _profile;
+        private readonly Profile _profile;
 
-        ProfileConstructor()
+        public ProfileConstructor()
         {
             _profile = new Profile();
         }
 
-        ProfileConstructor AddName(string firstName, string lastName)
+        public ProfileConstructor AddName(string firstName, string lastName)
         {
             _profile.FirstName = firstName;
             _profile.LastName = lastName;
             return this;
         }
 
-        ProfileConstructor AddAddress(Address address)
+        public ProfileConstructor AddAddress(Address address)
         {
             _profile.Address = address;
             return this;
         }
 
-        ProfileConstructor AddEmail(string emailAddress)
+        public ProfileConstructor AddEmail(string emailAddress)
         {
             Email email= new Email();
             email.Address = emailAddress;
@@ -30,7 +30,7 @@
             return this;
         }
 
-        ProfileConstructor AddPhoneNumber(string phoneNumber)
+        public ProfileConstructor AddPhoneNumber(string phoneNumber)
         {
             PhoneNumber number = new PhoneNumber();
             number.Number = phoneNumber;
@@ -38,7 +38,7 @@
             return this;
         }
 
-        Profile Build()
+        public Profile Build()
         {
             return _profile;
         }

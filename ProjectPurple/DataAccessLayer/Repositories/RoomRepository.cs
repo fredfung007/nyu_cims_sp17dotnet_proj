@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer.Constants;
-using System.Data.Entity;
 
 namespace DataAccessLayer.Repositories
 {
     public class RoomRepository : IRoomRepository, IDisposable
     {
-        private HotelDataModelContainer _context;
+        private readonly HotelDataModelContainer _context;
 
         public RoomRepository(HotelDataModelContainer context)
         {
@@ -22,7 +21,8 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteRoom(Guid id)
         {
-            _context.RoomTypes.Remove(_context.RoomTypes.Find(id));
+            RoomType room = _context.RoomTypes.Find(id);
+            if (room != null) _context.RoomTypes.Remove(room);
         }
 
         public void UpdateRoom(RoomType room)
@@ -37,7 +37,7 @@ namespace DataAccessLayer.Repositories
 
         public RoomType GetRoomType(ROOM_TYPE type)
         {
-            return _context.RoomTypes.Where(room => room.Type == type).FirstOrDefault();
+            return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
         }
 
         public IEnumerable<RoomType> GetRoomTypes()
@@ -49,7 +49,7 @@ namespace DataAccessLayer.Repositories
         {
             // check if record exists
             RoomOccupancy roomOccupancy =
-                _context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
+                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType == room);
             if (roomOccupancy != null)
             {
                 // update the existing RoomOccupancy record
@@ -73,8 +73,8 @@ namespace DataAccessLayer.Repositories
         public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
             RoomOccupancy roomOccupancy =
-                _context.RoomOccupancies.Where(ro => ro.Date == date && ro.RoomType == room).FirstOrDefault();
-            return roomOccupancy != null ? roomOccupancy.Occupancy : 0;
+                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType == room);
+            return roomOccupancy?.Occupancy ?? 0;
         }
 
         public int GetRoomTotalAmount(RoomType room)
@@ -121,17 +121,12 @@ namespace DataAccessLayer.Repositories
                 if (disposing)
                 {
                     _context.Dispose();
-                    // TODO: dispose managed state (managed objects).
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
 
                 _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~RoomRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -142,7 +137,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 

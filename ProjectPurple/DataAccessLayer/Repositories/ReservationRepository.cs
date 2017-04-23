@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
 
 namespace DataAccessLayer.Repositories
 {
     // TODO using async
     public class ReservationRepository:IReservationRepository, IDisposable
     {
-        private HotelDataModelContainer _context;
+        private readonly HotelDataModelContainer _context;
 
         public ReservationRepository(HotelDataModelContainer context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public Reservation GetReservation(Guid id)
@@ -25,6 +22,11 @@ namespace DataAccessLayer.Repositories
         public IEnumerable<Reservation> GetReservations()
         {
             return _context.Reservations.ToList();
+        }
+
+        public IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end)
+        {
+            throw new NotImplementedException();
         }
 
         public void InsertReservation(Reservation reservation)
@@ -112,14 +114,10 @@ namespace DataAccessLayer.Repositories
                     _context.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
                 _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~ReservationRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -130,7 +128,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 
