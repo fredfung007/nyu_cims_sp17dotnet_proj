@@ -2,45 +2,45 @@
 {
     class ProfileConstructor
     {
-        private Profile profile;
+        private Profile _profile;
 
         ProfileConstructor()
         {
-            profile = new Profile();
+            _profile = new Profile();
         }
 
-        ProfileConstructor addName(string firstName, string lastName)
+        ProfileConstructor AddName(string firstName, string lastName)
         {
-            profile.FirstName = firstName;
-            profile.LastName = lastName;
+            _profile.FirstName = firstName;
+            _profile.LastName = lastName;
             return this;
         }
 
-        ProfileConstructor addAddress(Address address)
+        ProfileConstructor AddAddress(Address address)
         {
-            profile.Address = address;
+            _profile.Address = address;
             return this;
         }
 
-        ProfileConstructor addEmail(string emailAddress)
+        ProfileConstructor AddEmail(string emailAddress)
         {
             Email email= new Email();
             email.Address = emailAddress;
-            profile.Email = email;
+            _profile.Email = email;
             return this;
         }
 
-        ProfileConstructor addPhoneNumber(string phoneNumber)
+        ProfileConstructor AddPhoneNumber(string phoneNumber)
         {
             PhoneNumber number = new PhoneNumber();
             number.Number = phoneNumber;
-            profile.PhoneNumber = number;
+            _profile.PhoneNumber = number;
             return this;
         }
 
-        Profile build()
+        Profile Build()
         {
-            return profile;
+            return _profile;
         }
     }
 }

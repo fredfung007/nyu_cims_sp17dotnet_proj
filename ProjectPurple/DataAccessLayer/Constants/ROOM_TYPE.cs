@@ -5,9 +5,9 @@
     /// </summary>
     public enum ROOM_TYPE
     {
-        DOUBLE_BED_ROOM,
-        QUEEN_ROOM,
-        KING_BED_ROOM,
-        SUITE
+        DoubleBedRoom,
+        QueenRoom,
+        KingBedRoom,
+        Suite
     }
 }

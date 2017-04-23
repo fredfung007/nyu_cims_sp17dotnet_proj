@@ -6,10 +6,10 @@ namespace BusinessLogic.Handlers
 {
     public class AuthHandler
     {
-        IAuthRepository authRepository;
+        readonly IAuthRepository _authRepository;
         public AuthHandler()
         {
-            authRepository = new AuthRepository(new HotelDataModelContainer());
+            _authRepository = new AuthRepository(new HotelDataModelContainer());
         }
 
         /// <summary>
@@ -18,9 +18,9 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of the Staff</param>
         /// <param name="inputpassword">plain text password</param>
         /// <returns></returns>
-        bool authorizeStaff(string username, string inputpassword)
+        bool AuthorizeStaff(string username, string inputpassword)
         {
-            Staff staff = authRepository.getStaff(username);
+            Staff staff = _authRepository.GetStaff(username);
             return Crypto.VerifyHashedPassword(staff.HashedPassword, inputpassword);
         }
 
@@ -30,19 +30,19 @@ namespace BusinessLogic.Handlers
         /// <param name="username">username of the User</param>
         /// <param name="inputpassword">plain text password</param>
         /// <returns></returns>
-        bool authorizeUser(string username, string inputpassword)
+        bool AuthorizeUser(string username, string inputpassword)
         {
-            User user = authRepository.getUser(username);
+            User user = _authRepository.GetUser(username);
             return Crypto.VerifyHashedPassword(user.HashedPassword, inputpassword);
         }
 
-        void createAnonymousUser(string username, string inputpassword)
+        void CreateAnonymousUser(string username, string inputpassword)
         {
-            User user = createUser(username, inputpassword);
+            User user = CreateUser(username, inputpassword);
             user.isRegistered = false;
         }
 
-        private User createUser(string username, string inputpassword)
+        private User CreateUser(string username, string inputpassword)
         {
             User user = new User();
             user.Username = username;

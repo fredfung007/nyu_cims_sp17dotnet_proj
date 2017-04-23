@@ -11,14 +11,14 @@ namespace BusinessLogic.Handlers
     /// </summary>
     class ReservationHandler
     {
-        IReservationRepository reservationRepository;
-        IUserReservationQueryHandler userReservationQueryHandler;
+        IReservationRepository _reservationRepository;
+        IUserReservationQueryHandler _userReservationQueryHandler;
         public ReservationHandler()
         {
             // username should come from cookies
             string username = "";
-            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
-            userReservationQueryHandler = new UserReservationQueryHandler(username);
+            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            _userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace BusinessLogic.Handlers
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
-                User = userReservationQueryHandler.user,
+                User = _userReservationQueryHandler.User,
                 startDate = start,
                 endDate = end,
                 Guests = guests,
@@ -51,21 +51,21 @@ namespace BusinessLogic.Handlers
                 reservation.DailyPrices.Add(dailyPrice);
             }
 
-            reservationRepository.InsertReservation(reservation);
-            reservationRepository.save();
+            _reservationRepository.InsertReservation(reservation);
+            _reservationRepository.Save();
             return reservation.Id;
         }
 
         void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
-            Reservation reservation = reservationRepository.getReservation(confirmationNumber);
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
             if (reservation != null)
             {
                 reservation.BillingInfo = billingInfo;
                 reservation.isPaid = true;
             }
-            reservationRepository.UpdateReservation(reservation);
-            reservationRepository.save();
+            _reservationRepository.UpdateReservation(reservation);
+            _reservationRepository.Save();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace BusinessLogic.Handlers
         /// <returns>true if successfully cancelled</returns>
         void CancelReservation(Guid confirmationNumber, DateTime today)
         {
-            Reservation reservation = reservationRepository.getReservation(confirmationNumber);
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             // refuse to cancel if checkin
             if (reservation.checkInDate != null && reservation.checkInDate < today)
@@ -89,8 +89,8 @@ namespace BusinessLogic.Handlers
                 return;
             }
 
-            reservationRepository.DeleteReservation(confirmationNumber);
-            reservationRepository.save();
+            _reservationRepository.DeleteReservation(confirmationNumber);
+            _reservationRepository.Save();
         }
 
         // obsolete
@@ -102,7 +102,7 @@ namespace BusinessLogic.Handlers
         
         List<Reservation> GetUpComingReservations(User user)
         {
-            return new List<Reservation> (reservationRepository.getReservationsByUserId(user.Username));
+            return new List<Reservation> (_reservationRepository.GetReservationsByUserId(user.Username));
         }
 
         // obsolete

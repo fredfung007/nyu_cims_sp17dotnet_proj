@@ -10,77 +10,77 @@ namespace DataAccessLayer.Repositories
 {
     public class ProfileRepository:IProfileRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private HotelDataModelContainer _context;
 
         public ProfileRepository(HotelDataModelContainer context)
         {
-            this.context = context;
+            this._context = context;
         }
 
-        public Address getAddress(int Id)
+        public Address GetAddress(int id)
         {
-            return context.Addresses.Find(Id);
+            return _context.Addresses.Find(id);
         }
 
-        public IEnumerable<Address> getAddresses()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Email getEmail(int Id)
-        {
-            return context.Emails.Find(Id);
-        }
-
-        public IEnumerable<Email> getEmails()
+        public IEnumerable<Address> GetAddresses()
         {
             throw new NotImplementedException();
         }
 
-        public Guest getGuest(Guid Id)
+        public Email GetEmail(int id)
         {
-            return context.Guests.Find(Id);
+            return _context.Emails.Find(id);
         }
 
-        public IEnumerable<Guest> getGuests()
-        {
-            return context.Guests.ToList();
-        }
-
-        public PhoneNumber getPhoneNumber(Guid Id)
+        public IEnumerable<Email> GetEmails()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<PhoneNumber> getPhoneNumbers()
+        public Guest GetGuest(Guid id)
+        {
+            return _context.Guests.Find(id);
+        }
+
+        public IEnumerable<Guest> GetGuests()
+        {
+            return _context.Guests.ToList();
+        }
+
+        public PhoneNumber GetPhoneNumber(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Profile getProfile(Guid Id)
+        public IEnumerable<PhoneNumber> GetPhoneNumbers()
         {
-            return context.Profiles.Find(Id);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Profile> getProfiles()
+        public Profile GetProfile(Guid id)
         {
-            return context.Profiles.ToList();
+            return _context.Profiles.Find(id);
+        }
+
+        public IEnumerable<Profile> GetProfiles()
+        {
+            return _context.Profiles.ToList();
         }
 
         public void InsertProfile(Profile profile)
         {
-            context.Profiles.Add(profile);
+            _context.Profiles.Add(profile);
         }
 
-        public void DeleteProfile(Guid Id)
+        public void DeleteProfile(Guid id)
         {
-            Profile profile = context.Profiles.Find(Id);
-            context.Profiles.Remove(profile);
+            Profile profile = _context.Profiles.Find(id);
+            _context.Profiles.Remove(profile);
         }
 
         public void UpdateProfile(Profile profile)
         {
-            context.Entry(profile).State = EntityState.Modified;
+            _context.Entry(profile).State = EntityState.Modified;
         }
 
         public void InsertGuest(Guest guest)
@@ -88,7 +88,7 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public void DeleteGuest(Guid Id)
+        public void DeleteGuest(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -98,27 +98,27 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public void save()
+        public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

@@ -6,17 +6,17 @@ namespace DataAccessLayer.Repositories
 {
     public interface IRoomRepository : IDisposable
     {
-        RoomType getRoomType(Guid Id);
-        RoomType getRoomType(Constants.ROOM_TYPE type);
-        IEnumerable<RoomType> getRoomTypes();
+        RoomType GetRoomType(Guid id);
+        RoomType GetRoomType(Constants.ROOM_TYPE type);
+        IEnumerable<RoomType> GetRoomTypes();
         void InsertRoom(RoomType room);
-        void DeleteRoom(Guid Id);
+        void DeleteRoom(Guid id);
         void UpdateRoom(RoomType room);
         
         // room inventory
         void UpdateRoomOccupancy(RoomOccupancy roomOccupancy);
-        IEnumerable<RoomOccupancy> getRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
-        int getMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
+        IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
+        int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);
@@ -26,6 +26,6 @@ namespace DataAccessLayer.Repositories
         int GetRoomReservationAmount(RoomType room, DateTime date);
         // The total amount of a roomtype, roomtype.inventory
         int GetRoomTotalAmount(RoomType room);
-        void save();
+        void Save();
     }
 }

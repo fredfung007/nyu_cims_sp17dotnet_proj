@@ -10,80 +10,80 @@ namespace DataAccessLayer.Repositories
     // TODO using async
     public class ReservationRepository:IReservationRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private HotelDataModelContainer _context;
 
         public ReservationRepository(HotelDataModelContainer context)
         {
-            this.context = context;
+            this._context = context;
         }
 
-        public Reservation getReservation(Guid Id)
+        public Reservation GetReservation(Guid id)
         {
-            return context.Reservations.Find(Id);
+            return _context.Reservations.Find(id);
         }
 
-        public IEnumerable<Reservation> getReservations()
+        public IEnumerable<Reservation> GetReservations()
         {
-            return context.Reservations.ToList();
+            return _context.Reservations.ToList();
         }
 
         public void InsertReservation(Reservation reservation)
         {
-            context.Reservations.Add(reservation);
+            _context.Reservations.Add(reservation);
         }
 
-        public void DeleteReservation(Guid Id)
+        public void DeleteReservation(Guid id)
         {
-            Reservation reservation = context.Reservations.Find(Id);
-            context.Reservations.Remove(reservation);
+            Reservation reservation = _context.Reservations.Find(id);
+            _context.Reservations.Remove(reservation);
         }
 
         public void UpdateReservation(Reservation reservation)
         {
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
         }
 
-        public IEnumerable<Reservation> getReservationsByUserId(String Username)
+        public IEnumerable<Reservation> GetReservationsByUserId(String username)
         {
-            return context.Reservations.Where(reservation => reservation.User.Username == Username).ToList();
+            return _context.Reservations.Where(reservation => reservation.User.Username == username).ToList();
         }
 
-        public IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate)
+        public IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate)
         {
-            return context.Reservations.Where(reservatoin => reservatoin.endDate == CheckOutDate).ToList();
+            return _context.Reservations.Where(reservatoin => reservatoin.endDate == checkOutDate).ToList();
         }
 
-        public IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate)
+        public IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate)
         {
-            return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.startDate == checkInDate).ToList();
         }
 
         public void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate)
         {
             reservation.checkInDate = checkInDate;
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
         }
         public void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate)
         {
             reservation.checkOutDate = checkOutDate;
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
         }
 
         public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
         {
-            return context.Reservations.Where(reservation => reservation.endDate == endDate
+            return _context.Reservations.Where(reservation => reservation.endDate == endDate
                                             && reservation.checkInDate != null
                                             && reservation.checkInDate < endDate).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
         {
-            return context.Reservations.Where(reservation => reservation.startDate == startDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.startDate == startDate).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)
         {
-            return context.Reservations.Where(reservation => reservation.checkInDate != null
+            return _context.Reservations.Where(reservation => reservation.checkInDate != null
                                             && reservation.checkInDate < checkInDate
                                             && reservation.endDate >= checkInDate).ToList();
         }
@@ -95,27 +95,27 @@ namespace DataAccessLayer.Repositories
         //                 .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
         //                 .ToList();
         // }
-        public void save()
+        public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

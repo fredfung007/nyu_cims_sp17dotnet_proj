@@ -8,54 +8,54 @@ namespace DataAccessLayer.Repositories
 {
     class UserRepository : IUserRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private HotelDataModelContainer _context;
 
         public UserRepository(HotelDataModelContainer context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public void DeleteUser(string username)
         {
-            context.Users.Remove(context.Users.Find(username));
+            _context.Users.Remove(_context.Users.Find(username));
         }
 
         public User GetUser(string username)
         {
-            return context.Users.Find(username);
+            return _context.Users.Find(username);
         }
 
         public void InsertUser(User user)
         {
-            context.Users.Add(user);
+            _context.Users.Add(user);
         }
 
-        public void save()
+        public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void UpdateUser(User user)
         {
-            context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
         }
         
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

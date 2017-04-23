@@ -9,24 +9,24 @@ namespace BusinessLogic.Handlers
     /// </summary>
     interface IUserReservationQueryHandler
     {
-        User user { get; }
+        User User { get; }
 
         /// <summary>
         /// Find all upcoming reservations for the user
         /// </summary>
         /// <returns>Upcoming reservations for the user.</returns>
-        IEnumerable<Reservation> findUpcomingReservations(DateTime date);
+        IEnumerable<Reservation> FindUpcomingReservations(DateTime date);
 
         /// <summary>
         /// Calculate the loyalty program progress information of the user.
         /// </summary>
         /// <returns>loyalty program progress</returns>
-        string findLoyaltyProgramInfo();
+        string FindLoyaltyProgramInfo();
 
         /// <summary>
         /// Get the billing information(Profile) of the user.
         /// </summary>
         /// <returns>Billing Profile</returns>
-        Profile getProfile();
+        Profile GetProfile();
     }
 }
