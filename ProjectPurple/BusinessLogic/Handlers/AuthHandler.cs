@@ -7,6 +7,12 @@ namespace BusinessLogic.Handlers
     public class AuthHandler
     {
         IAuthRepository authRepository;
+
+        public AuthHandler()
+        {
+            authRepository = new AuthRepository(new HotelDataModelContainer());
+        }
+
         public AuthHandler(IAuthRepository authRepository)
         {
             this.authRepository = authRepository;
