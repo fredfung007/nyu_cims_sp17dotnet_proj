@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="AuthHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProfileHandlerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -8,7 +8,7 @@ namespace BusinessLogic.Handlers
     /// <summary>
     /// A handler class for maintaining profile information for user. maintain customer name, home address, room preference, loyalty program number, loyalty program status
     /// </summary>
-    class ProfileHandler
+    public class ProfileHandler
     {
         IProfileRepository profileRepository;
         public ProfileHandler()
@@ -16,12 +16,17 @@ namespace BusinessLogic.Handlers
             profileRepository = new ProfileRepository(new HotelDataModelContainer());
         }
 
+        public ProfileHandler(IProfileRepository profileRepository)
+        {
+            this.profileRepository = profileRepository;
+        }
+
         /// <summary>
         /// Get profile from profileId
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        Profile GetProfile(Guid profileId)
+        public Profile GetProfile(Guid profileId)
         {
             return profileRepository.getProfile(profileId);
         }
@@ -31,7 +36,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        Address GetAddress(Guid profileId)
+        public Address GetAddress(Guid profileId)
         {
             return profileRepository.getProfile(profileId).Address;
         }
@@ -41,7 +46,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        Email GetEmail(Guid profileId)
+        public Email GetEmail(Guid profileId)
         {
             return profileRepository.getProfile(profileId).Email;
         }
@@ -51,7 +56,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        PhoneNumber GetPhoneNumber(Guid profileId)
+        public PhoneNumber GetPhoneNumber(Guid profileId)
         {
             return profileRepository.getProfile(profileId).PhoneNumber;
         }
@@ -64,7 +69,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="address"></param>
-        void SetAddress(Guid profileId, Address address)
+        public void SetAddress(Guid profileId, Address address)
         {
             Profile profile = profileRepository.getProfile(profileId);
             profile.Address = address;
@@ -77,7 +82,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="email"></param>
-        void SetEmail(Guid profileId, Email email)
+        public void SetEmail(Guid profileId, Email email)
         {
             Profile profile = profileRepository.getProfile(profileId);
             profile.Email = email;
@@ -90,7 +95,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="phoneNumber"></param>
-        void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
+        public void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
         {
             Profile profile = profileRepository.getProfile(profileId);
             profile.PhoneNumber = phoneNumber;
@@ -98,7 +103,7 @@ namespace BusinessLogic.Handlers
             profileRepository.save();
         }
 
-        // set room preference
+        // TODOset room preference
 
         // set loyalty program number ?
        
