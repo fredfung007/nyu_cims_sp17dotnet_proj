@@ -15,6 +15,11 @@ namespace BusinessLogic.Handlers
             _profileRepository = new ProfileRepository(new HotelDataModelContainer());
         }
 
+        public ProfileHandler(IProfileRepository profileRepository)
+        {
+            _profileRepository = profileRepository;
+        }
+
         /// <summary>
         /// Get profile from profileId
         /// </summary>

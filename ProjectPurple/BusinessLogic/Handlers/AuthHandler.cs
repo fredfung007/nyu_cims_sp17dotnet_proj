@@ -13,6 +13,11 @@ namespace BusinessLogic.Handlers
             _authRepository = new AuthRepository(new HotelDataModelContainer());
         }
 
+        public AuthHandler(IAuthRepository authRepository)
+        {
+            _authRepository = authRepository;
+        }
+
         /// <summary>
         /// Authorize username and plain text password for Staff.
         /// </summary>
