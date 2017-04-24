@@ -7,24 +7,24 @@ namespace BusinessLogic.Handlers
 {
     public class UserReservationQueryHandler : IUserReservationQueryHandler
     {
-        private IReservationRepository reservationRepository;
-        private User user { get; }
+        private readonly IReservationRepository _reservationRepository;
+        private User User { get; }
         public UserReservationQueryHandler(string username)
         {
-            reservationRepository = new ReservationRepository(new HotelDataModelContainer());
-            user = new AuthRepository(new HotelDataModelContainer()).getUser(username);
+            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            User = new AuthRepository(new HotelDataModelContainer()).GetUser(username);
         }
 
-        User IUserReservationQueryHandler.user => user;
+        User IUserReservationQueryHandler.User => User;
 
-        public string findLoyaltyProgramInfo()
+        public string FindLoyaltyProgramInfo()
         {
             throw new NotImplementedException("TODO: Add Implementation for loyalty program.");
         }
 
-        public IEnumerable<Reservation> findUpcomingReservations(DateTime date)
+        public IEnumerable<Reservation> FindUpcomingReservations(DateTime date)
         {
-            IEnumerable<Reservation> reservations = reservationRepository.getReservationsByUserId(user.Username);
+            IEnumerable<Reservation> reservations = _reservationRepository.GetReservationsByUserId(User.Username);
             List<Reservation> upcomingReservations = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
@@ -36,9 +36,9 @@ namespace BusinessLogic.Handlers
             return upcomingReservations;
         }
 
-        public Profile getProfile()
+        public Profile GetProfile()
         {
-            return user.Profile;
+            return User.Profile;
         }
     }
 }

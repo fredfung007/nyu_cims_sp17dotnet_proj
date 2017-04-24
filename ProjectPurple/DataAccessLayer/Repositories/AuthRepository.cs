@@ -7,63 +7,63 @@ namespace DataAccessLayer.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private readonly HotelDataModelContainer _context;
 
         public AuthRepository(HotelDataModelContainer context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public Staff getStaff(string username)
+        public Staff GetStaff(string username)
         {
-            return context.Staffs.Find(username);
+            return _context.Staffs.Find(username);
         }
 
-        public IEnumerable<Staff> getStaffs()
+        public IEnumerable<Staff> GetStaffs()
         {
-            return context.Staffs.ToList();
+            return _context.Staffs.ToList();
         }
 
-        public IEnumerable<User> getUsers()
+        public IEnumerable<User> GetUsers()
         {
-            return context.Users.ToList();
+            return _context.Users.ToList();
         }
 
-        public User getUser(string username)
+        public User GetUser(string username)
         {
-            return context.Users.Find(username);
+            return _context.Users.Find(username);
         }
 
         public void InsertStaff(Staff staff)
         {
-            context.Staffs.Add(staff);
+            _context.Staffs.Add(staff);
         }
 
         public void DeleteStaff(string username)
         {
-            Staff staff = context.Staffs.Find(username);
-            context.Staffs.Remove(staff);
+            Staff staff = _context.Staffs.Find(username);
+            if (staff != null) _context.Staffs.Remove(staff);
         }
 
         public void UpdateStaff(Staff staff)
         {
-            context.Entry(staff).State = EntityState.Modified;
+            _context.Entry(staff).State = EntityState.Modified;
         }
 
         public void InsertUser(User user)
         {
-            context.Users.Add(user);
+            _context.Users.Add(user);
         }
 
         public void DeleteUser(string username)
         {
-            User user = context.Users.Find(username);
-            context.Users.Remove(user);
+            User user = _context.Users.Find(username);
+            if (user != null) _context.Users.Remove(user);
         }
 
         public void UpdateUser(User user)
         {
-            context.Entry(user).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
         }
 
         public int GetLoyaltyProgressByUserId(string username)
@@ -71,31 +71,27 @@ namespace DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public void save()
+        public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~AuthRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -106,7 +102,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 

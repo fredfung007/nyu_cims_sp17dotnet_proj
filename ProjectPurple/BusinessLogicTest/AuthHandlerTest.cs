@@ -20,11 +20,11 @@ namespace BusinessLogicTest
                 Username = "testUser",
                 HashedPassword = Crypto.HashPassword("Password")
             };
-            mock.Setup(framework => framework.getStaff("testUser"))
+            mock.Setup(framework => framework.GetStaff("testUser"))
                 .Returns(staff);
             var authRepo = mock.Object;
             var authHandler = new AuthHandler(authRepo);
-            Assert.AreEqual(true, authHandler.authorizeStaff("testUser", "Password"));
+            Assert.AreEqual(true, authHandler.AuthorizeStaff("testUser", "Password"));
         }
 
         [TestMethod]
@@ -36,11 +36,11 @@ namespace BusinessLogicTest
                 Username = "testUser",
                 HashedPassword = Crypto.HashPassword("Password")
             };
-            mock.Setup(framework => framework.getStaff("testUser"))
+            mock.Setup(framework => framework.GetStaff("testUser"))
                 .Returns(staff);
             var authRepo = mock.Object;
             var authHandler = new AuthHandler(authRepo);
-            Assert.AreEqual(false, authHandler.authorizeStaff("testUser", "Password!"));
+            Assert.AreEqual(false, authHandler.AuthorizeStaff("testUser", "Password!"));
         }
 
         [TestMethod]
@@ -52,11 +52,11 @@ namespace BusinessLogicTest
                 Username = "testUser",
                 HashedPassword = Crypto.HashPassword("Password")
             };
-            mock.Setup(framework => framework.getUser("testUser"))
+            mock.Setup(framework => framework.GetUser("testUser"))
                 .Returns(user);
             var authRepo = mock.Object;
             var authHandler = new AuthHandler(authRepo);
-            Assert.AreEqual(true, authHandler.authorizeUser("testUser", "Password"));
+            Assert.AreEqual(true, authHandler.AuthorizeUser("testUser", "Password"));
         }
 
         [TestMethod]
@@ -68,11 +68,11 @@ namespace BusinessLogicTest
                 Username = "testUser",
                 HashedPassword = Crypto.HashPassword("Password")
             };
-            mock.Setup(framework => framework.getUser("testUser"))
+            mock.Setup(framework => framework.GetUser("testUser"))
                 .Returns(user);
             var authRepo = mock.Object;
             var authHandler = new AuthHandler(authRepo);
-            Assert.AreEqual(false, authHandler.authorizeUser("testUser", "Password!"));
+            Assert.AreEqual(false, authHandler.AuthorizeUser("testUser", "Password!"));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Constants;
 using System;
+using System.Collections.Generic;
 
 namespace BusinessLogic.Helpers
 {
@@ -10,185 +11,185 @@ namespace BusinessLogic.Helpers
         {
             switch (state)
             {
-                case US_STATE.AL:
+                case US_STATE.Al:
                     return "ALABAMA";
 
-                case US_STATE.AK:
+                case US_STATE.Ak:
                     return "ALASKA";
 
-                case US_STATE.AS:
+                case US_STATE.As:
                     return "AMERICAN SAMOA";
 
-                case US_STATE.AZ:
+                case US_STATE.Az:
                     return "ARIZONA";
 
-                case US_STATE.AR:
+                case US_STATE.Ar:
                     return "ARKANSAS";
 
-                case US_STATE.CA:
+                case US_STATE.Ca:
                     return "CALIFORNIA";
 
-                case US_STATE.CO:
+                case US_STATE.Co:
                     return "COLORADO";
 
-                case US_STATE.CT:
+                case US_STATE.Ct:
                     return "CONNECTICUT";
 
-                case US_STATE.DE:
+                case US_STATE.De:
                     return "DELAWARE";
 
-                case US_STATE.DC:
+                case US_STATE.Dc:
                     return "DISTRICT OF COLUMBIA";
 
-                case US_STATE.FM:
+                case US_STATE.Fm:
                     return "FEDERATED STATES OF MICRONESIA";
 
-                case US_STATE.FL:
+                case US_STATE.Fl:
                     return "FLORIDA";
 
-                case US_STATE.GA:
+                case US_STATE.Ga:
                     return "GEORGIA";
 
-                case US_STATE.GU:
+                case US_STATE.Gu:
                     return "GUAM";
 
-                case US_STATE.HI:
+                case US_STATE.Hi:
                     return "HAWAII";
 
-                case US_STATE.ID:
+                case US_STATE.Id:
                     return "IDAHO";
 
-                case US_STATE.IL:
+                case US_STATE.Il:
                     return "ILLINOIS";
 
-                case US_STATE.IN:
+                case US_STATE.In:
                     return "INDIANA";
 
-                case US_STATE.IA:
+                case US_STATE.Ia:
                     return "IOWA";
 
-                case US_STATE.KS:
+                case US_STATE.Ks:
                     return "KANSAS";
 
-                case US_STATE.KY:
+                case US_STATE.Ky:
                     return "KENTUCKY";
 
-                case US_STATE.LA:
+                case US_STATE.La:
                     return "LOUISIANA";
 
-                case US_STATE.ME:
+                case US_STATE.Me:
                     return "MAINE";
 
-                case US_STATE.MH:
+                case US_STATE.Mh:
                     return "MARSHALL ISLANDS";
 
-                case US_STATE.MD:
+                case US_STATE.Md:
                     return "MARYLAND";
 
-                case US_STATE.MA:
+                case US_STATE.Ma:
                     return "MASSACHUSETTS";
 
-                case US_STATE.MI:
+                case US_STATE.Mi:
                     return "MICHIGAN";
 
-                case US_STATE.MN:
+                case US_STATE.Mn:
                     return "MINNESOTA";
 
-                case US_STATE.MS:
+                case US_STATE.Ms:
                     return "MISSISSIPPI";
 
-                case US_STATE.MO:
+                case US_STATE.Mo:
                     return "MISSOURI";
 
-                case US_STATE.MT:
+                case US_STATE.Mt:
                     return "MONTANA";
 
-                case US_STATE.NE:
+                case US_STATE.Ne:
                     return "NEBRASKA";
 
-                case US_STATE.NV:
+                case US_STATE.Nv:
                     return "NEVADA";
 
-                case US_STATE.NH:
+                case US_STATE.Nh:
                     return "NEW HAMPSHIRE";
 
-                case US_STATE.NJ:
+                case US_STATE.Nj:
                     return "NEW JERSEY";
 
-                case US_STATE.NM:
+                case US_STATE.Nm:
                     return "NEW MEXICO";
 
-                case US_STATE.NY:
+                case US_STATE.Ny:
                     return "NEW YORK";
 
-                case US_STATE.NC:
+                case US_STATE.Nc:
                     return "NORTH CAROLINA";
 
-                case US_STATE.ND:
+                case US_STATE.Nd:
                     return "NORTH DAKOTA";
 
-                case US_STATE.MP:
+                case US_STATE.Mp:
                     return "NORTHERN MARIANA ISLANDS";
 
-                case US_STATE.OH:
+                case US_STATE.Oh:
                     return "OHIO";
 
-                case US_STATE.OK:
+                case US_STATE.Ok:
                     return "OKLAHOMA";
 
-                case US_STATE.OR:
+                case US_STATE.Or:
                     return "OREGON";
 
-                case US_STATE.PW:
+                case US_STATE.Pw:
                     return "PALAU";
 
-                case US_STATE.PA:
+                case US_STATE.Pa:
                     return "PENNSYLVANIA";
 
-                case US_STATE.PR:
+                case US_STATE.Pr:
                     return "PUERTO RICO";
 
-                case US_STATE.RI:
+                case US_STATE.Ri:
                     return "RHODE ISLAND";
 
-                case US_STATE.SC:
+                case US_STATE.Sc:
                     return "SOUTH CAROLINA";
 
-                case US_STATE.SD:
+                case US_STATE.Sd:
                     return "SOUTH DAKOTA";
 
-                case US_STATE.TN:
+                case US_STATE.Tn:
                     return "TENNESSEE";
 
-                case US_STATE.TX:
+                case US_STATE.Tx:
                     return "TEXAS";
 
-                case US_STATE.UT:
+                case US_STATE.Ut:
                     return "UTAH";
 
-                case US_STATE.VT:
+                case US_STATE.Vt:
                     return "VERMONT";
 
-                case US_STATE.VI:
+                case US_STATE.Vi:
                     return "VIRGIN ISLANDS";
 
-                case US_STATE.VA:
+                case US_STATE.Va:
                     return "VIRGINIA";
 
-                case US_STATE.WA:
+                case US_STATE.Wa:
                     return "WASHINGTON";
 
-                case US_STATE.WV:
+                case US_STATE.Wv:
                     return "WEST VIRGINIA";
 
-                case US_STATE.WI:
+                case US_STATE.Wi:
                     return "WISCONSIN";
 
-                case US_STATE.WY:
+                case US_STATE.Wy:
                     return "WYOMING";
+                default:
+                    throw new KeyNotFoundException("NO SUCH STATE FOUND");
             }
-
-            throw new Exception("Not Available");
         }
 
         public US_STATE GetStateByName(string name)
@@ -196,184 +197,184 @@ namespace BusinessLogic.Helpers
             switch (name.ToUpper())
             {
                 case "ALABAMA":
-                    return US_STATE.AL;
+                    return US_STATE.Al;
 
                 case "ALASKA":
-                    return US_STATE.AK;
+                    return US_STATE.Ak;
 
                 case "AMERICAN SAMOA":
-                    return US_STATE.AS;
+                    return US_STATE.As;
 
                 case "ARIZONA":
-                    return US_STATE.AZ;
+                    return US_STATE.Az;
 
                 case "ARKANSAS":
-                    return US_STATE.AR;
+                    return US_STATE.Ar;
 
                 case "CALIFORNIA":
-                    return US_STATE.CA;
+                    return US_STATE.Ca;
 
                 case "COLORADO":
-                    return US_STATE.CO;
+                    return US_STATE.Co;
 
                 case "CONNECTICUT":
-                    return US_STATE.CT;
+                    return US_STATE.Ct;
 
                 case "DELAWARE":
-                    return US_STATE.DE;
+                    return US_STATE.De;
 
                 case "DISTRICT OF COLUMBIA":
-                    return US_STATE.DC;
+                    return US_STATE.Dc;
 
                 case "FEDERATED STATES OF MICRONESIA":
-                    return US_STATE.FM;
+                    return US_STATE.Fm;
 
                 case "FLORIDA":
-                    return US_STATE.FL;
+                    return US_STATE.Fl;
 
                 case "GEORGIA":
-                    return US_STATE.GA;
+                    return US_STATE.Ga;
 
                 case "GUAM":
-                    return US_STATE.GU;
+                    return US_STATE.Gu;
 
                 case "HAWAII":
-                    return US_STATE.HI;
+                    return US_STATE.Hi;
 
                 case "IDAHO":
-                    return US_STATE.ID;
+                    return US_STATE.Id;
 
                 case "ILLINOIS":
-                    return US_STATE.IL;
+                    return US_STATE.Il;
 
                 case "INDIANA":
-                    return US_STATE.IN;
+                    return US_STATE.In;
 
                 case "IOWA":
-                    return US_STATE.IA;
+                    return US_STATE.Ia;
 
                 case "KANSAS":
-                    return US_STATE.KS;
+                    return US_STATE.Ks;
 
                 case "KENTUCKY":
-                    return US_STATE.KY;
+                    return US_STATE.Ky;
 
                 case "LOUISIANA":
-                    return US_STATE.LA;
+                    return US_STATE.La;
 
                 case "MAINE":
-                    return US_STATE.ME;
+                    return US_STATE.Me;
 
                 case "MARSHALL ISLANDS":
-                    return US_STATE.MH;
+                    return US_STATE.Mh;
 
                 case "MARYLAND":
-                    return US_STATE.MD;
+                    return US_STATE.Md;
 
                 case "MASSACHUSETTS":
-                    return US_STATE.MA;
+                    return US_STATE.Ma;
 
                 case "MICHIGAN":
-                    return US_STATE.MI;
+                    return US_STATE.Mi;
 
                 case "MINNESOTA":
-                    return US_STATE.MN;
+                    return US_STATE.Mn;
 
                 case "MISSISSIPPI":
-                    return US_STATE.MS;
+                    return US_STATE.Ms;
 
                 case "MISSOURI":
-                    return US_STATE.MO;
+                    return US_STATE.Mo;
 
                 case "MONTANA":
-                    return US_STATE.MT;
+                    return US_STATE.Mt;
 
                 case "NEBRASKA":
-                    return US_STATE.NE;
+                    return US_STATE.Ne;
 
                 case "NEVADA":
-                    return US_STATE.NV;
+                    return US_STATE.Nv;
 
                 case "NEW HAMPSHIRE":
-                    return US_STATE.NH;
+                    return US_STATE.Nh;
 
                 case "NEW JERSEY":
-                    return US_STATE.NJ;
+                    return US_STATE.Nj;
 
                 case "NEW MEXICO":
-                    return US_STATE.NM;
+                    return US_STATE.Nm;
 
                 case "NEW YORK":
-                    return US_STATE.NY;
+                    return US_STATE.Ny;
 
                 case "NORTH CAROLINA":
-                    return US_STATE.NC;
+                    return US_STATE.Nc;
 
                 case "NORTH DAKOTA":
-                    return US_STATE.ND;
+                    return US_STATE.Nd;
 
                 case "NORTHERN MARIANA ISLANDS":
-                    return US_STATE.MP;
+                    return US_STATE.Mp;
 
                 case "OHIO":
-                    return US_STATE.OH;
+                    return US_STATE.Oh;
 
                 case "OKLAHOMA":
-                    return US_STATE.OK;
+                    return US_STATE.Ok;
 
                 case "OREGON":
-                    return US_STATE.OR;
+                    return US_STATE.Or;
 
                 case "PALAU":
-                    return US_STATE.PW;
+                    return US_STATE.Pw;
 
                 case "PENNSYLVANIA":
-                    return US_STATE.PA;
+                    return US_STATE.Pa;
 
                 case "PUERTO RICO":
-                    return US_STATE.PR;
+                    return US_STATE.Pr;
 
                 case "RHODE ISLAND":
-                    return US_STATE.RI;
+                    return US_STATE.Ri;
 
                 case "SOUTH CAROLINA":
-                    return US_STATE.SC;
+                    return US_STATE.Sc;
 
                 case "SOUTH DAKOTA":
-                    return US_STATE.SD;
+                    return US_STATE.Sd;
 
                 case "TENNESSEE":
-                    return US_STATE.TN;
+                    return US_STATE.Tn;
 
                 case "TEXAS":
-                    return US_STATE.TX;
+                    return US_STATE.Tx;
 
                 case "UTAH":
-                    return US_STATE.UT;
+                    return US_STATE.Ut;
 
                 case "VERMONT":
-                    return US_STATE.VT;
+                    return US_STATE.Vt;
 
                 case "VIRGIN ISLANDS":
-                    return US_STATE.VI;
+                    return US_STATE.Vi;
 
                 case "VIRGINIA":
-                    return US_STATE.VA;
+                    return US_STATE.Va;
 
                 case "WASHINGTON":
-                    return US_STATE.WA;
+                    return US_STATE.Wa;
 
                 case "WEST VIRGINIA":
-                    return US_STATE.WV;
+                    return US_STATE.Wv;
 
                 case "WISCONSIN":
-                    return US_STATE.WI;
+                    return US_STATE.Wi;
 
                 case "WYOMING":
-                    return US_STATE.WY;
+                    return US_STATE.Wy;
+                default:
+                    throw new KeyNotFoundException("Not Available");
             }
-
-            throw new Exception("Not Available");
         }
     }
 }

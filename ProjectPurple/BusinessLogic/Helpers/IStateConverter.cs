@@ -3,7 +3,7 @@
 namespace BusinessLogic.Helpers
 {
     // Interface for converters from string to state enum
-    interface IStateConverter
+    public interface IStateConverter
     {
         // Convert states to its full names.
         string GetState(US_STATE state);

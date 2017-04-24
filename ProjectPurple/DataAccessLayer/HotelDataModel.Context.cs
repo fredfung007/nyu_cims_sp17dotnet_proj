@@ -12,7 +12,8 @@ namespace DataAccessLayer
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Data.Entity.ModelConfiguration;
+
     public partial class HotelDataModelContainer : DbContext
     {
         public HotelDataModelContainer()

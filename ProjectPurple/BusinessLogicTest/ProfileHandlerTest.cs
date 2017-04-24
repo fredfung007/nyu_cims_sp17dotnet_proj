@@ -23,7 +23,7 @@ namespace BusinessLogicTest
                 LastName = "testLastName",
                 Id = profileGuid
             };
-            mock.Setup(framework => framework.getProfile(profileGuid))
+            mock.Setup(framework => framework.GetProfile(profileGuid))
                 .Returns(profile);
             var profileRepository = mock.Object;
             var profileHandler = new ProfileHandler(profileRepository);
@@ -45,7 +45,7 @@ namespace BusinessLogicTest
                 },
                 Id = profileGuid
             };
-            mock.Setup(framework => framework.getProfile(profileGuid))
+            mock.Setup(framework => framework.GetProfile(profileGuid))
                 .Returns(profile);
             var profileRepository = mock.Object;
             var profileHandler = new ProfileHandler(profileRepository);
