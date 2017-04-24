@@ -13,5 +13,23 @@ namespace HotelBookingWebsite.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Edit(Guid UserId)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UpcommingReservations(Guid UserId)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult LoyaltyProgram(Guid UserId)
+        {
+            return View();
+        }
     }
 }
