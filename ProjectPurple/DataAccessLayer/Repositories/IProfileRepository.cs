@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccessLayer;
 
 namespace DataAccessLayer.Repositories
 {
@@ -11,23 +10,23 @@ namespace DataAccessLayer.Repositories
     /// </summary>
     public interface IProfileRepository:IDisposable
     {
-        Profile getProfile(Guid Id);
-        IEnumerable<Profile> getProfiles();
+        Profile GetProfile(Guid id);
+        IEnumerable<Profile> GetProfiles();
         void InsertProfile(Profile profile);
-        void DeleteProfile(Guid Id);
+        void DeleteProfile(Guid id);
         void UpdateProfile(Profile profile);
 
         [Obsolete]
-        Guest getGuest(Guid Id);
+        Guest GetGuest(Guid id);
         [Obsolete]
-        IEnumerable<Guest> getGuests();
+        IEnumerable<Guest> GetGuests();
         [Obsolete]
         void InsertGuest(Guest guest);
         [Obsolete]
-        void DeleteGuest(Guid Id);
+        void DeleteGuest(Guid id);
         [Obsolete]
         void UpdateGuest(Guest guest);
 
-        void save();
+        void Save();
     }
 }

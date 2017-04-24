@@ -11,11 +11,11 @@ namespace Demo
         static void Main(string[] args)
         {
             ReservationDemo demo = new ReservationDemo();
-            Console.WriteLine(demo.queryAvailableRooms(new RoomHandler(), DateTime.Today, DateTime.Today.AddDays(5)));
+            Console.WriteLine(demo.QueryAvailableRooms(new RoomHandler(), DateTime.Today, DateTime.Today.AddDays(5)));
             Console.ReadKey();
         }
 
-        private string queryAvailableRooms(RoomHandler roomHandler, DateTime checkIn, DateTime checkOut)
+        private string QueryAvailableRooms(RoomHandler roomHandler, DateTime checkIn, DateTime checkOut)
         {
             List<ROOM_TYPE> types = roomHandler.CheckAvailableTypeForDuration(checkIn, checkOut);
             StringBuilder stringBuilder = new StringBuilder();

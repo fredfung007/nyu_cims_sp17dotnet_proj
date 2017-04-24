@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
 {
@@ -10,6 +8,6 @@ namespace DataAccessLayer.Repositories
         void InsertUser(User u);
         void DeleteUser(string username);
         void UpdateUser(User u);
-        void save();
+        void Save();
     }
 }

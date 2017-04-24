@@ -2,48 +2,48 @@
 
 namespace DataAccessLayer.Constructor
 {
-    class AddressConstructor
+    public class AddressConstructor
     {
-        private Address address;
+        private readonly Address _address;
 
-        AddressConstructor()
+        public AddressConstructor()
         {
-            address = new Address();
+            _address = new Address();
         }
 
-        AddressConstructor addFirstLine(string firstLine)
+        public AddressConstructor AddFirstLine(string firstLine)
         {
-            address.FirstLine = firstLine;
+            _address.FirstLine = firstLine;
             return this;
         }
 
-        AddressConstructor addSecondLine(string secondLine)
+        public AddressConstructor AddSecondLine(string secondLine)
         {
-            address.SecondLine = secondLine;
+            _address.SecondLine = secondLine;
             return this;
         }
 
-        AddressConstructor addCity(string city)
+        public AddressConstructor AddCity(string city)
         {
-            address.City = city;
+            _address.City = city;
             return this;
         }
 
-        AddressConstructor addState(US_STATE state)
+        public AddressConstructor AddState(US_STATE state)
         {
-            address.State = state;
+            _address.State = state;
             return this;
         }
 
-        AddressConstructor addZipcode(string zipcode)
+        public AddressConstructor AddZipcode(string zipcode)
         {
-            address.ZipCode = zipcode;
+            _address.ZipCode = zipcode;
             return this;
         }
 
-        Address build()
+        public Address Build()
         {
-            return address;
+            return _address;
         }
     }
 }

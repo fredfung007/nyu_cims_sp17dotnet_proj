@@ -1,46 +1,46 @@
 ﻿namespace DataAccessLayer.Constructor
 {
-    class ProfileConstructor
+    public class ProfileConstructor
     {
-        private Profile profile;
+        private readonly Profile _profile;
 
-        ProfileConstructor()
+        public ProfileConstructor()
         {
-            profile = new Profile();
+            _profile = new Profile();
         }
 
-        ProfileConstructor addName(string firstName, string lastName)
+        public ProfileConstructor AddName(string firstName, string lastName)
         {
-            profile.FirstName = firstName;
-            profile.LastName = lastName;
+            _profile.FirstName = firstName;
+            _profile.LastName = lastName;
             return this;
         }
 
-        ProfileConstructor addAddress(Address address)
+        public ProfileConstructor AddAddress(Address address)
         {
-            profile.Address = address;
+            _profile.Address = address;
             return this;
         }
 
-        ProfileConstructor addEmail(string emailAddress)
+        public ProfileConstructor AddEmail(string emailAddress)
         {
             Email email= new Email();
             email.Address = emailAddress;
-            profile.Email = email;
+            _profile.Email = email;
             return this;
         }
 
-        ProfileConstructor addPhoneNumber(string phoneNumber)
+        public ProfileConstructor AddPhoneNumber(string phoneNumber)
         {
             PhoneNumber number = new PhoneNumber();
             number.Number = phoneNumber;
-            profile.PhoneNumber = number;
+            _profile.PhoneNumber = number;
             return this;
         }
 
-        Profile build()
+        public Profile Build()
         {
-            return profile;
+            return _profile;
         }
     }
 }
