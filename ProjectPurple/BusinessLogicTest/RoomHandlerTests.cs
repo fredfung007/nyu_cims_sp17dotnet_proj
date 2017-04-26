@@ -87,7 +87,7 @@ namespace BusinessLogic.Handlers.Tests
         [TestMethod()]
         public void GetRooomInventoryTest()
         {
-            Assert.AreEqual(room.Inventory, handler.GetRooomInventory(room.Type));
+            Assert.AreEqual(room.Inventory, handler.GetRoomInventory(room.Type));
         }
 
         [TestMethod()]
@@ -114,29 +114,29 @@ namespace BusinessLogic.Handlers.Tests
         [TestMethod()]
         public void UpdateRoomInventoryTest()
         {
-            int original = handler.GetRooomInventory(room.Type);
+            int original = handler.GetRoomInventory(room.Type);
             int newInv = original + 10;
             handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(newInv, handler.GetRooomInventory(room.Type));
+            Assert.AreEqual(newInv, handler.GetRoomInventory(room.Type));
         }
 
         [TestMethod()]
         public void UpdateRoomInventoryNegativeTest()
         {
-            int original = handler.GetRooomInventory(room.Type);
+            int original = handler.GetRoomInventory(room.Type);
             int newInv = 0 - original;
             handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(newInv, handler.GetRooomInventory(room.Type));
+            Assert.AreEqual(newInv, handler.GetRoomInventory(room.Type));
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void UpdateRoomInventoryInvalidTest()
         {
-            int original = handler.GetRooomInventory(room.Type);
+            int original = handler.GetRoomInventory(room.Type);
             int newInv = repo.GetMaxRoomOccupanciesByRoomTypeAfterDate(room.Type, DateTime.Today) - 1;
             handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(original, handler.GetRooomInventory(room.Type));
+            Assert.AreEqual(original, handler.GetRoomInventory(room.Type));
         }
 
         [TestMethod()]
