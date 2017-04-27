@@ -5,9 +5,9 @@ namespace DataAccessLayer.EF
     public class CodeFirstHotelModel : DbContext
     {
 #if DEBUG
-        private static string name = "name=ProductionConnection";
-#else
         private static string name = "name=CodeFirstHotelModel";
+#else
+        private static string name = "name=ProductionConnection";
 #endif
         public CodeFirstHotelModel()
             : base(name)
