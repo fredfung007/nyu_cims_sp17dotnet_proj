@@ -46,7 +46,7 @@ namespace BusinessLogic.Handlers
         public void CreateAnonymousUser(string username, string inputpassword)
         {
             User user = CreateUser(username, inputpassword);
-            user.isRegistered = false;
+            user.IsRegistered = false;
         }
 
         private static User CreateUser(string username, string inputpassword)

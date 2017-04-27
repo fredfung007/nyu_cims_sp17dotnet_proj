@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     // TODO using async
-    public class ReservationRepository:IReservationRepository, IDisposable
+    public class ReservationRepository : IReservationRepository, IDisposable
     {
         private readonly CodeFirstHotelModel _context;
 
@@ -43,52 +44,55 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateReservation(Reservation reservation)
         {
-            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(reservation).State = EntityState.Modified;
         }
 
-        public IEnumerable<Reservation> GetReservationsByUserId(String username)
+        public IEnumerable<Reservation> GetReservationsByUserId(string username)
         {
             return _context.Reservations.Where(reservation => reservation.User.Username == username).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate)
         {
-            return _context.Reservations.Where(reservatoin => reservatoin.endDate == checkOutDate).ToList();
+            return _context.Reservations.Where(reservatoin => reservatoin.EndDate == checkOutDate).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate)
         {
-            return _context.Reservations.Where(reservation => reservation.startDate == checkInDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.StartDate == checkInDate).ToList();
         }
 
         public void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate)
         {
-            reservation.checkInDate = checkInDate;
-            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            reservation.CheckInDate = checkInDate;
+            _context.Entry(reservation).State = EntityState.Modified;
         }
+
         public void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate)
         {
-            reservation.checkOutDate = checkOutDate;
-            _context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            reservation.CheckOutDate = checkOutDate;
+            _context.Entry(reservation).State = EntityState.Modified;
         }
 
         public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
         {
-            return _context.Reservations.Where(reservation => reservation.endDate == endDate
-                                            && reservation.checkInDate != null
-                                            && reservation.checkInDate < endDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.EndDate == endDate
+                                                              && reservation.CheckInDate != null
+                                                              && reservation.CheckInDate < endDate)
+                .ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
         {
-            return _context.Reservations.Where(reservation => reservation.startDate == startDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.StartDate == startDate).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)
         {
-            return _context.Reservations.Where(reservation => reservation.checkInDate != null
-                                            && reservation.checkInDate < checkInDate
-                                            && reservation.endDate >= checkInDate).ToList();
+            return _context.Reservations.Where(reservation => reservation.CheckInDate != null
+                                                              && reservation.CheckInDate < checkInDate
+                                                              && reservation.EndDate >= checkInDate)
+                .ToList();
         }
 
         // commentted for now, did not find use cases for this method
@@ -104,16 +108,15 @@ namespace DataAccessLayer.Repositories
         }
 
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposedValue = true;
             }

@@ -1,6 +1,6 @@
 ﻿namespace DataAccessLayer.Constants
 {
-    public enum US_STATE
+    public enum UsState
     {
         Al = 0,
         Ak = 1,

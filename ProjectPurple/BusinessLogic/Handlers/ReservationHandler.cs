@@ -4,6 +4,7 @@ using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
+using RoomType = DataAccessLayer.Constants.RoomType;
 
 namespace BusinessLogic.Handlers
 {
@@ -32,16 +33,16 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
+        public Guid MakeReservation(RoomType type, DateTime start, DateTime end, List<Guest> guests)
         {
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
                 User = _userReservationQueryHandler.User,
-                startDate = start,
-                endDate = end,
+                StartDate = start,
+                EndDate = end,
                 Guests = guests,
-                isPaid = false,
+                IsPaid = false,
                 DailyPrices = new List<DailyPrice>()
             };
 
@@ -82,14 +83,14 @@ namespace BusinessLogic.Handlers
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             // refuse to cancel if checkin
-            if (reservation.checkInDate != null && reservation.checkInDate < today)
+            if (reservation.CheckInDate != null && reservation.CheckInDate < today)
             {
                 return;
             }
 
             // refuse to cancel if the date is before the present date 
             // TODO EXPRESSION IS ALWAYS TRUE.
-            if (reservation.startDate != null && reservation.startDate < today)
+            if (reservation.StartDate != null && reservation.StartDate < today)
             {
                 return;
             }

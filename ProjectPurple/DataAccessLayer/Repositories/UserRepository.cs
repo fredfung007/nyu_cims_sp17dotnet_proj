@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Data.Entity;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
-    class UserRepository : IUserRepository, IDisposable
+    internal class UserRepository : IUserRepository, IDisposable
     {
-        private CodeFirstHotelModel _context;
+        private readonly CodeFirstHotelModel _context;
 
         public UserRepository(CodeFirstHotelModel context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public void DeleteUser(string username)
@@ -35,20 +36,19 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateUser(User user)
         {
-            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
         }
-        
+
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposedValue = true;
             }
@@ -66,6 +66,7 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

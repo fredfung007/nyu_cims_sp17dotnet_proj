@@ -1,12 +1,8 @@
+using System;
+
 namespace DataAccessLayer.EF
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    public partial class RoomOccupancy
+    public class RoomOccupancy
     {
         public DateTime Date { get; set; }
 
@@ -14,7 +10,7 @@ namespace DataAccessLayer.EF
 
         public int Occupancy { get; set; }
 
-        public Guid RoomType_Id { get; set; }
+        public Guid RoomTypeId { get; set; }
 
         public virtual RoomType RoomType { get; set; }
     }

@@ -56,24 +56,26 @@
     <Compile Include="Constructor\AddressConstructor.cs" />
     <Compile Include="Constructor\ProfileConstructor.cs" />
     <Compile Include="EF\Address.cs" />
-    <Compile Include="EF\AspNetRoles.cs" />
-    <Compile Include="EF\AspNetUserClaims.cs" />
-    <Compile Include="EF\AspNetUserLogins.cs" />
-    <Compile Include="EF\AspNetUsers.cs" />
+    <Compile Include="EF\AspNetRole.cs" />
+    <Compile Include="EF\AspNetUserClaim.cs" />
+    <Compile Include="EF\AspNetUserLogin.cs" />
+    <Compile Include="EF\AspNetUser.cs" />
     <Compile Include="EF\CodeFirstHotelModel.cs" />
     <Compile Include="EF\DailyPrice.cs" />
-    <Compile Include="EF\Email.cs" />
     <Compile Include="EF\Guest.cs" />
-    <Compile Include="EF\PhoneNumber.cs" />
     <Compile Include="EF\Profile.cs" />
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
     <Compile Include="EF\Staff.cs" />
     <Compile Include="EF\User.cs" />
-    <Compile Include="Migrations\201704271907392_Initial-Migration.cs" />
-    <Compile Include="Migrations\201704271907392_Initial-Migration.Designer.cs">
-      <DependentUpon>201704271907392_Initial-Migration.cs</DependentUpon>
+    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.cs" />
+    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.Designer.cs">
+      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.cs" />
+    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.Designer.cs">
+      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,8 +98,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704271907392_Initial-Migration.resx">
-      <DependentUpon>201704271907392_Initial-Migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704271928152_Make-AspIdentity-Singular.resx">
+      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704271932098_Change-Reservation-Name.resx">
+      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

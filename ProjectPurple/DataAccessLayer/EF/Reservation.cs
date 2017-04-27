@@ -1,14 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
 namespace DataAccessLayer.EF
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    public partial class Reservation
+    public class Reservation
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reservation()
         {
             DailyPrices = new HashSet<DailyPrice>();
@@ -17,32 +16,32 @@ namespace DataAccessLayer.EF
 
         public Guid Id { get; set; }
 
-        public DateTime startDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime endDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public bool isPaid { get; set; }
+        public bool IsPaid { get; set; }
 
-        public DateTime? checkInDate { get; set; }
+        public DateTime? CheckInDate { get; set; }
 
-        public DateTime? checkOutDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
 
         public Guid BillingInfo { get; set; }
 
-        public Guid RoomType_Id { get; set; }
+        public Guid RoomTypeId { get; set; }
 
         [StringLength(30)]
-        public string User_Username { get; set; }
+        public string UserUsername { get; set; }
 
         [StringLength(128)]
-        public string AspNetUsers_Id { get; set; }
+        public string AspNetUsersId { get; set; }
 
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DailyPrice> DailyPrices { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Guest> Guests { get; set; }
 
         public virtual Profile Profile { get; set; }

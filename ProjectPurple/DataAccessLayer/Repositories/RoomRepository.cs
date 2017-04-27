@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
@@ -12,7 +12,7 @@ namespace DataAccessLayer.Repositories
 
         public RoomRepository(CodeFirstHotelModel context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public void InsertRoom(RoomType room)
@@ -28,7 +28,7 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoom(RoomType room)
         {
-            _context.Entry(room).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(room).State = EntityState.Modified;
         }
 
         public RoomType GetRoomType(Guid id)
@@ -36,7 +36,7 @@ namespace DataAccessLayer.Repositories
             return _context.RoomTypes.Find(id);
         }
 
-        public RoomType GetRoomType(ROOM_TYPE type)
+        public RoomType GetRoomType(Constants.RoomType type)
         {
             throw new NotImplementedException();
             // return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
@@ -91,16 +91,16 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
-            _context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(roomOccupancy).State = EntityState.Modified;
         }
 
         /// <summary>
-        /// Return all RoomOccupancy including and after the date
+        ///     Return all RoomOccupancy including and after the date
         /// </summary>
         /// <param name="type">ROOM_TYPE</param>
         /// <param name="date">date query starts</param>
         /// <returns></returns>
-        public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(Constants.RoomType type, DateTime date)
         {
             throw new NotImplementedException();
             //List<RoomOccupancy> roomOccupancies =
@@ -108,7 +108,7 @@ namespace DataAccessLayer.Repositories
             //return roomOccupancies;
         }
 
-        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.RoomType type, DateTime date)
         {
             throw new NotImplementedException();
             //return _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
@@ -116,16 +116,15 @@ namespace DataAccessLayer.Repositories
 
 
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposedValue = true;
             }

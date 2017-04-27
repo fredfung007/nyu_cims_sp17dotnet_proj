@@ -29,7 +29,7 @@ namespace BusinessLogic.Handlers
             List<Reservation> upcomingReservations = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.endDate.Date.CompareTo(date) > 0)
+                if (reservation.EndDate.Date.CompareTo(date) > 0)
                 {
                     upcomingReservations.Add(reservation);
                 }

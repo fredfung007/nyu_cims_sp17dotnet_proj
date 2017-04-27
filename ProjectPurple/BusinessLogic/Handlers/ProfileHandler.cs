@@ -46,7 +46,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        public Email GetEmail(Guid profileId)
+        public string GetEmail(Guid profileId)
         {
             return _profileRepository.GetProfile(profileId).Email;
         }
@@ -56,7 +56,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        public PhoneNumber GetPhoneNumber(Guid profileId)
+        public string GetPhoneNumber(Guid profileId)
         {
             return _profileRepository.GetProfile(profileId).PhoneNumber;
         }
@@ -82,7 +82,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="email"></param>
-        public void SetEmail(Guid profileId, Email email)
+        public void SetEmail(Guid profileId, string email)
         {
             Profile profile = _profileRepository.GetProfile(profileId);
             profile.Email = email;
@@ -95,7 +95,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="phoneNumber"></param>
-        public void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
+        public void SetPhoneNumber(Guid profileId, string phoneNumber)
         {
             Profile profile = _profileRepository.GetProfile(profileId);
             profile.PhoneNumber = phoneNumber;

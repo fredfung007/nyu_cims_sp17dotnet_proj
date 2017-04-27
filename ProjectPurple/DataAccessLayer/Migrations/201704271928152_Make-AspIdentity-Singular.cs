@@ -1,9 +1,8 @@
 namespace DataAccessLayer.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class MakeAspIdentitySingular : DbMigration
     {
         public override void Up()
         {
@@ -11,7 +10,7 @@ namespace DataAccessLayer.Migrations
                 "dbo.Addresses",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false),
                         FirstLine = c.String(nullable: false),
                         SecondLine = c.String(),
                         State = c.Int(nullable: false),
@@ -21,26 +20,13 @@ namespace DataAccessLayer.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Profiles",
+                "dbo.AspNetRoles",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        FirstName = c.String(nullable: false),
-                        LastName = c.String(nullable: false),
-                        PhoneNumber_Id = c.Guid(nullable: false),
-                        Email_Id = c.Int(nullable: false),
-                        Address_Id = c.Int(nullable: false),
-                        IdAspNetUsers_Id = c.String(maxLength: 128),
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false, maxLength: 256),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.IdAspNetUsers_Id)
-                .ForeignKey("dbo.Emails", t => t.Email_Id)
-                .ForeignKey("dbo.PhoneNumbers", t => t.PhoneNumber_Id)
-                .ForeignKey("dbo.Addresses", t => t.Address_Id)
-                .Index(t => t.PhoneNumber_Id)
-                .Index(t => t.Email_Id)
-                .Index(t => t.Address_Id)
-                .Index(t => t.IdAspNetUsers_Id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -58,15 +44,6 @@ namespace DataAccessLayer.Migrations
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.AspNetRoles",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -96,6 +73,25 @@ namespace DataAccessLayer.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
+                "dbo.Profiles",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
+                        Email = c.String(),
+                        PhoneNumber = c.String(),
+                        Address_Id = c.Int(nullable: false),
+                        IdAspNetUsers_Id = c.String(maxLength: 128),
+                        Address_Id1 = c.Guid(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Addresses", t => t.Address_Id1)
+                .ForeignKey("dbo.AspNetUsers", t => t.IdAspNetUsers_Id)
+                .Index(t => t.IdAspNetUsers_Id)
+                .Index(t => t.Address_Id1);
+            
+            CreateTable(
                 "dbo.Reservations",
                 c => new
                     {
@@ -113,8 +109,8 @@ namespace DataAccessLayer.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.RoomTypes", t => t.RoomType_Id)
                 .ForeignKey("dbo.Users", t => t.User_Username)
-                .ForeignKey("dbo.AspNetUsers", t => t.AspNetUsers_Id)
                 .ForeignKey("dbo.Profiles", t => t.BillingInfo)
+                .ForeignKey("dbo.AspNetUsers", t => t.AspNetUsers_Id)
                 .Index(t => t.BillingInfo)
                 .Index(t => t.RoomType_Id)
                 .Index(t => t.User_Username)
@@ -190,24 +186,6 @@ namespace DataAccessLayer.Migrations
                 .Index(t => t.Profile_Id);
             
             CreateTable(
-                "dbo.Emails",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Address = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.PhoneNumbers",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Number = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.Staffs",
                 c => new
                     {
@@ -233,22 +211,20 @@ namespace DataAccessLayer.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Profiles", "Address_Id", "dbo.Addresses");
-            DropForeignKey("dbo.Reservations", "BillingInfo", "dbo.Profiles");
-            DropForeignKey("dbo.Profiles", "PhoneNumber_Id", "dbo.PhoneNumbers");
-            DropForeignKey("dbo.Profiles", "Email_Id", "dbo.Emails");
+            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Reservations", "AspNetUsers_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Profiles", "IdAspNetUsers_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Reservations", "BillingInfo", "dbo.Profiles");
             DropForeignKey("dbo.Reservations", "User_Username", "dbo.Users");
             DropForeignKey("dbo.Users", "Profile_Id", "dbo.Profiles");
             DropForeignKey("dbo.RoomOccupancies", "RoomType_Id", "dbo.RoomTypes");
             DropForeignKey("dbo.Reservations", "RoomType_Id", "dbo.RoomTypes");
             DropForeignKey("dbo.Guests", "Reservation_Id", "dbo.Reservations");
             DropForeignKey("dbo.DailyPrices", "Reservation_Id", "dbo.Reservations");
-            DropForeignKey("dbo.Profiles", "IdAspNetUsers_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Profiles", "Address_Id1", "dbo.Addresses");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.Users", new[] { "Profile_Id" });
@@ -259,27 +235,23 @@ namespace DataAccessLayer.Migrations
             DropIndex("dbo.Reservations", new[] { "User_Username" });
             DropIndex("dbo.Reservations", new[] { "RoomType_Id" });
             DropIndex("dbo.Reservations", new[] { "BillingInfo" });
+            DropIndex("dbo.Profiles", new[] { "Address_Id1" });
+            DropIndex("dbo.Profiles", new[] { "IdAspNetUsers_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.Profiles", new[] { "IdAspNetUsers_Id" });
-            DropIndex("dbo.Profiles", new[] { "Address_Id" });
-            DropIndex("dbo.Profiles", new[] { "Email_Id" });
-            DropIndex("dbo.Profiles", new[] { "PhoneNumber_Id" });
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Staffs");
-            DropTable("dbo.PhoneNumbers");
-            DropTable("dbo.Emails");
             DropTable("dbo.Users");
             DropTable("dbo.RoomOccupancies");
             DropTable("dbo.RoomTypes");
             DropTable("dbo.Guests");
             DropTable("dbo.DailyPrices");
             DropTable("dbo.Reservations");
+            DropTable("dbo.Profiles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
-            DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.Profiles");
+            DropTable("dbo.AspNetRoles");
             DropTable("dbo.Addresses");
         }
     }
