@@ -1,4 +1,6 @@
-﻿namespace DataAccessLayer.Constructor
+﻿using DataAccessLayer.EF;
+
+namespace DataAccessLayer.Constructor
 {
     public class ProfileConstructor
     {

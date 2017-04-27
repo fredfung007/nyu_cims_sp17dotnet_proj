@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public class ProfileRepository:IProfileRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public ProfileRepository(HotelDataModelContainer context)
+        public ProfileRepository(CodeFirstHotelModel context)
         {
             this._context = context;
         }

@@ -12,28 +12,27 @@ namespace DataAccessLayer.EF
         {
         }
 
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<Addresses> Addresses { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<DailyPrices> DailyPrices { get; set; }
-        public virtual DbSet<Emails> Emails { get; set; }
-        public virtual DbSet<Guests> Guests { get; set; }
-        public virtual DbSet<PhoneNumbers> PhoneNumbers { get; set; }
-        public virtual DbSet<Profiles> Profiles { get; set; }
-        public virtual DbSet<Reservations> Reservations { get; set; }
-        public virtual DbSet<RoomOccupancies> RoomOccupancies { get; set; }
-        public virtual DbSet<RoomTypes> RoomTypes { get; set; }
-        public virtual DbSet<Staffs> Staffs { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<DailyPrice> DailyPrices { get; set; }
+        public virtual DbSet<Email> Emails { get; set; }
+        public virtual DbSet<Guest> Guests { get; set; }
+        public virtual DbSet<PhoneNumber> PhoneNumbers { get; set; }
+        public virtual DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
+        public virtual DbSet<RoomOccupancy> RoomOccupancies { get; set; }
+        public virtual DbSet<RoomType> RoomTypes { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Addresses>()
+            modelBuilder.Entity<Address>()
                 .HasMany(e => e.Profiles)
-                .WithRequired(e => e.Addresses)
+                .WithRequired(e => e.Address)
                 .HasForeignKey(e => e.Address_Id)
                 .WillCascadeOnDelete(false);
 
@@ -62,51 +61,51 @@ namespace DataAccessLayer.EF
                 .WithOptional(e => e.AspNetUsers)
                 .HasForeignKey(e => e.AspNetUsers_Id);
 
-            modelBuilder.Entity<Emails>()
+            modelBuilder.Entity<Email>()
                 .HasMany(e => e.Profiles)
-                .WithRequired(e => e.Emails)
+                .WithRequired(e => e.Email)
                 .HasForeignKey(e => e.Email_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<PhoneNumbers>()
+            modelBuilder.Entity<PhoneNumber>()
                 .HasMany(e => e.Profiles)
-                .WithRequired(e => e.PhoneNumbers)
+                .WithRequired(e => e.PhoneNumber)
                 .HasForeignKey(e => e.PhoneNumber_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Profiles>()
+            modelBuilder.Entity<Profile>()
                 .HasMany(e => e.Reservations)
-                .WithRequired(e => e.Profiles)
-                .HasForeignKey(e => e.BillingInfo_Id)
+                .WithRequired(e => e.Profile)
+                .HasForeignKey(e => e.BillingInfo)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Reservations>()
+            modelBuilder.Entity<Reservation>()
                 .HasMany(e => e.DailyPrices)
-                .WithRequired(e => e.Reservations)
+                .WithRequired(e => e.Reservation)
                 .HasForeignKey(e => e.Reservation_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Reservations>()
+            modelBuilder.Entity<Reservation>()
                 .HasMany(e => e.Guests)
-                .WithRequired(e => e.Reservations)
+                .WithRequired(e => e.Reservation)
                 .HasForeignKey(e => e.Reservation_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<RoomTypes>()
+            modelBuilder.Entity<RoomType>()
                 .HasMany(e => e.Reservations)
-                .WithRequired(e => e.RoomTypes)
+                .WithRequired(e => e.RoomType)
                 .HasForeignKey(e => e.RoomType_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<RoomTypes>()
+            modelBuilder.Entity<RoomType>()
                 .HasMany(e => e.RoomOccupancies)
-                .WithRequired(e => e.RoomTypes)
+                .WithRequired(e => e.RoomType)
                 .HasForeignKey(e => e.RoomType_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Users>()
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.Reservations)
-                .WithOptional(e => e.Users)
+                .WithOptional(e => e.User)
                 .HasForeignKey(e => e.User_Username);
         }
     }

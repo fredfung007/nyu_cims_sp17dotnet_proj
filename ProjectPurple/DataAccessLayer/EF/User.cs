@@ -6,12 +6,12 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Users
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
+        public User()
         {
-            Reservations = new HashSet<Reservations>();
+            Reservations = new HashSet<Reservation>();
         }
 
         [Key]
@@ -29,7 +29,9 @@ namespace DataAccessLayer.EF
 
         public DateTime? LoyaltyYear { get; set; }
 
+        public Profile Profile { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservations> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

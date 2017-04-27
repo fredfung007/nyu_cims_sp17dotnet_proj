@@ -6,13 +6,13 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Reservations
+    public partial class Reservation
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Reservations()
+        public Reservation()
         {
-            DailyPrices = new HashSet<DailyPrices>();
-            Guests = new HashSet<Guests>();
+            DailyPrices = new HashSet<DailyPrice>();
+            Guests = new HashSet<Guest>();
         }
 
         public Guid Id { get; set; }
@@ -27,7 +27,7 @@ namespace DataAccessLayer.EF
 
         public DateTime? checkOutDate { get; set; }
 
-        public Guid BillingInfo_Id { get; set; }
+        public Guid BillingInfo { get; set; }
 
         public Guid RoomType_Id { get; set; }
 
@@ -40,15 +40,15 @@ namespace DataAccessLayer.EF
         public virtual AspNetUsers AspNetUsers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DailyPrices> DailyPrices { get; set; }
+        public virtual ICollection<DailyPrice> DailyPrices { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Guests> Guests { get; set; }
+        public virtual ICollection<Guest> Guests { get; set; }
 
-        public virtual Profiles Profiles { get; set; }
+        public virtual Profile Profile { get; set; }
 
-        public virtual RoomTypes RoomTypes { get; set; }
+        public virtual RoomType RoomType { get; set; }
 
-        public virtual Users Users { get; set; }
+        public virtual User User { get; set; }
     }
 }

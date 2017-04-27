@@ -6,13 +6,13 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class RoomTypes
+    public partial class RoomType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RoomTypes()
+        public RoomType()
         {
-            Reservations = new HashSet<Reservations>();
-            RoomOccupancies = new HashSet<RoomOccupancies>();
+            Reservations = new HashSet<Reservation>();
+            RoomOccupancies = new HashSet<RoomOccupancy>();
         }
 
         public Guid Id { get; set; }
@@ -32,9 +32,9 @@ namespace DataAccessLayer.EF
         public string ImageUrl { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservations> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoomOccupancies> RoomOccupancies { get; set; }
+        public virtual ICollection<RoomOccupancy> RoomOccupancies { get; set; }
     }
 }

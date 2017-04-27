@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public class RoomRepository : IRoomRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public RoomRepository(HotelDataModelContainer context)
+        public RoomRepository(CodeFirstHotelModel context)
         {
             this._context = context;
         }
@@ -37,7 +38,8 @@ namespace DataAccessLayer.Repositories
 
         public RoomType GetRoomType(ROOM_TYPE type)
         {
-            return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
+            throw new NotImplementedException();
+            // return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
         }
 
         public IEnumerable<RoomType> GetRoomTypes()
@@ -58,7 +60,7 @@ namespace DataAccessLayer.Repositories
             }
             else
             {
-                // create new and add it into RoomOccupancies
+                // create new and add it into RoomOccupancy
                 roomOccupancy = new RoomOccupancy
                 {
                     Id = Guid.NewGuid(),
@@ -93,21 +95,23 @@ namespace DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Return all RoomOccupancies including and after the date
+        /// Return all RoomOccupancy including and after the date
         /// </summary>
         /// <param name="type">ROOM_TYPE</param>
         /// <param name="date">date query starts</param>
         /// <returns></returns>
         public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
         {
-            List<RoomOccupancy> roomOccupancies =
-                _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
-            return roomOccupancies;
+            throw new NotImplementedException();
+            //List<RoomOccupancy> roomOccupancies =
+            //    _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
+            //return roomOccupancies;
         }
 
         public int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
         {
-            return _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
+            throw new NotImplementedException();
+            //return _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
         }
 
 

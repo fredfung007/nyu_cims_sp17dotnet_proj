@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
@@ -21,8 +22,8 @@ namespace BusinessLogic.Handlers
 
         public RoomHandler()
         {
-            _roomRepository = new RoomRepository(new HotelDataModelContainer());
-            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
         }
 
         /// <summary>
@@ -54,10 +55,11 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
-        /// <returns>a list of RoomTypes that are available during the given date</returns>
+        /// <returns>a list of RoomType that are available during the given date</returns>
         public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime start, DateTime end)
         {
-            return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room, start, end) select room.Type).ToList();
+            throw new NotImplementedException();
+            //return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room, start, end) select room.Type).ToList();
         }
 
         /// <summary>

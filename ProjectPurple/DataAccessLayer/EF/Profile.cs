@@ -6,12 +6,12 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Profiles
+    public partial class Profile
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Profiles()
+        public Profile()
         {
-            Reservations = new HashSet<Reservations>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public Guid Id { get; set; }
@@ -31,15 +31,15 @@ namespace DataAccessLayer.EF
         [StringLength(128)]
         public string IdAspNetUsers_Id { get; set; }
 
-        public virtual Addresses Addresses { get; set; }
+        public virtual Address Address { get; set; }
 
         public virtual AspNetUsers AspNetUsers { get; set; }
 
-        public virtual Emails Emails { get; set; }
+        public virtual Email Email { get; set; }
 
-        public virtual PhoneNumbers PhoneNumbers { get; set; }
+        public virtual PhoneNumber PhoneNumber { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservations> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

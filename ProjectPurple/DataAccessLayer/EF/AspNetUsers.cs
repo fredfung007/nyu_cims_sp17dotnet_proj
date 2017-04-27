@@ -13,8 +13,8 @@ namespace DataAccessLayer.EF
         {
             AspNetUserClaims = new HashSet<AspNetUserClaims>();
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
-            Profiles = new HashSet<Profiles>();
-            Reservations = new HashSet<Reservations>();
+            Profiles = new HashSet<Profile>();
+            Reservations = new HashSet<Reservation>();
             AspNetRoles = new HashSet<AspNetRoles>();
         }
 
@@ -52,10 +52,10 @@ namespace DataAccessLayer.EF
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profiles> Profiles { get; set; }
+        public virtual ICollection<Profile> Profiles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservations> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }

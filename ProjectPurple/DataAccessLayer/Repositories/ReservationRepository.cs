@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     // TODO using async
     public class ReservationRepository:IReservationRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public ReservationRepository(HotelDataModelContainer context)
+        public ReservationRepository(CodeFirstHotelModel context)
         {
             _context = context;
         }
@@ -93,7 +94,7 @@ namespace DataAccessLayer.Repositories
         // commentted for now, did not find use cases for this method
         // public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
         // {
-        //     return context.Reservations
+        //     return context.Reservation
         //                 .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
         //                 .ToList();
         // }

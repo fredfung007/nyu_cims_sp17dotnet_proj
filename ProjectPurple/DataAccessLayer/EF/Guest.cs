@@ -6,16 +6,18 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class RoomOccupancies
+    public partial class Guest
     {
-        public DateTime Date { get; set; }
-
         public Guid Id { get; set; }
 
-        public int Occupancy { get; set; }
+        [Required]
+        public string FirstName { get; set; }
 
-        public Guid RoomType_Id { get; set; }
+        [Required]
+        public string LastName { get; set; }
 
-        public virtual RoomTypes RoomTypes { get; set; }
+        public Guid Reservation_Id { get; set; }
+
+        public virtual Reservation Reservation { get; set; }
     }
 }

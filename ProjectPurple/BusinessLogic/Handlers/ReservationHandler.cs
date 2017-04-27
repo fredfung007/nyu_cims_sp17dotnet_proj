@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace BusinessLogic.Handlers
 {
@@ -18,7 +19,7 @@ namespace BusinessLogic.Handlers
         {
             // username should come from cookies
             var username = "";
-            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
             _userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
@@ -60,14 +61,15 @@ namespace BusinessLogic.Handlers
 
         public void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
-            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
-            if (reservation != null)
-            {
-                reservation.BillingInfo = billingInfo;
-                reservation.isPaid = true;
-            }
-            _reservationRepository.UpdateReservation(reservation);
-            _reservationRepository.Save();
+            throw new NotImplementedException();
+            //Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
+            //if (reservation != null)
+            //{
+            //    reservation.BillingInfo = billingInfo;
+            //    reservation.isPaid = true;
+            //}
+            //_reservationRepository.UpdateReservation(reservation);
+            //_reservationRepository.Save();
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataAccessLayer;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
@@ -11,8 +12,8 @@ namespace BusinessLogic.Handlers
         private User User { get; }
         public UserReservationQueryHandler(string username)
         {
-            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
-            User = new AuthRepository(new HotelDataModelContainer()).GetUser(username);
+            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
+            User = new AuthRepository(new CodeFirstHotelModel()).GetUser(username);
         }
 
         User IUserReservationQueryHandler.User => User;

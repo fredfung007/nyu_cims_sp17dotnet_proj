@@ -1,3 +1,5 @@
+using DataAccessLayer.Constants;
+
 namespace DataAccessLayer.EF
 {
     using System;
@@ -6,20 +8,30 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Emails
+    public partial class Address
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Emails()
+        public Address()
         {
-            Profiles = new HashSet<Profiles>();
+            Profiles = new HashSet<Profile>();
         }
 
         public int Id { get; set; }
 
         [Required]
-        public string Address { get; set; }
+        public string FirstLine { get; set; }
+
+        public string SecondLine { get; set; }
+
+        public US_STATE State { get; set; }
+
+        [Required]
+        public string ZipCode { get; set; }
+
+        [Required]
+        public string City { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profiles> Profiles { get; set; }
+        public virtual ICollection<Profile> Profiles { get; set; }
     }
 }

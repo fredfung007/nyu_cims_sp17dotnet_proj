@@ -6,18 +6,16 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Guests
+    public partial class DailyPrice
     {
         public Guid Id { get; set; }
 
-        [Required]
-        public string FirstName { get; set; }
+        public int BillingPrice { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+        public DateTime Date { get; set; }
 
         public Guid Reservation_Id { get; set; }
 
-        public virtual Reservations Reservations { get; set; }
+        public virtual Reservation Reservation { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using DataAccessLayer;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
@@ -12,7 +13,7 @@ namespace BusinessLogic.Handlers
         private readonly IProfileRepository _profileRepository;
         public ProfileHandler()
         {
-            _profileRepository = new ProfileRepository(new HotelDataModelContainer());
+            _profileRepository = new ProfileRepository(new CodeFirstHotelModel());
         }
 
         public ProfileHandler(IProfileRepository profileRepository)

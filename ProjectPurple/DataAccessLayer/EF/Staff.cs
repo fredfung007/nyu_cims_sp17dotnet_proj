@@ -6,7 +6,7 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Staffs
+    public partial class Staff
     {
         [Key]
         [StringLength(30)]

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public AuthRepository(HotelDataModelContainer context)
+        public AuthRepository(CodeFirstHotelModel context)
         {
             _context = context;
         }

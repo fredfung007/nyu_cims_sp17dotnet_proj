@@ -1,12 +1,13 @@
 ﻿using System;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     class UserRepository : IUserRepository, IDisposable
     {
-        private HotelDataModelContainer _context;
+        private CodeFirstHotelModel _context;
 
-        public UserRepository(HotelDataModelContainer context)
+        public UserRepository(CodeFirstHotelModel context)
         {
             this._context = context;
         }

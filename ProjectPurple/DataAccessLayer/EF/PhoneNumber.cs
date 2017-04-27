@@ -6,30 +6,20 @@ namespace DataAccessLayer.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Addresses
+    public partial class PhoneNumber
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Addresses()
+        public PhoneNumber()
         {
-            Profiles = new HashSet<Profiles>();
+            Profiles = new HashSet<Profile>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public string FirstLine { get; set; }
-
-        public string SecondLine { get; set; }
-
-        public int State { get; set; }
-
-        [Required]
-        public string ZipCode { get; set; }
-
-        [Required]
-        public string City { get; set; }
+        public string Number { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profiles> Profiles { get; set; }
+        public virtual ICollection<Profile> Profiles { get; set; }
     }
 }
