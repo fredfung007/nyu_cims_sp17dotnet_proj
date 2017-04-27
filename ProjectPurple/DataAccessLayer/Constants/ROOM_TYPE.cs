@@ -3,7 +3,7 @@
     /// <summary>
     ///     Enum type of room type
     /// </summary>
-    public enum RoomType
+    public enum ROOM_TYPE
     {
         DoubleBedRoom = 0,
         QueenRoom = 1,

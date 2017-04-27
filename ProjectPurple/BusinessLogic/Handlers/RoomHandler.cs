@@ -5,7 +5,6 @@ using DataAccessLayer;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
-using RoomType = DataAccessLayer.Constants.RoomType;
 
 namespace BusinessLogic.Handlers
 {
@@ -28,56 +27,70 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Return true if the RoomType is available during [start, end).
+        /// Return true if the RoomType is available during [checkIn, checkOut).
         /// </summary>
         /// <param name="room">RoomType instance</param>
-        /// <param name="start">check-in date</param>
-        /// <param name="end">check-out date</param>
+        /// <param name="checkIn">check-in date</param>
+        /// <param name="checkOut">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(DataAccessLayer.EF.RoomType room, DateTime start, DateTime end)
+        private bool IsAvailable(ROOM_TYPE room, DateTime checkIn, DateTime checkOut)
         {
-            int totalAmount = _roomRepository.GetRoomTotalAmount(room);
-            DateTime checkDate = start;
+            DateTime checkDate = checkIn;
 
-            while (checkDate.CompareTo(end) < 0)
+            while (checkDate.CompareTo(checkOut) < 0)
             {
-                if (totalAmount < _roomRepository.GetRoomReservationAmount(room, checkDate) + 1)
+                if (GetCurrentRoomAvailability(room, checkDate) > 1)
                 {
                     return false;
                 }
-                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                checkDate.AddDays(1);
+                checkDate = checkDate.AddDays(1);
             }
             return true;
         }
 
         /// <summary>
-        /// Return a list of RoomType that is available during the the date [start, end).
+        /// Return a list of RoomType that is available during the the date [checkIn, checkOut).
         /// </summary>
-        /// <param name="start">check-in date</param>
-        /// <param name="end">check-out date</param>
-        /// <returns>a list of RoomType that are available during the given date</returns>
-        public List<RoomType> CheckAvailableTypeForDuration(DateTime start, DateTime end)
+        /// <param name="checkIn">check-in date</param>
+        /// <param name="checkOut">check-out date</param>
+        /// <returns>a list of RoomTypes that are available during the given date</returns>
+        /// <exception cref="ArgumentException">if check-in date is later than the check-out date</exception>
+        public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime checkIn, DateTime checkOut)
         {
-            throw new NotImplementedException();
-            //return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room, start, end) select room.Type).ToList();
+            if (checkIn == null || checkOut == null)
+            {
+                throw new ArgumentException("null check-in date or check-out date");
+            }
+            else if (checkIn >= checkOut)
+            {
+                throw new ArgumentException("check-in date later then check-out date");
+            }
+            return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room.Type, checkIn, checkOut) select room.Type).ToList();
         }
 
         /// <summary>
-        /// Get the price list for a room type during [start, end).
+        /// Get the price list for a room type during [checkIn, checkOut).
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
-        /// <param name="start">check-in date</param>
-        /// <param name="end">check-out date</param>
+        /// <param name="checkIn">check-in date</param>
+        /// <param name="checkOut">check-out date</param>
         /// <returns>list for price</returns>
-        public List<int> GetRoomPriceList(RoomType type, DateTime start, DateTime end)
+        public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
         {
-            List<int> priceList = new List<int>();
-            while(start.CompareTo(end) < 0)
+            if (checkIn == null || checkOut == null)
             {
-                priceList.Add(GetRoomPrice(type, start));
-                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                start.AddDays(1);
+                throw new ArgumentException("null check-in date or check-out date");
+            }
+            else if (checkIn >= checkOut)
+            {
+                throw new ArgumentException("check-in date later then check-out date");
+            }
+            List<int> priceList = new List<int>();
+            DateTime checkDate = checkIn;
+            while(checkDate.CompareTo(checkOut) < 0)
+            {
+                priceList.Add(GetRoomPrice(type, checkDate));
+                checkDate = checkDate.AddDays(1);
             }
             return priceList;
         }
@@ -89,7 +102,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of roomType</param>
         /// <param name="date">Date for DateTime</param>
         /// <returns>room price</returns>
-        private int GetRoomPrice(RoomType type, DateTime date)
+        private int GetRoomPrice(ROOM_TYPE type, DateTime date)
         {
             // compute price multipler
             double rate = 1.0 + GetHotelOccupancy(date);
@@ -102,7 +115,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type"></param>
         /// <param name="date"></param>
         /// <returns>current available rooms</returns>
-        public int GetCurrentRoomAvailability(RoomType type, DateTime date)
+        private int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             return _roomRepository.GetRoomTotalAmount(room) - _roomRepository.GetRoomReservationAmount(room, date);
@@ -133,7 +146,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">room type of ROOM_TYPE</param>
         /// <param name="date">date of DateTime</param>
         /// <returns>booked room amount</returns>
-        public int GetBookedRoomOnDate(RoomType type, DateTime date)
+        public int GetBookedRoomOnDate(ROOM_TYPE type, DateTime date)
         {
             return _roomRepository.GetRoomReservationAmount(_roomRepository.GetRoomType(type), date);
         }
@@ -154,7 +167,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>number of rooms</returns>
-        public int GetRooomInventory(RoomType type)
+        public int GetRoomInventory(ROOM_TYPE type)
         {
             return _roomRepository.GetRoomType(type).Inventory;
         }
@@ -164,7 +177,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>description string</returns>
-        public string GetRoomDescription(RoomType type)
+        public string GetRoomDescription(ROOM_TYPE type)
         {
             return _roomRepository.GetRoomType(type).Description;
         }
@@ -175,7 +188,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="description">Description string</param>
         /// <returns>true if succeeded</returns>
-        public void UpdateRoomDescription(RoomType type, string description)
+        public void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             room.Description = description;
@@ -188,7 +201,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>Ameneties string</returns>
-        public string GetRoomAmeneties(RoomType type)
+        public string GetRoomAmeneties(ROOM_TYPE type)
         {
             return _roomRepository.GetRoomType(type).Ameneties;
         }
@@ -233,7 +246,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">room type</param>
         /// <param name="quantity">new value of inventory quantity</param>
-        public void UpdateRoomInventory(RoomType type, int quantity)
+        public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             int currentQuantity = _roomRepository.GetRoomTotalAmount(room);
@@ -263,17 +276,16 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.StartDate > today || reservation.EndDate < today)
+            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
             {
                 return;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.EndDate) < 0)
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
-                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                checkDate.AddDays(1);
+                checkDate = checkDate.AddDays(1);
             }
 
             reservation.CheckInDate = today;
@@ -297,11 +309,10 @@ namespace BusinessLogic.Handlers
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.EndDate) < 0)
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
-                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                checkDate.AddDays(1);
+                checkDate = checkDate.AddDays(1);
             }
             _roomRepository.Save();
 
@@ -360,10 +371,10 @@ namespace BusinessLogic.Handlers
             return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
         }
 
-        public int GetAveragePrice(RoomType type, DateTime start, DateTime end)
+        public int GetAveragePrice(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
         {
-            var total = GetRoomPriceList(type, start, end).Sum();
-            return total / (end - start).Days;
+            var total = GetRoomPriceList(type, checkIn, checkOut).Sum();
+            return total / (checkOut - checkIn).Days;
         }
     }
 }

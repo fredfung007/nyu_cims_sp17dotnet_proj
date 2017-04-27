@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.EF
 {
@@ -20,7 +21,7 @@ namespace DataAccessLayer.EF
 
         public int Inventory { get; set; }
 
-        public int Type { get; set; }
+        public ROOM_TYPE Type { get; set; }
 
         [Required]
         public string Ameneties { get; set; }

@@ -4,7 +4,6 @@ using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
-using RoomType = DataAccessLayer.Constants.RoomType;
 
 namespace BusinessLogic.Handlers
 {
@@ -33,7 +32,7 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(RoomType type, DateTime start, DateTime end, List<Guest> guests)
+        public Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
         {
             Reservation reservation = new Reservation
             {

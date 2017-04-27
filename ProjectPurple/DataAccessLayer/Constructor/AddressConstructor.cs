@@ -30,7 +30,7 @@ namespace DataAccessLayer.Constructor
             return this;
         }
 
-        public AddressConstructor AddState(UsState state)
+        public AddressConstructor AddState(US_STATE state)
         {
             _address.State = state;
             return this;

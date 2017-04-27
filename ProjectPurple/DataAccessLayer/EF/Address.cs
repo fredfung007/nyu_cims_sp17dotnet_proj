@@ -13,7 +13,7 @@ namespace DataAccessLayer.EF
 
         public string SecondLine { get; set; }
 
-        public UsState State { get; set; }
+        public US_STATE State { get; set; }
 
         [Required]
         public string ZipCode { get; set; }

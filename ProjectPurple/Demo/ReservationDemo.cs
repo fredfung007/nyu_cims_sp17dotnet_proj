@@ -17,10 +17,10 @@ namespace Demo
 
         private string QueryAvailableRooms(RoomHandler roomHandler, DateTime checkIn, DateTime checkOut)
         {
-            List<RoomType> types = roomHandler.CheckAvailableTypeForDuration(checkIn, checkOut);
+            List<ROOM_TYPE> types = roomHandler.CheckAvailableTypeForDuration(checkIn, checkOut);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("Available Rooms:\n");
-            foreach (RoomType type in types)
+            foreach (ROOM_TYPE type in types)
             {
                 stringBuilder.AppendFormat("{0}", type.ToString())
                              .Append("\tAverage Price Per Day:\t$")
