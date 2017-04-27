@@ -49,7 +49,7 @@ namespace DataAccessLayer.Repositories
         {
             // check if record exists
             RoomOccupancy roomOccupancy =
-                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType == room);
+                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType.Type == room.Type);
             if (roomOccupancy != null)
             {
                 // update the existing RoomOccupancy record
@@ -73,7 +73,7 @@ namespace DataAccessLayer.Repositories
         public int GetRoomReservationAmount(RoomType room, DateTime date)
         {
             RoomOccupancy roomOccupancy =
-                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType == room);
+                _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType.Type == room.Type);
             return roomOccupancy?.Occupancy ?? 0;
         }
 
