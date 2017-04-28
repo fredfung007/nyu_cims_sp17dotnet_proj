@@ -51,41 +51,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Constants\ROOM_TYPE.cs" />
+    <Compile Include="Constants\US_STATE.cs" />
     <Compile Include="Constructor\AddressConstructor.cs" />
     <Compile Include="Constructor\ProfileConstructor.cs" />
-    <Compile Include="DailyPrice.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    <Compile Include="EF\Address.cs" />
+    <Compile Include="EF\AspNetRole.cs" />
+    <Compile Include="EF\AspNetUserClaim.cs" />
+    <Compile Include="EF\AspNetUserLogin.cs" />
+    <Compile Include="EF\AspNetUser.cs" />
+    <Compile Include="EF\CodeFirstHotelModel.cs" />
+    <Compile Include="EF\DailyPrice.cs" />
+    <Compile Include="EF\Guest.cs" />
+    <Compile Include="EF\Profile.cs" />
+    <Compile Include="EF\Reservation.cs" />
+    <Compile Include="EF\RoomOccupancy.cs" />
+    <Compile Include="EF\RoomType.cs" />
+    <Compile Include="EF\Staff.cs" />
+    <Compile Include="EF\User.cs" />
+    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.cs" />
+    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.Designer.cs">
+      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
     </Compile>
-    <Compile Include="Email.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
+    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.cs" />
+    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.Designer.cs">
+      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
     </Compile>
-    <Compile Include="Guest.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="HotelDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HotelDataModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="HotelDataModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="HotelDataModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HotelDataModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="PhoneNumber.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Profile.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\IAuthRepository.cs" />
@@ -97,50 +89,21 @@
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Constants\ROOM_TYPE.cs" />
-    <Compile Include="Constants\US_STATE.cs" />
-    <Compile Include="Reservation.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RoomOccupancy.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RoomType.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Staff.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>HotelDataModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="HotelDataModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>HotelDataModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="HotelDataModel.edmx.diagram">
-      <DependentUpon>HotelDataModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HotelDataModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>HotelDataModel.Context.cs</LastGenOutput>
-      <DependentUpon>HotelDataModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="HotelDataModel.edmx.sql" />
-    <Content Include="HotelDataModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>HotelDataModel.cs</LastGenOutput>
-      <DependentUpon>HotelDataModel.edmx</DependentUpon>
-    </Content>
+    <EmbeddedResource Include="Migrations\201704271928152_Make-AspIdentity-Singular.resx">
+      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704271932098_Change-Reservation-Name.resx">
+      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

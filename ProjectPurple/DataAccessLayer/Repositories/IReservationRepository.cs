@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     /// <summary>
-    /// The class that is used to store all information of one reservation.
-    /// Immutable. Created once the reservation is submitted.
+    ///     The class that is used to store all information of one reservation.
+    ///     Immutable. Created once the reservation is submitted.
     /// </summary>
-    public interface IReservationRepository: IDisposable
+    public interface IReservationRepository : IDisposable
     {
         // unique ID per reservation, should be generated in the constructor
         Reservation GetReservation(Guid id);
+
         IEnumerable<Reservation> GetReservations();
-        IEnumerable<Reservation> GetReservationsByUserId(String username);
+        IEnumerable<Reservation> GetReservationsByUserId(string username);
         IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate);
         IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate);
 

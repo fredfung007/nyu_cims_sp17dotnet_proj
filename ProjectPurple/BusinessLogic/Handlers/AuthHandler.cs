@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Repositories;
 using DataAccessLayer;
 using System.Web.Helpers;
+using DataAccessLayer.EF;
 
 namespace BusinessLogic.Handlers
 {
@@ -10,7 +11,7 @@ namespace BusinessLogic.Handlers
 
         public AuthHandler()
         {
-            _authRepository = new AuthRepository(new HotelDataModelContainer());
+            _authRepository = new AuthRepository(new CodeFirstHotelModel());
         }
 
         public AuthHandler(IAuthRepository authRepository)
@@ -45,7 +46,7 @@ namespace BusinessLogic.Handlers
         public void CreateAnonymousUser(string username, string inputpassword)
         {
             User user = CreateUser(username, inputpassword);
-            user.isRegistered = false;
+            user.IsRegistered = false;
         }
 
         private static User CreateUser(string username, string inputpassword)

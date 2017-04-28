@@ -1,37 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
+using System.Linq;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
-    public class ProfileRepository:IProfileRepository, IDisposable
+    public class ProfileRepository : IProfileRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public ProfileRepository(HotelDataModelContainer context)
+        public ProfileRepository(CodeFirstHotelModel context)
         {
-            this._context = context;
-        }
-
-        public Address GetAddress(int id)
-        {
-            return _context.Addresses.Find(id);
-        }
-
-        public IEnumerable<Address> GetAddresses()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Email GetEmail(int id)
-        {
-            return _context.Emails.Find(id);
-        }
-
-        public IEnumerable<Email> GetEmails()
-        {
-            throw new NotImplementedException();
+            _context = context;
         }
 
         public Guest GetGuest(Guid id)
@@ -42,16 +23,6 @@ namespace DataAccessLayer.Repositories
         public IEnumerable<Guest> GetGuests()
         {
             return _context.Guests.ToList();
-        }
-
-        public PhoneNumber GetPhoneNumber(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<PhoneNumber> GetPhoneNumbers()
-        {
-            throw new NotImplementedException();
         }
 
         public Profile GetProfile(Guid id)
@@ -100,17 +71,26 @@ namespace DataAccessLayer.Repositories
             _context.SaveChanges();
         }
 
+        public Address GetAddress(int id)
+        {
+            return _context.Addresses.Find(id);
+        }
+
+        public IEnumerable<Address> GetAddresses()
+        {
+            throw new NotImplementedException();
+        }
+
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposedValue = true;
             }
@@ -128,6 +108,7 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

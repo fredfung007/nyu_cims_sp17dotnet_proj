@@ -2,6 +2,7 @@
 using System.Web.Helpers;
 using BusinessLogic.Handlers;
 using DataAccessLayer;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

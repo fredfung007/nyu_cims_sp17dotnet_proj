@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public class RoomRepository : IRoomRepository, IDisposable
     {
-        private readonly HotelDataModelContainer _context;
+        private readonly CodeFirstHotelModel _context;
 
-        public RoomRepository(HotelDataModelContainer context)
+        public RoomRepository(CodeFirstHotelModel context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public void InsertRoom(RoomType room)
@@ -27,7 +28,7 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoom(RoomType room)
         {
-            _context.Entry(room).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(room).State = EntityState.Modified;
         }
 
         public RoomType GetRoomType(Guid id)
@@ -35,9 +36,10 @@ namespace DataAccessLayer.Repositories
             return _context.RoomTypes.Find(id);
         }
 
-        public RoomType GetRoomType(ROOM_TYPE type)
+        public RoomType GetRoomType(Constants.ROOM_TYPE type)
         {
-            return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
+            throw new NotImplementedException();
+            // return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
         }
 
         public IEnumerable<RoomType> GetRoomTypes()
@@ -58,7 +60,7 @@ namespace DataAccessLayer.Repositories
             }
             else
             {
-                // create new and add it into RoomOccupancies
+                // create new and add it into RoomOccupancy
                 roomOccupancy = new RoomOccupancy
                 {
                     Id = Guid.NewGuid(),
@@ -89,39 +91,40 @@ namespace DataAccessLayer.Repositories
 
         public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
-            _context.Entry(roomOccupancy).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(roomOccupancy).State = EntityState.Modified;
         }
 
         /// <summary>
-        /// Return all RoomOccupancies including and after the date
+        ///     Return all RoomOccupancy including and after the date
         /// </summary>
         /// <param name="type">ROOM_TYPE</param>
         /// <param name="date">date query starts</param>
         /// <returns></returns>
-        public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
         {
-            List<RoomOccupancy> roomOccupancies =
-                _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
-            return roomOccupancies;
+            throw new NotImplementedException();
+            //List<RoomOccupancy> roomOccupancies =
+            //    _context.RoomOccupancies.Where(ro => ro.ROOM_TYPE.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
+            //return roomOccupancies;
         }
 
-        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
+        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
         {
-            return _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
+            throw new NotImplementedException();
+            //return _context.RoomOccupancies.Where(ro => ro.ROOM_TYPE.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
         }
 
 
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposedValue = true;
             }

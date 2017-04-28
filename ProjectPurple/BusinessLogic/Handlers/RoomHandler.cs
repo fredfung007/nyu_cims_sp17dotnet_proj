@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
@@ -21,8 +22,8 @@ namespace BusinessLogic.Handlers
 
         public RoomHandler()
         {
-            _roomRepository = new RoomRepository(new HotelDataModelContainer());
-            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
         }
 
         /// <summary>
@@ -32,13 +33,13 @@ namespace BusinessLogic.Handlers
         /// <param name="checkIn">check-in date</param>
         /// <param name="checkOut">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(RoomType room, DateTime checkIn, DateTime checkOut)
+        private bool IsAvailable(ROOM_TYPE room, DateTime checkIn, DateTime checkOut)
         {
             DateTime checkDate = checkIn;
 
             while (checkDate.CompareTo(checkOut) < 0)
             {
-                if (GetCurrentRoomAvailability(room.Type, checkDate) > 1)
+                if (GetCurrentRoomAvailability(room, checkDate) > 1)
                 {
                     return false;
                 }
@@ -64,7 +65,7 @@ namespace BusinessLogic.Handlers
             {
                 throw new ArgumentException("check-in date later then check-out date");
             }
-            return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room, checkIn, checkOut) select room.Type).ToList();
+            return (from room in _roomRepository.GetRoomTypes() where IsAvailable(room.Type, checkIn, checkOut) select room.Type).ToList();
         }
 
         /// <summary>
@@ -116,7 +117,7 @@ namespace BusinessLogic.Handlers
         /// <returns>current available rooms</returns>
         private int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
-            RoomType room = _roomRepository.GetRoomType(type);
+            DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             return _roomRepository.GetRoomTotalAmount(room) - _roomRepository.GetRoomReservationAmount(room, date);
         }
 
@@ -129,9 +130,9 @@ namespace BusinessLogic.Handlers
         {
             int totalQuantity = 0;
             int totalOccupation = 0;
-            IEnumerable<RoomType> types = _roomRepository.GetRoomTypes();
+            IEnumerable<DataAccessLayer.EF.RoomType> types = _roomRepository.GetRoomTypes();
 
-            foreach (RoomType room in types)
+            foreach (DataAccessLayer.EF.RoomType room in types)
             {
                 totalQuantity += _roomRepository.GetRoomTotalAmount(room);
                 totalOccupation += _roomRepository.GetRoomReservationAmount(room, date);
@@ -189,7 +190,7 @@ namespace BusinessLogic.Handlers
         /// <returns>true if succeeded</returns>
         public void UpdateRoomDescription(ROOM_TYPE type, string description)
         {
-            RoomType room = _roomRepository.GetRoomType(type);
+            DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             room.Description = description;
             _roomRepository.UpdateRoom(room);
             _roomRepository.Save();
@@ -210,7 +211,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <returns>url list</returns>
-        public List<string> GetRoomPictureUrls(ROOM_TYPE type)
+        public List<string> GetRoomPictureUrls(RoomType type)
         {
             //TODO
             return null;
@@ -222,7 +223,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="urls">Url List</param>
         /// <returns>true if succeeded</returns>
-        public bool UpdateRoomPictureUrls(ROOM_TYPE type, List<string> urls)
+        public bool UpdateRoomPictureUrls(RoomType type, List<string> urls)
         {
             return false;
         }
@@ -233,7 +234,7 @@ namespace BusinessLogic.Handlers
         /// <param name="type">Room type of ROOM_TYPE</param>
         /// <param name="url">picture url</param>
         /// <returns>true if succeded</returns>
-        public bool InsertPictureUrl(ROOM_TYPE type, string url)
+        public bool InsertPictureUrl(RoomType type, string url)
         {
             return false;
         }
@@ -247,7 +248,7 @@ namespace BusinessLogic.Handlers
         /// <param name="quantity">new value of inventory quantity</param>
         public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
-            RoomType room = _roomRepository.GetRoomType(type);
+            DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
             int currentQuantity = _roomRepository.GetRoomTotalAmount(room);
 
             if (quantity < currentQuantity)
@@ -275,19 +276,19 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.checkInDate > today || reservation.checkOutDate < today)
+            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
             {
                 return;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.checkOutDate) < 0)
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
                 checkDate = checkDate.AddDays(1);
             }
 
-            reservation.checkInDate = today;
+            reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
         }
@@ -302,13 +303,13 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.checkInDate == null || reservation.checkInDate > today)
+            if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
             {
                 return;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.checkOutDate) < 0)
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
             {
                 _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
                 checkDate = checkDate.AddDays(1);
@@ -318,7 +319,7 @@ namespace BusinessLogic.Handlers
             // loyalty program
             int stayLength = 0;
             User user = reservation.User;
-            DateTime checkInDate = (DateTime)reservation.checkInDate;
+            DateTime checkInDate = (DateTime)reservation.CheckInDate;
 
             if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
             {
@@ -335,7 +336,7 @@ namespace BusinessLogic.Handlers
                 reservation.User.LoyaltyYear = newYear;
             }
 
-            reservation.checkOutDate = today;
+            reservation.CheckOutDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {

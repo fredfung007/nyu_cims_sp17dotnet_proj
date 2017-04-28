@@ -1,45 +1,43 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BusinessLogic.Handlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer.Repositories;
+using BusinessLogic.Handlers;
 using DataAccessLayer.Constants;
-using DataAccessLayer;
+using DataAccessLayer.EF;
+using DataAccessLayer.Repositories;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BusinessLogic.Handlers.Tests
+namespace BusinessLogicTest
 {
     [TestClass()]
     public class RoomHandlerTests
     {
-        RoomHandler handler;
-        RoomRepository repo;
-        List<ROOM_TYPE> types;
-        RoomType room;
-        int len = 365;
-        string originalDesc;
-        int originalInv;
+        private RoomHandler _handler;
+        private RoomRepository _repo;
+        private List<ROOM_TYPE> _types;
+        private RoomType _room;
+        private const int Len = 365;
+        private string _originalDesc;
+        private int _originalInv;
 
         [TestInitialize]
         public void TestInit()
         {
-            handler = new RoomHandler();
-            repo = new RoomRepository(new DataAccessLayer.HotelDataModelContainer());
-            types = handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(len));
-            room = repo.GetRoomType(types.FirstOrDefault());
-            originalDesc = room.Description;
-            originalInv = room.Inventory;
+            _handler = new RoomHandler();
+            _repo = new RoomRepository(new CodeFirstHotelModel());
+            _types = _handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(Len));
+            _room = _repo.GetRoomType(_types.FirstOrDefault());
+            _originalDesc = _room.Description;
+            _originalInv = _room.Inventory;
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            room.Description = originalDesc;
-            room.Inventory = originalInv;
-            repo.UpdateRoom(room);
-            repo.Save();
+            _room.Description = _originalDesc;
+            _room.Inventory = _originalInv;
+            _repo.UpdateRoom(_room);
+            _repo.Save();
         }
 
         /// <summary>
@@ -48,8 +46,8 @@ namespace BusinessLogic.Handlers.Tests
         [TestMethod()]
         public void CheckAvailableTypeForDurationTest()
         {
-            List<ROOM_TYPE> result = handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(365));
-            Assert.AreEqual((new List<RoomType>(repo.GetRoomTypes()).Count), result.Count);
+            List<ROOM_TYPE> result = _handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(365));
+            Assert.AreEqual((new List<RoomType>(_repo.GetRoomTypes()).Count), result.Count);
         }
 
         /// <summary>
@@ -59,20 +57,20 @@ namespace BusinessLogic.Handlers.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void CheckAvailableTypeForDurationWithInvalidInputTest()
         {
-            List<ROOM_TYPE> result = handler.CheckAvailableTypeForDuration(DateTime.Today.AddDays(365), DateTime.Today);
+            List<ROOM_TYPE> result = _handler.CheckAvailableTypeForDuration(DateTime.Today.AddDays(365), DateTime.Today);
             Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod()]
         public void GetRoomPriceListTest()
         {
-            if (types.Count > 0)
+            if (_types.Count > 0)
             {
-                List<int> prices = handler.GetRoomPriceList(types.FirstOrDefault(), DateTime.Today, DateTime.Today.AddDays(len));
-                Assert.AreEqual(len, prices.Count);
+                List<int> prices = _handler.GetRoomPriceList(_types.FirstOrDefault(), DateTime.Today, DateTime.Today.AddDays(Len));
+                Assert.AreEqual(Len, prices.Count);
                 foreach (int price in prices)
                 {
-                    Assert.IsTrue(price >= repo.GetRoomType(types.FirstOrDefault()).BaseRate);
+                    Assert.IsTrue(price >= _repo.GetRoomType(_types.FirstOrDefault()).BaseRate);
                 }
             }
         }
@@ -80,23 +78,23 @@ namespace BusinessLogic.Handlers.Tests
         [TestMethod()]
         public void GetBookedRoomOnDateTest()
         {
-            int result = handler.GetBookedRoomOnDate(types.FirstOrDefault(), DateTime.Today);
-            Assert.IsTrue(result >= 0 && result <= room.Inventory);
+            int result = _handler.GetBookedRoomOnDate(_types.FirstOrDefault(), DateTime.Today);
+            Assert.IsTrue(result >= 0 && result <= _room.Inventory);
         }
 
         [TestMethod()]
         public void GetRooomInventoryTest()
         {
-            Assert.AreEqual(room.Inventory, handler.GetRoomInventory(room.Type));
+            Assert.AreEqual(_room.Inventory, _handler.GetRoomInventory(_room.Type));
         }
 
         [TestMethod()]
         public void UpdateRoomDescriptionTest()
         {
-            string original = handler.GetRoomDescription(room.Type);
+            string original = _handler.GetRoomDescription(_room.Type);
             string newDesc = "testDesc";
-            handler.UpdateRoomDescription(room.Type, newDesc);
-            Assert.AreEqual(handler.GetRoomDescription(room.Type), newDesc);
+            _handler.UpdateRoomDescription(_room.Type, newDesc);
+            Assert.AreEqual(_handler.GetRoomDescription(_room.Type), newDesc);
         }
 
         [TestMethod()]
@@ -114,29 +112,29 @@ namespace BusinessLogic.Handlers.Tests
         [TestMethod()]
         public void UpdateRoomInventoryTest()
         {
-            int original = handler.GetRoomInventory(room.Type);
+            int original = _handler.GetRoomInventory(_room.Type);
             int newInv = original + 10;
-            handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(newInv, handler.GetRoomInventory(room.Type));
+            _handler.UpdateRoomInventory(_room.Type, newInv);
+            Assert.AreEqual(newInv, _handler.GetRoomInventory(_room.Type));
         }
 
         [TestMethod()]
         public void UpdateRoomInventoryNegativeTest()
         {
-            int original = handler.GetRoomInventory(room.Type);
+            int original = _handler.GetRoomInventory(_room.Type);
             int newInv = 0 - original;
-            handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(newInv, handler.GetRoomInventory(room.Type));
+            _handler.UpdateRoomInventory(_room.Type, newInv);
+            Assert.AreEqual(newInv, _handler.GetRoomInventory(_room.Type));
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void UpdateRoomInventoryInvalidTest()
         {
-            int original = handler.GetRoomInventory(room.Type);
-            int newInv = repo.GetMaxRoomOccupanciesByRoomTypeAfterDate(room.Type, DateTime.Today) - 1;
-            handler.UpdateRoomInventory(room.Type, newInv);
-            Assert.AreEqual(original, handler.GetRoomInventory(room.Type));
+            int original = _handler.GetRoomInventory(_room.Type);
+            int newInv = _repo.GetMaxRoomOccupanciesByRoomTypeAfterDate(_room.Type, DateTime.Today) - 1;
+            _handler.UpdateRoomInventory(_room.Type, newInv);
+            Assert.AreEqual(original, _handler.GetRoomInventory(_room.Type));
         }
 
         [TestMethod()]

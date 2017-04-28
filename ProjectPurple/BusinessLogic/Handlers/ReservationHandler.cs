@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace BusinessLogic.Handlers
 {
@@ -18,7 +19,7 @@ namespace BusinessLogic.Handlers
         {
             // username should come from cookies
             var username = "";
-            _reservationRepository = new ReservationRepository(new HotelDataModelContainer());
+            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
             _userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
@@ -37,10 +38,10 @@ namespace BusinessLogic.Handlers
             {
                 Id = Guid.NewGuid(),
                 User = _userReservationQueryHandler.User,
-                startDate = start,
-                endDate = end,
+                StartDate = start,
+                EndDate = end,
                 Guests = guests,
-                isPaid = false,
+                IsPaid = false,
                 DailyPrices = new List<DailyPrice>()
             };
 
@@ -60,14 +61,15 @@ namespace BusinessLogic.Handlers
 
         public void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
-            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
-            if (reservation != null)
-            {
-                reservation.BillingInfo = billingInfo;
-                reservation.isPaid = true;
-            }
-            _reservationRepository.UpdateReservation(reservation);
-            _reservationRepository.Save();
+            throw new NotImplementedException();
+            //Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
+            //if (reservation != null)
+            //{
+            //    reservation.BillingInfo = billingInfo;
+            //    reservation.isPaid = true;
+            //}
+            //_reservationRepository.UpdateReservation(reservation);
+            //_reservationRepository.Save();
         }
 
         /// <summary>
@@ -80,14 +82,14 @@ namespace BusinessLogic.Handlers
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             // refuse to cancel if checkin
-            if (reservation.checkInDate != null && reservation.checkInDate < today)
+            if (reservation.CheckInDate != null && reservation.CheckInDate < today)
             {
                 return;
             }
 
             // refuse to cancel if the date is before the present date 
             // TODO EXPRESSION IS ALWAYS TRUE.
-            if (reservation.startDate != null && reservation.startDate < today)
+            if (reservation.StartDate != null && reservation.StartDate < today)
             {
                 return;
             }

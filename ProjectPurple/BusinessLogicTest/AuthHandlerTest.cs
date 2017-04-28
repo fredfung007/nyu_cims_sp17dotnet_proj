@@ -5,6 +5,7 @@ using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using System.Web.Helpers;
 using BusinessLogic.Handlers;
+using DataAccessLayer.EF;
 
 namespace BusinessLogicTest
 {
