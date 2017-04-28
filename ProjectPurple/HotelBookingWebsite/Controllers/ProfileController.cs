@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,13 +22,13 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpcommingReservations(Guid UserId)
+        public async Task<ActionResult> UpcommingReservations(Guid UserId)
         {
             return View();
         }
 
         [HttpGet]
-        public ActionResult LoyaltyProgram(Guid UserId)
+        public async Task<ActionResult> LoyaltyProgram(Guid UserId)
         {
             return View();
         }

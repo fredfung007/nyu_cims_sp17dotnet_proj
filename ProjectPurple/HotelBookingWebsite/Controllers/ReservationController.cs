@@ -60,7 +60,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Confirm(Guid? SessionId)
+        public async Task<ActionResult> Confirm(Guid? SessionId)
         {
             return View();
         }
