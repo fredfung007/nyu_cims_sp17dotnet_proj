@@ -30,3 +30,4 @@ namespace HotelBookingWebsite.Models
         public int inventory { get; set; }
         public int occupancey { get; set; }
     }
+}
