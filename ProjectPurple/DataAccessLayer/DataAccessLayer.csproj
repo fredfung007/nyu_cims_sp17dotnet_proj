@@ -73,9 +73,9 @@
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
-    <Compile Include="Migrations\201704302012036_IMPLEMENT-IDENTITY-FRAMEWORK.cs" />
-    <Compile Include="Migrations\201704302012036_IMPLEMENT-IDENTITY-FRAMEWORK.Designer.cs">
-      <DependentUpon>201704302012036_IMPLEMENT-IDENTITY-FRAMEWORK.cs</DependentUpon>
+    <Compile Include="Migrations\201704302132266_INIT-DATEBASE.cs" />
+    <Compile Include="Migrations\201704302132266_INIT-DATEBASE.Designer.cs">
+      <DependentUpon>201704302132266_INIT-DATEBASE.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,8 +98,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704302012036_IMPLEMENT-IDENTITY-FRAMEWORK.resx">
-      <DependentUpon>201704302012036_IMPLEMENT-IDENTITY-FRAMEWORK.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704302132266_INIT-DATEBASE.resx">
+      <DependentUpon>201704302132266_INIT-DATEBASE.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,21 +39,11 @@ namespace DataAccessLayer.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
             // Configure Asp Net Identity Tables
-            modelBuilder.Entity<AspNetUser>().ToTable("AspNetUsers");
             modelBuilder.Entity<AspNetUser>().Property(u => u.PasswordHash).HasMaxLength(500);
             modelBuilder.Entity<AspNetUser>().Property(u => u.SecurityStamp).HasMaxLength(500);
             modelBuilder.Entity<AspNetUser>().Property(u => u.PhoneNumber).HasMaxLength(50);
-
-            modelBuilder.Entity<AspNetRole>().ToTable("AspNetUserRoles");
-            modelBuilder.Entity<AspNetUserLogin>().ToTable("AspNetUserLogins");
-            modelBuilder.Entity<AspNetUserClaim>().ToTable("AspNetUserClaims");
             modelBuilder.Entity<AspNetUserClaim>().Property(u => u.ClaimType).HasMaxLength(150);
             modelBuilder.Entity<AspNetUserClaim>().Property(u => u.ClaimValue).HasMaxLength(500);
 
