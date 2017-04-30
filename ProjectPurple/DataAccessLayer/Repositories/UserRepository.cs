@@ -15,18 +15,18 @@ namespace DataAccessLayer.Repositories
 
         public void DeleteUser(string username)
         {
-            User user = _context.Users.Find(username);
-            if (user != null) _context.Users.Remove(user);
+            AspNetUser user = _context.AspNetUsers.Find(username);
+            if (user != null) _context.AspNetUsers.Remove(user);
         }
 
-        public User GetUser(string username)
+        public AspNetUser GetUser(string username)
         {
-            return _context.Users.Find(username);
+            return _context.AspNetUsers.Find(username);
         }
 
-        public void InsertUser(User user)
+        public void InsertUser(AspNetUser user)
         {
-            _context.Users.Add(user);
+            _context.AspNetUsers.Add(user);
         }
 
         public void Save()
@@ -34,7 +34,7 @@ namespace DataAccessLayer.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(AspNetUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
         }

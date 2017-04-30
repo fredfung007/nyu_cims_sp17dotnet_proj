@@ -13,14 +13,14 @@ namespace BusinessLogic.Handlers
     public class ReservationHandler
     {
         private readonly IReservationRepository _reservationRepository;
-        private readonly IUserReservationQueryHandler _userReservationQueryHandler;
+        //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
 
         public ReservationHandler()
         {
             // username should come from cookies
-            var username = "";
+            //var username = "";
             _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
-            _userReservationQueryHandler = new UserReservationQueryHandler(username);
+            //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
         /// <summary>
@@ -32,12 +32,13 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
+        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
         {
+            IUserReservationQueryHandler userReservationQueryHandler = new UserReservationQueryHandler(username);
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
-                User = _userReservationQueryHandler.User,
+                AspNetUser = userReservationQueryHandler.User,
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
@@ -105,9 +106,9 @@ namespace BusinessLogic.Handlers
         }
 
 
-        public List<Reservation> GetUpComingReservations(User user)
+        public List<Reservation> GetUpComingReservations(AspNetUser user)
         {
-            return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.Username));
+            return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
         }
 
         [Obsolete]

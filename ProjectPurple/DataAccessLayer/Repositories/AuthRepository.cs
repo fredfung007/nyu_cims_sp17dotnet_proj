@@ -15,54 +15,54 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public Staff GetStaff(string username)
+        //public Staff GetStaff(string username)
+        //{
+        //    return _context.Staffs.Find(username);
+        //}
+
+        //public IEnumerable<Staff> GetStaffs()
+        //{
+        //    return _context.Staffs.ToList();
+        //}
+
+        public IEnumerable<AspNetUser> GetUsers()
         {
-            return _context.Staffs.Find(username);
+            return _context.AspNetUsers.ToList();
         }
 
-        public IEnumerable<Staff> GetStaffs()
+        public AspNetUser GetUser(string username)
         {
-            return _context.Staffs.ToList();
+            return _context.AspNetUsers.Find(username);
         }
 
-        public IEnumerable<User> GetUsers()
-        {
-            return _context.Users.ToList();
-        }
+        //public void InsertStaff(Staff staff)
+        //{
+        //    _context.Staffs.Add(staff);
+        //}
 
-        public User GetUser(string username)
-        {
-            return _context.Users.Find(username);
-        }
+        //public void DeleteStaff(string username)
+        //{
+        //    Staff staff = _context.Staffs.Find(username);
+        //    if (staff != null) _context.Staffs.Remove(staff);
+        //}
 
-        public void InsertStaff(Staff staff)
-        {
-            _context.Staffs.Add(staff);
-        }
+        //public void UpdateStaff(Staff staff)
+        //{
+        //    _context.Entry(staff).State = EntityState.Modified;
+        //}
 
-        public void DeleteStaff(string username)
+        public void InsertUser(AspNetUser user)
         {
-            Staff staff = _context.Staffs.Find(username);
-            if (staff != null) _context.Staffs.Remove(staff);
-        }
-
-        public void UpdateStaff(Staff staff)
-        {
-            _context.Entry(staff).State = EntityState.Modified;
-        }
-
-        public void InsertUser(User user)
-        {
-            _context.Users.Add(user);
+            _context.AspNetUsers.Add(user);
         }
 
         public void DeleteUser(string username)
         {
-            User user = _context.Users.Find(username);
-            if (user != null) _context.Users.Remove(user);
+            AspNetUser user = _context.AspNetUsers.Find(username);
+            if (user != null) _context.AspNetUsers.Remove(user);
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(AspNetUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
         }
@@ -104,6 +104,31 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        //public Staff GetStaff(string username)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<Staff> GetStaffs()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void InsertStaff(Staff staff)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void DeleteStaff(string username)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void UpdateStaff(Staff staff)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
     }

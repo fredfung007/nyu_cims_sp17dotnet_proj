@@ -385,14 +385,14 @@ namespace BusinessLogic.Handlers
 
             // loyalty program
             int stayLength = 0;
-            User user = reservation.User;
+            AspNetUser user = reservation.User;
             DateTime checkInDate = (DateTime)reservation.CheckInDate;
 
             if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
             {
                 // Checkout date is the same year as the loyalty program
                 stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
-                reservation.User.LoyaltyProgress += stayLength;
+                reservation.AspNetUser.LoyaltyProgress += stayLength;
             }
             else
             {
@@ -446,7 +446,8 @@ namespace BusinessLogic.Handlers
 
         public async Task<int> GetAveragePriceAsync(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
         {
-            var total = await GetRoomPriceListAsync(type, checkIn, checkOut).Sum();
+            var priceList = await GetRoomPriceListAsync(type, checkIn, checkOut);
+            var total = priceList.Sum();
             return total / (checkOut - checkIn).Days;
         }
     }

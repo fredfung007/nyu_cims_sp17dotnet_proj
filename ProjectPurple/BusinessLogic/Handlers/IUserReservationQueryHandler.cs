@@ -10,7 +10,7 @@ namespace BusinessLogic.Handlers
     /// </summary>
     public interface IUserReservationQueryHandler
     {
-        User User { get; }
+        AspNetUser User { get; }
 
         /// <summary>
         /// Find all upcoming reservations for the user
@@ -28,6 +28,6 @@ namespace BusinessLogic.Handlers
         /// Get the billing information(Profile) of the user.
         /// </summary>
         /// <returns>Billing Profile</returns>
-        Profile GetProfile();
+        ICollection<Profile> GetProfile();
     }
 }

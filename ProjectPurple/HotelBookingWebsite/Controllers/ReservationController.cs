@@ -64,9 +64,12 @@ namespace HotelBookingWebsite.Controllers
             {
                 availableRooms.Add(new AvailableRoom
                 {
+                    CheckIn = checkIn,
+                    CheckOut = checkOut,
                     Name = type.ToString(),
                     // try async
-                    AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut), 
+                    AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut),
+                    PriceList = await _roomHandler.GetRoomPriceListAsync(type, checkIn, checkOut),
                     Description = _roomHandler.GetRoomDescription(type),
                     Ameneties = _roomHandler.GetRoomAmeneties(type),
                     PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
@@ -75,6 +78,8 @@ namespace HotelBookingWebsite.Controllers
 
             return View(new AvailableRoomViewModel
             {
+                SessionId = Guid.NewGuid().ToString(),
+                Expiration = DateTime.Now.AddMinutes(10),
                 AvailableRooms = availableRooms
             });
         }

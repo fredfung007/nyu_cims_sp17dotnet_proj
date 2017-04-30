@@ -39,6 +39,8 @@ namespace DataAccessLayer.EF
         public bool LockoutEnabled { get; set; }
 
         public int AccessFailedCount { get; set; }
+        public DateTime? LoyaltyYear { get; set; }
+        public int LoyaltyProgress { get; set; }
 
         [Required]
         [StringLength(256)]
