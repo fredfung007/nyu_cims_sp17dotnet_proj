@@ -7,13 +7,13 @@ namespace DataAccessLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class INITDATEBASE : IMigrationMetadata
+    public sealed partial class INITDATABASE : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(INITDATEBASE));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(INITDATABASE));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704302132266_INIT-DATEBASE"; }
+            get { return "201704302214546_INIT-DATABASE"; }
         }
         
         string IMigrationMetadata.Source

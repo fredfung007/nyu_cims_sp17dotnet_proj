@@ -3,7 +3,7 @@ namespace DataAccessLayer.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class INITDATEBASE : DbMigration
+    public partial class INITDATABASE : DbMigration
     {
         public override void Up()
         {
@@ -28,6 +28,7 @@ namespace DataAccessLayer.Migrations
                         UserId = c.String(nullable: false, maxLength: 128),
                         ClaimType = c.String(maxLength: 150),
                         ClaimValue = c.String(maxLength: 500),
+                        Discriminator = c.String(nullable: true, maxLength: 128),
                         AspNetUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
@@ -55,6 +56,7 @@ namespace DataAccessLayer.Migrations
                         LoyaltyYear = c.DateTime(),
                         LoyaltyProgress = c.Int(),
                         ProfileGuid = c.Guid(),
+                        Discriminator = c.String(nullable: true, maxLength: 128),
                         Profile_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -69,6 +71,7 @@ namespace DataAccessLayer.Migrations
                         LoginProvider = c.String(nullable: false, maxLength: 128),
                         ProviderKey = c.String(nullable: false, maxLength: 128),
                         UserId = c.String(nullable: false, maxLength: 128),
+                        Discriminator = c.String(nullable: true, maxLength: 128),
                         AspNetUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
@@ -174,6 +177,7 @@ namespace DataAccessLayer.Migrations
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
                         RoleId = c.String(nullable: false, maxLength: 128),
+                        Discriminator = c.String(nullable: true, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
