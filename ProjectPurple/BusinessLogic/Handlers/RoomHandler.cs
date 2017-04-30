@@ -27,6 +27,12 @@ namespace BusinessLogic.Handlers
             _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
         }
 
+        public RoomHandler(IRoomRepository roomRepo, IReservationRepository reservationRepo)
+        {
+            _roomRepository = roomRepo;
+            _reservationRepository = reservationRepo;
+        }
+
         /// <summary>
         /// Return true if the RoomType is available during [checkIn, checkOut).
         /// </summary>
