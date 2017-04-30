@@ -49,7 +49,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Reservation> GetReservationsByUserId(string username)
         {
-            return _context.Reservations.Where(reservation => reservation.User.UserName == username).ToList();
+            return _context.Reservations.Where(reservation => reservation.AspNetUser.UserName == username).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate)

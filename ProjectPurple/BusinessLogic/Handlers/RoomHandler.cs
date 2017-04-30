@@ -385,7 +385,7 @@ namespace BusinessLogic.Handlers
 
             // loyalty program
             int stayLength = 0;
-            AspNetUser user = reservation.User;
+            AspNetUser user = reservation.AspNetUser;
             DateTime checkInDate = (DateTime)reservation.CheckInDate;
 
             if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
@@ -399,8 +399,8 @@ namespace BusinessLogic.Handlers
                 // Checkout date is a new year
                 var newYear = new DateTime(today.Year, 1, 1);
                 stayLength = (today - newYear).Days;
-                reservation.User.LoyaltyProgress = stayLength;
-                reservation.User.LoyaltyYear = newYear;
+                reservation.AspNetUser.LoyaltyProgress = stayLength;
+                reservation.AspNetUser.LoyaltyYear = newYear;
             }
 
             reservation.CheckOutDate = today;
