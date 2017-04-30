@@ -28,6 +28,6 @@ namespace BusinessLogic.Handlers
         /// Get the billing information(Profile) of the user.
         /// </summary>
         /// <returns>Billing Profile</returns>
-        ICollection<Profile> GetProfile();
+        Profile GetProfile();
     }
 }

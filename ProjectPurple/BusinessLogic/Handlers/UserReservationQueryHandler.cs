@@ -37,9 +37,9 @@ namespace BusinessLogic.Handlers
             return upcomingReservations;
         }
 
-        public ICollection<Profile> GetProfile()
+        public Profile GetProfile()
         {
-            return User.Profiles;
+            return User.Profile;
         }
     }
 }

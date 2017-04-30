@@ -27,8 +27,8 @@ namespace DataAccessLayer.EF
 
         public int AddressId { get; set; }
 
-        [StringLength(128)]
-        public string IdAspNetUsersId { get; set; }
+        //[StringLength(128)]
+        //public string IdAspNetUsersId { get; set; }
 
         public virtual Address Address { get; set; }
 
