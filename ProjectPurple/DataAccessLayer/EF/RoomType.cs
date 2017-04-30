@@ -11,7 +11,7 @@ namespace DataAccessLayer.EF
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RoomType()
         {
-            Reservations = new HashSet<Reservation>();
+            //Reservations = new HashSet<Reservation>();
             RoomOccupancies = new HashSet<RoomOccupancy>();
         }
 
@@ -31,8 +31,8 @@ namespace DataAccessLayer.EF
 
         public string ImageUrl { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        //[SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<Reservation> Reservations { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoomOccupancy> RoomOccupancies { get; set; }

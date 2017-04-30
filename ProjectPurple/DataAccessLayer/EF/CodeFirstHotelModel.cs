@@ -25,8 +25,6 @@ namespace DataAccessLayer.EF
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<RoomOccupancy> RoomOccupancies { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
-        public virtual DbSet<Staff> Staffs { get; set; }
-        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -44,16 +42,14 @@ namespace DataAccessLayer.EF
                 .HasMany(e => e.AspNetUserLogins)
                 .WithRequired(e => e.AspNetUser)
                 .HasForeignKey(e => e.UserId);
-
-            modelBuilder.Entity<AspNetUser>()
-                .HasMany(e => e.Profiles)
-                .WithOptional(e => e.AspNetUser)
-                .HasForeignKey(e => e.IdAspNetUsersId);
-
+   
             modelBuilder.Entity<AspNetUser>()
                 .HasMany(e => e.Reservations)
                 .WithOptional(e => e.AspNetUser)
                 .HasForeignKey(e => e.AspNetUsersId);
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasRequired(e => e.Profile);
 
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.Reservations)
@@ -67,28 +63,11 @@ namespace DataAccessLayer.EF
                 .HasForeignKey(e => e.ReservationId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Reservation>()
-                .HasMany(e => e.Guests)
-                .WithRequired(e => e.Reservation)
-                .HasForeignKey(e => e.ReservationId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<RoomType>()
-                .HasMany(e => e.Reservations)
-                .WithRequired(e => e.RoomType)
-                .HasForeignKey(e => e.RoomTypeId)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<RoomType>()
                 .HasMany(e => e.RoomOccupancies)
                 .WithRequired(e => e.RoomType)
                 .HasForeignKey(e => e.RoomTypeId)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Reservations)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.UserUsername);
         }
     }
 }

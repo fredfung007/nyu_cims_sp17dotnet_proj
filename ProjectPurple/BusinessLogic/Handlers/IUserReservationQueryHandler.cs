@@ -10,7 +10,7 @@ namespace BusinessLogic.Handlers
     /// </summary>
     public interface IUserReservationQueryHandler
     {
-        User User { get; }
+        AspNetUser User { get; }
 
         /// <summary>
         /// Find all upcoming reservations for the user

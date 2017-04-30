@@ -27,12 +27,7 @@ namespace DataAccessLayer.EF
 
         public int AddressId { get; set; }
 
-        [StringLength(128)]
-        public string IdAspNetUsersId { get; set; }
-
         public virtual Address Address { get; set; }
-
-        public virtual AspNetUser AspNetUser { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
     }

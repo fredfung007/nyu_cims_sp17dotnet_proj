@@ -30,9 +30,6 @@ namespace DataAccessLayer.EF
 
         public Guid RoomTypeId { get; set; }
 
-        [StringLength(30)]
-        public string UserUsername { get; set; }
-
         [StringLength(128)]
         public string AspNetUsersId { get; set; }
 
@@ -48,6 +45,6 @@ namespace DataAccessLayer.EF
 
         public virtual RoomType RoomType { get; set; }
 
-        public virtual User User { get; set; }
+        //public virtual AspNetUser User { get; set; }
     }
 }

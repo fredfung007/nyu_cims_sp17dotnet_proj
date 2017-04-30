@@ -19,17 +19,18 @@ namespace BusinessLogic.Handlers
             _authRepository = authRepository;
         }
 
-        /// <summary>
-        /// Authorize username and plain text password for Staff.
-        /// </summary>
-        /// <param name="username">username of the Staff</param>
-        /// <param name="inputpassword">plain text password</param>
-        /// <returns></returns>
-        public bool AuthorizeStaff(string username, string inputpassword)
-        {
-            Staff staff = _authRepository.GetStaff(username);
-            return Crypto.VerifyHashedPassword(staff.HashedPassword, inputpassword);
-        }
+        ///// <summary>
+        ///// Authorize username and plain text password for Staff.
+        ///// </summary>
+        ///// <param name="username">username of the Staff</param>
+        ///// <param name="inputpassword">plain text password</param>
+        ///// <returns></returns>
+        //public bool AuthorizeStaff(string username, string inputpassword)
+        //{
+            
+        //    AspNetUser staff = _authRepository.GetStaff(username);
+        //    return Crypto.VerifyHashedPassword(staff.HashedPassword, inputpassword);
+        //}
 
         /// <summary>
         /// Authorize username and plain text password for User.
@@ -39,22 +40,16 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public bool AuthorizeUser(string username, string inputpassword)
         {
-            User user = _authRepository.GetUser(username);
-            return Crypto.VerifyHashedPassword(user.HashedPassword, inputpassword);
+            AspNetUser user = _authRepository.GetUser(username);
+            return Crypto.VerifyHashedPassword(user.PasswordHash, inputpassword);
         }
 
-        public void CreateAnonymousUser(string username, string inputpassword)
+        private static AspNetUser CreateUser(string username, string inputpassword)
         {
-            User user = CreateUser(username, inputpassword);
-            user.IsRegistered = false;
-        }
-
-        private static User CreateUser(string username, string inputpassword)
-        {
-            return new User
+            return new AspNetUser
             {
-                Username = username,
-                HashedPassword = Crypto.HashPassword(inputpassword)
+                UserName = username,
+                PasswordHash = Crypto.HashPassword(inputpassword)
             };
         }
     }

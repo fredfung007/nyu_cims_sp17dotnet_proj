@@ -13,8 +13,9 @@ namespace DataAccessLayer.EF
         [Required]
         public string LastName { get; set; }
 
-        public Guid ReservationId { get; set; }
+        // TODO, cannot get the reservation ID without creating a new reservation
+        //public Guid ReservationId { get; set; }
 
-        public virtual Reservation Reservation { get; set; }
+        //public virtual Reservation Reservation { get; set; }
     }
 }

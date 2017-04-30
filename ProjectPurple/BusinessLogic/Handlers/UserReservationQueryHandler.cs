@@ -9,14 +9,14 @@ namespace BusinessLogic.Handlers
     public class UserReservationQueryHandler : IUserReservationQueryHandler
     {
         private readonly IReservationRepository _reservationRepository;
-        private User User { get; }
+        private AspNetUser User { get; }
         public UserReservationQueryHandler(string username)
         {
             _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
             User = new AuthRepository(new CodeFirstHotelModel()).GetUser(username);
         }
 
-        User IUserReservationQueryHandler.User => User;
+        AspNetUser IUserReservationQueryHandler.User => User;
 
         public string FindLoyaltyProgramInfo()
         {
@@ -25,7 +25,7 @@ namespace BusinessLogic.Handlers
 
         public IEnumerable<Reservation> FindUpcomingReservations(DateTime date)
         {
-            IEnumerable<Reservation> reservations = _reservationRepository.GetReservationsByUserId(User.Username);
+            IEnumerable<Reservation> reservations = _reservationRepository.GetReservationsByUserId(User.UserName);
             List<Reservation> upcomingReservations = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {

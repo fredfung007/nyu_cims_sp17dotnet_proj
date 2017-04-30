@@ -7,13 +7,13 @@ namespace DataAccessLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ChangeReservationName : IMigrationMetadata
+    public sealed partial class RemoveUselessFields2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangeReservationName));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveUselessFields2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704271932098_Change-Reservation-Name"; }
+            get { return "201704301451151_Remove-Useless-Fields-2"; }
         }
         
         string IMigrationMetadata.Source

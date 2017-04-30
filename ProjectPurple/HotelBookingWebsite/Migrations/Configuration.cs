@@ -1,18 +1,19 @@
-namespace DataAccessLayer.Migrations
+namespace HotelBookingWebsite.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.EF.CodeFirstHotelModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<HotelBookingWebsite.Models.ApplicationDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
+            ContextKey = "HotelBookingWebsite.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(DataAccessLayer.EF.CodeFirstHotelModel context)
+        protected override void Seed(HotelBookingWebsite.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
