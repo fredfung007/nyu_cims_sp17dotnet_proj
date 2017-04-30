@@ -145,16 +145,17 @@ namespace BusinessLogicTest
             _handler.UpdateRoomInventory(_room.Type, maxOccu - 1);
         }
 
-        [TestMethod()]
-        public void CheckInTest()
-        {
-            Assert.Fail();
-        }
+        //TODO do these in integration tests
+        //[TestMethod()]
+        //public void CheckInInvalidConfirmationNumTest()
+        //{
+        //    Assert.Fail();
+        //}
 
-        [TestMethod()]
-        public void CheckOutTest()
-        {
-            Assert.Fail();
-        }
+        //[TestMethod()]
+        //public void CheckOutTest()
+        //{
+        //    Assert.Fail();
+        //}
     }
 }
