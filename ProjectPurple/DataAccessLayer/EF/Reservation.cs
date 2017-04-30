@@ -45,6 +45,6 @@ namespace DataAccessLayer.EF
 
         public virtual RoomType RoomType { get; set; }
 
-        public virtual AspNetUser User { get; set; }
+        //public virtual AspNetUser User { get; set; }
     }
 }

@@ -43,7 +43,6 @@ namespace BusinessLogic.Handlers
                 Guests = guests,
                 IsPaid = false,
                 DailyPrices = new List<DailyPrice>(),
-                User = userReservationQueryHandler.User
             };
 
             //var prices = new RoomHandler().GetRoomPriceList(type, start, end);
