@@ -344,14 +344,14 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the date</param>
         /// <param name="today">check in date</param>
-        public void CheckIn(Guid confirmationNumber, DateTime today)
+        public bool CheckIn(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
             if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
             {
-                return;
+                return false;
             }
 
             DateTime checkDate = today;
@@ -364,6 +364,7 @@ namespace BusinessLogic.Handlers
             reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
+            return true;
         }
 
         /// <summary>
@@ -371,14 +372,14 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <param name="today">check out date</param>
-        public void CheckOut(Guid confirmationNumber, DateTime today)
+        public bool CheckOut(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
             if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
             {
-                return;
+                return false;
             }
 
             DateTime checkDate = today;
@@ -412,6 +413,7 @@ namespace BusinessLogic.Handlers
             reservation.CheckOutDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
+            return true;
         }
 
         /// <summary>
