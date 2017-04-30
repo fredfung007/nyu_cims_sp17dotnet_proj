@@ -67,8 +67,6 @@
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
-    <Compile Include="EF\Staff.cs" />
-    <Compile Include="EF\User.cs" />
     <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.cs" />
     <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.Designer.cs">
       <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>

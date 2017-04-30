@@ -26,7 +26,7 @@ namespace DataAccessLayer.EF
         public virtual DbSet<RoomOccupancy> RoomOccupancies { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         //public virtual DbSet<Staff> Staffs { get; set; }
-        public virtual DbSet<AspNetUser> Users { get; set; }
+        //public virtual DbSet<AspNetUser> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
