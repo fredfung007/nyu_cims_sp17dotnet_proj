@@ -100,9 +100,14 @@ namespace BusinessLogic.Handlers
             _reservationRepository.Save();
         }
 
-        public Reservation GetReservation(Guid confirmationNumber)
+        public bool HasReservation(Guid confirmationNumber)
         {
-            return _reservationRepository.GetReservation(confirmationNumber);
+            return _reservationRepository.GetReservation(confirmationNumber) != null;
+        }
+
+        public Reservation GetReservation(Guid confirmationNum)
+        {
+            return _reservationRepository.GetReservation(confirmationNum);
         }
 
 
@@ -199,7 +204,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        private IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
+        public IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
         {
             return _reservationRepository.GetReservationsByEndDate(today);
         }
