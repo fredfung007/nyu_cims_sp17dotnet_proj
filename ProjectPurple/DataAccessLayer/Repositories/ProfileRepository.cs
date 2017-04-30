@@ -8,9 +8,9 @@ namespace DataAccessLayer.Repositories
 {
     public class ProfileRepository : IProfileRepository, IDisposable
     {
-        private readonly CodeFirstHotelModel _context;
+        private readonly HotelModelContext _context;
 
-        public ProfileRepository(CodeFirstHotelModel context)
+        public ProfileRepository(HotelModelContext context)
         {
             _context = context;
         }

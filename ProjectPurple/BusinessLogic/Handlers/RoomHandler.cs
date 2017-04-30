@@ -23,8 +23,8 @@ namespace BusinessLogic.Handlers
 
         public RoomHandler()
         {
-            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
+            _roomRepository = new RoomRepository(new HotelModelContext());
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
         }
 
         /// <summary>

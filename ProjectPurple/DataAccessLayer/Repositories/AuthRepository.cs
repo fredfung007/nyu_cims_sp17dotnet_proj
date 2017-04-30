@@ -8,9 +8,9 @@ namespace DataAccessLayer.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
-        private readonly CodeFirstHotelModel _context;
+        private readonly HotelModelContext _context;
 
-        public AuthRepository(CodeFirstHotelModel context)
+        public AuthRepository(HotelModelContext context)
         {
             _context = context;
         }

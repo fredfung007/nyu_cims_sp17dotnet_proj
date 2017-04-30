@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.EF;
+﻿using System;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Constructor
 {
@@ -6,9 +7,10 @@ namespace DataAccessLayer.Constructor
     {
         private readonly Profile _profile;
 
-        public ProfileConstructor()
+        public ProfileConstructor(Guid Id)
         {
             _profile = new Profile();
+            _profile.Id = Id;
         }
 
         public ProfileConstructor AddName(string firstName, string lastName)

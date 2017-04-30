@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace BusinessLogic.Helpers
 {
     // Name Converter for U.S. States.
-    public class StateConverter : IStateConverter
+    public static class StateConverter
     {
-        public string GetState(US_STATE state)
+        public static string GetState(US_STATE state)
         {
             switch (state)
             {
@@ -192,7 +192,7 @@ namespace BusinessLogic.Helpers
             }
         }
 
-        public US_STATE GetStateByName(string name)
+        public static US_STATE GetStateByName(string name)
         {
             switch (name.ToUpper())
             {

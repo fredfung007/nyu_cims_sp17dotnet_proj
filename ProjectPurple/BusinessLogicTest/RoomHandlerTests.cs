@@ -24,7 +24,7 @@ namespace BusinessLogicTest
         public void TestInit()
         {
             _handler = new RoomHandler();
-            _repo = new RoomRepository(new CodeFirstHotelModel());
+            _repo = new RoomRepository(new HotelModelContext());
             _types = _handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(Len));
             _room = _repo.GetRoomType(_types.FirstOrDefault());
             _originalDesc = _room.Description;
