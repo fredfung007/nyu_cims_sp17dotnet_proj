@@ -244,6 +244,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Reservation\Search.cshtml" />
+    <Content Include="Views\Reservation\Index.cshtml" />
+    <Content Include="Views\Reservation\Show.cshtml" />
+    <Content Include="Views\Reservation\Pay.cshtml" />
+    <Content Include="Views\Reservation\Cancel.cshtml" />
+    <Content Include="Views\Reservation\InputUser.cshtml" />
+    <Content Include="Views\Reservation\CreateReservation.cshtml" />
+    <Content Include="Views\Reservation\Confirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
