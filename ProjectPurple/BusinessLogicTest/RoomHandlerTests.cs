@@ -60,7 +60,7 @@ namespace BusinessLogicTest
             // generate the handler
             var roomRepo = _mockRoomRepo.Object;
             var reservationRepo = _mockReservationRepo.Object;
-            _handler = new RoomHandler(roomRepo, reservationRepo);
+            _handler = new RoomHandler(roomRepo);
         }
 
         /// <summary>

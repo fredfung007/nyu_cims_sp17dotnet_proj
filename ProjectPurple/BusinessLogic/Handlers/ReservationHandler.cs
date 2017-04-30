@@ -13,6 +13,7 @@ namespace BusinessLogic.Handlers
     public class ReservationHandler
     {
         private readonly IReservationRepository _reservationRepository;
+        private readonly IRoomRepository _roomRepository;
         //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
 
         public ReservationHandler()
@@ -20,6 +21,7 @@ namespace BusinessLogic.Handlers
             // username should come from cookies
             //var username = "";
             _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
+            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
             //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
@@ -113,6 +115,113 @@ namespace BusinessLogic.Handlers
         public bool FillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Check in a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the date</param>
+        /// <param name="today">check in date</param>
+        public bool CheckIn(Guid confirmationNumber, DateTime today)
+        {
+            Reservation reservation =
+                _reservationRepository.GetReservation(confirmationNumber);
+
+            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
+            {
+                return false;
+            }
+
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            {
+                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                checkDate = checkDate.AddDays(1);
+            }
+
+            reservation.CheckInDate = today;
+            _reservationRepository.UpdateReservation(reservation);
+            _reservationRepository.Save();
+            return true;
+        }
+
+        /// <summary>
+        /// Check out a reservation on specific date by its confirmation number
+        /// </summary>
+        /// <param name="confirmationNumber">confirmation number of the reservation</param>
+        /// <param name="today">check out date</param>
+        public bool CheckOut(Guid confirmationNumber, DateTime today)
+        {
+            Reservation reservation =
+                _reservationRepository.GetReservation(confirmationNumber);
+
+            if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
+            {
+                return false;
+            }
+
+            DateTime checkDate = today;
+            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            {
+                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                checkDate = checkDate.AddDays(1);
+            }
+            _roomRepository.Save();
+
+            // loyalty program
+            int stayLength = 0;
+            AspNetUser user = reservation.AspNetUser;
+            DateTime checkInDate = (DateTime)reservation.CheckInDate;
+
+            if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
+            {
+                // Checkout date is the same year as the loyalty program
+                stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
+                reservation.AspNetUser.LoyaltyProgress += stayLength;
+            }
+            else
+            {
+                // Checkout date is a new year
+                var newYear = new DateTime(today.Year, 1, 1);
+                stayLength = (today - newYear).Days;
+                reservation.AspNetUser.LoyaltyProgress = stayLength;
+                reservation.AspNetUser.LoyaltyYear = newYear;
+            }
+
+            reservation.CheckOutDate = today;
+            _reservationRepository.UpdateReservation(reservation);
+            _reservationRepository.Save();
+            return true;
+        }
+
+        /// <summary>
+        /// Get all reservations that will check out today
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
+        private IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
+        {
+            return _reservationRepository.GetReservationsByEndDate(today);
+        }
+
+        /// <summary>
+        /// Get all reservations that will checkin toady
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
+        public IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
+        {
+            return _reservationRepository.GetReservationsByStartDate(today);
+        }
+
+        /// <summary>
+        /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
+        /// </summary>
+        /// <param name="today"></param>
+        /// <returns></returns>
+        public IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
+        {
+            return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
         }
     }
 }
