@@ -67,13 +67,9 @@
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
-    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.cs" />
-    <Compile Include="Migrations\201704271928152_Make-AspIdentity-Singular.Designer.cs">
-      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.cs" />
-    <Compile Include="Migrations\201704271932098_Change-Reservation-Name.Designer.cs">
-      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
+    <Compile Include="Migrations\201704301416557_Remove-Useless-Fields.cs" />
+    <Compile Include="Migrations\201704301416557_Remove-Useless-Fields.Designer.cs">
+      <DependentUpon>201704301416557_Remove-Useless-Fields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,11 +92,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704271928152_Make-AspIdentity-Singular.resx">
-      <DependentUpon>201704271928152_Make-AspIdentity-Singular.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704271932098_Change-Reservation-Name.resx">
-      <DependentUpon>201704271932098_Change-Reservation-Name.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704301416557_Remove-Useless-Fields.resx">
+      <DependentUpon>201704301416557_Remove-Useless-Fields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

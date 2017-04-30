@@ -25,8 +25,6 @@ namespace DataAccessLayer.EF
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<RoomOccupancy> RoomOccupancies { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
-        //public virtual DbSet<Staff> Staffs { get; set; }
-        //public virtual DbSet<AspNetUser> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -67,28 +65,11 @@ namespace DataAccessLayer.EF
                 .HasForeignKey(e => e.ReservationId)
                 .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<Reservation>()
-            //    .HasMany(e => e.Guests)
-            //    .WithRequired(e => e.Reservation)
-            //    .HasForeignKey(e => e.ReservationId)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<RoomType>()
-            //    .HasMany(e => e.Reservations)
-            //    .WithRequired(e => e.RoomType)
-            //    .HasForeignKey(e => e.RoomTypeId)
-            //    .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<RoomType>()
                 .HasMany(e => e.RoomOccupancies)
                 .WithRequired(e => e.RoomType)
                 .HasForeignKey(e => e.RoomTypeId)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<AspNetUser>()
-                .HasMany(e => e.Reservations)
-                .WithOptional(e => e.AspNetUser)
-                .HasForeignKey(e => e.UserUsername);
         }
     }
 }

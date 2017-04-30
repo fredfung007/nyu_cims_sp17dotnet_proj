@@ -7,13 +7,13 @@ namespace DataAccessLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class MakeAspIdentitySingular : IMigrationMetadata
+    public sealed partial class RemoveUselessFields : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MakeAspIdentitySingular));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveUselessFields));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704271928152_Make-AspIdentity-Singular"; }
+            get { return "201704301416557_Remove-Useless-Fields"; }
         }
         
         string IMigrationMetadata.Source
