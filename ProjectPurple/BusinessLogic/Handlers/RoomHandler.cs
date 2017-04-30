@@ -29,6 +29,16 @@ namespace BusinessLogic.Handlers
             _roomRepository = roomRepo;
         }
 
+        public List<ROOM_TYPE> GetRoomTypes()
+        {
+            List<ROOM_TYPE> types = new List<ROOM_TYPE>();
+            foreach (RoomType room in _roomRepository.GetRoomTypes())
+            {
+                types.Add(room.Type);
+            }
+            return types;
+        }
+
         /// <summary>
         /// Return true if the RoomType is available during [checkIn, checkOut).
         /// </summary>
