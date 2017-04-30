@@ -67,11 +67,11 @@ namespace DataAccessLayer.EF
                 .HasForeignKey(e => e.ReservationId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Reservation>()
-                .HasMany(e => e.Guests)
-                .WithRequired(e => e.Reservation)
-                .HasForeignKey(e => e.ReservationId)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Reservation>()
+            //    .HasMany(e => e.Guests)
+            //    .WithRequired(e => e.Reservation)
+            //    .HasForeignKey(e => e.ReservationId)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RoomType>()
                 .HasMany(e => e.Reservations)
