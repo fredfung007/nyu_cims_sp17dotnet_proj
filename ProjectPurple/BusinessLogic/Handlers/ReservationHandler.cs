@@ -98,10 +98,9 @@ namespace BusinessLogic.Handlers
             _reservationRepository.Save();
         }
 
-        [Obsolete]
         public Reservation GetReservation(Guid confirmationNumber)
         {
-            return null;
+            return _reservationRepository.GetReservation(confirmationNumber);
         }
 
 
