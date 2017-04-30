@@ -32,6 +32,7 @@ namespace HotelBookingWebsite.Controllers
             return View();
         }
 
+        [Obsolete]
         [HttpGet]
         public ActionResult Show(Guid ConfirmationId)
         {
