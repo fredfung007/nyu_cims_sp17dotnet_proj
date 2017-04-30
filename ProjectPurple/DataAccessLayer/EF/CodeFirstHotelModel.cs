@@ -42,16 +42,14 @@ namespace DataAccessLayer.EF
                 .HasMany(e => e.AspNetUserLogins)
                 .WithRequired(e => e.AspNetUser)
                 .HasForeignKey(e => e.UserId);
-
-            //modelBuilder.Entity<AspNetUser>()
-            //    .HasMany(e => e.Profile)
-            //    .WithOptional(e => e.AspNetUser)
-            //    .HasForeignKey(e => e.IdAspNetUsersId);
-
+   
             modelBuilder.Entity<AspNetUser>()
                 .HasMany(e => e.Reservations)
                 .WithOptional(e => e.AspNetUser)
                 .HasForeignKey(e => e.AspNetUsersId);
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasRequired(e => e.Profile);
 
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.Reservations)

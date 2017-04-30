@@ -41,6 +41,7 @@ namespace DataAccessLayer.EF
         public int AccessFailedCount { get; set; }
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
+        public Guid ProfileGuid { get; set; }
 
         [Required]
         [StringLength(256)]
