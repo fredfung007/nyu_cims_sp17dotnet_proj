@@ -25,7 +25,6 @@ namespace BusinessLogic.Handlers
 
         /// <summary>
         /// Create a new Reservation.
-        /// !!!!!!!! Not set User yet !!!!!!!
         /// </summary>
         /// <param name="type">ROOM_TYPE</param>
         /// <param name="start">check-in date</param>
@@ -43,7 +42,8 @@ namespace BusinessLogic.Handlers
                 EndDate = end,
                 Guests = guests,
                 IsPaid = false,
-                DailyPrices = new List<DailyPrice>()
+                DailyPrices = new List<DailyPrice>(),
+                User = userReservationQueryHandler.User
             };
 
             //var prices = new RoomHandler().GetRoomPriceList(type, start, end);
