@@ -32,7 +32,7 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests)
+        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests, List<int> prices)
         {
             IUserReservationQueryHandler userReservationQueryHandler = new UserReservationQueryHandler(username);
             Reservation reservation = new Reservation
@@ -46,12 +46,12 @@ namespace BusinessLogic.Handlers
                 DailyPrices = new List<DailyPrice>()
             };
 
-            var prices = new RoomHandler().GetRoomPriceList(type, start, end);
+            //var prices = new RoomHandler().GetRoomPriceList(type, start, end);
             foreach (int price in prices)
             {
                 var dailyPrice = new DailyPrice {Id = reservation.Id, Date = start, BillingPrice = price};
                 // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                start.AddDays(1);
+                start = start.AddDays(1);
                 reservation.DailyPrices.Add(dailyPrice);
             }
 
