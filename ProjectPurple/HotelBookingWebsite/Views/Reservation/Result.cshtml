@@ -1,0 +1,73 @@
+﻿@model HotelBookingWebsite.Models.AvailableRoomViewModel
+
+@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Result</h2>
+
+<div>
+    <h4>AvailableRoomViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Expiration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Expiration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SessionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SessionId)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    @for (int i = 0; i < Model.RoomSearchResults.Count; i++)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RoomSearchResults[i].Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomSearchResults[i].AvaragePrice)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RoomSearchResults[i].AvaragePrice)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RoomSearchResults[i].Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Ameneties)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RoomSearchResults[i].Ameneties)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomSearchResults[i].PictureUlrs)
+            </dt>
+            <dd>
+                @Html.Raw("<img src=\"" + (Model.RoomSearchResults[i].PictureUlrs) + "\">")
+            </dd>
+        </dl>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Search", "Search") |
+    @Html.ActionLink("Back to List", "Index")
+</p>

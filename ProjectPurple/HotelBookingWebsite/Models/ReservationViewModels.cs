@@ -7,6 +7,11 @@ using System.Web;
 
 namespace HotelBookingWebsite.Models
 {
+    public class SearchInputModel
+    {
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
+    }
     public class AvailableRoomViewModel
     {
         public DateTime Expiration { get; set; }

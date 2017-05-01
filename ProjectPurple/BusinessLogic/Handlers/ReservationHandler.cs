@@ -104,7 +104,6 @@ namespace BusinessLogic.Handlers
             return null;
         }
 
-
         public List<Reservation> GetUpComingReservations(AspNetUser user)
         {
             return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));

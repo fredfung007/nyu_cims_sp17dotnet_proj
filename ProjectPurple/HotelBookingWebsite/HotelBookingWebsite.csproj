@@ -176,11 +176,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704261836253_InitialCreate.cs" />
-    <Compile Include="Migrations\201704261836253_InitialCreate.Designer.cs">
-      <DependentUpon>201704261836253_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -243,14 +238,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Reservation\Search.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
     <Content Include="Views\Reservation\Show.cshtml" />
     <Content Include="Views\Reservation\Pay.cshtml" />
     <Content Include="Views\Reservation\Cancel.cshtml" />
+    <Content Include="Views\Reservation\Search.cshtml" />
     <Content Include="Views\Reservation\InputUser.cshtml" />
-    <Content Include="Views\Reservation\CreateReservation.cshtml" />
     <Content Include="Views\Reservation\Confirm.cshtml" />
+    <Content Include="Views\Reservation\SearchResult.cshtml" />
+    <Content Include="Views\Reservation\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -274,11 +270,6 @@
       <Project>{9bdb5846-c2e4-4270-a7c4-a9971b32262c}</Project>
       <Name>DataAccessLayer</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704261836253_InitialCreate.resx">
-      <DependentUpon>201704261836253_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

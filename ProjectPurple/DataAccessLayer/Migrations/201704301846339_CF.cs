@@ -3,7 +3,7 @@ namespace DataAccessLayer.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class RemoveUselessFields : DbMigration
+    public partial class CF : DbMigration
     {
         public override void Up()
         {
@@ -46,9 +46,13 @@ namespace DataAccessLayer.Migrations
                         AccessFailedCount = c.Int(nullable: false),
                         LoyaltyYear = c.DateTime(),
                         LoyaltyProgress = c.Int(nullable: false),
+                        ProfileGuid = c.Guid(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
+                        Profile_Id = c.Guid(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Profiles", t => t.Profile_Id, cascadeDelete: true)
+                .Index(t => t.Profile_Id);
             
             CreateTable(
                 "dbo.AspNetUserClaims",
@@ -85,13 +89,10 @@ namespace DataAccessLayer.Migrations
                         Email = c.String(),
                         PhoneNumber = c.String(),
                         AddressId = c.Int(nullable: false),
-                        IdAspNetUsersId = c.String(maxLength: 128),
                         Address_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Addresses", t => t.Address_Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.IdAspNetUsersId)
-                .Index(t => t.IdAspNetUsersId)
                 .Index(t => t.Address_Id);
             
             CreateTable(
@@ -107,17 +108,14 @@ namespace DataAccessLayer.Migrations
                         BillingInfo = c.Guid(nullable: false),
                         RoomTypeId = c.Guid(nullable: false),
                         AspNetUsersId = c.String(maxLength: 128),
-                        User_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.RoomTypes", t => t.RoomTypeId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
                 .ForeignKey("dbo.Profiles", t => t.BillingInfo)
                 .ForeignKey("dbo.AspNetUsers", t => t.AspNetUsersId)
                 .Index(t => t.BillingInfo)
                 .Index(t => t.RoomTypeId)
-                .Index(t => t.AspNetUsersId)
-                .Index(t => t.User_Id);
+                .Index(t => t.AspNetUsersId);
             
             CreateTable(
                 "dbo.DailyPrices",
@@ -192,9 +190,8 @@ namespace DataAccessLayer.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Reservations", "AspNetUsersId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Profiles", "IdAspNetUsersId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUsers", "Profile_Id", "dbo.Profiles");
             DropForeignKey("dbo.Reservations", "BillingInfo", "dbo.Profiles");
-            DropForeignKey("dbo.Reservations", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Reservations", "RoomTypeId", "dbo.RoomTypes");
             DropForeignKey("dbo.RoomOccupancies", "RoomTypeId", "dbo.RoomTypes");
             DropForeignKey("dbo.Guests", "Reservation_Id", "dbo.Reservations");
@@ -207,14 +204,13 @@ namespace DataAccessLayer.Migrations
             DropIndex("dbo.RoomOccupancies", new[] { "RoomTypeId" });
             DropIndex("dbo.Guests", new[] { "Reservation_Id" });
             DropIndex("dbo.DailyPrices", new[] { "ReservationId" });
-            DropIndex("dbo.Reservations", new[] { "User_Id" });
             DropIndex("dbo.Reservations", new[] { "AspNetUsersId" });
             DropIndex("dbo.Reservations", new[] { "RoomTypeId" });
             DropIndex("dbo.Reservations", new[] { "BillingInfo" });
             DropIndex("dbo.Profiles", new[] { "Address_Id" });
-            DropIndex("dbo.Profiles", new[] { "IdAspNetUsersId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
+            DropIndex("dbo.AspNetUsers", new[] { "Profile_Id" });
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.RoomOccupancies");
             DropTable("dbo.RoomTypes");
