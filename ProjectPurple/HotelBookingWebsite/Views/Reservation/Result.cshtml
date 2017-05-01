@@ -1,4 +1,4 @@
-﻿@model HotelBookingWebsite.Models.AvailableRoomViewModel
+﻿@model HotelBookingWebsite.Models.ReservationRoomViewModel
 
 @{
     ViewBag.Title = "Result";
@@ -29,6 +29,7 @@
 
     </dl>
 </div>
+@*add checkbox and add form for submit*@
 <div>
     @for (int i = 0; i < Model.RoomSearchResults.Count; i++)
     {

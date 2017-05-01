@@ -12,11 +12,14 @@ namespace HotelBookingWebsite.Models
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
     }
-    public class AvailableRoomViewModel
+    public class ReservationRoomViewModel
     {
         public DateTime Expiration { get; set; }
         public string SessionId { get; set; }
         public IList<RoomSearchResult> RoomSearchResults { get; set; }
+        public int SelectedIndex { get; set; }
+        public List<Guest> Guests { get; set; }
+        public Guid ReservationId { get; set; }
     }
 
     public class RoomSearchResult
@@ -30,15 +33,6 @@ namespace HotelBookingWebsite.Models
         public string Description { get; set; }
         public string Ameneties { get; set; }
         public string PictureUlrs { get; set; }
-    }
-
-    public class ConfirmRoomViewModel
-    {
-        public DateTime Expiration { get; set; }
-        public string SessionId { get; set; }
-        public RoomSearchResult RoomSearchResult { get; set; }
-        public List<Guest> Guests { get; set; }
-        public Guid ReservationId { get; set; }
     }
 
     // TODO
