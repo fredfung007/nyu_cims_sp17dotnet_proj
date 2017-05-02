@@ -4,6 +4,7 @@ using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
+using BusinessLogic.Type;
 
 namespace BusinessLogic.Handlers
 {
@@ -12,6 +13,8 @@ namespace BusinessLogic.Handlers
     /// </summary>
     public class ReservationHandler
     {
+        public static Dictionary<string, TimeExpirationType> SearchResultPool = new Dictionary<string, TimeExpirationType>();
+
         private readonly IReservationRepository _reservationRepository;
         //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
 
@@ -113,6 +116,19 @@ namespace BusinessLogic.Handlers
         public bool FillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
+        }
+
+        public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
+        {
+            var guests = new List<Guest>();
+            int guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
+            
+            for (int i = 0; i < guestMaxCount; i++)
+            {
+                guests.Add(new Guest() { Id = Guid.NewGuid() });
+            }
+
+            return guests;
         }
     }
 }

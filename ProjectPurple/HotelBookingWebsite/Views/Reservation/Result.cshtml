@@ -1,73 +1,78 @@
-﻿@model HotelBookingWebsite.Models.ReservationRoomViewModel
+﻿@model HotelBookingWebsite.Models.ResultViewModel
 
 @{
-    ViewBag.Title = "Result";
+    ViewBag.Title = "Available Rooms";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Result</h2>
+<h2> @ViewBag.Title</h2>
 
 <div>
-    <h4>AvailableRoomViewModel</h4>
+    <h4>From @Model.RoomPriceDetails[0].StartDate.Date.ToString("MM/dd/yyyy") to @Model.RoomPriceDetails[0].EndDate.Date.ToString("MM/dd/yyyy")</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Expiration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Expiration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SessionId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SessionId)
-        </dd>
-
-    </dl>
 </div>
+
 @*add checkbox and add form for submit*@
-<div>
-    @for (int i = 0; i < Model.RoomSearchResults.Count; i++)
-    {
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.RoomSearchResults[i].Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.RoomSearchResults[i].AvaragePrice)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.RoomSearchResults[i].AvaragePrice)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Description)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.RoomSearchResults[i].Description)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.RoomSearchResults[i].Ameneties)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.RoomSearchResults[i].Ameneties)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.RoomSearchResults[i].PictureUlrs)
-            </dt>
-            <dd>
-                @Html.Raw("<img src=\"" + (Model.RoomSearchResults[i].PictureUlrs) + "\">")
-            </dd>
-        </dl>
-    }
-</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
+    @Html.HiddenFor(model => model.Expiration)
+    @Html.HiddenFor(model => model.SessionId)
+
+    <div class="form-horizontal">
+        <div>
+            @for (int i = 0; i < Model.RoomPriceDetails.Count; i++)
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomPriceDetails[i].PictureUlrs)
+                    </dt>
+                    <dd>
+                        @Html.Raw("<img src=\"" + (Model.RoomPriceDetails[i].PictureUlrs) + "\" width=\"400\" heidth=\"600\">")
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomPriceDetails[i].Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RoomPriceDetails[i].Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomPriceDetails[i].AvaragePrice)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RoomPriceDetails[i].AvaragePrice)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomPriceDetails[i].Description)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RoomPriceDetails[i].Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomPriceDetails[i].Ameneties)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RoomPriceDetails[i].Ameneties)
+                    </dd>
+                    <dt>
+                        @Html.Label("Select")
+                    </dt>
+                    <dd>
+                        @Html.RadioButtonFor(model => model.SelectedIndex, i)  @Html.Label(Model.RoomPriceDetails[i].Name)     
+                    </dd>
+                </dl>
+                <hr />
+            }
+            @*@Html.ValidationMessageFor(model => model.SelectedIndex, "Please select a room type", new { @class = "text-danger" })*@
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
 <p>
     @Html.ActionLink("Search", "Search") |
     @Html.ActionLink("Back to List", "Index")

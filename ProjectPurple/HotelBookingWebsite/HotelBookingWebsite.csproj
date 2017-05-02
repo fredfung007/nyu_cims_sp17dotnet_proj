@@ -173,9 +173,11 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ModelSateHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -245,8 +247,8 @@
     <Content Include="Views\Reservation\Search.cshtml" />
     <Content Include="Views\Reservation\InputUser.cshtml" />
     <Content Include="Views\Reservation\Confirm.cshtml" />
-    <Content Include="Views\Reservation\SearchResult.cshtml" />
     <Content Include="Views\Reservation\Result.cshtml" />
+    <Content Include="Views\Reservation\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,22 +1,22 @@
-﻿@model HotelBookingWebsite.Models.ConfirmRoomViewModel
+﻿@model HotelBookingWebsite.Models.RoomSearchResultModel
 
 @{
     ViewBag.Title = "Confirm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Confirm</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>ConfirmRoomViewModel</h4>
+    <h4>You reservation</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Expiration)
+            @Html.DisplayNameFor(model => model.ReservationId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Expiration)
+            @Html.DisplayFor(model => model.ReservationId)
         </dd>
 
         <dt>
@@ -34,10 +34,8 @@
         <dd>
             @Html.DisplayFor(model => model.ReservationId)
         </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
