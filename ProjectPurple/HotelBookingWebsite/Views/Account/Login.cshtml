@@ -47,7 +47,8 @@
                 <p>
                     @if (ViewBag.ReturnUrl != null)
                     {
-                        <a href="@ViewBag.ReturnUrl">Continue as guest</a>
+                        string Url = ViewBag.ReturnUrl + "&Anomyous=true";
+                        <a href="@Url">Continue as guest</a>
                     }
                     
                 </p>

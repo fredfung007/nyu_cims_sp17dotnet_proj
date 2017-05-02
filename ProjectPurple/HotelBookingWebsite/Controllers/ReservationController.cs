@@ -185,11 +185,11 @@ namespace HotelBookingWebsite.Controllers
 
             (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).SelectedIndex = model.SelectedIndex;// ?? 0;
 
-            return RedirectToAction("InputUser", new { SessionId = model.SessionId });
+            return RedirectToAction("InputUser", new { SessionId = model.SessionId, Anomyous = false });
         }
 
         [CustomAuthorize]
-        public async Task<ActionResult> InputUser(string SessionId)
+        public async Task<ActionResult> InputUser(string SessionId, bool? Anonymous)
         {
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
@@ -200,7 +200,7 @@ namespace HotelBookingWebsite.Controllers
             }
 
             string UserId = User.Identity.Name;
-            
+
             // TODO
             /*
              * Fill in the data to guest
@@ -210,13 +210,40 @@ namespace HotelBookingWebsite.Controllers
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             var guests = _reservationHandler.GetEmptyGuestList(type);
 
-            return View(new InputGuestViewModel
+            bool anonymous = Anonymous ?? false;
+
+            //if (anonymous)
+            //{
+            //}
+            //else
             {
-                SessionId = result.SessionId,
-                Expiration = result.Expiration,
-                Guests = guests
-            });
+                return View(new InputGuestViewModel
+                {
+                    SessionId = result.SessionId,
+                    Expiration = result.Expiration,
+                    Guests = guests
+                });
+            }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> AnonymousInputUser(InputGuestViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.Expiration < DateTime.Now)
+            {
+                return RedirectToAction("Search");
+            }
+
+            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
+
+            return RedirectToAction("Create", new { SessionId = model.SessionId });
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> InputUser(InputGuestViewModel model)
