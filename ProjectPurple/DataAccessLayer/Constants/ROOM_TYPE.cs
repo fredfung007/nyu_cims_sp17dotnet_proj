@@ -10,4 +10,9 @@
         KingBedRoom = 2,
         Suite = 3
     }
+
+    public class NameString
+    {
+        readonly public static string[] ROOM_TYPE_NAME = new string[] { "Double Bed Room", "Queen Room", "King Room", "Suite" };
+    }
 }

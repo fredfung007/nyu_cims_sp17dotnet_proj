@@ -250,6 +250,7 @@
     <Content Include="Views\Reservation\Confirm.cshtml" />
     <Content Include="Views\Reservation\Result.cshtml" />
     <Content Include="Views\Reservation\Create.cshtml" />
+    <Content Include="Views\Reservation\NotAvailable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

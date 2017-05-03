@@ -34,7 +34,7 @@ namespace BusinessLogic.Handlers
         /// <param name="checkIn">check-in date</param>
         /// <param name="checkOut">check-out date</param>
         /// <returns></returns>
-        private bool IsAvailable(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        public bool IsAvailable(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
         {
             return IsRoomAvailableForNRoom(type, checkIn, checkOut, 1);
         }

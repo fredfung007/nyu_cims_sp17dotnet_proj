@@ -50,6 +50,7 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> Pay(Guid ConfirmationId, Profile billInfo)
         {
             _reservationHandler.PayReservation(ConfirmationId, billInfo);
+
             return View(new ReservationViewModel
             {
                 ConfirmationId = ConfirmationId,
@@ -65,13 +66,12 @@ namespace HotelBookingWebsite.Controllers
         [HttpPost]
         public async Task<ActionResult> Cancel(ReservationViewModel model)
         {
+            _reservationHandler.CancelReservation(model.ConfirmationId, DateTime.Now);
             return View(model);
         }
 
-        // TODO ? use post here?
         public async Task<ActionResult> Cancel(Guid ConfirmationId)
         {
-            _reservationHandler.CancelReservation(ConfirmationId, DateTime.Now);
             return View(new ReservationViewModel
             {
                 ConfirmationId = ConfirmationId,
@@ -183,7 +183,8 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search");
             }
 
-            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).SelectedIndex = model.SelectedIndex;// ?? 0;
+            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).SelectedIndex = model.SelectedIndex;
+
 
             return RedirectToAction("InputUser", new { SessionId = model.SessionId, Anomyous = false });
         }
@@ -271,10 +272,29 @@ namespace HotelBookingWebsite.Controllers
             {
                 SessionId = result.SessionId,
                 Expiration = result.Expiration,
+                IsRoomAvailable = true,
                 StartDate = result.RoomPriceDetails[result.SelectedIndex].StartDate,
                 EndDate = result.RoomPriceDetails[result.SelectedIndex].EndDate,
-                PriceList = result.RoomPriceDetails[result.SelectedIndex].PriceList
+                PriceList = result.RoomPriceDetails[result.SelectedIndex].PriceList,
+                TypeName = result.RoomPriceDetails[result.SelectedIndex].Name,
             });
+        }
+
+        public ActionResult NotAvailable(string SessionId)
+        {
+            if (!ModelState.IsValid ||
+                String.IsNullOrEmpty(SessionId) ||
+                ReservationHandler.SearchResultPool[SessionId] == null ||
+                // no selected rooms
+                (ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).RoomPriceDetails.Count == 0)
+            {
+                return RedirectToAction("Search");
+            }
+
+            var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
+            ReservationHandler.SearchResultPool.Remove(SessionId);
+
+            return View(result);
         }
 
         [HttpPost]
@@ -293,6 +313,12 @@ namespace HotelBookingWebsite.Controllers
             var result = ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel;
             var roomInfo = result.RoomPriceDetails[result.SelectedIndex];
             var userName = User.Identity.Name;
+
+            if (!_roomHandler.IsAvailable(roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate))
+            {
+                return RedirectToAction("NotAvailable", new { SessionId = model.SessionId });
+            }
+
             // comment for debug
 
             //(ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).ReservationId = _reservationHandler.MakeReservation(userName,
@@ -303,14 +329,14 @@ namespace HotelBookingWebsite.Controllers
 
         public async Task<ActionResult> Confirm(string SessionId)
         {
-            return View(ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Confirm(RoomSearchResultModel model)
-        {
+            RoomSearchResultModel model = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             ReservationHandler.SearchResultPool.Remove(model.SessionId);
-            return View(model);
+            return View(new ConfirmationViewModel
+            {
+                RoomPriceDetail = model.RoomPriceDetails[model.SelectedIndex],
+                Guests = model.Guests,
+                ReservationId = model.ReservationId,
+            });
         }
     }
 }

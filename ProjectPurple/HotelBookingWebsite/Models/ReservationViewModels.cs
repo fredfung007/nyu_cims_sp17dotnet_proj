@@ -31,6 +31,13 @@ namespace HotelBookingWebsite.Models
         public Guid ReservationId { get; set; }
     }
 
+    public class ConfirmationViewModel
+    {
+        public RoomPriceDetail RoomPriceDetail { get; set; }
+        public List<Guest> Guests { get; set; }
+        public Guid ReservationId { get; set; }
+    }
+
     public class ResultViewModel
     {
         [HiddenInput(DisplayValue = false)]
@@ -61,9 +68,12 @@ namespace HotelBookingWebsite.Models
 
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
+
+        public bool IsRoomAvailable { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public IList<int> PriceList { get; set; }
+        public string TypeName { get; set; }
     }
 
     //public class RoomSearchResult
@@ -93,7 +103,11 @@ namespace HotelBookingWebsite.Models
         public DateTime End { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-
+        public List<Guest> Guests { get; set; }
+        public string RoomUrl { get; set; }
+        public List<int> PriceList { get; set; }
+        public bool Cancel { get; set; }
+        Profile BillInfo { get; set; }
     }
 
 

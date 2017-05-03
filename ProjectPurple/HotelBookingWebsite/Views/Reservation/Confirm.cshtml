@@ -1,4 +1,4 @@
-﻿@model HotelBookingWebsite.Models.RoomSearchResultModel
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
 
 @{
     ViewBag.Title = "Confirm";
@@ -12,27 +12,52 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ReservationId)
+            @Html.Display("Check-in:")
         </dt>
+        <dd>
+            @Html.Display(@Model.RoomPriceDetail.StartDate.Date.ToString("MM/dd/yyyy"))
+        </dd>
 
+        <dt>
+            @Html.Display("Check-out:")
+        </dt>
+        <dd>
+            @Html.Display(@Model.RoomPriceDetail.EndDate.Date.ToString("MM/dd/yyyy") + " (2:00 pm)")
+        </dd>
+
+        <dt>
+            @Html.Display("Number of Rooms:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model)
+        </dd>
+
+        @*<dt>
+            @Html.Display("Reservation Name:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model)
+        </dd>*@
+
+        <dt>
+            @Html.Display("Confirmation Number:")
+        </dt>
         <dd>
             @Html.DisplayFor(model => model.ReservationId)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SessionId)
+            @Html.Display("Room Type:")
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.SessionId)
+            @Html.DisplayFor(model => model.RoomPriceDetail.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ReservationId)
+            @Html.Display("Amenities:")
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.ReservationId)
+            @Html.DisplayFor(model => model.RoomPriceDetail.Ameneties)
         </dd>
     </dl>
 </div>
