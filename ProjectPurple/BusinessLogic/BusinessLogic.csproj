@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\AuthHandler.cs" />
+    <Compile Include="Handlers\DateTimeHandler.cs" />
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />

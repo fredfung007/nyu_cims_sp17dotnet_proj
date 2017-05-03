@@ -154,10 +154,14 @@ namespace HotelBookingWebsite.Controllers
         {
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
-                    ReservationHandler.SearchResultPool[SessionId] == null ||
-                    (ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+                    ReservationHandler.SearchResultPool[SessionId] == null)
             {
                 return RedirectToAction("Search");
+            }
+
+            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            {
+                return RedirectToAction("Expired");
             }
 
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
@@ -180,7 +184,7 @@ namespace HotelBookingWebsite.Controllers
 
             if (model.Expiration < DateTime.Now)
             {
-                return RedirectToAction("Search");
+                return RedirectToAction("Expired");
             }
 
             (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).SelectedIndex = model.SelectedIndex;
@@ -194,10 +198,14 @@ namespace HotelBookingWebsite.Controllers
         {
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
-                    ReservationHandler.SearchResultPool[SessionId] == null ||
-                    (ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+                    ReservationHandler.SearchResultPool[SessionId] == null)
             {
                 return RedirectToAction("Search");
+            }
+
+            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            {
+                return RedirectToAction("Expired");
             }
 
             string UserId = User.Identity.Name;
@@ -248,7 +256,7 @@ namespace HotelBookingWebsite.Controllers
 
             if (model.Expiration < DateTime.Now)
             {
-                return RedirectToAction("Search");
+                return RedirectToAction("Expired");
             }
 
             (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
@@ -260,10 +268,14 @@ namespace HotelBookingWebsite.Controllers
         {
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
-                    ReservationHandler.SearchResultPool[SessionId] == null ||
-                    (ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+                    ReservationHandler.SearchResultPool[SessionId] == null)
             {
                 return RedirectToAction("Search");
+            }
+
+            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            {
+                return RedirectToAction("Expired");
             }
 
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
@@ -297,6 +309,11 @@ namespace HotelBookingWebsite.Controllers
             return View(result);
         }
 
+        public ActionResult Expired()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(CreateReservationViewModel model)
         {
@@ -307,7 +324,7 @@ namespace HotelBookingWebsite.Controllers
 
             if (model.Expiration < DateTime.Now)
             {
-                return RedirectToAction("Search");
+                return RedirectToAction("Expired");
             }
 
             var result = ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel;

@@ -14,7 +14,7 @@ namespace BusinessLogic.Handlers
     public class ReservationHandler
     {
         public static Dictionary<string, TimeExpirationType> SearchResultPool = new Dictionary<string, TimeExpirationType>();
-
+        
         private readonly IReservationRepository _reservationRepository;
         //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
 

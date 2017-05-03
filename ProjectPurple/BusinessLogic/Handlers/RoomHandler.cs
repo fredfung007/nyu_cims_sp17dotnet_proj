@@ -18,7 +18,6 @@ namespace BusinessLogic.Handlers
         /// list of RoomType that are available during given date
         /// </summary>
         private readonly IRoomRepository _roomRepository;
-
         private readonly IReservationRepository _reservationRepository;
 
         public RoomHandler()
