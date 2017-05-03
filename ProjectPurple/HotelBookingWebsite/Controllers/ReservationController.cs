@@ -210,39 +210,31 @@ namespace HotelBookingWebsite.Controllers
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             var guests = _reservationHandler.GetEmptyGuestList(type);
 
-            bool anonymous = Anonymous ?? false;
-
-            //if (anonymous)
-            //{
-            //}
-            //else
+            return View(new InputGuestViewModel
             {
-                return View(new InputGuestViewModel
-                {
-                    SessionId = result.SessionId,
-                    Expiration = result.Expiration,
-                    Guests = guests
-                });
-            }
+                SessionId = result.SessionId,
+                Expiration = result.Expiration,
+                Guests = guests
+            });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AnonymousInputUser(InputGuestViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> AnonymousInputUser(InputGuestViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            if (model.Expiration < DateTime.Now)
-            {
-                return RedirectToAction("Search");
-            }
+        //    if (model.Expiration < DateTime.Now)
+        //    {
+        //        return RedirectToAction("Search");
+        //    }
 
-            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
+        //    (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
 
-            return RedirectToAction("Create", new { SessionId = model.SessionId });
-        }
+        //    return RedirectToAction("Create", new { SessionId = model.SessionId });
+        //}
 
 
         [HttpPost]

@@ -11,7 +11,9 @@ namespace HotelBookingWebsite.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.User.Identity == null || !filterContext.HttpContext.User.Identity.IsAuthenticated)
+            bool? anonymous = (bool?) filterContext.ActionParameters["Anonymous"];
+            bool skipAuth = anonymous ?? false;
+            if (!skipAuth && (filterContext.HttpContext.User.Identity == null || !filterContext.HttpContext.User.Identity.IsAuthenticated))
             {
                 filterContext.Result = new RedirectToRouteResult(
                 new RouteValueDictionary
