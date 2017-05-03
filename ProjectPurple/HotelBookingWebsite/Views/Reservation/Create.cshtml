@@ -1,38 +1,36 @@
 ﻿@model HotelBookingWebsite.Models.CreateReservationViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Please confirm the reservation and make a payment";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Please confirm the reservation and make a payment</h2>
+@*TODO check this*@
+<head>
+    @Styles.Render("~/Reservation/css")
+</head>
 
+<h2>@ViewBag.Title</h2>
 
 <div>
     <h4>Room Price</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            Date
-        </dt>
-        <dd>
-            Price
-        </dd>
+        <dt>Date</dt>
+        <dd>Price</dd>
+        @{var sum = 0;}
         @{var priceList = Model.PriceList; }
         @{DateTime showDate = Model.StartDate;}
         @for (int i = 0; i < priceList.Count; i++)
         {
-
-            <dt>
-                @showDate.Date.ToString("MM/dd/yyyy")
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => priceList[i])
-            </dd>
-
+            <dt>@showDate.Date.ToString("MM/dd/yyyy")</dt>
+            <dd>@Html.DisplayFor(model => priceList[i])</dd>
+            sum += priceList[i];
             showDate = showDate.AddDays(1);
         }
     </dl>
+    <h3>Summary of charges: @sum</h3>
+    
 </div>
 <hr />
 
@@ -45,35 +43,25 @@
     <div class="form-horizontal">
         <h4>Payment Information</h4>
         <hr />
-        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <dl class="dl-horizontal">
+            <dt>Card Number</dt>
+            <dd><input autocomplete='off' class='form-control card-number' size='20' type='text'></dd>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <dt>Billing Address</dt>
+            <dd><input autocomplete='off' class='form-control' size='20' type='text'></dd>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+            <dt>CVC</dt>
+            <dd><input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'></dd>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Pay" class="btn btn-default" />
-            </div>
+            <dt>Expiration</dt>
+            <dd><input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'></dd>
+
+            <dt>Year</dt>
+            <dd><input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'></dd>
+        </dl>
+
+        <div class="form-horizontal">
+            <input type="submit" value="Pay" class="btn btn-default" />
         </div>
     </div>
 }
