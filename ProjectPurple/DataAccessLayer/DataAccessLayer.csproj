@@ -87,6 +87,7 @@
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Migrations\TestDataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
