@@ -81,12 +81,11 @@ namespace HotelBookingWebsite.Controllers
             return models;
         }
 
-        public ActionResult ViewCheckInList()
+        private ActionResult ViewCheckInList()
         {
             return View(getViewCheckInList());
         }
 
-        //public async Task<ActionResult> ViewCheckoutList()
         private List<CheckOutListModel> getViewCheckoutList()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTime.Today));
@@ -105,16 +104,14 @@ namespace HotelBookingWebsite.Controllers
                 });
             }
             return models;
-            //return View(models);
         }
 
         [HttpGet]
-        public ActionResult ViewCheckoutList()
+        private ActionResult ViewCheckoutList()
         {
             return View(getViewCheckoutList());
         }
 
-        //public async Task<ActionResult> ViewCheckoutListAll()
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
@@ -132,17 +129,15 @@ namespace HotelBookingWebsite.Controllers
                     actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                 });
             }
-            //return View(models);
             return models;
         }
 
         [HttpGet]
-        public ActionResult ViewCheckoutListAll()
+        private ActionResult ViewCheckoutListAll()
         {
             return View(getViewCheckoutListAll());
         }
 
-        //public async Task<ActionResult> Occupancy()
         private List<OccupancyModel> getOccupancy()
         {
             List<OccupancyModel> models = new List<OccupancyModel>();
@@ -154,12 +149,11 @@ namespace HotelBookingWebsite.Controllers
                     occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
-            //return View(models);
             return models;
         }
 
         [HttpGet]
-        public ActionResult Occupancy()
+        private ActionResult Occupancy()
         {
             return View(getOccupancy());
         }
