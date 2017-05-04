@@ -25,7 +25,12 @@ namespace HotelBookingWebsite.Controllers
         // GET: Staff
         public ActionResult Index()
         {
-            return View();
+            return View(new DashboardModel
+            {
+                checkInList = getViewCheckInList(),
+                checkOutList = getViewCheckoutListAll(),
+                occupancy = getOccupancy()
+            });
         }
 
         [HttpPost]
@@ -56,8 +61,7 @@ namespace HotelBookingWebsite.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult> ViewCheckInList()
+        private List<CheckInListModel> getViewCheckInList()
         {
             //TODO: add another layer so that we do not use EF.Reservation directly here
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTime.Today));
@@ -74,11 +78,16 @@ namespace HotelBookingWebsite.Controllers
                     checkOutDate = reservation.EndDate
                 });
             }
-            return View(models);
+            return models;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> ViewCheckoutList()
+        public ActionResult ViewCheckInList()
+        {
+            return View(getViewCheckInList());
+        }
+
+        //public async Task<ActionResult> ViewCheckoutList()
+        private List<CheckOutListModel> getViewCheckoutList()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTime.Today));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
@@ -95,11 +104,18 @@ namespace HotelBookingWebsite.Controllers
                     actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                 });
             }
-            return View(models);
+            return models;
+            //return View(models);
         }
 
         [HttpGet]
-        public async Task<ActionResult> ViewCheckoutListAll()
+        public ActionResult ViewCheckoutList()
+        {
+            return View(getViewCheckoutList());
+        }
+
+        //public async Task<ActionResult> ViewCheckoutListAll()
+        private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
@@ -116,11 +132,18 @@ namespace HotelBookingWebsite.Controllers
                     actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                 });
             }
-            return View(models);
+            //return View(models);
+            return models;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Occupancey()
+        public ActionResult ViewCheckoutListAll()
+        {
+            return View(getViewCheckoutListAll());
+        }
+
+        //public async Task<ActionResult> Occupancy()
+        private List<OccupancyModel> getOccupancy()
         {
             List<OccupancyModel> models = new List<OccupancyModel>();
             foreach(ROOM_TYPE type in _roomHandler.GetRoomTypes())
@@ -131,8 +154,16 @@ namespace HotelBookingWebsite.Controllers
                     occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
-            return View(models);
+            //return View(models);
+            return models;
         }
+
+        [HttpGet]
+        public ActionResult Occupancy()
+        {
+            return View(getOccupancy());
+        }
+
         [HttpPost]
         public async Task<ActionResult> ModifiyRoomInventory(ROOM_TYPE type, int value)
         {

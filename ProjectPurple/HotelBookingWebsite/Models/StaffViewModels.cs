@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Constants;
 using System;
+using System.Collections.Generic;
 
 namespace HotelBookingWebsite.Models
 {
@@ -29,5 +30,12 @@ namespace HotelBookingWebsite.Models
         public ROOM_TYPE type { get; set; }
         public int inventory { get; set; }
         public int occupancy { get; set; }
+    }
+
+    public class DashboardModel
+    {
+        public List<OccupancyModel> occupancy { get; set; }
+        public List<CheckInListModel> checkInList { get; set; }
+        public List<CheckOutListModel> checkOutList { get;  set;}
     }
 }
