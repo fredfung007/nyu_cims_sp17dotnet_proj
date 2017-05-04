@@ -18,11 +18,13 @@ namespace HotelBookingWebsite.Controllers
     {
         private ReservationHandler _reservationHandler;
         private RoomHandler _roomHandler;
+        private AspNetUserHandler _userHandler;
 
         public ReservationController()
         {
             _reservationHandler = new ReservationHandler();
             _roomHandler = new RoomHandler();
+            _userHandler = new AspNetUserHandler();
         }
 
         // GET: Reservation
@@ -256,16 +258,14 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Expired");
             }
 
-            string UserId = User.Identity.Name;
-
-            // TODO
-            /*
-             * Fill in the data to guest
-            */
-
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             var guests = _reservationHandler.GetEmptyGuestList(type);
+
+            // TOOD check here use extension function
+            var profile = _userHandler.GetProfile(User.Identity.Name);
+            guests[0].FirstName = profile.FirstName;
+            guests[1].LastName = profile.LastName;
 
             return View(new InputGuestViewModel
             {
