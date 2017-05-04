@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
@@ -40,11 +39,11 @@ namespace BusinessLogic.Handlers
         /// <returns>TODO RETURNS</returns>
         public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests, List<int> prices)
         {
-            IUserReservationQueryHandler userReservationQueryHandler = new UserReservationQueryHandler(username);
+            AspNetUserHandler userHandler = new AspNetUserHandler();
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
-                AspNetUser = userReservationQueryHandler.User,
+                AspNetUser = userHandler.GetAspNetUser(username),
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
