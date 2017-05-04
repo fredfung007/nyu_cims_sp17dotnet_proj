@@ -253,10 +253,10 @@
     <Content Include="Views\Reservation\Search.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="Views\Profile\UpcommingReservations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Profile\" />
     <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
@@ -105,10 +107,12 @@ namespace BusinessLogic.Handlers
         }
 
 
-        public List<Reservation> GetUpComingReservations(AspNetUser user)
+        public async Task<List<Reservation>> GetUpComingReservations(string userId)
         {
-            throw new NotImplementedException();
-            // return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
+            var reservations = _reservationRepository.GetReservations();
+
+            return reservations.Where(reservation => reservation.AspNetUser.Id.Equals(userId) &&
+                                                     reservation.EndDate.CompareTo(DateTime.Now) > 0).ToList();
         }
 
         [Obsolete]
