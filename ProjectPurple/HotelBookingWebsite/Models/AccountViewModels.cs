@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace HotelBookingWebsite.Models
 {
@@ -79,6 +81,47 @@ namespace HotelBookingWebsite.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Address First Line")]
+        public string Address1 { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Address Second Line")]
+        public string Address2 { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+
+        [Required]
+        [DataType(DataType.PostalCode)]
+        [Display(Name = "Postal Code")]
+        public string PostalCode { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
     }
 
     public class ResetPasswordViewModel

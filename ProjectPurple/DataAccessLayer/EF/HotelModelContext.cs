@@ -1,24 +1,35 @@
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer.EF
 {
-    public class CodeFirstHotelModel : DbContext
+    public class HotelModelContext : IdentityDbContext
     {
-#if DEBUG
-        private static string name = "name=CodeFirstHotelModel";
+#if DEBUG2
+        private static string name = "name=HotelModelContext";
 #else
         private static string name = "name=ProductionConnection";
 #endif
-        public CodeFirstHotelModel()
+        public HotelModelContext()
             : base(name)
         {
+            Database.SetInitializer<HotelModelContext>(null);// Remove default initializer
+            Configuration.ProxyCreationEnabled = false;
+            Configuration.LazyLoadingEnabled = false;
         }
 
+        public static HotelModelContext Create()
+        {
+            return new HotelModelContext();
+        }
+
+
+        public DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public DbSet<AspNetRole> AspNetUserRoles { get; set; }
+        public DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<DailyPrice> DailyPrices { get; set; }
         public virtual DbSet<Guest> Guests { get; set; }
         public virtual DbSet<Profile> Profiles { get; set; }
@@ -28,21 +39,14 @@ namespace DataAccessLayer.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AspNetRole>()
-                .HasMany(e => e.AspNetUsers)
-                .WithMany(e => e.AspNetRoles)
-                .Map(m => m.ToTable("AspNetUserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
+            base.OnModelCreating(modelBuilder);
+            // Configure Asp Net Identity Tables
+            modelBuilder.Entity<AspNetUser>().Property(u => u.PasswordHash).HasMaxLength(500);
+            modelBuilder.Entity<AspNetUser>().Property(u => u.SecurityStamp).HasMaxLength(500);
+            modelBuilder.Entity<AspNetUser>().Property(u => u.PhoneNumber).HasMaxLength(50);
+            modelBuilder.Entity<AspNetUserClaim>().Property(u => u.ClaimType).HasMaxLength(150);
+            modelBuilder.Entity<AspNetUserClaim>().Property(u => u.ClaimValue).HasMaxLength(500);
 
-            modelBuilder.Entity<AspNetUser>()
-                .HasMany(e => e.AspNetUserClaims)
-                .WithRequired(e => e.AspNetUser)
-                .HasForeignKey(e => e.UserId);
-
-            modelBuilder.Entity<AspNetUser>()
-                .HasMany(e => e.AspNetUserLogins)
-                .WithRequired(e => e.AspNetUser)
-                .HasForeignKey(e => e.UserId);
-   
             modelBuilder.Entity<AspNetUser>()
                 .HasMany(e => e.Reservations)
                 .WithOptional(e => e.AspNetUser)
