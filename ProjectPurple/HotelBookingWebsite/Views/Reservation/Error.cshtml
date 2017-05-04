@@ -1,9 +1,26 @@
-﻿
+﻿@model HotelBookingWebsite.Models.ErrorViewModel
+
 @{
     ViewBag.Title = "Error";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
-<p>@Model</p>
 
+<div>
+    @*<h4>ErrorViewModel</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorMsg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ErrorMsg)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Search")
+</p>

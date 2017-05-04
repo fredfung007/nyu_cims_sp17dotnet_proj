@@ -179,13 +179,22 @@ namespace HotelBookingWebsite.Controllers
 
                 return RedirectToAction("Result", new { SessionId = sessionId });
             }
+            else
+            {
+                return RedirectToAction("Error", new ErrorViewModel{ ErrorMsg = "No available room, please search again" });
+            }
 
-            ViewBag.NoResult = true;
+            //ViewBag.NoResult = true;
             return View();
         }
 
         public ActionResult Result(string SessionId)
         {
+            if (!ReservationHandler.SearchResultPool.ContainsKey(SessionId))
+            {
+                return RedirectToAction("Error", new ErrorViewModel { ErrorMsg = "The reservation is expired or submitted" });
+            }
+
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
                     ReservationHandler.SearchResultPool[SessionId] == null)
@@ -230,6 +239,11 @@ namespace HotelBookingWebsite.Controllers
         [CustomAuthorize]
         public async Task<ActionResult> InputUser(string SessionId, bool? Anonymous)
         {
+            if (!ReservationHandler.SearchResultPool.ContainsKey(SessionId))
+            {
+                return RedirectToAction("Error", new ErrorViewModel { ErrorMsg = "The reservation is expired or submitted" });
+            }
+
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
                     ReservationHandler.SearchResultPool[SessionId] == null)
@@ -300,6 +314,11 @@ namespace HotelBookingWebsite.Controllers
 
         public async Task<ActionResult> Create(string SessionId)
         {
+            if (!ReservationHandler.SearchResultPool.ContainsKey(SessionId))
+            {
+                return RedirectToAction("Error", new ErrorViewModel { ErrorMsg = "The reservation is expired or submitted" });
+            }
+
             if (!ModelState.IsValid ||
                     String.IsNullOrEmpty(SessionId) ||
                     ReservationHandler.SearchResultPool[SessionId] == null)
@@ -328,6 +347,11 @@ namespace HotelBookingWebsite.Controllers
 
         public ActionResult NotAvailable(string SessionId)
         {
+            if (!ReservationHandler.SearchResultPool.ContainsKey(SessionId))
+            {
+                return RedirectToAction("Error", new ErrorViewModel { ErrorMsg = "The reservation is expired or submitted" });
+            }
+
             if (!ModelState.IsValid ||
                 String.IsNullOrEmpty(SessionId) ||
                 ReservationHandler.SearchResultPool[SessionId] == null ||
@@ -381,9 +405,9 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToAction("Confirm", new { ConfirmationId = reservationId.ToString() });
         }
 
-        public ActionResult Error(string errorMsg)
+        public ActionResult Error(ErrorViewModel error)
         {
-            return View(errorMsg);
+            return View(error);
         }
 
         public async Task<ActionResult> Confirm(string ConfirmationId)
@@ -393,7 +417,7 @@ namespace HotelBookingWebsite.Controllers
             //invalid confirmation Number
             if (rsv == null)
             {
-                return RedirectToAction("Error", new { errorMsg = "Wrong confirmation number"});
+                return RedirectToAction("Error", new ErrorViewModel{ ErrorMsg = "Wrong confirmation number"});
             }
             // TODO extension functions
             var priceList = rsv.DailyPrices.Select(x => x.BillingPrice).ToList();

@@ -176,6 +176,7 @@
     </Compile>
     <Compile Include="Helper\ModelSateHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ReservationViewModels.cs" />
     <Compile Include="Models\StaffViewModels.cs" />
@@ -265,7 +266,6 @@
     <Content Include="Views\Reservation\Create.cshtml" />
     <Content Include="Views\Reservation\NotAvailable.cshtml" />
     <Content Include="Views\Reservation\Expired.cshtml" />
-    <Content Include="Views\Reservation\Error.cshtml" />
     <Content Include="Views\Staff\ViewCheckoutList.cshtml" />
     <Content Include="Views\Staff\ViewCheckInList.cshtml" />
     <Content Include="Views\Staff\Occupancey.cshtml" />
@@ -273,11 +273,10 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Views\Profile\UpcommingReservations.cshtml" />
+    <Content Include="Views\Reservation\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
