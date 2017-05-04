@@ -25,7 +25,8 @@ namespace BusinessLogic.Handlers
             // username should come from cookies
             //var username = "";
             _reservationRepository = new ReservationRepository(new HotelModelContext());
-            //_userReservationQueryHandler = new AspNetUserHandler(username);
+            _roomRepository = new RoomRepository(new HotelModelContext());
+            //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
         /// <summary>
@@ -38,11 +39,11 @@ namespace BusinessLogic.Handlers
         /// <returns>TODO RETURNS</returns>
         public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests, List<int> prices)
         {
-            IUserReservationQueryHandler userReservationQueryHandler = new AspNetUserHandler(username);
+            AspNetUserHandler userHandler = new AspNetUserHandler();
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
-                AspNetUser = userReservationQueryHandler.User,
+                AspNetUser = userHandler.GetAspNetUser(username),
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,

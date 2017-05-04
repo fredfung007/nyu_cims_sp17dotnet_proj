@@ -9,11 +9,17 @@ namespace BusinessLogic.Handlers
     public class AspNetUserHandler
     {
         private readonly IReservationRepository _reservationRepository;
+        private readonly IAuthRepository _userRepository;
 
         public AspNetUserHandler()
         {
             _reservationRepository = new ReservationRepository(new HotelModelContext());
+            _userRepository = new AuthRepository(new HotelModelContext());
+        }
 
+        public AspNetUser GetAspNetUser(string username)
+        {
+            return _userRepository.GetUser(username);
         }
 
         /// <summary>
@@ -23,7 +29,7 @@ namespace BusinessLogic.Handlers
         /// <returns>Corresponding loyalty program gress</returns>
         public int FindLoyaltyProgramInfo(string username)
         {
-            var user = new AuthRepository(new HotelModelContext()).GetUser(username);
+            var user = _userRepository.GetUser(username);
             return user.LoyaltyProgress;
         }
 
@@ -46,7 +52,7 @@ namespace BusinessLogic.Handlers
         /// <returns>The Profile of the given user.</returns>
         public Profile GetProfile(string username)
         {
-            var user = new AuthRepository(new HotelModelContext()).GetUser(username);
+            var user = _userRepository.GetUser(username);
             return user.Profile;
         }
     }
