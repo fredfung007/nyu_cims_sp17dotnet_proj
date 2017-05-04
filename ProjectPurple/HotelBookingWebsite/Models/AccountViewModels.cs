@@ -122,6 +122,10 @@ namespace HotelBookingWebsite.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
+        [DataType(DataType.Text)]
+        [Display(Name = "preferred Room Type")]
+        public string PreferredRoomType { get; set; }
+
     }
 
     public class ResetPasswordViewModel

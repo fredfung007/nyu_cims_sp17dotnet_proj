@@ -25,6 +25,8 @@ namespace DataAccessLayer.EF
 
         public string PhoneNumber { get; set; }
 
+        public RoomType PreferredRoomType { get; set; }
+
         public virtual Address Address { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
