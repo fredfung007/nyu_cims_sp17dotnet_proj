@@ -18,18 +18,25 @@ namespace BusinessLogic.Handlers
         /// list of RoomType that are available during given date
         /// </summary>
         private readonly IRoomRepository _roomRepository;
-        private readonly IReservationRepository _reservationRepository;
 
         public RoomHandler()
         {
             _roomRepository = new RoomRepository(new HotelModelContext());
-            _reservationRepository = new ReservationRepository(new HotelModelContext());
         }
 
-        public RoomHandler(IRoomRepository roomRepo, IReservationRepository reservationRepo)
+        public RoomHandler(IRoomRepository roomRepo)
         {
             _roomRepository = roomRepo;
-            _reservationRepository = reservationRepo;
+        }
+
+        public List<ROOM_TYPE> GetRoomTypes()
+        {
+            List<ROOM_TYPE> types = new List<ROOM_TYPE>();
+            foreach (RoomType room in _roomRepository.GetRoomTypes())
+            {
+                types.Add(room.Type);
+            }
+            return types;
         }
 
         /// <summary>
@@ -337,125 +344,17 @@ namespace BusinessLogic.Handlers
             _roomRepository.UpdateRoom(room);
             _roomRepository.Save();
         }
-
-        /// <summary>
-        /// Check in a reservation on specific date by its confirmation number
-        /// </summary>
-        /// <param name="confirmationNumber">confirmation number of the date</param>
-        /// <param name="today">check in date</param>
-        public bool CheckIn(Guid confirmationNumber, DateTime today)
-        {
-            Reservation reservation =
-                _reservationRepository.GetReservation(confirmationNumber);
-
-            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
-            {
-                return false;
-            }
-
-            DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
-            {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
-                checkDate = checkDate.AddDays(1);
-            }
-
-            reservation.CheckInDate = today;
-            _reservationRepository.UpdateReservation(reservation);
-            _reservationRepository.Save();
-            return true;
-        }
-
-        /// <summary>
-        /// Check out a reservation on specific date by its confirmation number
-        /// </summary>
-        /// <param name="confirmationNumber">confirmation number of the reservation</param>
-        /// <param name="today">check out date</param>
-        public bool CheckOut(Guid confirmationNumber, DateTime today)
-        {
-            Reservation reservation =
-                _reservationRepository.GetReservation(confirmationNumber);
-
-            if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
-            {
-                return false;
-            }
-
-            DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
-            {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
-                checkDate = checkDate.AddDays(1);
-            }
-            _roomRepository.Save();
-
-            // loyalty program
-            int stayLength = 0;
-            AspNetUser user = reservation.AspNetUser;
-            DateTime checkInDate = (DateTime)reservation.CheckInDate;
-
-            if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
-            {
-                // Checkout date is the same year as the loyalty program
-                stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
-                reservation.AspNetUser.LoyaltyProgress += stayLength;
-            }
-            else
-            {
-                // Checkout date is a new year
-                var newYear = new DateTime(today.Year, 1, 1);
-                stayLength = (today - newYear).Days;
-                reservation.AspNetUser.LoyaltyProgress = stayLength;
-                reservation.AspNetUser.LoyaltyYear = newYear;
-            }
-
-            reservation.CheckOutDate = today;
-            _reservationRepository.UpdateReservation(reservation);
-            _reservationRepository.Save();
-            return true;
-        }
-
-        /// <summary>
-        /// Get all reservations that will check out today
-        /// </summary>
-        /// <param name="today"></param>
-        /// <returns></returns>
-        private IEnumerable<Reservation> GetReservationsCheckOutToday(DateTime today)
-        {
-            return _reservationRepository.GetReservationsByEndDate(today);
-        }
-
-        /// <summary>
-        /// Get all reservations that will checkin toady
-        /// </summary>
-        /// <param name="today"></param>
-        /// <returns></returns>
-        public IEnumerable<Reservation> GetReservationsCheckInToday(DateTime today)
-        {
-            return _reservationRepository.GetReservationsByStartDate(today);
-        }
-
-        /// <summary>
-        /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
-        /// </summary>
-        /// <param name="today"></param>
-        /// <returns></returns>
-        public IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
-        {
-            return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
-        }
-
-        public int GetAveragePrice(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
-        {
-            var total = GetRoomPriceList(type, checkIn, checkOut).Sum();
-            return total / (checkOut - checkIn).Days;
-        }
-
         public async Task<int> GetAveragePriceAsync(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
         {
             var priceList = await GetRoomPriceListAsync(type, checkIn, checkOut);
             var total = priceList.Sum();
             return total / (checkOut - checkIn).Days;
         }
+        public int GetAveragePrice(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        {
+            var total = GetRoomPriceList(type, checkIn, checkOut).Sum();
+            return total / (checkOut - checkIn).Days;
+        }
+
     }
 }
