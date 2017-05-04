@@ -26,6 +26,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @* TODO: add check out link *@
             @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
@@ -43,7 +44,6 @@
         <td>
             @Html.DisplayFor(modelItem => item.actualCheckInDate)
         </td>
-        @* TODO: add check out button *@
     </tr>
 }
 

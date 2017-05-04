@@ -25,4 +25,13 @@ namespace HotelBookingWebsite.Filters
             }
         }
     }
+
+    // TODO check identity (logged in and is staff) when ~/staff/ is visited
+    public class StaffAuthorize : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+        }
+    }
 }

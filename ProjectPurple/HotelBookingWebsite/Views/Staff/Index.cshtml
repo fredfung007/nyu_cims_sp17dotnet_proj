@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Dashboard</h2>
-<h3>Room Occupancies</h3>
+@Html.AntiForgeryToken()
+<h1> @ViewBag.Title </h1>
+<h2>Room Occupancies</h2>
 @Html.Partial("Occupancy", Model.occupancy)
-<h3>Upcoming Reservations for Checking-In</h3>
+<h2>Upcoming Reservations for Checking-In</h2>
 @Html.Partial("ViewCheckInList", Model.checkInList)
-<h3>Reservations Checked-In</h3>
+<h2>Reservations Checked-In</h2>
 @Html.Partial("ViewCheckoutListAll", Model.checkOutList)
 
