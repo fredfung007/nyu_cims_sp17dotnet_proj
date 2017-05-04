@@ -122,13 +122,13 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public async Task<ActionResult> Occupancey()
         {
-            List<OccupanceyModel> models = new List<OccupanceyModel>();
+            List<OccupancyModel> models = new List<OccupancyModel>();
             foreach(ROOM_TYPE type in _roomHandler.GetRoomTypes())
             {
-                models.Add(new OccupanceyModel {
+                models.Add(new OccupancyModel {
                     type = type,
                     inventory = _roomHandler.GetRoomInventory(type),
-                    occupancey = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
+                    occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
             return View(models);

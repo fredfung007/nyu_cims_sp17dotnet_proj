@@ -24,10 +24,10 @@ namespace HotelBookingWebsite.Models
         public DateTime checkOutDate { get; set; }
     }
 
-    public class OccupanceyModel
+    public class OccupancyModel
     {
         public ROOM_TYPE type { get; set; }
         public int inventory { get; set; }
-        public int occupancey { get; set; }
+        public int occupancy { get; set; }
     }
 }

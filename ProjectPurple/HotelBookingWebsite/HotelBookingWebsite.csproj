@@ -268,7 +268,7 @@
     <Content Include="Views\Reservation\Error.cshtml" />
     <Content Include="Views\Staff\ViewCheckoutList.cshtml" />
     <Content Include="Views\Staff\ViewCheckInList.cshtml" />
-    <Content Include="Views\Staff\Occupancey.cshtml" />
+    <Content Include="Views\Staff\Occupancy.cshtml" />
     <Content Include="Views\Staff\ViewCheckoutListAll.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
@@ -276,8 +276,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
