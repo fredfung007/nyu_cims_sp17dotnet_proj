@@ -12,8 +12,8 @@ namespace BusinessLogic.Handlers
         private AspNetUser User { get; }
         public UserReservationQueryHandler(string username)
         {
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
-            User = new AuthRepository(new CodeFirstHotelModel()).GetUser(username);
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
+            User = new AuthRepository(new HotelModelContext()).GetUser(username);
         }
 
         AspNetUser IUserReservationQueryHandler.User => User;
@@ -25,16 +25,17 @@ namespace BusinessLogic.Handlers
 
         public IEnumerable<Reservation> FindUpcomingReservations(DateTime date)
         {
-            IEnumerable<Reservation> reservations = _reservationRepository.GetReservationsByUserId(User.UserName);
-            List<Reservation> upcomingReservations = new List<Reservation>();
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.EndDate.Date.CompareTo(date) > 0)
-                {
-                    upcomingReservations.Add(reservation);
-                }
-            }
-            return upcomingReservations;
+            throw new NotImplementedException();
+            //IEnumerable<Reservation> reservations = _reservationRepository.GetReservationsByUserId(User.UserName);
+            //List<Reservation> upcomingReservations = new List<Reservation>();
+            //foreach (Reservation reservation in reservations)
+            //{
+            //    if (reservation.EndDate.Date.CompareTo(date) > 0)
+            //    {
+            //        upcomingReservations.Add(reservation);
+            //    }
+            //}
+            //return upcomingReservations;
         }
 
         public Profile GetProfile()

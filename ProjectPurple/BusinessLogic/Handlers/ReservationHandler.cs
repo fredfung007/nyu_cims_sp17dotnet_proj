@@ -113,7 +113,8 @@ namespace BusinessLogic.Handlers
 
         public List<Reservation> GetUpComingReservations(AspNetUser user)
         {
-            return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
+            throw new NotImplementedException();
+            // return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
         }
 
         [Obsolete]

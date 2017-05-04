@@ -7,13 +7,13 @@ namespace DataAccessLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RemoveUselessFields2 : IMigrationMetadata
+    public sealed partial class INITDATABASE : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveUselessFields2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(INITDATABASE));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704301451151_Remove-Useless-Fields-2"; }
+            get { return "201704302214546_INIT-DATABASE"; }
         }
         
         string IMigrationMetadata.Source
