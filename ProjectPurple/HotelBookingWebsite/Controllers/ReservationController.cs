@@ -37,7 +37,7 @@ namespace HotelBookingWebsite.Controllers
         {
             Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
-            ViewBag.canCancel = _reservationHandler.CanCanceled(reservation.Id, DateTime.Now);
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTime.Now);
 
             return View(new ConfirmationViewModel
             {
@@ -47,6 +47,7 @@ namespace HotelBookingWebsite.Controllers
                 Guests = reservation.Guests.ToList(),
                 Type = reservation.RoomType.Type.ToString(),
                 Ameneties = reservation.RoomType.Ameneties,
+                isCanceled = reservation.IsCancelled,
             });
         }
 

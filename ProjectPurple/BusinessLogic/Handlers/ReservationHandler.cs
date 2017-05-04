@@ -87,7 +87,7 @@ namespace BusinessLogic.Handlers
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
-            if (!CanCanceled(confirmationNumber, today))
+            if (!CanBeCanceled(confirmationNumber, today))
             {
                 return false;
             }
@@ -97,9 +97,15 @@ namespace BusinessLogic.Handlers
             return true;
         }
 
-        public bool CanCanceled(Guid confirmationNumber, DateTime today)
+        public bool CanBeCanceled(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
+
+            // is already canceled
+            if (reservation.IsCancelled)
+            {
+                return false;
+            }
 
             // refuse to cancel if checkin
             if (reservation.CheckInDate != null && reservation.CheckInDate < today)
