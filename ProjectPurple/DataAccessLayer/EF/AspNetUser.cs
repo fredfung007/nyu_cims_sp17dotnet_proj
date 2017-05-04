@@ -9,14 +9,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer.EF
 {
-    public sealed class AspNetUser : IdentityUser
+    public class AspNetUser : IdentityUser
     {
-        public AspNetUser()
-        {
-            Profile = new Profile();
-            Reservations = new HashSet<Reservation>();
-        }
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AspNetUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -28,8 +22,8 @@ namespace DataAccessLayer.EF
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
 
-        public Profile Profile { get; set; }
+        public virtual Profile Profile { get; set; } = new Profile();
 
-        public ICollection<Reservation> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; } = new HashSet<Reservation>();
     }
 }
