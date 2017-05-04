@@ -20,6 +20,12 @@ namespace HotelBookingWebsite
             );
 
             routes.MapRoute(
+                name: "StaffDefault",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Staff", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Additional",
                 url: "{controller}/{action}/{id}/{additional}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, additional = UrlParameter.Optional }

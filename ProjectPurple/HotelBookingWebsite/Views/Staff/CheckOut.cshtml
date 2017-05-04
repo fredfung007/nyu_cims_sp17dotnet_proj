@@ -1,0 +1,11 @@
+﻿@using HotelBookingWebsite.Models
+@model CheckInOutModel
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Status = Model.isSuccess ? "Successul" : "Failed";
+}
+
+<h2>CheckOut @ViewBag.Status</h2>
+@Html.ActionLink("Back", "Index")
+

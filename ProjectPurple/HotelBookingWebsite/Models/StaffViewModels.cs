@@ -38,4 +38,10 @@ namespace HotelBookingWebsite.Models
         public List<CheckInListModel> checkInList { get; set; }
         public List<CheckOutListModel> checkOutList { get;  set;}
     }
+
+    public class CheckInOutModel
+    {
+        public Guid confirmationNum { get; set; }
+        public bool isSuccess { get; set; }
+    }
 }

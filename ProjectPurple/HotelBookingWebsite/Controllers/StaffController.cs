@@ -33,32 +33,24 @@ namespace HotelBookingWebsite.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CheckIn(Guid ConfirmationNum)
+        [HttpGet]
+        public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
         {
-            if (_reservationHandler.CheckIn(ConfirmationNum, DateTime.Today))
+            return View(new CheckInOutModel
             {
-                return Index();
-            }
-            else
-            {
-                //TODO: return failure page then redirect to index after 3 sec
-                return View();
-            }
+                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                isSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+            });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CheckOut(Guid ConfirmationNum)
+        [HttpGet]
+        public async Task<ActionResult> CheckOut(Guid? ConfirmationNum)
         {
-            if (_reservationHandler.CheckOut(ConfirmationNum, DateTime.Today))
+            return View(new CheckInOutModel
             {
-                return Index();
-            }
-            else
-            {
-                //TODO: return failure page then redirect to index after 3 sec
-                return View();
-            }
+                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                isSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+            });
         }
 
         private List<CheckInListModel> getViewCheckInList()

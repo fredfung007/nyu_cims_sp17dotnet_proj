@@ -281,6 +281,8 @@
     <Content Include="Views\Account\RegisterStaff.cshtml" />
     <Content Include="Views\Reservation\Error.cshtml" />
     <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\CheckOut.cshtml" />
+    <Content Include="Views\Staff\CheckIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
