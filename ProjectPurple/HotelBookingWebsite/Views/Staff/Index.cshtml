@@ -1,10 +1,14 @@
-﻿
+﻿@using HotelBookingWebsite.Models
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Dashboard</h2>
-@Html.Partial("Occupancey")
-@Html.Partial("ViewCheckInList")
-@Html.Partial("ViewCheckOutListAll")
+<h3>Room Occupancies</h3>
+@Html.Partial("Occupancy", new List<OccupancyModel>())
+<h3>Upcoming Reservations for Checking-In</h3>
+@Html.Partial("ViewCheckInList", new List<CheckInListModel>())
+<h3>Reservations Checked-In</h3>
+@Html.Partial("ViewCheckoutListAll", new List<CheckOutListModel>())
+
