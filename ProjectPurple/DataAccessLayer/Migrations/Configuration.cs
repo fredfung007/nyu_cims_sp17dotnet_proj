@@ -8,14 +8,14 @@ namespace DataAccessLayer.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.EF.CodeFirstHotelModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.EF.HotelModelContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DataAccessLayer.EF.CodeFirstHotelModel context)
+        protected override void Seed(DataAccessLayer.EF.HotelModelContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -78,7 +78,6 @@ namespace DataAccessLayer.Migrations
                             Date = reservation.StartDate.AddDays(i),
                             Occupancy = 1,
                             RoomType = room,
-                            RoomTypeId = room.Id
                         };
                     }
                     else

@@ -19,8 +19,8 @@ namespace BusinessLogic.Helpers
 
         public TestDataGenerator()
         {
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
-            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
+            _roomRepository = new RoomRepository(new HotelModelContext());
             _reservationHandler = new ReservationHandler();
             _roomHandler = new RoomHandler();
 
@@ -261,10 +261,7 @@ namespace BusinessLogic.Helpers
 
                 AspNetUser user = new AspNetUser
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Profile = profile,
-                    Email = profile.Email,
-                    ProfileGuid = profile.Id,
                     LoyaltyProgress = 0,
                     LoyaltyYear = DateTime.Now
                 };
@@ -275,7 +272,8 @@ namespace BusinessLogic.Helpers
             return new Tuple<List<AspNetUser>, List<Profile>>(users, profiles);
         }
 
-        public List<Reservation> GenerateReservationsWithCheckInDate(List<AspNetUser> users, DateTime checkIn, bool checkedIn)
+        public List<Reservation> GenerateReservationsWithCheckInDate(List<AspNetUser> users, DateTime checkIn,
+            bool checkedIn)
         {
             Random rand = new Random();
             List<Reservation> reservations = new List<Reservation>();
@@ -285,7 +283,6 @@ namespace BusinessLogic.Helpers
                 Reservation reservation = new Reservation
                 {
                     AspNetUser = users[i],
-                    AspNetUsersId = users[i].Id,
                     StartDate = checkIn,
                     EndDate = checkOut,
                     RoomType = room
@@ -297,7 +294,7 @@ namespace BusinessLogic.Helpers
                 }
 
                 List<DailyPrice> dailyPrices = new List<DailyPrice>();
-                for (int j = 0;j < (checkOut - checkIn).Days;j++)
+                for (int j = 0; j < (checkOut - checkIn).Days; j++)
                 {
                     dailyPrices.Add(new DailyPrice
                     {
@@ -305,7 +302,6 @@ namespace BusinessLogic.Helpers
                         BillingPrice = room.BaseRate + rand.Next(0, 100),
                         Date = checkIn.AddDays(j),
                         Reservation = reservation,
-                        ReservationId = reservation.Id
                     });
                 }
 
@@ -315,7 +311,8 @@ namespace BusinessLogic.Helpers
             return reservations;
         }
 
-        public List<Reservation> GenerateReservationsWithCheckOutDate(List<AspNetUser> users, DateTime checkOut, bool checkedOut)
+        public List<Reservation> GenerateReservationsWithCheckOutDate(List<AspNetUser> users, DateTime checkOut,
+            bool checkedOut)
         {
             Random rand = new Random();
             List<Reservation> reservations = new List<Reservation>();
@@ -325,7 +322,6 @@ namespace BusinessLogic.Helpers
                 Reservation reservation = new Reservation
                 {
                     AspNetUser = users[i],
-                    AspNetUsersId = users[i].Id,
                     StartDate = checkIn,
                     EndDate = checkOut,
                     CheckInDate = checkIn,
@@ -338,7 +334,7 @@ namespace BusinessLogic.Helpers
                 }
 
                 List<DailyPrice> dailyPrices = new List<DailyPrice>();
-                for (int j = 0;j < (checkOut - checkIn).Days;j++)
+                for (int j = 0; j < (checkOut - checkIn).Days; j++)
                 {
                     dailyPrices.Add(new DailyPrice
                     {
@@ -346,7 +342,6 @@ namespace BusinessLogic.Helpers
                         BillingPrice = room.BaseRate + rand.Next(0, 100),
                         Date = checkIn.AddDays(j),
                         Reservation = reservation,
-                        ReservationId = reservation.Id
                     });
                 }
 

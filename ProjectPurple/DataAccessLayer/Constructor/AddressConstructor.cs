@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Constants;
+﻿using System;
+using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Constructor
@@ -7,9 +8,10 @@ namespace DataAccessLayer.Constructor
     {
         private readonly Address _address;
 
-        public AddressConstructor()
+        public AddressConstructor(Guid Id)
         {
             _address = new Address();
+            _address.Id = Id;
         }
 
         public AddressConstructor AddFirstLine(string firstLine)

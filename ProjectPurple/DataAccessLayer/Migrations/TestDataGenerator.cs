@@ -15,8 +15,8 @@ namespace DataAccessLayer.Migrations
 
         public TestDataGenerator()
         {
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
-            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
+            _roomRepository = new RoomRepository(new HotelModelContext());
 
             firstnames = new List<string>
             {
@@ -249,7 +249,6 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = Guid.NewGuid().ToString(),
                     Profile = profile,
-                    ProfileGuid = profile.Id
                 };
 
                 profiles.Add(profile);
@@ -268,7 +267,6 @@ namespace DataAccessLayer.Migrations
                 Reservation reservation = new Reservation
                 {
                     AspNetUser = users[i],
-                    AspNetUsersId = users[i].Id,
                     StartDate = checkIn,
                     EndDate = checkOut,
                     RoomType = room
@@ -288,7 +286,6 @@ namespace DataAccessLayer.Migrations
                         BillingPrice = room.BaseRate + rand.Next(0, 100),
                         Date = checkIn.AddDays(j),
                         Reservation = reservation,
-                        ReservationId = reservation.Id
                     });
                 }
 
@@ -308,7 +305,6 @@ namespace DataAccessLayer.Migrations
                 Reservation reservation = new Reservation
                 {
                     AspNetUser = users[i],
-                    AspNetUsersId = users[i].Id,
                     StartDate = checkIn,
                     EndDate = checkOut,
                     CheckInDate = checkIn,
@@ -329,7 +325,6 @@ namespace DataAccessLayer.Migrations
                         BillingPrice = room.BaseRate + rand.Next(0, 100),
                         Date = checkIn.AddDays(j),
                         Reservation = reservation,
-                        ReservationId = reservation.Id
                     });
                 }
 

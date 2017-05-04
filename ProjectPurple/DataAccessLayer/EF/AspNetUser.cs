@@ -2,64 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer.EF
 {
-    public class AspNetUser
+    public class AspNetUser : IdentityUser
     {
-        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AspNetUser()
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AspNetUser> manager)
         {
-            AspNetUserClaims = new HashSet<AspNetUserClaim>();
-            AspNetUserLogins = new HashSet<AspNetUserLogin>();
-            Profile = new Profile();
-            Reservations = new HashSet<Reservation>();
-            AspNetRoles = new HashSet<AspNetRole>();
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            return userIdentity;
         }
 
-        public string Id { get; set; }
-
-        [StringLength(256)]
-        public string Email { get; set; }
-
-        public bool EmailConfirmed { get; set; }
-
-        public string PasswordHash { get; set; }
-
-        public string SecurityStamp { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public bool PhoneNumberConfirmed { get; set; }
-
-        public bool TwoFactorEnabled { get; set; }
-
-        public DateTime? LockoutEndDateUtc { get; set; }
-
-        public bool LockoutEnabled { get; set; }
-
-        public int AccessFailedCount { get; set; }
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
-        public Guid ProfileGuid { get; set; }
 
-        [Required]
-        [StringLength(256)]
-        public string UserName { get; set; }
+        public virtual Profile Profile { get; set; } = new Profile();
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual Profile Profile { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservation> Reservations { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; } = new HashSet<Reservation>();
     }
 }
