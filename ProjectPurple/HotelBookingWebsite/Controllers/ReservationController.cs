@@ -37,6 +37,8 @@ namespace HotelBookingWebsite.Controllers
         {
             Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
+            ViewBag.canCancel = _reservationHandler.CanCanceled(reservation.Id, DateTime.Now);
+
             return View(new ConfirmationViewModel
             {
                 ConfirmationId = reservation.Id.ToString(),
@@ -55,6 +57,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View(model);
             }
+            
             // return redirct to profile url TODO
             return RedirectToAction("Cancel", new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
@@ -263,9 +266,12 @@ namespace HotelBookingWebsite.Controllers
             var guests = _reservationHandler.GetEmptyGuestList(type);
 
             // TOOD check here use extension function
-            var profile = _userHandler.GetProfile(User.Identity.Name);
-            guests[0].FirstName = profile.FirstName;
-            guests[1].LastName = profile.LastName;
+            if (User.Identity.IsAuthenticated)
+            {
+                var profile = _userHandler.GetProfile(User.Identity.Name);
+                guests[0].FirstName = profile.FirstName;
+                guests[1].LastName = profile.LastName;
+            }
 
             return View(new InputGuestViewModel
             {
