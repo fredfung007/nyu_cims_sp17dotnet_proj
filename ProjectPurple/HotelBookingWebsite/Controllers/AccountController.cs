@@ -159,6 +159,7 @@ namespace HotelBookingWebsite.Controllers
                     .AddZipcode(model.PostalCode)
                     .Build();
                 var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddPreferredRoomType(model.PreferredRoomType)
                     .AddAddress(address)
                     .AddEmail(model.Email)
                     .AddName(model.FirstName, model.LastName)
@@ -218,6 +219,7 @@ namespace HotelBookingWebsite.Controllers
                     .AddZipcode(model.PostalCode)
                     .Build();
                 var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddPreferredRoomType(model.PreferredRoomType)
                     .AddAddress(address)
                     .AddEmail(model.Email)
                     .AddName(model.FirstName, model.LastName)
