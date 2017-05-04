@@ -179,6 +179,7 @@ namespace HotelBookingWebsite.Controllers
                     result = UserManager.AddToRole(user.Id, "Standard");
                 }
                 if (result.Succeeded)
+                { 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     return RedirectToLocal(returnUrl);
                 }
