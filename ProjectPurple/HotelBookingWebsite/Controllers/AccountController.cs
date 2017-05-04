@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using BusinessLogic.Helpers;
 using DataAccessLayer.Constructor;
 using DataAccessLayer.EF;
@@ -10,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HotelBookingWebsite.Models;
+using Newtonsoft.Json.Linq;
 
 namespace HotelBookingWebsite.Controllers
 {
@@ -63,7 +66,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View(model);
             }
-            
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result =
@@ -76,7 +79,7 @@ namespace HotelBookingWebsite.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -94,7 +97,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
+            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -150,7 +153,18 @@ namespace HotelBookingWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            var response = Request["g-recaptcha-response"];
+            string secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
+            var client = new WebClient();
+            var recap = client.DownloadString(string.Format(
+                "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            var obj = JObject.Parse(recap);
+            var status = (bool)obj.SelectToken("success");
+            if (!status)
+            {
+                ViewBag.Message = "Google reCaptcha validation failed";
+            }
+            else if (ModelState.IsValid)
             {
                 var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
                     .AddSecondLine(model.Address2)
@@ -159,6 +173,7 @@ namespace HotelBookingWebsite.Controllers
                     .AddZipcode(model.PostalCode)
                     .Build();
                 var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddPreferredRoomType(model.PreferredRoomType)
                     .AddAddress(address)
                     .AddEmail(model.Email)
                     .AddName(model.FirstName, model.LastName)
@@ -179,8 +194,71 @@ namespace HotelBookingWebsite.Controllers
                     result = UserManager.AddToRole(user.Id, "Standard");
                 }
                 if (result.Succeeded)
-                { 
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterStaff(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterStaff(RegisterViewModel model, string returnUrl)
+        {
+            var response = Request["g-recaptcha-response"];
+            string secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
+            var client = new WebClient();
+            var recap = client.DownloadString(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={response}");
+            var obj = JObject.Parse(recap);
+            var status = (bool)obj.SelectToken("success");
+            if (!status)
+            {
+                ViewBag.Message = "Google reCaptcha validation failed";
+            }
+            else if (ModelState.IsValid)
+            {
+                var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
+                    .AddSecondLine(model.Address2)
+                    .AddCity(model.City)
+                    .AddState(StateConverter.GetStateByName(model.State))
+                    .AddZipcode(model.PostalCode)
+                    .Build();
+                var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddPreferredRoomType(model.PreferredRoomType)
+                    .AddAddress(address)
+                    .AddEmail(model.Email)
+                    .AddName(model.FirstName, model.LastName)
+                    .AddPhoneNumber(model.PhoneNumber)
+                    .Build();
+                var user = new AspNetUser
+                {
+                    Profile = profile,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LoyaltyYear = DateTime.Now,
+                    LoyaltyProgress = 0
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    user = UserManager.FindByName(model.Email);
+                    result = UserManager.AddToRole(user.Id, "Admin");
+                }
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -326,7 +404,7 @@ namespace HotelBookingWebsite.Controllers
         {
             // Request a redirect to the external login provider
             return new ChallengeResult(provider,
-                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
+                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -340,7 +418,7 @@ namespace HotelBookingWebsite.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose})
+            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose })
                 .ToList();
             return View(new SendCodeViewModel
             {
@@ -368,7 +446,7 @@ namespace HotelBookingWebsite.Controllers
                 return View("Error");
             }
             return RedirectToAction("VerifyCode",
-                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe});
+                new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
         //
@@ -391,14 +469,14 @@ namespace HotelBookingWebsite.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation",
-                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
+                        new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
@@ -423,7 +501,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new AspNetUser {UserName = model.Email, Email = model.Email};
+                var user = new AspNetUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -526,7 +604,7 @@ namespace HotelBookingWebsite.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;

@@ -1,4 +1,5 @@
 ﻿using System;
+using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Constructor
@@ -35,6 +36,12 @@ namespace DataAccessLayer.Constructor
         public ProfileConstructor AddPhoneNumber(string phoneNumber)
         {
             _profile.PhoneNumber = phoneNumber;
+            return this;
+        }
+
+        public ProfileConstructor AddPreferredRoomType(ROOM_TYPE roomType)
+        {
+            _profile.PreferredRoomType = roomType;
             return this;
         }
 
