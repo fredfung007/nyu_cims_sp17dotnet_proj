@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer.EF
 {
-    public class AspNetUser : IdentityUser
+    public sealed class AspNetUser : IdentityUser
     {
         public AspNetUser()
         {
@@ -28,8 +28,8 @@ namespace DataAccessLayer.EF
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
 
-        public virtual Profile Profile { get; set; }
+        public Profile Profile { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

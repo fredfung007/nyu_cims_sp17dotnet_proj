@@ -13,12 +13,13 @@ namespace DataAccessLayer.EF
 
         public string SecondLine { get; set; }
 
+        [Required]
+        public string City { get; set; }
+
+        [Required]
         public US_STATE State { get; set; }
 
         [Required]
         public string ZipCode { get; set; }
-
-        [Required]
-        public string City { get; set; }
     }
 }
