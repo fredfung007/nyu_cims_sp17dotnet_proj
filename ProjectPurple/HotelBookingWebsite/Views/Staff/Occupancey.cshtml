@@ -1,0 +1,31 @@
+﻿@model IEnumerable<HotelBookingWebsite.Models.OccupanceyModel>
+
+<table class="table">
+    <tr>
+        <th>
+            Room Type
+        </th>
+        <th>
+            Total Amount 
+        </th>
+        <th>
+            Number of Rooms Occupied
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.inventory)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.occupancey)
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DataAccessLayer.EF
@@ -22,16 +21,16 @@ namespace DataAccessLayer.EF
 
         public bool IsPaid { get; set; }
 
+        public bool IsCancelled { get; set; }
+
         public DateTime? CheckInDate { get; set; }
 
         public DateTime? CheckOutDate { get; set; }
 
         public virtual AspNetUser AspNetUser { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DailyPrice> DailyPrices { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Guest> Guests { get; set; }
 
         public virtual Profile Profile { get; set; }
