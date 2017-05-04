@@ -1,0 +1,88 @@
+﻿@model HotelBookingWebsite.Models.CreateReservationViewModel
+
+@{
+    ViewBag.Title = "Please confirm the reservation and make a payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*TODO check this*@
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4> Room Price for @Model.TypeName from @Model.StartDate.Date.ToString("MM/dd/yyyy") to @{Model.EndDate.Date.ToString("MM/dd/yyyy") +" (2:00 pm)"}</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Date</dt>
+        <dd>Price</dd>
+        @{var sum = 0;}
+        @{var priceList = Model.PriceList; }
+        @{DateTime showDate = Model.StartDate;}
+        @for (int i = 0; i < priceList.Count; i++)
+        {
+            <dt>@showDate.Date.ToString("MM/dd/yyyy")</dt>
+            <dd>@Html.DisplayFor(model => priceList[i])</dd>
+            sum += priceList[i];
+            showDate = showDate.AddDays(1);
+        }
+    </dl>
+    <hr />
+    <h4>Summary of charges: @sum</h4>
+    
+</div>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Expiration)
+    @Html.HiddenFor(model => model.SessionId)
+
+    <div class="form-horizontal">
+        <h4>Payment Information</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("Card Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Billing Addres", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input autocomplete='off' class='form-control' size='20' type='text'>
+            </div>
+        </div>
+
+        <div class="form-group">
+           @Html.Label("CVC", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Expiration", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+            </div>
+        </div>
+
+        <div class="form-horizontal">
+            <input type="submit" value="Pay" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

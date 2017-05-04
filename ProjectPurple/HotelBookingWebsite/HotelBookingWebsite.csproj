@@ -170,11 +170,12 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ModelSateHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ReservationViewModels.cs" />
     <Compile Include="Models\StaffViewModels.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\createview.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -252,17 +254,30 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Reservation\Index.cshtml" />
+    <Content Include="Views\Reservation\Show.cshtml" />
+    <Content Include="Views\Reservation\Pay.cshtml" />
+    <Content Include="Views\Reservation\Cancel.cshtml" />
     <Content Include="Views\Reservation\Search.cshtml" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="Views\Reservation\InputUser.cshtml" />
+    <Content Include="Views\Reservation\Confirm.cshtml" />
+    <Content Include="Views\Reservation\Result.cshtml" />
+    <Content Include="Views\Reservation\Create.cshtml" />
+    <Content Include="Views\Reservation\NotAvailable.cshtml" />
+    <Content Include="Views\Reservation\Expired.cshtml" />
+    <Content Include="Views\Reservation\Error.cshtml" />
     <Content Include="Views\Staff\ViewCheckoutList.cshtml" />
     <Content Include="Views\Staff\ViewCheckInList.cshtml" />
     <Content Include="Views\Staff\Occupancey.cshtml" />
     <Content Include="Views\Staff\ViewCheckoutListAll.cshtml" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="Views\Profile\UpcommingReservations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Profile\" />
+    <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

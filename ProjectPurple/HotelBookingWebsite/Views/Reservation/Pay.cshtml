@@ -1,0 +1,26 @@
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
+
+@{
+    ViewBag.Title = "Pay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Pay</h2>
+
+<div>
+    <h4>ReservationViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ConfirmationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConfirmationId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

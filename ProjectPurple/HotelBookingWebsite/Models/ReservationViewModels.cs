@@ -4,20 +4,95 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using BusinessLogic.Type;
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelBookingWebsite.Models
 {
-    public class AvailableRoomViewModel
+    public class SearchInputModel
     {
-        public DateTime Expiration { get; set; }
-        public string SessionId { get; set; }
-        public IList<RoomSearchResult> RoomSearchResults { get; set; }
+        [Required(ErrorMessage = "Please select a start date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [Required(ErrorMessage = "Please select an end date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime EndDate { get; set; }
     }
 
-    public class RoomSearchResult
+    public class RoomSearchResultModel : TimeExpirationType
     {
+        //public DateTime StartDate { get; set; }
+        //public DateTime EndDate { get; set; }
+        public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
+        public int SelectedIndex { get; set; }
+        public List<Guest> Guests { get; set; }
+        public Guid ReservationId { get; set; }
+    }
+
+    public class ConfirmationViewModel
+    {
+        public string ConfirmationId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Type { get; set; }
+        public string Ameneties { get; set; }
+        public List<Guest> Guests { get; set; }
+        public Guid ReservationId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
+        public List<int> PriceList { get; set; }
+    }
+
+    public class ResultViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public DateTime Expiration { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string SessionId { get; set; }
+        public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
+
+        [Required(ErrorMessage = "Please select a room type")]
+        public int SelectedIndex { get; set; }
+    }
+
+    public class InputGuestViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public DateTime Expiration { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string SessionId { get; set; }
+        public List<Guest> Guests { get; set; }
+    }
+
+    public class CreateReservationViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public DateTime Expiration { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string SessionId { get; set; }
+
+        public bool IsRoomAvailable { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public IList<int> PriceList { get; set; }
+        public string TypeName { get; set; }
+    }
+
+    //public class RoomSearchResult
+    //{
+    //    public Guid ResultId { get; set; }
+    //    public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
+    //}
+
+    public class RoomPriceDetail
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public IList<int> PriceList { get; set; }
         public string Name { get; set; }
         public ROOM_TYPE Type { get; set; }
@@ -27,19 +102,21 @@ namespace HotelBookingWebsite.Models
         public string PictureUlrs { get; set; }
     }
 
-    public class ConfirmRoomViewModel
-    {
-        public DateTime Expiration { get; set; }
-        public string SessionId { get; set; }
-        public RoomSearchResult RoomSearchResult { get; set; }
-        public List<Guest> Guests { get; set; }
-        public Guid ReservationId { get; set; }
-    }
-
     // TODO
-    public class ReservationViewModel
-    {
-        public Guid ConfirmationId { get; set; }
+    //public class ReservationViewModel
+    //{
+    //    public Guid ConfirmationId { get; set; }
+    //    public DateTime Start { get; set; }
+    //    public DateTime End { get; set; }
+    //    public DateTime CheckIn { get; set; }
+    //    public DateTime CheckOut { get; set; }
+    //    public List<Guest> Guests { get; set; }
+    //    public string RoomUrl { get; set; }
+    //    public List<int> PriceList { get; set; }
+    //    public string Type { get; set; }
+    //    public bool Cancel { get; set; }
+    //    Profile BillInfo { get; set; }
+    //}
 
-    }
+
 }
