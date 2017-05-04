@@ -6,6 +6,7 @@ using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
+using BusinessLogic.Type;
 
 namespace BusinessLogic.Handlers
 {
@@ -14,6 +15,8 @@ namespace BusinessLogic.Handlers
     /// </summary>
     public class ReservationHandler
     {
+        public static Dictionary<string, TimeExpirationType> SearchResultPool = new Dictionary<string, TimeExpirationType>();
+        
         private readonly IReservationRepository _reservationRepository;
         private readonly IRoomRepository _roomRepository;
         //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
@@ -80,25 +83,26 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <returns>true if successfully cancelled</returns>
-        public void CancelReservation(Guid confirmationNumber, DateTime today)
+        public bool CancelReservation(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             // refuse to cancel if checkin
             if (reservation.CheckInDate != null && reservation.CheckInDate < today)
             {
-                return;
+                return false;
             }
 
             // refuse to cancel if the date is before the present date 
             // TODO EXPRESSION IS ALWAYS TRUE.
             if (reservation.StartDate != null && reservation.StartDate < today)
             {
-                return;
+                return false;
             }
 
             _reservationRepository.DeleteReservation(confirmationNumber);
             _reservationRepository.Save();
+            return true;
         }
 
         public bool HasReservation(Guid confirmationNumber)
@@ -124,6 +128,19 @@ namespace BusinessLogic.Handlers
         public bool FillGuestInfo(Reservation reservation, List<Guest> customers)
         {
             return false;
+        }
+
+        public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
+        {
+            var guests = new List<Guest>();
+            int guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
+            
+            for (int i = 0; i < guestMaxCount; i++)
+            {
+                guests.Add(new Guest() { Id = Guid.NewGuid() });
+            }
+
+            return guests;
         }
 
         /// <summary>

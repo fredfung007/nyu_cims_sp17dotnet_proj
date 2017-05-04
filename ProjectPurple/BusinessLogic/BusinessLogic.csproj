@@ -53,11 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\DateTimeHandler.cs" />
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
+    <Compile Include="Interface\TimeExpirationtModel.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\ReservationHandler.cs" />
   </ItemGroup>
