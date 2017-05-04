@@ -10,8 +10,6 @@ namespace DataAccessLayer.EF
 
         public DateTime Date { get; set; }
 
-        public Guid ReservationId { get; set; }
-
         public virtual Reservation Reservation { get; set; }
     }
 }

@@ -1,12 +1,11 @@
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer.EF
 {
     public class HotelModelContext : IdentityDbContext
     {
-#if DEBUG2
+#if DEBUG
         private static string name = "name=HotelModelContext";
 #else
         private static string name = "name=ProductionConnection";
@@ -49,8 +48,7 @@ namespace DataAccessLayer.EF
 
             modelBuilder.Entity<AspNetUser>()
                 .HasMany(e => e.Reservations)
-                .WithOptional(e => e.AspNetUser)
-                .HasForeignKey(e => e.AspNetUsersId);
+                .WithOptional(e => e.AspNetUser);
 
             modelBuilder.Entity<AspNetUser>()
                 .HasRequired(e => e.Profile);
@@ -58,19 +56,11 @@ namespace DataAccessLayer.EF
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.Reservations)
                 .WithRequired(e => e.Profile)
-                .HasForeignKey(e => e.BillingInfo)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Reservation>()
                 .HasMany(e => e.DailyPrices)
                 .WithRequired(e => e.Reservation)
-                .HasForeignKey(e => e.ReservationId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<RoomType>()
-                .HasMany(e => e.RoomOccupancies)
-                .WithRequired(e => e.RoomType)
-                .HasForeignKey(e => e.RoomTypeId)
                 .WillCascadeOnDelete(false);
         }
     }

@@ -10,8 +10,6 @@ namespace DataAccessLayer.EF
 
         public int Occupancy { get; set; }
 
-        public Guid RoomTypeId { get; set; }
-
         public virtual RoomType RoomType { get; set; }
     }
 }
