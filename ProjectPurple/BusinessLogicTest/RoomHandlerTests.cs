@@ -10,7 +10,7 @@ using Moq;
 
 namespace BusinessLogicTest
 {
-    [TestClass()]
+    [TestClass]
     public class RoomHandlerTests
     {
         private const int _LEN = 5;
@@ -38,7 +38,6 @@ namespace BusinessLogicTest
                 Description = "desc",
                 ImageUrl = "imgUrl",
                 Inventory = _INV,
-                RoomOccupancies = new List<RoomOccupancy>(),
                 Type = _TYPE
             };
             _mockRoomRepo.Setup(m => m.GetRoomTypes()).Returns(new List<RoomType> { _room });
@@ -60,7 +59,7 @@ namespace BusinessLogicTest
             // generate the handler
             var roomRepo = _mockRoomRepo.Object;
             var reservationRepo = _mockReservationRepo.Object;
-            _handler = new RoomHandler(roomRepo, reservationRepo);
+            _handler = new RoomHandler(roomRepo);
         }
 
         /// <summary>

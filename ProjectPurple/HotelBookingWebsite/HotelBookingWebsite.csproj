@@ -176,6 +176,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ReservationViewModels.cs" />
+    <Compile Include="Models\StaffViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -251,12 +252,17 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Reservation\Search.cshtml" />
+    <Content Include="Views\Staff\ViewCheckoutList.cshtml" />
+    <Content Include="Views\Staff\ViewCheckInList.cshtml" />
+    <Content Include="Views\Staff\Occupancey.cshtml" />
+    <Content Include="Views\Staff\ViewCheckoutListAll.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Views\Profile\UpcommingReservations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Profile\" />
     <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>

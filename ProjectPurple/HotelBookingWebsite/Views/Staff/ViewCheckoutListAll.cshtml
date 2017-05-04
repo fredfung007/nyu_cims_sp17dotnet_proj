@@ -1,0 +1,50 @@
+﻿@model IEnumerable<HotelBookingWebsite.Models.CheckOutListModel>
+
+<table class="table">
+    <tr>
+        <th>
+            E-Mail
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Expected Check-In Date
+        </th>
+        <th>
+            Expected Check-Out Date
+        </th>
+        <th>
+            Actual Check-In Date
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.checkInDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.checkOutDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualCheckInDate)
+        </td>
+        @* TODO: add check out button *@
+    </tr>
+}
+
+</table>

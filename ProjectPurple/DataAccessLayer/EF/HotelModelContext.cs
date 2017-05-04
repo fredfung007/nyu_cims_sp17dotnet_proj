@@ -55,7 +55,7 @@ namespace DataAccessLayer.EF
 
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.Reservations)
-                .WithRequired(e => e.Profile)
+                .WithOptional(e => e.Profile)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Reservation>()
