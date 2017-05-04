@@ -55,7 +55,6 @@
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
-    <Compile Include="Helpers\TestDataGenerator.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
