@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLayer;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
@@ -26,7 +25,7 @@ namespace BusinessLogic.Handlers
             // username should come from cookies
             //var username = "";
             _reservationRepository = new ReservationRepository(new HotelModelContext());
-            //_userReservationQueryHandler = new UserReservationQueryHandler(username);
+            //_userReservationQueryHandler = new AspNetUserHandler(username);
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace BusinessLogic.Handlers
         /// <returns>TODO RETURNS</returns>
         public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests, List<int> prices)
         {
-            IUserReservationQueryHandler userReservationQueryHandler = new UserReservationQueryHandler(username);
+            IUserReservationQueryHandler userReservationQueryHandler = new AspNetUserHandler(username);
             Reservation reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
