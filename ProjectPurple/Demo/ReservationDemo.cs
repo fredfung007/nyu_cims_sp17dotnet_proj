@@ -8,12 +8,12 @@ namespace Demo
 {
     class ReservationDemo
     {
-        static void Main(string[] args)
-        {
-            ReservationDemo demo = new ReservationDemo();
-            Console.WriteLine(demo.QueryAvailableRooms(new RoomHandler(), DateTime.Today, DateTime.Today.AddDays(5)));
-            Console.ReadKey();
-        }
+        //static void Main(string[] args)
+        //{
+        //    ReservationDemo demo = new ReservationDemo();
+        //    Console.WriteLine(demo.QueryAvailableRooms(new RoomHandler(), DateTime.Today, DateTime.Today.AddDays(5)));
+        //    Console.ReadKey();
+        //}
 
         private string QueryAvailableRooms(RoomHandler roomHandler, DateTime checkIn, DateTime checkOut)
         {

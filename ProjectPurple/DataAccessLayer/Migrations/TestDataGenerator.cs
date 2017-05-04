@@ -1,19 +1,15 @@
-﻿using BusinessLogic.Handlers;
-using DataAccessLayer.Constants;
+﻿using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 
-namespace BusinessLogic.Helpers
+namespace DataAccessLayer.Migrations
 {
     public class TestDataGenerator
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IRoomRepository _roomRepository;
-        private RoomHandler _roomHandler;
-        private ReservationHandler _reservationHandler;
-        private RoomType room;
         private List<string> firstnames;
         private List<string> lastnames;
 
@@ -21,16 +17,6 @@ namespace BusinessLogic.Helpers
         {
             _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
             _roomRepository = new RoomRepository(new CodeFirstHotelModel());
-            _reservationHandler = new ReservationHandler();
-            _roomHandler = new RoomHandler();
-
-            room = new RoomType
-            {
-                Id = Guid.NewGuid(),
-                BaseRate = 300,
-                Type = ROOM_TYPE.QueenRoom,
-                Inventory = 30
-            };
 
             firstnames = new List<string>
             {
@@ -263,10 +249,7 @@ namespace BusinessLogic.Helpers
                 {
                     Id = Guid.NewGuid().ToString(),
                     Profile = profile,
-                    Email = profile.Email,
-                    ProfileGuid = profile.Id,
-                    LoyaltyProgress = 0,
-                    LoyaltyYear = DateTime.Now
+                    ProfileGuid = profile.Id
                 };
 
                 profiles.Add(profile);
@@ -275,7 +258,7 @@ namespace BusinessLogic.Helpers
             return new Tuple<List<AspNetUser>, List<Profile>>(users, profiles);
         }
 
-        public List<Reservation> GenerateReservationsWithCheckInDate(List<AspNetUser> users, DateTime checkIn, bool checkedIn)
+        public List<Reservation> GenerateReservationsWithCheckInDate(RoomType room, List<AspNetUser> users, DateTime checkIn, bool checkedIn)
         {
             Random rand = new Random();
             List<Reservation> reservations = new List<Reservation>();
@@ -315,7 +298,7 @@ namespace BusinessLogic.Helpers
             return reservations;
         }
 
-        public List<Reservation> GenerateReservationsWithCheckOutDate(List<AspNetUser> users, DateTime checkOut, bool checkedOut)
+        public List<Reservation> GenerateReservationsWithCheckOutDate(RoomType room, List<AspNetUser> users, DateTime checkOut, bool checkedOut)
         {
             Random rand = new Random();
             List<Reservation> reservations = new List<Reservation>();
