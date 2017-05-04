@@ -6,9 +6,9 @@ namespace DataAccessLayer.Repositories
 {
     internal class UserRepository : IUserRepository, IDisposable
     {
-        private readonly CodeFirstHotelModel _context;
+        private readonly HotelModelContext _context;
 
-        public UserRepository(CodeFirstHotelModel context)
+        public UserRepository(HotelModelContext context)
         {
             _context = context;
         }

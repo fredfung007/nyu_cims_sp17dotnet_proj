@@ -8,9 +8,9 @@ namespace DataAccessLayer.Repositories
 {
     public class RoomRepository : IRoomRepository, IDisposable
     {
-        private readonly CodeFirstHotelModel _context;
+        private readonly HotelModelContext _context;
 
-        public RoomRepository(CodeFirstHotelModel context)
+        public RoomRepository(HotelModelContext context)
         {
             _context = context;
         }

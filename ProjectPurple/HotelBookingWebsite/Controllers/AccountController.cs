@@ -5,6 +5,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BusinessLogic.Helpers;
+using DataAccessLayer.Constructor;
+using DataAccessLayer.EF;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -160,7 +163,19 @@ namespace HotelBookingWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
+                    .AddSecondLine(model.Address2)
+                    .AddCity(model.City)
+                    .AddState(StateConverter.GetStateByName(model.State))
+                    .AddZipcode(model.PostalCode)
+                    .Build();
+                var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddAddress(address)
+                    .AddEmail(model.Email)
+                    .AddName(model.FirstName, model.LastName)
+                    .AddPhoneNumber(model.PhoneNumber)
+                    .Build();
+                var user = new AspNetUser { Profile = profile, UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -406,7 +421,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new AspNetUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -13,7 +13,7 @@ namespace BusinessLogic.Handlers
         private readonly IProfileRepository _profileRepository;
         public ProfileHandler()
         {
-            _profileRepository = new ProfileRepository(new CodeFirstHotelModel());
+            _profileRepository = new ProfileRepository(new HotelModelContext());
         }
 
         public ProfileHandler(IProfileRepository profileRepository)

@@ -22,7 +22,7 @@ namespace BusinessLogic.Handlers
         {
             // username should come from cookies
             //var username = "";
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
             //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
@@ -109,7 +109,8 @@ namespace BusinessLogic.Handlers
 
         public List<Reservation> GetUpComingReservations(AspNetUser user)
         {
-            return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
+            throw new NotImplementedException();
+            // return new List<Reservation>(_reservationRepository.GetReservationsByUserId(user.UserName));
         }
 
         [Obsolete]

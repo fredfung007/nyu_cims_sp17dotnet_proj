@@ -9,9 +9,9 @@ namespace DataAccessLayer.Repositories
     // TODO using async
     public class ReservationRepository : IReservationRepository, IDisposable
     {
-        private readonly CodeFirstHotelModel _context;
+        private readonly HotelModelContext _context;
 
-        public ReservationRepository(CodeFirstHotelModel context)
+        public ReservationRepository(HotelModelContext context)
         {
             _context = context;
         }
