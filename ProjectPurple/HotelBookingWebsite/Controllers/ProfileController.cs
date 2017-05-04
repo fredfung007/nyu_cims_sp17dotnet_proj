@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BusinessLogic.Handlers;
+using DataAccessLayer.EF;
+using HotelBookingWebsite.Models;
+using Microsoft.AspNet.Identity;
 
 namespace HotelBookingWebsite.Controllers
 {
@@ -22,13 +26,21 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> UpcommingReservations(Guid UserId)
+        public async Task<ActionResult> UpcommingReservations()
         {
-            return View();
+            var upComingReservations =
+                await new ReservationHandler().GetUpComingReservations(User.Identity.GetUserId());
+
+            var reservationViewModels = upComingReservations.Select(reservation => new ReservationViewModel
+                {
+                    ConfirmationId = reservation.Id
+                })
+                .ToList();
+            return View(reservationViewModels);
         }
 
         [HttpGet]
-        public async Task<ActionResult> LoyaltyProgram(Guid UserId)
+        public async Task<ActionResult> LoyaltyProgram()
         {
             return View();
         }
