@@ -33,9 +33,16 @@ namespace HotelBookingWebsite.Models
 
     public class ConfirmationViewModel
     {
-        public RoomPriceDetail RoomPriceDetail { get; set; }
+        public string ConfirmationId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Type { get; set; }
+        public string Ameneties { get; set; }
         public List<Guest> Guests { get; set; }
         public Guid ReservationId { get; set; }
+        public DateTime CheckIn { get; set; }
+        public DateTime CheckOut { get; set; }
+        public List<int> PriceList { get; set; }
     }
 
     public class ResultViewModel
@@ -96,19 +103,20 @@ namespace HotelBookingWebsite.Models
     }
 
     // TODO
-    public class ReservationViewModel
-    {
-        public Guid ConfirmationId { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-        public DateTime CheckIn { get; set; }
-        public DateTime CheckOut { get; set; }
-        public List<Guest> Guests { get; set; }
-        public string RoomUrl { get; set; }
-        public List<int> PriceList { get; set; }
-        public bool Cancel { get; set; }
-        Profile BillInfo { get; set; }
-    }
+    //public class ReservationViewModel
+    //{
+    //    public Guid ConfirmationId { get; set; }
+    //    public DateTime Start { get; set; }
+    //    public DateTime End { get; set; }
+    //    public DateTime CheckIn { get; set; }
+    //    public DateTime CheckOut { get; set; }
+    //    public List<Guest> Guests { get; set; }
+    //    public string RoomUrl { get; set; }
+    //    public List<int> PriceList { get; set; }
+    //    public string Type { get; set; }
+    //    public bool Cancel { get; set; }
+    //    Profile BillInfo { get; set; }
+    //}
 
 
 }

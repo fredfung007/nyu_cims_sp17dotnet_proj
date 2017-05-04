@@ -31,52 +31,86 @@ namespace HotelBookingWebsite.Controllers
             return View();
         }
 
-        public ActionResult Show(Guid ConfirmationId)
+        public ActionResult Show(string ConfirmationId)
         {
-            Reservation reservation = _reservationHandler.GetReservation(ConfirmationId);
+            Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
-            return View(new ReservationViewModel
+            return View(new ConfirmationViewModel
             {
-                ConfirmationId = reservation.Id,
+                ConfirmationId = reservation.Id.ToString(),
+                StartDate = reservation.StartDate,
+                EndDate = reservation.EndDate,
+                Guests = reservation.Guests.ToList(),
+                Type = reservation.RoomType.Type.ToString(),
+                Ameneties = reservation.RoomType.Ameneties,
             });
         }
 
         [HttpPost]
-        public ActionResult Show(ReservationViewModel model)
+        public ActionResult Show(ConfirmationViewModel model)
         {
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            // return redirct to profile url TODO
+            return RedirectToAction("Cancel", new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
 
         public async Task<ActionResult> Pay(Guid ConfirmationId, Profile billInfo)
         {
+            // TODO guid or string
             _reservationHandler.PayReservation(ConfirmationId, billInfo);
 
-            return View(new ReservationViewModel
+            return View(new ConfirmationViewModel
             {
-                ConfirmationId = ConfirmationId,
+                ConfirmationId = ConfirmationId.ToString(),
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Pay(ReservationViewModel model)
+        public async Task<ActionResult> Pay(ConfirmationViewModel model)
         {
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Cancel(ReservationViewModel model)
+        public async Task<ActionResult> Cancel(ConfirmationViewModel model, string returnUrl)
         {
-            _reservationHandler.CancelReservation(model.ConfirmationId, DateTime.Now);
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTime.Now);
+            ViewBag.ReturnUrl = returnUrl;
+
+            if (!success)
+            {
+                ViewBag.Error = true;
+                return View(model);
+            }
+            // Redirect to profile url TODO
+            //return RedirectToAction("Index", "Home");
+            return RedirectToLocal(returnUrl);
         }
 
-        public async Task<ActionResult> Cancel(Guid ConfirmationId)
+        private ActionResult RedirectToLocal(string returnUrl)
         {
-            return View(new ReservationViewModel
+            if (Url.IsLocalUrl(returnUrl))
             {
-                ConfirmationId = ConfirmationId,
-            });
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
+
+        //public async Task<ActionResult> Cancel(Guid ConfirmationId)
+        //{
+        //    return View(new ReservationViewModel
+        //    {
+        //        ConfirmationId = ConfirmationId,
+        //    });
+        //}
 
         //public ActionResult Search(DateTime? startDate, DateTime? endDate)
         //{
@@ -337,22 +371,43 @@ namespace HotelBookingWebsite.Controllers
             }
 
             // comment for debug
-
+            Guid reservationId = Guid.NewGuid();
             //(ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).ReservationId = _reservationHandler.MakeReservation(userName,
             //    roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate, model.Guests, roomInfo.PriceList.ToList());
 
-            return RedirectToAction("Confirm", new { SessionId = model.SessionId });
+            // TODO delete here? 
+            ReservationHandler.SearchResultPool.Remove(model.SessionId);
+
+            return RedirectToAction("Confirm", new { ConfirmationId = reservationId.ToString() });
         }
 
-        public async Task<ActionResult> Confirm(string SessionId)
+        public ActionResult Error(string errorMsg)
         {
-            RoomSearchResultModel model = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
-            ReservationHandler.SearchResultPool.Remove(model.SessionId);
+            return View(errorMsg);
+        }
+
+        public async Task<ActionResult> Confirm(string ConfirmationId)
+        {
+            Reservation rsv = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
+
+            //invalid confirmation Number
+            if (rsv == null)
+            {
+                return RedirectToAction("Error", new { errorMsg = "Wrong confirmation number"});
+            }
+            // TODO extension functions
+            var priceList = rsv.DailyPrices.Select(x => x.BillingPrice).ToList();
+            
             return View(new ConfirmationViewModel
             {
-                RoomPriceDetail = model.RoomPriceDetails[model.SelectedIndex],
-                Guests = model.Guests,
-                ReservationId = model.ReservationId,
+                ConfirmationId = ConfirmationId,
+                StartDate = rsv.StartDate,
+                EndDate = rsv.EndDate,
+                Guests = rsv.Guests.ToList(),
+                ReservationId = rsv.Id,
+                Type = rsv.RoomType.Type.ToString(),
+                Ameneties = rsv.RoomType.Ameneties,
+                PriceList = priceList,
             });
         }
     }

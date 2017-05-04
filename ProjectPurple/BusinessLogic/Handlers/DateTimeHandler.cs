@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Handlers
 {
-    public class DateTimeHandler
+    public static class DateTimeHandler
     {
         private static DateTime _currentTime = new DateTime();
 

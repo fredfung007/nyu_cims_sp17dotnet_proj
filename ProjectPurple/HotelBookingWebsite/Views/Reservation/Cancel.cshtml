@@ -1,11 +1,11 @@
-﻿@model HotelBookingWebsite.Models.ReservationViewModel
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
 
 @{
-    ViewBag.Title = "Cancel";
+    ViewBag.Title = "Your Reservation is Canceled";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Cancel</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
     <h4>ReservationViewModel</h4>
@@ -14,13 +14,30 @@
         <dt>
             @Html.DisplayNameFor(model => model.ConfirmationId)
         </dt>
+        @if (ViewBag.Error)
+        {
+            <dd>
+                @Html.DisplayFor(model => model.ConfirmationId + " is canceled")
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ConfirmationId)
-        </dd>
-
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(model => model.ConfirmationId + " cannot be canceled")
+            </dd>
+        }
+        
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @if (ViewBag.ReturnUrl != null)
+    {
+        <a href="@ViewBag.ReturnUrl">Return</a>
+    }
+    else
+    {
+        @Html.ActionLink("Return", "Index")
+    }
+
 </p>

@@ -1,26 +1,75 @@
-﻿@model HotelBookingWebsite.Models.ReservationViewModel
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
 
 @{
-    ViewBag.Title = "Show";
+    ViewBag.Title = "Your Reservation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Show</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>ReservationViewModel</h4>
+    <h4>You reservation</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ConfirmationId)
+            @Html.Display("Check-in:")
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.ConfirmationId)
+            @Html.Display(@Model.StartDate.Date.ToString("MM/dd/yyyy"))
         </dd>
 
+        <dt>
+            @Html.Display("Check-out:")
+        </dt>
+        <dd>
+            @Html.Display(@Model.EndDate.Date.ToString("MM/dd/yyyy") + " (2:00 pm)")
+        </dd>
+
+        <dt>
+            @Html.Display("Number of Rooms:")
+        </dt>
+        <dd>
+            @Html.Display("1");
+        </dd>
+
+        <dt>
+            @Html.Display("Total:")
+        </dt>
+        <dd>
+            @Html.Display("$" + Model.PriceList.Sum().ToString() + ".00")
+        </dd>
+
+        <dt>
+            @Html.Display("Confirmation Number:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReservationId)
+        </dd>
+
+        <dt>
+            @Html.Display("Room Type:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.Display("Amenities:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ameneties)
+        </dd>
     </dl>
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Cancel" class="btn btn-default" />
+            </div>
+        </div>
+    }
 </div>
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

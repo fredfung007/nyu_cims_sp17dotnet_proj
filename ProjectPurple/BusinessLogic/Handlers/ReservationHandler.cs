@@ -80,31 +80,31 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <returns>true if successfully cancelled</returns>
-        public void CancelReservation(Guid confirmationNumber, DateTime today)
+        public bool CancelReservation(Guid confirmationNumber, DateTime today)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             // refuse to cancel if checkin
             if (reservation.CheckInDate != null && reservation.CheckInDate < today)
             {
-                return;
+                return false;
             }
 
             // refuse to cancel if the date is before the present date 
             // TODO EXPRESSION IS ALWAYS TRUE.
             if (reservation.StartDate != null && reservation.StartDate < today)
             {
-                return;
+                return false;
             }
 
             _reservationRepository.DeleteReservation(confirmationNumber);
             _reservationRepository.Save();
+            return true;
         }
 
-        [Obsolete]
         public Reservation GetReservation(Guid confirmationNumber)
         {
-            return null;
+            return _reservationRepository.GetReservation(confirmationNumber);
         }
 
         public List<Reservation> GetUpComingReservations(AspNetUser user)
