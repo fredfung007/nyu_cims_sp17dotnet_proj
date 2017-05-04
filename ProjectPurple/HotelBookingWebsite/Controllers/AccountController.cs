@@ -189,6 +189,65 @@ namespace HotelBookingWebsite.Controllers
             return View(model);
         }
 
+        //
+        // GET: /Account/Register
+        //[AllowAnonymous]
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
+
+        [AllowAnonymous]
+        public ActionResult RegisterStaff(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterStaff(RegisterViewModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
+                    .AddSecondLine(model.Address2)
+                    .AddCity(model.City)
+                    .AddState(StateConverter.GetStateByName(model.State))
+                    .AddZipcode(model.PostalCode)
+                    .Build();
+                var profile = new ProfileConstructor(Guid.NewGuid())
+                    .AddAddress(address)
+                    .AddEmail(model.Email)
+                    .AddName(model.FirstName, model.LastName)
+                    .AddPhoneNumber(model.PhoneNumber)
+                    .Build();
+                var user = new AspNetUser
+                {
+                    Profile = profile,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LoyaltyYear = DateTime.Now,
+                    LoyaltyProgress = 0
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    user = UserManager.FindByName(model.Email);
+                    result = UserManager.AddToRole(user.Id, "Admin");
+                }
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            return View(model);
+        }
+
         //// POST: /Account/Register
         //[HttpPost]
         //[AllowAnonymous]
