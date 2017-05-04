@@ -12,7 +12,7 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            RoomRepository roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            RoomRepository roomRepository = new RoomRepository(new HotelModelContext());
             roomRepository.InsertRoom(new DataAccessLayer.EF.RoomType {
                 Id = Guid.NewGuid(),
                 BaseRate = 100,
@@ -30,7 +30,7 @@ namespace Demo
                 Type = DataAccessLayer.Constants.ROOM_TYPE.QueenRoom,
                 Ameneties = "1 queen beds, Wifi",
                 Description = "Queen Room",
-                ImageUrl = "http://www.topnotchresort.com/wp-content/uploads/2013/06/deluxe-double-room.jpg",
+                ImageUrl = "https://www.rydges.com/accommodation/brisbane-qld/brisbane-south-bank/wp-content/uploads/sites/30/2015/10/supQueen-465x330.png",
             });
             roomRepository.InsertRoom(new DataAccessLayer.EF.RoomType
             {
@@ -40,7 +40,7 @@ namespace Demo
                 Type = DataAccessLayer.Constants.ROOM_TYPE.KingBedRoom,
                 Ameneties = "1 King bed, Wifi",
                 Description = "King Bed Room",
-                ImageUrl = "http://www.topnotchresort.com/wp-content/uploads/2013/06/deluxe-double-room.jpg",
+                ImageUrl = "https://redrock.sclv.com/~/media/Images/Page-Background-Images/Red-Rock/Hotel/RR_Hotel_KingSuite3.jpg",
             });
             roomRepository.InsertRoom(new DataAccessLayer.EF.RoomType
             {
@@ -50,7 +50,7 @@ namespace Demo
                 Type = DataAccessLayer.Constants.ROOM_TYPE.Suite,
                 Ameneties = "two king beds, Wifi",
                 Description = "Suite",
-                ImageUrl = "http://www.topnotchresort.com/wp-content/uploads/2013/06/deluxe-double-room.jpg",
+                ImageUrl = "http://embassysuites3.hilton.com/resources/media/es/en_US/img/shared/carousel/main/ES_tworoomsuite_746x420_FitToBoxSmallDimension_Center.jpg",
             });
             roomRepository.Save();
         }

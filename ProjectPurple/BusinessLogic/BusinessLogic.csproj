@@ -52,14 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="Handlers\DateTimeHandler.cs" />
     <Compile Include="Handlers\IUserReservationQueryHandler.cs" />
     <Compile Include="Handlers\UserReservationQueryHandler.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
-    <Compile Include="Helpers\IStateConverter.cs" />
     <Compile Include="Interface\TimeExpirationtModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
