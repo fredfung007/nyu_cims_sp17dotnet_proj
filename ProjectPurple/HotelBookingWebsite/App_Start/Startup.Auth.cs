@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using HotelBookingWebsite.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HotelBookingWebsite
 {
@@ -16,7 +17,7 @@ namespace HotelBookingWebsite
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(HotelModelContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
@@ -35,7 +36,7 @@ namespace HotelBookingWebsite
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -65,5 +66,7 @@ namespace HotelBookingWebsite
             //    ClientSecret = ""
             //});
         }
+
+        
     }
 }

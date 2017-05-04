@@ -6,6 +6,5 @@ namespace DataAccessLayer.EF
 {
     public class AspNetUserLogin : IdentityUserLogin
     {
-        public virtual AspNetUser AspNetUser { get; set; }
     }
 }
