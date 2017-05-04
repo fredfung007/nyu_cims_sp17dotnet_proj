@@ -191,7 +191,7 @@ namespace HotelBookingWebsite.Controllers
                 if (result.Succeeded)
                 {
                     user = UserManager.FindByName(model.Email);
-                    result = UserManager.AddToRole(user.Id, "Standard");
+                    result = UserManager.AddToRole(user.Id, "customer");
                 }
                 if (result.Succeeded)
                 {
@@ -254,7 +254,7 @@ namespace HotelBookingWebsite.Controllers
                 if (result.Succeeded)
                 {
                     user = UserManager.FindByName(model.Email);
-                    result = UserManager.AddToRole(user.Id, "Admin");
+                    result = UserManager.AddToRole(user.Id, "staff");
                 }
                 if (result.Succeeded)
                 {
