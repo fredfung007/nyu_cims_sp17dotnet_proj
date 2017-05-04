@@ -31,9 +31,9 @@ namespace HotelBookingWebsite.Controllers
             var upComingReservations =
                 await new ReservationHandler().GetUpComingReservations(User.Identity.GetUserId());
 
-            var reservationViewModels = upComingReservations.Select(reservation => new ReservationViewModel
+            var reservationViewModels = upComingReservations.Select(reservation => new ConfirmationViewModel
                 {
-                    ConfirmationId = reservation.Id
+                    ConfirmationId = reservation.Id.ToString()
                 })
                 .ToList();
             return View(reservationViewModels);

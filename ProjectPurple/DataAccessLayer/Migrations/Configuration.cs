@@ -81,7 +81,7 @@ LUXURIOUS ROOM AMENITIES
 
 400 - thread count fine linen
 Exclusive Asprey amenities
-27” High Definition Flat Screen Television
+27?High Definition Flat Screen Television
 SPACIOUS MARBLE BATHROOM
 
 Luxurious bath with soaking tub and separate stall shower",
