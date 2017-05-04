@@ -38,8 +38,8 @@ namespace DataAccessLayer.Repositories
 
         public RoomType GetRoomType(Constants.ROOM_TYPE type)
         {
-            throw new NotImplementedException();
-            // return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
+            //throw new NotImplementedException();
+            return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
         }
 
         public IEnumerable<RoomType> GetRoomTypes()

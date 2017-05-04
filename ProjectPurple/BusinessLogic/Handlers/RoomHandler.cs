@@ -19,11 +19,9 @@ namespace BusinessLogic.Handlers
         /// </summary>
         private readonly IRoomRepository _roomRepository;
 
-        private readonly IReservationRepository _reservationRepository;
-
         public RoomHandler()
         {
-            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _roomRepository = new RoomRepository(new HotelModelContext());
         }
 
         public RoomHandler(IRoomRepository roomRepo)

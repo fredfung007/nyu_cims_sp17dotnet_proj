@@ -20,8 +20,8 @@ namespace BusinessLogic.Handlers
         {
             // username should come from cookies
             //var username = "";
-            _reservationRepository = new ReservationRepository(new CodeFirstHotelModel());
-            _roomRepository = new RoomRepository(new CodeFirstHotelModel());
+            _reservationRepository = new ReservationRepository(new HotelModelContext());
+            _roomRepository = new RoomRepository(new HotelModelContext());
             //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
