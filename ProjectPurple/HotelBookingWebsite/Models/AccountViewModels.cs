@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using DataAccessLayer.Constants;
 
 namespace HotelBookingWebsite.Models
 {
@@ -121,6 +122,10 @@ namespace HotelBookingWebsite.Models
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Preferred Room Type")]
+        public ROOM_TYPE PreferredRoomType { get; set; }
 
     }
 
