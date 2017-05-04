@@ -39,7 +39,7 @@ namespace HotelBookingWebsite
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<AspNetUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<AspNetUser>(context.Get<HotelModelContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<AspNetUser>(manager)
             {

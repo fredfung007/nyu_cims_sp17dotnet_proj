@@ -27,7 +27,6 @@ namespace DataAccessLayer.EF
 
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
-        public Guid ProfileGuid { get; set; }
 
         public virtual Profile Profile { get; set; }
 
