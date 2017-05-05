@@ -21,17 +21,17 @@ namespace HotelBookingWebsite
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            if (!roleManager.RoleExists("Admin"))
+            if (!roleManager.RoleExists("staff"))
             {
                 var role = new IdentityRole();
-                role.Name = "Admin";
+                role.Name = "staff";
                 roleManager.Create(role);
             }
 
-            if (!roleManager.RoleExists("Standard"))
+            if (!roleManager.RoleExists("customer"))
             {
                 var role = new IdentityRole();
-                role.Name = "Standard";
+                role.Name = "customer";
                 roleManager.Create(role);
 
             }

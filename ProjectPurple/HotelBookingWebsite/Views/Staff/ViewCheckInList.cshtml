@@ -3,7 +3,7 @@
 <table class="table">
     <tr>
         <th>
-            E-Mail
+            Confirmation #
         </th>
         <th>
             First Name
@@ -17,16 +17,15 @@
         <th>
             Expected Check-Out Date
         </th>
-        <th>
-            Actual Check-In Date
-        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.email)
+            @* TODO: NEED DATA TO TEST *@
+            @Html.ActionLink(item.Id.ToString(), "CheckIn", "Staff", new { ConfirmationNum = item.Id })
+            
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.firstName)

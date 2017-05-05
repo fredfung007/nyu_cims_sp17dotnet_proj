@@ -17,9 +17,9 @@ namespace DataAccessLayer.Migrations
             RoomType room = new RoomType
             {
                 Id = new Guid("0805a77d-4952-44a3-9e32-606a4f418e99"),
-                BaseRate = 300,
+                BaseRate = 200,
                 Type = ROOM_TYPE.QueenRoom,
-                Inventory = 100,
+                Inventory = 30,
                 Ameneties = @"Room Features
 
 Air-conditioned
@@ -59,7 +59,7 @@ Luxurious bath with soaking tub and separate stall shower",
             room = new RoomType
             {
                 Id = new Guid("7b7cf8fe-d455-450b-80c9-e37f68604570"),
-                BaseRate = 500,
+                BaseRate = 350,
                 Type = ROOM_TYPE.KingBedRoom,
                 Inventory = 20,
                 Ameneties = @"Internet Access
@@ -94,7 +94,7 @@ Luxurious bath with soaking tub and separate stall shower",
                 Id = new Guid("dd1b42a6-56db-4474-972c-a40607f7398c"),
                 BaseRate = 150,
                 Type = ROOM_TYPE.DoubleBedRoom,
-                Inventory = 20,
+                Inventory = 50,
                 Ameneties = @"Entertainment
 
 Flat Panel HD television with DVD player
@@ -125,9 +125,9 @@ Luxurious bath with soaking tub and separate stall shower",
             room = new RoomType
             {
                 Id = new Guid("328c8536-c80c-4267-ad9e-a41de9a092b4"),
-                BaseRate = 150,
+                BaseRate = 900,
                 Type = ROOM_TYPE.Suite,
-                Inventory = 20,
+                Inventory = 10,
                 Ameneties = @"Entertainment
 
 Four Flat Panel HD television with DVD player

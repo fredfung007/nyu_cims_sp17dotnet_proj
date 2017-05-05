@@ -1,10 +1,13 @@
 ﻿using BusinessLogic.Handlers;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
+using HotelBookingWebsite.Filters;
 using HotelBookingWebsite.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -23,43 +26,59 @@ namespace HotelBookingWebsite.Controllers
         }
 
         // GET: Staff
-        public ActionResult Index()
+        [StaffAuthorize]
+        public ActionResult Index(DateTime? date)
         {
-            return View();
+            return View(new DashboardModel
+            {
+                checkInList = getViewCheckInList(),
+                checkOutList = getViewCheckoutListAll(),
+                inventory = getInventory(),
+                occupancy = getOccupancy(date?? DateTime.Today)
+            });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CheckIn(Guid ConfirmationNum)
+        private OccupancyModel getOccupancy(DateTime checkDate)
         {
-            if (_reservationHandler.CheckIn(ConfirmationNum, DateTime.Today))
+            return new OccupancyModel
             {
-                return Index();
-            }
-            else
-            {
-                //TODO: return failure page then redirect to index after 3 sec
-                return View();
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CheckOut(Guid ConfirmationNum)
-        {
-            if (_reservationHandler.CheckOut(ConfirmationNum, DateTime.Today))
-            {
-                return Index();
-            }
-            else
-            {
-                //TODO: return failure page then redirect to index after 3 sec
-                return View();
-            }
+                date = checkDate,
+                rate = _roomHandler.GetHotelOccupancy(checkDate).ToString("P", CultureInfo.InvariantCulture)
+            };
         }
 
         [HttpGet]
-        public async Task<ActionResult> ViewCheckInList()
+        [StaffAuthorize]
+        public async Task<ActionResult> Occupancy(DateTime? date)
         {
-            //TODO: add another layer so that we do not use EF.Reservation directly here
+            DateTime checkDate = date ?? DateTime.Today;
+            return PartialView(getOccupancy(checkDate));
+        }
+
+        [HttpGet]
+        [StaffAuthorize]
+        public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
+        {
+            return View(new CheckInOutModel
+            {
+                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                isSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+            });
+        }
+
+        [HttpGet]
+        [StaffAuthorize]
+        public async Task<ActionResult> CheckOut(Guid? ConfirmationNum)
+        {
+            return View(new CheckInOutModel
+            {
+                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                isSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+            });
+        }
+
+        private List<CheckInListModel> getViewCheckInList()
+        {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTime.Today));
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach(Reservation reservation in reservations)
@@ -74,11 +93,15 @@ namespace HotelBookingWebsite.Controllers
                     checkOutDate = reservation.EndDate
                 });
             }
-            return View(models);
+            return models;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> ViewCheckoutList()
+        private ActionResult ViewCheckInList()
+        {
+            return View(getViewCheckInList());
+        }
+
+        private List<CheckOutListModel> getViewCheckoutList()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTime.Today));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
@@ -95,11 +118,34 @@ namespace HotelBookingWebsite.Controllers
                     actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                 });
             }
-            return View(models);
+            return models;
         }
 
         [HttpGet]
-        public async Task<ActionResult> ViewCheckoutListAll()
+        private ActionResult ViewCheckoutList()
+        {
+            return View(getViewCheckoutList());
+        }
+
+        [HttpGet]
+        public ActionResult CheckOutAllExpired()
+        {
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
+
+            // check out today's reservation if passed 2:00 p.m.
+            bool includeToday = DateTime.Now > DateTime.Today.AddHours(14);
+            foreach(Reservation reservation in reservations)
+            {
+                if (reservation.EndDate < DateTime.Today || (reservation.EndDate == DateTime.Today && includeToday))
+                {
+                    _reservationHandler.CheckOut(reservation.Id, DateTime.Today);
+                }
+            }
+
+            return View();
+        }
+
+        private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
@@ -116,35 +162,51 @@ namespace HotelBookingWebsite.Controllers
                     actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                 });
             }
-            return View(models);
+            return models;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Occupancey()
+        private ActionResult ViewCheckoutListAll()
         {
-            List<OccupanceyModel> models = new List<OccupanceyModel>();
+            return View(getViewCheckoutListAll());
+        }
+
+        private List<InventoryModel> getInventory()
+        {
+            List<InventoryModel> models = new List<InventoryModel>();
             foreach(ROOM_TYPE type in _roomHandler.GetRoomTypes())
             {
-                models.Add(new OccupanceyModel {
+                models.Add(new InventoryModel {
                     type = type,
                     inventory = _roomHandler.GetRoomInventory(type),
-                    occupancey = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
+                    occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
-            return View(models);
+            return models;
         }
-        [HttpPost]
-        public async Task<ActionResult> ModifiyRoomInventory(ROOM_TYPE type, int value)
+
+        [HttpGet]
+        private ActionResult Inventory()
         {
-            try
+            return View(getInventory());
+        }
+
+        [StaffAuthorize]
+        public async Task<ActionResult> ModifyRoomInventory(ROOM_TYPE? Type, int? Inventory)
+        {
+            if (Type != null && Inventory != null)
             {
-                _roomHandler.UpdateRoomInventory(type, value);
+                try
+                {
+                    _roomHandler.UpdateRoomInventory((ROOM_TYPE)Type, (int)Inventory);
+                    return RedirectToAction("Index");
+                }
+                catch (ArgumentOutOfRangeException useless)
+                {
+                    ViewBag.Status = "Unsuccessful! The new inventory value is invalid.";
+                }
             }
-            catch (ArgumentOutOfRangeException useless)
-            {
-                // TODO: return a failure page then redirect
-            }
-            return Index();
+            return View();
         }
 
     }
