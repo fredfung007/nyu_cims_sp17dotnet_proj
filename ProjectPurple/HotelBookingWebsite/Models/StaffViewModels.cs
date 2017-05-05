@@ -44,6 +44,7 @@ namespace HotelBookingWebsite.Models
         public List<InventoryModel> inventory { get; set; }
         public List<CheckInListModel> checkInList { get; set; }
         public List<CheckOutListModel> checkOutList { get;  set;}
+        public OccupancyModel occupancy { get; set; }
     }
 
     public class CheckInOutModel

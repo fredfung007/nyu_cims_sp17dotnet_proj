@@ -4,13 +4,30 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 
-@Html.AntiForgeryToken()
 <h1> @ViewBag.Title </h1>
-<h2>Room Occupancies</h2>
+<div class="container">
+    <div class="col-md-3">
+        <h2>Room Inventory</h2>
+    </div>
+    <div class="col-md-3" id="occupancy">
+        @Html.Partial("Occupancy", Model.occupancy)
+    </div>
+    <div class="col-md-4">
+        <input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />
+    </div>
+</div>
 @Html.Partial("Inventory", Model.inventory)
 <h2>Upcoming Reservations for Checking-In</h2>
 @Html.Partial("ViewCheckInList", Model.checkInList)
 <h2>Reservations Checked-In</h2>
 @Html.Partial("ViewCheckoutListAll", Model.checkOutList)
 
+<script type="text/javascript">
+    $("#occupancyDate").change(function() {
+        var checkDate = $("#occupancyDate").val();
+        console.log(checkDate);
+        $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
+    });
+</script>
