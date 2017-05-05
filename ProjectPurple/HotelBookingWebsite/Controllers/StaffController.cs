@@ -26,7 +26,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         // GET: Staff
-        //[StaffAuthorize]
+        [StaffAuthorize]
         public ActionResult Index(DateTime? date)
         {
             return View(new DashboardModel
@@ -48,7 +48,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        //[StaffAuthorize]
+        [StaffAuthorize]
         public async Task<ActionResult> Occupancy(DateTime? date)
         {
             DateTime checkDate = date ?? DateTime.Today;
@@ -56,7 +56,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        //[StaffAuthorize]
+        [StaffAuthorize]
         public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -67,7 +67,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        //[StaffAuthorize]
+        [StaffAuthorize]
         public async Task<ActionResult> CheckOut(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -191,7 +191,7 @@ namespace HotelBookingWebsite.Controllers
             return View(getInventory());
         }
 
-        //[StaffAuthorize]
+        [StaffAuthorize]
         public async Task<ActionResult> ModifyRoomInventory(ROOM_TYPE? Type, int? Inventory)
         {
             if (Type != null && Inventory != null)
