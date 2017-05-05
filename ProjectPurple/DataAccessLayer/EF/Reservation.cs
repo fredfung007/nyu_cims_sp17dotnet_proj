@@ -1,3 +1,4 @@
+using DataAccessLayer.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -32,9 +33,9 @@ namespace DataAccessLayer.EF
         public virtual ICollection<DailyPrice> DailyPrices { get; set; }
 
         public virtual ICollection<Guest> Guests { get; set; }
-
+        [Obsolete]
+        // to billing info
         public virtual Profile Profile { get; set; }
-
-        public virtual RoomType RoomType { get; set; }
+        public ROOM_TYPE RoomType { get; set; }
     }
 }

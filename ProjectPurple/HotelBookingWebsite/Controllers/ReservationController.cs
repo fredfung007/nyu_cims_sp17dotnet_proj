@@ -45,8 +45,8 @@ namespace HotelBookingWebsite.Controllers
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
                 Guests = reservation.Guests.ToList(),
-                Type = reservation.RoomType.Type.ToString(),
-                Ameneties = reservation.RoomType.Ameneties,
+                Type =  _roomHandler.GetRoomTypeName(reservation.RoomType),
+                Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
                 IsCanceled = reservation.IsCancelled,
             });
         }
@@ -160,7 +160,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     StartDate = startDate,
                     EndDate = endDate,
-                    Name = NameString.ROOM_TYPE_NAME[(int) type],
+                    Name = _roomHandler.GetRoomTypeName(type),
                     Type = type,
                     // try async
                     //AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut),
@@ -264,21 +264,21 @@ namespace HotelBookingWebsite.Controllers
 
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
-            var guests = _reservationHandler.GetEmptyGuestList(type);
+            result.Guests = _reservationHandler.GetEmptyGuestList(type);
 
             // TOOD check here use extension function
             if (User.Identity.IsAuthenticated)
             {
                 var profile = _userHandler.GetProfile(User.Identity.Name);
-                guests[0].FirstName = profile.FirstName;
-                guests[1].LastName = profile.LastName;
+                result.Guests[0].FirstName = profile.FirstName;
+                result.Guests[1].LastName = profile.LastName;
             }
 
             return View(new InputGuestViewModel
             {
                 SessionId = result.SessionId,
                 Expiration = result.Expiration,
-                Guests = guests
+                Guests = result.Guests
             });
         }
 
@@ -407,15 +407,13 @@ namespace HotelBookingWebsite.Controllers
             }
 
             // comment for debug
-            Guid reservationId = Guid.NewGuid();
             result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate, 
                 roomInfo.EndDate, result.Guests, roomInfo.PriceList.ToList());
-
-            // TODO delete here? 
             result.IsConfirmed = true;
+
             //ReservationHandler.SearchResultPool.Remove(model.SessionId);
 
-            return RedirectToAction("Confirm", new { ConfirmationId = reservationId.ToString() });
+            return RedirectToAction("Confirm", new { ConfirmationId = result.ReservationId.ToString() });
         }
 
         public ActionResult Error(ErrorViewModel error)
@@ -434,7 +432,7 @@ namespace HotelBookingWebsite.Controllers
             }
             // TODO extension functions
             var priceList = rsv.DailyPrices.Select(x => x.BillingPrice).ToList();
-            
+
             return View(new ConfirmationViewModel
             {
                 ConfirmationId = ConfirmationId,
@@ -442,8 +440,8 @@ namespace HotelBookingWebsite.Controllers
                 EndDate = rsv.EndDate,
                 Guests = rsv.Guests.ToList(),
                 ReservationId = rsv.Id,
-                Type = rsv.RoomType.Type.ToString(),
-                Ameneties = rsv.RoomType.Ameneties,
+                Type = _roomHandler.GetRoomTypeName(rsv.RoomType),
+                Ameneties = _roomHandler.GetRoomAmeneties(rsv.RoomType),
                 PriceList = priceList,
             });
         }

@@ -49,7 +49,8 @@ namespace BusinessLogic.Handlers
                 EndDate = end,
                 Guests = guests,
                 IsPaid = false,
-                DailyPrices = new List<DailyPrice>()
+                DailyPrices = new List<DailyPrice>(),
+                RoomType = type
             };
 
             //var prices = new RoomHandler().GetRoomPriceList(type, start, end);

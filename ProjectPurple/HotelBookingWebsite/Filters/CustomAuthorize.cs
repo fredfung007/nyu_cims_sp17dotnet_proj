@@ -7,8 +7,16 @@ namespace HotelBookingWebsite.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            bool anonymous = false;
+            if (!filterContext.ActionParameters.ContainsKey("Anonymous"))
+            {
+                anonymous = false;
+            }
+            else
+            {
+                anonymous = (bool?) filterContext.ActionParameters["Anonymous"] ?? false;
+            }
 
-            bool anonymous = filterContext.ActionParameters.ContainsKey("Anonymous") && (bool) filterContext.ActionParameters["Anonymous"];
             if (!anonymous && (filterContext.HttpContext.User.Identity == null || !filterContext.HttpContext.User.Identity.IsAuthenticated))
             {
                 filterContext.Result = new RedirectToRouteResult(
