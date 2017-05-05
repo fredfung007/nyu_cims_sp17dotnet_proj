@@ -1,4 +1,7 @@
-﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
+﻿<head>
+    @Styles.RenderFormat(HotelBookingWebsite.Helper.BundlesFormat.PRINT, "~/Reservation/printcss")
+</head>
+@model HotelBookingWebsite.Models.ConfirmationViewModel
 
 @{
     ViewBag.Title = "Confirm";
@@ -7,7 +10,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div>
+<div id="content" class="print" >
     <h4>You reservation</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -60,6 +63,7 @@
             @Html.DisplayFor(model => model.Ameneties)
         </dd>
     </dl>
+    <a href="#" onclick="window.print();return false;">Print this page</a>
 </div>
 <p>
     @Html.ActionLink("Back to List", "Index")

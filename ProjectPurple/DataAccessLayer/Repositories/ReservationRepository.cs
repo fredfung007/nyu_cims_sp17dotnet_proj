@@ -82,6 +82,18 @@ namespace DataAccessLayer.Repositories
                 .ToList();
         }
 
+        private void CancelReservation(Reservation reservation)
+        {
+            reservation.IsCancelled = true;
+            _context.Entry(reservation).State = EntityState.Modified;
+        }
+
+        public void CancelReservation(Guid id)
+        {
+            var reservation = GetReservation(id);
+            CancelReservation(reservation);
+        }
+
         public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
         {
             return _context.Reservations.Where(reservation => reservation.StartDate == startDate).ToList();
@@ -134,6 +146,7 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
 
         #endregion
     }

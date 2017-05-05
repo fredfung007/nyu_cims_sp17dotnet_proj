@@ -23,6 +23,7 @@ namespace DataAccessLayer.Repositories
 
         void InsertReservation(Reservation reservation);
         void DeleteReservation(Guid id);
+        void CancelReservation(Guid id);
         void UpdateReservation(Reservation reservation);
         void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
         void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
