@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Handlers;
 using DataAccessLayer.EF;
+using HotelBookingWebsite.Filters;
 using HotelBookingWebsite.Models;
 using Microsoft.AspNet.Identity;
 
@@ -14,9 +15,13 @@ namespace HotelBookingWebsite.Controllers
     public class ProfileController : Controller
     {
         // GET: Profile
+        [CustomAuthorize]
         public ActionResult Index()
         {
-            return View();
+            ProfileViewModel viewModel = new ProfileViewModel();
+            ProfileHandler profileHandler = new ProfileHandler();
+            viewModel.SetByProfile(profileHandler.GetProfile(new AspNetUserHandler().GetAspNetUser(User.Identity.GetUserName()).Profile.Id));
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -25,7 +30,7 @@ namespace HotelBookingWebsite.Controllers
             return View();
         }
 
-        [HttpGet]
+        [CustomAuthorize]
         public async Task<ActionResult> UpcommingReservations()
         {
             var upComingReservations =
@@ -37,12 +42,6 @@ namespace HotelBookingWebsite.Controllers
                 })
                 .ToList();
             return View(reservationViewModels);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> LoyaltyProgram()
-        {
-            return View();
         }
     }
 }

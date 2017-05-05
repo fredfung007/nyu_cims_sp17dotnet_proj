@@ -1,0 +1,66 @@
+﻿@model HotelBookingWebsite.Models.ProfileViewModel
+
+@{
+    ViewBag.Title = "Your Profile Information";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.LabelFor(m => m.FirstName)
+    <p>
+        @Html.DisplayFor(m => m.FirstName)
+    </p>
+</div>
+<div>
+    @Html.LabelFor(m => m.LastName)
+    <p>
+        @Html.DisplayFor(m => m.LastName)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.PreferredRoomType)
+    <p>
+        @Html.DisplayFor(m => m.PreferredRoomType)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.Address1)
+    <p>
+        @Html.DisplayFor(m => m.Address1)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.Address2)
+    <p>
+        @Html.DisplayFor(m => m.Address2)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.City)
+    <p>
+        @Html.DisplayFor(m => m.City)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.State)
+    <p>
+        @Html.DisplayFor(m => m.State)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.PostalCode)
+    <p>
+        @Html.DisplayFor(m => m.PostalCode)
+</p>
+</div>
+<div>
+    @Html.LabelFor(m => m.PhoneNumber)
+    <p>
+        @Html.DisplayFor(m => m.PhoneNumber)
+</p>
+</div>
+@Html.ActionLink("Edit Information", "Update", "Account")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
