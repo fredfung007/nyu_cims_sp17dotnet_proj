@@ -36,7 +36,7 @@ namespace HotelBookingWebsite.Filters
         {
             if (filterContext.HttpContext.User.Identity == null ||
                 !filterContext.HttpContext.User.Identity.IsAuthenticated ||
-                filterContext.HttpContext.User.Identity.Name != "staff"
+                !filterContext.HttpContext.User.IsInRole("staff")
                 )
             {
                 filterContext.Result = new RedirectToRouteResult(
