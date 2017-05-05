@@ -28,6 +28,10 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public async Task<ActionResult> UpcommingReservations()
         {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var upComingReservations =
                 await new ReservationHandler().GetUpComingReservations(User.Identity.GetUserId());
 
