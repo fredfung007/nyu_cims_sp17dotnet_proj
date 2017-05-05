@@ -26,30 +26,37 @@ namespace HotelBookingWebsite.Controllers
         }
 
         // GET: Staff
-        [StaffAuthorize]
-        public ActionResult Index()
+        //[StaffAuthorize]
+        public ActionResult Index(DateTime? date)
         {
             return View(new DashboardModel
             {
                 checkInList = getViewCheckInList(),
                 checkOutList = getViewCheckoutListAll(),
-                inventory = getInventory()
+                inventory = getInventory(),
+                occupancy = getOccupancy(date?? DateTime.Today)
             });
         }
 
+        private OccupancyModel getOccupancy(DateTime checkDate)
+        {
+            return new OccupancyModel
+            {
+                date = checkDate,
+                rate = _roomHandler.GetHotelOccupancy(checkDate).ToString("P", CultureInfo.InvariantCulture)
+            };
+        }
+
         [HttpGet]
-        [StaffAuthorize]
+        //[StaffAuthorize]
         public async Task<ActionResult> Occupancy(DateTime? date)
         {
             DateTime checkDate = date ?? DateTime.Today;
-            return View(new OccupancyModel {
-                date = checkDate,
-                rate = _roomHandler.GetHotelOccupancy(checkDate).ToString("P", CultureInfo.InvariantCulture)
-            });
+            return PartialView(getOccupancy(checkDate));
         }
 
         [HttpGet]
-        [StaffAuthorize]
+        //[StaffAuthorize]
         public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -60,7 +67,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        [StaffAuthorize]
+        //[StaffAuthorize]
         public async Task<ActionResult> CheckOut(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -120,6 +127,24 @@ namespace HotelBookingWebsite.Controllers
             return View(getViewCheckoutList());
         }
 
+        [HttpGet]
+        public ActionResult checkOutAllExpired()
+        {
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
+
+            // check out today's reservation if passed 2:00 p.m.
+            bool includeToday = DateTime.Now > DateTime.Today.AddHours(14);
+            foreach(Reservation reservation in reservations)
+            {
+                if (reservation.EndDate < DateTime.Today || (reservation.EndDate == DateTime.Today && includeToday))
+                {
+                    _reservationHandler.CheckOut(reservation.Id, DateTime.Today);
+                }
+            }
+
+            return Index(null);
+        }
+
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
@@ -167,7 +192,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpPost]
-        [StaffAuthorize]
+        //[StaffAuthorize]
         public async Task<ActionResult> ModifiyRoomInventory(ROOM_TYPE type, int value)
         {
             try
@@ -178,7 +203,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 // TODO: return a failure page then redirect
             }
-            return Index();
+            return Index(null);
         }
 
     }
