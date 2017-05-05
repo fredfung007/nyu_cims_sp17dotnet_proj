@@ -21,9 +21,9 @@
 </div>
 @Html.Partial("Inventory", Model.inventory)
 @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
-<h2>Upcoming Reservations for Checking-In</h2>
+<h2>Upcoming Reservations Today</h2>
 @Html.Partial("ViewCheckInList", Model.checkInList)
-<h2>Reservations Checked-In</h2>
+<h2>Checked-In Reservations</h2>
 @Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
 @Html.Partial("ViewCheckoutListAll", Model.checkOutList)
 
