@@ -24,7 +24,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Reservation> GetReservations()
         {
-            return _context.Reservations.ToList();
+            return _context.Reservations.Include(rsv => rsv.AspNetUser).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end)
