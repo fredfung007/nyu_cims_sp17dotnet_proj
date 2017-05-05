@@ -42,11 +42,11 @@ namespace BusinessLogicTest
             };
             _mockRoomRepo.Setup(m => m.GetRoomTypes()).Returns(new List<RoomType> { _room });
             _mockRoomRepo.Setup(m => m.GetRoomType(_TYPE)).Returns(_room);
-            _mockRoomRepo.Setup(m => m.GetRoomTotalAmount(_room)).Returns(_INV);
+            _mockRoomRepo.Setup(m => m.GetRoomTotalAmount(_room.Type)).Returns(_INV);
             for (int i = 0; i <= _LEN; i++)
             {
                 _mockRoomRepo.Setup(m => m.GetMaxRoomOccupanciesByRoomTypeAfterDate(_TYPE, DateTime.Now.AddDays(i))).Returns(_INV);
-                _mockRoomRepo.Setup(m => m.GetRoomReservationAmount(_room, DateTime.Now.AddDays(i))).Returns(_INV - 1);
+                _mockRoomRepo.Setup(m => m.GetRoomReservationAmount(_room.Type, DateTime.Now.AddDays(i))).Returns(_INV - 1);
             }
 
             // mock the ReservationRepository

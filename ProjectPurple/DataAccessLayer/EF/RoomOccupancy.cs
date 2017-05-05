@@ -1,3 +1,4 @@
+using DataAccessLayer.Constants;
 using System;
 
 namespace DataAccessLayer.EF
@@ -10,6 +11,6 @@ namespace DataAccessLayer.EF
 
         public int Occupancy { get; set; }
 
-        public virtual RoomType RoomType { get; set; }
+        public ROOM_TYPE RoomType { get; set; }
     }
 }

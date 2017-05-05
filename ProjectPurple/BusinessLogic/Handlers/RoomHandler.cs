@@ -145,7 +145,7 @@ namespace BusinessLogic.Handlers
             }
             List<int> priceList = new List<int>();
             DateTime checkDate = checkIn;
-            while(checkDate.CompareTo(checkOut) < 0)
+            while (checkDate.CompareTo(checkOut) < 0)
             {
                 priceList.Add(GetRoomPrice(type, checkDate));
                 checkDate = checkDate.AddDays(1);
@@ -184,7 +184,7 @@ namespace BusinessLogic.Handlers
         {
             // compute price multipler
             double rate = 1.0 + GetHotelOccupancy(date);
-            return (int) Math.Ceiling(_roomRepository.GetRoomType(type).BaseRate * rate);
+            return (int)Math.Ceiling(_roomRepository.GetRoomType(type).BaseRate * rate);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace BusinessLogic.Handlers
         private int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
-            return _roomRepository.GetRoomTotalAmount(room) - _roomRepository.GetRoomReservationAmount(room, date);
+            return _roomRepository.GetRoomTotalAmount(room.Type) - _roomRepository.GetRoomReservationAmount(room.Type, date);
         }
 
         /// <summary>
@@ -212,8 +212,8 @@ namespace BusinessLogic.Handlers
 
             foreach (DataAccessLayer.EF.RoomType room in types)
             {
-                totalQuantity += _roomRepository.GetRoomTotalAmount(room);
-                totalOccupation += _roomRepository.GetRoomReservationAmount(room, date);
+                totalQuantity += _roomRepository.GetRoomTotalAmount(room.Type);
+                totalOccupation += _roomRepository.GetRoomReservationAmount(room.Type, date);
             }
             return totalOccupation * 1.0 / totalQuantity;
         }
@@ -226,7 +226,7 @@ namespace BusinessLogic.Handlers
         /// <returns>booked room amount</returns>
         public int GetBookedRoomOnDate(ROOM_TYPE type, DateTime date)
         {
-            return _roomRepository.GetRoomReservationAmount(_roomRepository.GetRoomType(type), date);
+            return _roomRepository.GetRoomReservationAmount(type, date);
         }
 
         // obsolete. duplicated with UpdateRoomInventory()
@@ -284,6 +284,17 @@ namespace BusinessLogic.Handlers
             return _roomRepository.GetRoomType(type).Ameneties;
         }
 
+        // TODO
+        public string GetRoomTypeName(ROOM_TYPE type)
+        {
+            int idx = (int)type;
+            if (idx < 0 || idx >= NameString.ROOM_TYPE_NAME.Count())
+            {
+                return "Invalid Room Type";
+            }
+            return NameString.ROOM_TYPE_NAME[idx];
+        }
+
         /// <summary>
         /// Get room picture urls
         /// </summary>
@@ -328,7 +339,7 @@ namespace BusinessLogic.Handlers
         public void UpdateRoomInventory(ROOM_TYPE type, int quantity)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
-            int currentQuantity = _roomRepository.GetRoomTotalAmount(room);
+            int currentQuantity = _roomRepository.GetRoomTotalAmount(type);
 
             if (quantity < currentQuantity)
             {

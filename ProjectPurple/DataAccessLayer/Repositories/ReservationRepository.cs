@@ -18,7 +18,8 @@ namespace DataAccessLayer.Repositories
 
         public Reservation GetReservation(Guid id)
         {
-            return _context.Reservations.Find(id);
+            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices).
+                    Include(rsv=>rsv.RoomType).FirstOrDefault(rsv=>rsv.Id == id);
         }
 
         public IEnumerable<Reservation> GetReservations()

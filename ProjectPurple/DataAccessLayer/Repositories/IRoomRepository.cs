@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataAccessLayer.EF;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.Repositories
 {
@@ -21,13 +22,13 @@ namespace DataAccessLayer.Repositories
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);
-        void UpdateRoomUsage(RoomType room, DateTime date, int quantity);
+        void UpdateRoomUsage(ROOM_TYPE type, DateTime date, int quantity);
 
         // How many room of the type is reserved on some date
-        int GetRoomReservationAmount(RoomType room, DateTime date);
+        int GetRoomReservationAmount(ROOM_TYPE type, DateTime date);
 
         // The total amount of a roomtype, roomtype.inventory
-        int GetRoomTotalAmount(RoomType room);
+        int GetRoomTotalAmount(ROOM_TYPE type);
 
         void Save();
     }
