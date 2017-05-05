@@ -40,7 +40,7 @@ namespace HotelBookingWebsite.Models
         public DateTime EndDate { get; set; }
         public string Type { get; set; }
         public string Ameneties { get; set; }
-        public List<Guest> Guests { get; set; }
+        public ICollection<Guest> Guests { get; set; }
         public Guid ReservationId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }

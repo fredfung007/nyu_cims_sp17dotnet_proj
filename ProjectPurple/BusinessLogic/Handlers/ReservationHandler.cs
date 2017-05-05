@@ -140,7 +140,8 @@ namespace BusinessLogic.Handlers
         {
             var reservations = _reservationRepository.GetReservations();
 
-            return reservations.Where(reservation => reservation.AspNetUser.Id.Equals(userId) &&
+            return reservations.Where(reservation => reservation.AspNetUser != null &&
+                                                     reservation.AspNetUser.Id.Equals(userId) &&
                                                      reservation.EndDate.CompareTo(DateTime.Now) > 0).ToList();
         }
 
