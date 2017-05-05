@@ -179,7 +179,6 @@ namespace HotelBookingWebsite.Controllers
                 models.Add(new InventoryModel {
                     type = type,
                     inventory = _roomHandler.GetRoomInventory(type),
-                    occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
             return models;

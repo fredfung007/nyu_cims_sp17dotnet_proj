@@ -30,7 +30,6 @@ namespace HotelBookingWebsite.Models
     {
         public ROOM_TYPE type { get; set; }
         public int inventory { get; set; }
-        public int occupancy { get; set; }
     }
 
     public class OccupancyModel
