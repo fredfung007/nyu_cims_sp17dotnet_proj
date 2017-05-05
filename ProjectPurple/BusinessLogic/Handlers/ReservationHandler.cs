@@ -38,33 +38,46 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end, List<Guest> guests, List<int> prices)
+        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end,
+            List<Guest> guests, List<int> prices)
         {
-            AspNetUserHandler userHandler = new AspNetUserHandler();
-            Reservation reservation = new Reservation
+            var dailyPriceList = new List<DailyPrice>();
+            Guid RsvId = Guid.NewGuid();
+
+            foreach (int price in prices)
             {
-                Id = Guid.NewGuid(),
-                AspNetUser = userHandler.GetAspNetUser(username),
+                dailyPriceList.Add(new DailyPrice
+                {
+                    Id = Guid.NewGuid(),
+                    Date = start,
+                    BillingPrice = price
+                });
+                start = start.AddDays(1);
+            }
+
+            AspNetUserHandler userHandler = new AspNetUserHandler();
+            var reservation = new Reservation
+            {
+                Id = RsvId,
+                //AspNetUser = userHandler.GetAspNetUser(username),
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
                 IsPaid = false,
-                DailyPrices = new List<DailyPrice>(),
+                IsCancelled = false,
+                DailyPrices = dailyPriceList,
                 RoomType = type
             };
 
-            //var prices = new RoomHandler().GetRoomPriceList(type, start, end);
-            foreach (int price in prices)
-            {
-                var dailyPrice = new DailyPrice {Id = reservation.Id, Date = start, BillingPrice = price};
-                // TODO POTENTIAL BUG. WAIT FOR TEST CASES.
-                start = start.AddDays(1);
-                reservation.DailyPrices.Add(dailyPrice);
-            }
-
             _reservationRepository.InsertReservation(reservation);
             _reservationRepository.Save();
-            return reservation.Id;
+
+            var newReservation = _reservationRepository.GetReservation(RsvId);
+            newReservation.AspNetUser = userHandler.GetAspNetUser(username);
+            _reservationRepository.UpdateReservationWithAspnetUser(newReservation);
+            _reservationRepository.Save();
+
+            return RsvId;
         }
 
         public void PayReservation(Guid confirmationNumber, Profile billingInfo)

@@ -271,7 +271,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 var profile = _userHandler.GetProfile(User.Identity.Name);
                 result.Guests[0].FirstName = profile.FirstName;
-                result.Guests[1].LastName = profile.LastName;
+                result.Guests[0].LastName = profile.LastName;
             }
 
             return View(new InputGuestViewModel
