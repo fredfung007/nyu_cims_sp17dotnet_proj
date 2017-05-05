@@ -53,15 +53,8 @@ namespace DataAccessLayer.EF
             modelBuilder.Entity<AspNetUser>()
                 .HasRequired(e => e.Profile);
 
-            modelBuilder.Entity<Profile>()
-                .HasMany(e => e.Reservations)
-                .WithOptional(e => e.Profile)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Reservation>()
-                .HasMany(e => e.DailyPrices)
-                .WithRequired(e => e.Reservation)
-                .WillCascadeOnDelete(false);
+                .HasMany(e => e.DailyPrices);
         }
     }
 }

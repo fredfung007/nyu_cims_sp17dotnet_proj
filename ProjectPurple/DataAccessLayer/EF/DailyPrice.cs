@@ -9,7 +9,5 @@ namespace DataAccessLayer.EF
         public int BillingPrice { get; set; }
 
         public DateTime Date { get; set; }
-
-        public virtual Reservation Reservation { get; set; }
     }
 }
