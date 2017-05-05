@@ -182,6 +182,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\ReservationViewModels.cs" />
     <Compile Include="Models\StaffViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -281,6 +282,7 @@
     <Content Include="Views\Account\RegisterStaff.cshtml" />
     <Content Include="Views\Reservation\Error.cshtml" />
     <Content Include="Views\Account\Update.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

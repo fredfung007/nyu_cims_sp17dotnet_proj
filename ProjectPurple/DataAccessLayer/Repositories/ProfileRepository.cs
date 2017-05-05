@@ -27,7 +27,7 @@ namespace DataAccessLayer.Repositories
 
         public Profile GetProfile(Guid id)
         {
-            return _context.Profiles.Find(id);
+            return _context.Profiles.Include(p => p.Address).FirstOrDefault(p => p.Id == id);
         }
 
         public IEnumerable<Profile> GetProfiles()
