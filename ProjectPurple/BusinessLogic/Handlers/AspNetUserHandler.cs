@@ -26,7 +26,7 @@ namespace BusinessLogic.Handlers
         /// Get the loyalty program progress by username.
         /// </summary>
         /// <param name="username">Username</param>
-        /// <returns>Corresponding loyalty program gress</returns>
+        /// <returns>Corresponding loyalty program progress</returns>
         public int FindLoyaltyProgramInfo(string username)
         {
             var user = _userRepository.GetUser(username);

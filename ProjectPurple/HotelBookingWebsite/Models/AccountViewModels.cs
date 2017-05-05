@@ -108,9 +108,8 @@ namespace HotelBookingWebsite.Models
         public string City { get; set; }
 
         [Required]
-        [DataType(DataType.Text)]
         [Display(Name = "State")]
-        public string State { get; set; }
+        public US_STATE State { get; set; }
 
 
         [Required]
@@ -123,7 +122,7 @@ namespace HotelBookingWebsite.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        [DataType(DataType.Text)]
+        [Required]
         [Display(Name = "Preferred Room Type")]
         public ROOM_TYPE PreferredRoomType { get; set; }
 

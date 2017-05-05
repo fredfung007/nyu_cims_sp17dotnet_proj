@@ -169,7 +169,7 @@ namespace HotelBookingWebsite.Controllers
                 var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
                     .AddSecondLine(model.Address2)
                     .AddCity(model.City)
-                    .AddState(StateConverter.GetStateByName(model.State))
+                    .AddState(model.State)
                     .AddZipcode(model.PostalCode)
                     .Build();
                 var profile = new ProfileConstructor(Guid.NewGuid())
@@ -232,7 +232,7 @@ namespace HotelBookingWebsite.Controllers
                 var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
                     .AddSecondLine(model.Address2)
                     .AddCity(model.City)
-                    .AddState(StateConverter.GetStateByName(model.State))
+                    .AddState(model.State)
                     .AddZipcode(model.PostalCode)
                     .Build();
                 var profile = new ProfileConstructor(Guid.NewGuid())
