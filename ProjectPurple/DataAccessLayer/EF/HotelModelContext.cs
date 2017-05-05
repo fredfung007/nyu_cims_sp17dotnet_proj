@@ -5,7 +5,7 @@ namespace DataAccessLayer.EF
 {
     public class HotelModelContext : IdentityDbContext
     {
-#if DEBUG2
+#if DEBUG
         private static string name = "name=HotelModelContext";
 #else
         private static string name = "name=ProductionConnection";
