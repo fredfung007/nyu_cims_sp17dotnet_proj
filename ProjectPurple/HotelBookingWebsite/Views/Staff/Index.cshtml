@@ -19,17 +19,11 @@
     </div>
 </div>
 @Html.Partial("Inventory", Model.inventory)
+@Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
 <h2>Upcoming Reservations for Checking-In</h2>
 @Html.Partial("ViewCheckInList", Model.checkInList)
-<div class="container">
-    <div class="col-md-5">
-        <h2>Reservations Checked-In</h2>
-    </div>
-    <div class="col-md-5">
-        <input type="button" value="Check Out All Expired Reservations" class="btn btn-default"
-               onclick="location.href='@Url.Action("CheckOutAllExpired", "Staff")'"/>
-    </div>
-</div>
+<h2>Reservations Checked-In</h2>
+@Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
 @Html.Partial("ViewCheckoutListAll", Model.checkOutList)
 
 <script type="text/javascript">

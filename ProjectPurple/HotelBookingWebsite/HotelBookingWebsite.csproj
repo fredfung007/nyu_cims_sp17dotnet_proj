@@ -366,6 +366,7 @@
     <Content Include="Views\Staff\CheckIn.cshtml" />
     <Content Include="Views\Staff\Occupancy.cshtml" />
     <Content Include="Views\Staff\CheckOutAllExpired.cshtml" />
+    <Content Include="Views\Staff\ModifyRoomInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

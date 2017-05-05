@@ -191,19 +191,22 @@ namespace HotelBookingWebsite.Controllers
             return View(getInventory());
         }
 
-        [HttpPost]
         //[StaffAuthorize]
-        public async Task<ActionResult> ModifiyRoomInventory(ROOM_TYPE type, int value)
+        public async Task<ActionResult> ModifyRoomInventory(ROOM_TYPE? Type, int? Inventory)
         {
-            try
+            if (Type != null && Inventory != null)
             {
-                _roomHandler.UpdateRoomInventory(type, value);
+                try
+                {
+                    _roomHandler.UpdateRoomInventory((ROOM_TYPE)Type, (int)Inventory);
+                    return RedirectToAction("Index");
+                }
+                catch (ArgumentOutOfRangeException useless)
+                {
+                    ViewBag.Status = "Unsuccessful! The new inventory value is invalid.";
+                }
             }
-            catch (ArgumentOutOfRangeException useless)
-            {
-                // TODO: return a failure page then redirect
-            }
-            return Index(null);
+            return View();
         }
 
     }
