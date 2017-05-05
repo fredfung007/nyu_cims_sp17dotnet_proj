@@ -15,49 +15,49 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.Display("Check-in:")
+            @Html.Label("Check-in:")
         </dt>
         <dd>
-            @Html.Display(@Model.StartDate.Date.ToString("MM/dd/yyyy"))
+            @Model.StartDate.Date.ToString("MM/dd/yyyy")
         </dd>
 
         <dt>
-            @Html.Display("Check-out:")
+            @Html.Label("Check-out:")
         </dt>
         <dd>
-            @Html.Display(@Model.EndDate.Date.ToString("MM/dd/yyyy") + " (2:00 pm)")
+            @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)
         </dd>
 
         <dt>
-            @Html.Display("Number of Rooms:")
+            @Html.Label("Number of Rooms:")
         </dt>
         <dd>
-            @Html.Display("1");
+            1
         </dd>
 
         <dt>
-            @Html.Display("Total:")
+            @Html.Label("Total:")
         </dt>
         <dd>
-            @Html.Display("$"+ Model.PriceList.Sum().ToString()+".00")
+            @Model.PriceList.Sum().ToString("C2")
         </dd>
 
         <dt>
-            @Html.Display("Confirmation Number:")
+            @Html.Label("Confirmation Number:")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ReservationId)
+            <b>@Html.DisplayFor(model => model.ReservationId)</b>
         </dd>
 
         <dt>
-            @Html.Display("Room Type:")
+            @Html.Label("Room Type:")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Type)
         </dd>
 
         <dt>
-            @Html.Display("Amenities:")
+            @Html.Label("Amenities:")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Ameneties)

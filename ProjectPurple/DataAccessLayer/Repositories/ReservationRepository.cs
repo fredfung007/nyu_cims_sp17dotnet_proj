@@ -18,8 +18,8 @@ namespace DataAccessLayer.Repositories
 
         public Reservation GetReservation(Guid id)
         {
-            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices).
-                    Include(rsv=>rsv.RoomType).FirstOrDefault(rsv=>rsv.Id == id);
+            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices)
+                .Include(rsv=>rsv.AspNetUser).FirstOrDefault(rsv=>rsv.Id == id);
         }
 
         public IEnumerable<Reservation> GetReservations()
@@ -46,6 +46,14 @@ namespace DataAccessLayer.Repositories
         public void UpdateReservation(Reservation reservation)
         {
             _context.Entry(reservation).State = EntityState.Modified;
+        }
+
+        public void UpdateReservationWithAspnetUser(Reservation reservation)
+        {
+            _context.Entry(reservation).State = EntityState.Modified;
+            // shabi
+            _context.Entry(reservation.AspNetUser.Profile).State = EntityState.Detached;
+            _context.Entry(reservation.AspNetUser).State = EntityState.Detached;
         }
 
         public IEnumerable<Reservation> GetReservationsByUserId(string username)
@@ -117,7 +125,29 @@ namespace DataAccessLayer.Repositories
         // }
         public void Save()
         {
-            _context.SaveChanges();
+            //_context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting
+                        // the current instance as InnerException
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
+
         }
 
         #region IDisposable Support

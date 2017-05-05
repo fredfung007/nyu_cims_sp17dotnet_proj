@@ -42,13 +42,13 @@ namespace BusinessLogic.Handlers
             List<Guest> guests, List<int> prices)
         {
             var dailyPriceList = new List<DailyPrice>();
-            Guid RsvId = new Guid();
+            Guid RsvId = Guid.NewGuid();
 
             foreach (int price in prices)
             {
                 dailyPriceList.Add(new DailyPrice
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     Date = start,
                     BillingPrice = price
                 });
@@ -56,20 +56,27 @@ namespace BusinessLogic.Handlers
             }
 
             AspNetUserHandler userHandler = new AspNetUserHandler();
-            _reservationRepository.InsertReservation(new Reservation
+            var reservation = new Reservation
             {
                 Id = RsvId,
-                AspNetUser = userHandler.GetAspNetUser(username),
+                //AspNetUser = userHandler.GetAspNetUser(username),
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
                 IsPaid = false,
                 IsCancelled = false,
-                DailyPrices = new List<DailyPrice>(),
+                DailyPrices = dailyPriceList,
                 RoomType = type
-            });
+            };
 
+            _reservationRepository.InsertReservation(reservation);
             _reservationRepository.Save();
+
+            var newReservation = _reservationRepository.GetReservation(RsvId);
+            newReservation.AspNetUser = userHandler.GetAspNetUser(username);
+            _reservationRepository.UpdateReservationWithAspnetUser(newReservation);
+            _reservationRepository.Save();
+
             return RsvId;
         }
 
