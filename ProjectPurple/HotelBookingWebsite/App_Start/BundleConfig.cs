@@ -29,6 +29,9 @@ namespace HotelBookingWebsite
 
             bundles.Add(new StyleBundle("~/Reservation/css").Include(
                       "~/Content/createview.css"));
+
+            bundles.Add(new StyleBundle("~/Reservation/printcss").Include(
+                      "~/Content/print.css"));
         }
     }
 }

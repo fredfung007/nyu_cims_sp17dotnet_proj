@@ -1,5 +1,7 @@
 ﻿using DataAccessLayer.Constants;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelBookingWebsite.Models
 {
@@ -24,10 +26,30 @@ namespace HotelBookingWebsite.Models
         public DateTime checkOutDate { get; set; }
     }
 
-    public class OccupanceyModel
+    public class InventoryModel
     {
         public ROOM_TYPE type { get; set; }
         public int inventory { get; set; }
-        public int occupancey { get; set; }
+        public int occupancy { get; set; }
+    }
+
+    public class OccupancyModel
+    {
+        public DateTime date { get; set; }
+        public string rate { get; set; }
+    }
+
+    public class DashboardModel
+    {
+        public List<InventoryModel> inventory { get; set; }
+        public List<CheckInListModel> checkInList { get; set; }
+        public List<CheckOutListModel> checkOutList { get;  set;}
+        public OccupancyModel occupancy { get; set; }
+    }
+
+    public class CheckInOutModel
+    {
+        public Guid confirmationNum { get; set; }
+        public bool isSuccess { get; set; }
     }
 }

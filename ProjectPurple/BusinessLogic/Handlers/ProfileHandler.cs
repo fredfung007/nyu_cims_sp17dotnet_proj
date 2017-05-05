@@ -1,5 +1,6 @@
 ﻿using System;
 using DataAccessLayer;
+using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
@@ -74,7 +75,6 @@ namespace BusinessLogic.Handlers
             Profile profile = _profileRepository.GetProfile(profileId);
             profile.Address = address;
             _profileRepository.UpdateProfile(profile);
-            _profileRepository.Save();
         }
 
         /// <summary>
@@ -87,7 +87,6 @@ namespace BusinessLogic.Handlers
             Profile profile = _profileRepository.GetProfile(profileId);
             profile.Email = email;
             _profileRepository.UpdateProfile(profile);
-            _profileRepository.Save();
         }
 
         /// <summary>
@@ -100,12 +99,26 @@ namespace BusinessLogic.Handlers
             Profile profile = _profileRepository.GetProfile(profileId);
             profile.PhoneNumber = phoneNumber;
             _profileRepository.UpdateProfile(profile);
-            _profileRepository.Save();
         }
 
-        // TODO set room preference
+        public void SetRoomPreference(Guid profileId, ROOM_TYPE roomType)
+        {
+            Profile profile = _profileRepository.GetProfile(profileId);
+            profile.PreferredRoomType = roomType;
+            _profileRepository.UpdateProfile(profile);
+        }
 
-        // TODO loyalty program number
-       
+        public void SetName(Guid profileId, String firstName, String lastName)
+        {
+            Profile profile = _profileRepository.GetProfile(profileId);
+            profile.FirstName = firstName;
+            profile.LastName = lastName;
+            _profileRepository.UpdateProfile(profile);
+        }
+
+        public void Save()
+        {
+            _profileRepository.Save();
+        }
     }
 }

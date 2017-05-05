@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HotelBookingWebsite.Models.OccupanceyModel>
+﻿@model IEnumerable<HotelBookingWebsite.Models.InventoryModel>
 
 <table class="table">
     <tr>
@@ -17,13 +17,14 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @* TODO make it mutable *@
             @Html.DisplayFor(modelItem => item.type)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.inventory)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.occupancey)
+            @Html.DisplayFor(modelItem => item.occupancy)
         </td>
     </tr>
 }

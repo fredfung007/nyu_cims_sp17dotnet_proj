@@ -45,6 +45,8 @@ namespace HotelBookingWebsite.Models
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public List<int> PriceList { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsConfirmed { get; set; }
     }
 
     public class ResultViewModel

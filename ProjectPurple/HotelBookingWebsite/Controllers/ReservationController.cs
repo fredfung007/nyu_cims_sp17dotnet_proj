@@ -18,11 +18,13 @@ namespace HotelBookingWebsite.Controllers
     {
         private ReservationHandler _reservationHandler;
         private RoomHandler _roomHandler;
+        private AspNetUserHandler _userHandler;
 
         public ReservationController()
         {
             _reservationHandler = new ReservationHandler();
             _roomHandler = new RoomHandler();
+            _userHandler = new AspNetUserHandler();
         }
 
         // GET: Reservation
@@ -35,6 +37,8 @@ namespace HotelBookingWebsite.Controllers
         {
             Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTime.Now);
+
             return View(new ConfirmationViewModel
             {
                 ConfirmationId = reservation.Id.ToString(),
@@ -43,6 +47,7 @@ namespace HotelBookingWebsite.Controllers
                 Guests = reservation.Guests.ToList(),
                 Type = reservation.RoomType.Type.ToString(),
                 Ameneties = reservation.RoomType.Ameneties,
+                IsCanceled = reservation.IsCancelled,
             });
         }
 
@@ -53,6 +58,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View(model);
             }
+            
             // return redirct to profile url TODO
             return RedirectToAction("Cancel", new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
@@ -154,7 +160,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     StartDate = startDate,
                     EndDate = endDate,
-                    Name = type.ToString(),
+                    Name = NameString.ROOM_TYPE_NAME[(int) type],
                     Type = type,
                     // try async
                     //AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut),
@@ -256,16 +262,17 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Expired");
             }
 
-            string UserId = User.Identity.Name;
-
-            // TODO
-            /*
-             * Fill in the data to guest
-            */
-
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             var guests = _reservationHandler.GetEmptyGuestList(type);
+
+            // TOOD check here use extension function
+            if (User.Identity.IsAuthenticated)
+            {
+                var profile = _userHandler.GetProfile(User.Identity.Name);
+                guests[0].FirstName = profile.FirstName;
+                guests[1].LastName = profile.LastName;
+            }
 
             return View(new InputGuestViewModel
             {
@@ -388,6 +395,11 @@ namespace HotelBookingWebsite.Controllers
             var result = ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel;
             var roomInfo = result.RoomPriceDetails[result.SelectedIndex];
             var userName = User.Identity.Name;
+
+            if (result.IsConfirmed && result.ConfirmationId != null)
+            {
+                return RedirectToAction("Confirm", new { ConfirmationId = result.ConfirmationId });
+            }
 
             if (!_roomHandler.IsAvailable(roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate))
             {
