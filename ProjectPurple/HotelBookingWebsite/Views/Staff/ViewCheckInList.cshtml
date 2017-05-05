@@ -23,8 +23,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @* TODO add check in link *@
-            @Html.DisplayFor(modelItem => item.Id)
+            @* TODO: NEED DATA TO TEST *@
+            @Html.ActionLink(item.Id.ToString(), "CheckIn", "Staff", new { ConfirmationNum = item.Id })
+            
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.firstName)
