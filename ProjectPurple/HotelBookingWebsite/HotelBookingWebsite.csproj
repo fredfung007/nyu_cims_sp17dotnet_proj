@@ -280,6 +280,7 @@
     <Content Include="Views\Profile\UpcommingReservations.cshtml" />
     <Content Include="Views\Account\RegisterStaff.cshtml" />
     <Content Include="Views\Reservation\Error.cshtml" />
+    <Content Include="Views\Account\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

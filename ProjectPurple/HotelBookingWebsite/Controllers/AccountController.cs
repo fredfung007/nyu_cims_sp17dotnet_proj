@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using BusinessLogic.Handlers;
 using BusinessLogic.Helpers;
 using DataAccessLayer.Constructor;
 using DataAccessLayer.EF;
+using HotelBookingWebsite.Filters;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -199,6 +201,56 @@ namespace HotelBookingWebsite.Controllers
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
+            }
+
+            return View(model);
+        }
+
+        [CustomAuthorize]
+        public ActionResult Update(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(UpdateProfileViewModel model, string returnUrl)
+        {
+            var response = Request["g-recaptcha-response"];
+            string secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
+            var client = new WebClient();
+            var recap = client.DownloadString(string.Format(
+                "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            var obj = JObject.Parse(recap);
+            var status = (bool)obj.SelectToken("success");
+            if (!status)
+            {
+                ViewBag.Message = "Google reCaptcha validation failed";
+            }
+            else if (ModelState.IsValid)
+            {
+                var address = new AddressConstructor(Guid.NewGuid()).AddFirstLine(model.Address1)
+                    .AddSecondLine(model.Address2)
+                    .AddCity(model.City)
+                    .AddState(model.State)
+                    .AddZipcode(model.PostalCode)
+                    .Build();
+                var aspNetUserHandler = new AspNetUserHandler();
+                var profileId = aspNetUserHandler.GetProfile(User.Identity.GetUserName()).Id;
+                    
+                var profileHandler = new ProfileHandler();
+                profileHandler.SetAddress(profileId,address);
+                profileHandler.SetName(profileId, model.FirstName,model.LastName);
+                profileHandler.SetPhoneNumber(profileId,model.PhoneNumber);
+                profileHandler.SetRoomPreference(profileId,model.PreferredRoomType);
+                profileHandler.Save();
+                AspNetUser user = aspNetUserHandler.GetAspNetUser(User.Identity.GetUserName());
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                return RedirectToLocal(returnUrl);
             }
 
             return View(model);

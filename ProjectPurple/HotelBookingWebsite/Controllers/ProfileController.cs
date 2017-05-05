@@ -38,11 +38,5 @@ namespace HotelBookingWebsite.Controllers
                 .ToList();
             return View(reservationViewModels);
         }
-
-        [HttpGet]
-        public async Task<ActionResult> LoyaltyProgram()
-        {
-            return View();
-        }
     }
 }
