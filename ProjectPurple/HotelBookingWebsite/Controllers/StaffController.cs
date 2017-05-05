@@ -128,7 +128,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        public ActionResult checkOutAllExpired()
+        public ActionResult CheckOutAllExpired()
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
 
@@ -142,7 +142,7 @@ namespace HotelBookingWebsite.Controllers
                 }
             }
 
-            return Index(null);
+            return View();
         }
 
         private List<CheckOutListModel> getViewCheckoutListAll()
