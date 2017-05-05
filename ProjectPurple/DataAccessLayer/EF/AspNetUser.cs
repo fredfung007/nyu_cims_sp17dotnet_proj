@@ -22,8 +22,8 @@ namespace DataAccessLayer.EF
         public DateTime? LoyaltyYear { get; set; }
         public int LoyaltyProgress { get; set; }
 
-        public virtual Profile Profile { get; set; } = new Profile();
+        public virtual Profile Profile { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; } = new HashSet<Reservation>();
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }
