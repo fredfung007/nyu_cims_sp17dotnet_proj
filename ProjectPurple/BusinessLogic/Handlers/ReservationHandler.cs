@@ -218,22 +218,23 @@ namespace BusinessLogic.Handlers
             int stayLength = 0;
             AspNetUser user = reservation.AspNetUser;
             DateTime checkInDate = (DateTime)reservation.CheckInDate;
-
-            if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
+            if (user != null)
             {
-                // Checkout date is the same year as the loyalty program
-                stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
-                reservation.AspNetUser.LoyaltyProgress += stayLength;
+                if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
+                {
+                    // Checkout date is the same year as the loyalty program
+                    stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
+                    reservation.AspNetUser.LoyaltyProgress += stayLength;
+                }
+                else
+                {
+                    // Checkout date is a new year
+                    var newYear = new DateTime(today.Year, 1, 1);
+                    stayLength = (today - newYear).Days;
+                    reservation.AspNetUser.LoyaltyProgress = stayLength;
+                    reservation.AspNetUser.LoyaltyYear = newYear;
+                }
             }
-            else
-            {
-                // Checkout date is a new year
-                var newYear = new DateTime(today.Year, 1, 1);
-                stayLength = (today - newYear).Days;
-                reservation.AspNetUser.LoyaltyProgress = stayLength;
-                reservation.AspNetUser.LoyaltyYear = newYear;
-            }
-
             reservation.CheckOutDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
