@@ -3,7 +3,7 @@
 <table class="table">
     <tr>
         <th>
-            E-Mail
+            Confirmation #
         </th>
         <th>
             First Name
@@ -26,7 +26,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.email)
+            @* TODO: NEED DATA TO TEST *@
+            @Html.ActionLink(item.Id.ToString(), "CheckOut", "Staff", new { ConfirmationNum = item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.firstName)
@@ -43,7 +44,6 @@
         <td>
             @Html.DisplayFor(modelItem => item.actualCheckInDate)
         </td>
-        @* TODO: add check out button *@
     </tr>
 }
 

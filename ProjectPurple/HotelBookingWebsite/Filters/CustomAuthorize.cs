@@ -21,4 +21,23 @@ namespace HotelBookingWebsite.Filters
             }
         }
     }
+
+    public class StaffAuthorize : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext.HttpContext.User.Identity == null ||
+                !filterContext.HttpContext.User.Identity.IsAuthenticated ||
+                filterContext.HttpContext.User.Identity.Name != "staff"
+                )
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary
+                    {
+                        {"controller", "Home" },
+                        {"action", "Index" }
+                    });
+            }
+        }
+    }
 }

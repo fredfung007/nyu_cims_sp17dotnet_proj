@@ -21,8 +21,8 @@ namespace HotelBookingWebsite
 
             routes.MapRoute(
                 name: "StaffDefault",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Staff", action = "ViewCheckInList", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "Staff", action = "Index", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
