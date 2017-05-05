@@ -81,17 +81,27 @@ namespace HotelBookingWebsite.Controllers
         {
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTime.Today));
             List<CheckInListModel> models = new List<CheckInListModel>();
-            foreach(Reservation reservation in reservations)
+            foreach (Reservation reservation in reservations)
             {
-                models.Add(new CheckInListModel
+                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                string firstName = "";
+                string lastName = "";
+                if (firstGuest != null)
                 {
-                    Id = reservation.Id,
-                    email = reservation.AspNetUser.Email,
-                    firstName = reservation.AspNetUser.Profile.FirstName,
-                    lastName = reservation.AspNetUser.Profile.LastName,
-                    checkInDate = reservation.StartDate,
-                    checkOutDate = reservation.EndDate
-                });
+                    firstName = firstGuest.FirstName;
+                    lastName = firstGuest.LastName;
+                }
+                if (reservation.CheckInDate == null && !reservation.IsCancelled)
+                {
+                    models.Add(new CheckInListModel
+                    {
+                        Id = reservation.Id,
+                        firstName = firstName,
+                        lastName = lastName,
+                        checkInDate = reservation.StartDate,
+                        checkOutDate = reservation.EndDate
+                    });
+                }
             }
             return models;
         }
@@ -107,16 +117,26 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                models.Add(new CheckOutListModel
+                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                string firstName = "";
+                string lastName = "";
+                if (firstGuest != null)
                 {
-                    Id = reservation.Id,
-                    email = reservation.AspNetUser.Email,
-                    firstName = reservation.AspNetUser.Profile.FirstName,
-                    lastName = reservation.AspNetUser.Profile.LastName,
-                    checkInDate = reservation.StartDate,
-                    checkOutDate = reservation.EndDate,
-                    actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
-                });
+                    firstName = firstGuest.FirstName;
+                    lastName = firstGuest.LastName;
+                }
+                if (reservation.CheckInDate != null && reservation.CheckOutDate == null && !reservation.IsCancelled)
+                {
+                    models.Add(new CheckOutListModel
+                    {
+                        Id = reservation.Id,
+                        firstName = firstName,
+                        lastName = lastName,
+                        checkInDate = reservation.StartDate,
+                        checkOutDate = reservation.EndDate,
+                        actualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                    });
+                }
             }
             return models;
         }
@@ -151,16 +171,26 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                models.Add(new CheckOutListModel
+                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                string firstName = "";
+                string lastName = "";
+                if (firstGuest != null)
                 {
-                    Id = reservation.Id,
-                    email = reservation.AspNetUser.Email,
-                    firstName = reservation.AspNetUser.Profile.FirstName,
-                    lastName = reservation.AspNetUser.Profile.LastName,
-                    checkInDate = reservation.StartDate,
-                    checkOutDate = reservation.EndDate,
-                    actualCheckInDate = reservation.CheckInDate?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
-                });
+                    firstName = firstGuest.FirstName;
+                    lastName = firstGuest.LastName;
+                }
+                if (reservation.CheckInDate != null && reservation.CheckOutDate == null && !reservation.IsCancelled)
+                {
+                    models.Add(new CheckOutListModel
+                    {
+                        Id = reservation.Id,
+                        firstName = firstName,
+                        lastName = lastName,
+                        checkInDate = reservation.StartDate,
+                        checkOutDate = reservation.EndDate,
+                        actualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                    });
+                }
             }
             return models;
         }
@@ -179,7 +209,6 @@ namespace HotelBookingWebsite.Controllers
                 models.Add(new InventoryModel {
                     type = type,
                     inventory = _roomHandler.GetRoomInventory(type),
-                    occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
                 });
             }
             return models;

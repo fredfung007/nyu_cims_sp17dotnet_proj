@@ -18,8 +18,8 @@ namespace DataAccessLayer.Repositories
 
         public Reservation GetReservation(Guid id)
         {
-            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv => rsv.DailyPrices)
-                .FirstOrDefault(rsv => rsv.Id == id);
+            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices).
+                    FirstOrDefault(rsv=>rsv.Id == id);
         }
 
         public IEnumerable<Reservation> GetReservations()
@@ -78,7 +78,9 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
         {
-            return _context.Reservations.Where(reservation => reservation.EndDate == endDate
+            DateTime tomorrow = endDate.AddDays(1);
+            return _context.Reservations.Where(reservation => reservation.EndDate >= endDate
+                                                              && reservation.EndDate < tomorrow
                                                               && reservation.CheckInDate != null
                                                               && reservation.CheckInDate < endDate)
                 .ToList();
@@ -98,7 +100,11 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
         {
-            return _context.Reservations.Where(reservation => reservation.StartDate == startDate).ToList();
+            DateTime tomorrow = startDate.AddDays(1);
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(reservation => reservation.StartDate >= startDate && reservation.StartDate < tomorrow).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)

@@ -111,8 +111,13 @@ namespace DataAccessLayer.Repositories
 
         public int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
         {
-            return _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0)
-                .Max(x => x.Occupancy);
+            IEnumerable<RoomOccupancy> occupancies = _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0);
+            int maxOccupancy = 0;
+            foreach(RoomOccupancy occupancy in occupancies)
+            {
+                maxOccupancy = maxOccupancy < occupancy.Occupancy ? occupancy.Occupancy : maxOccupancy;
+            }
+            return maxOccupancy;
         }
 
         #region IDisposable Support
