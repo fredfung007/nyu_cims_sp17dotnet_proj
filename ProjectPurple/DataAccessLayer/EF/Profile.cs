@@ -23,6 +23,5 @@ namespace DataAccessLayer.EF
 
         public virtual Address Address { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; } = new HashSet<Reservation>();
     }
 }
