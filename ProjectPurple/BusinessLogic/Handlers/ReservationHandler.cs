@@ -14,6 +14,7 @@ namespace BusinessLogic.Handlers
     /// </summary>
     public class ReservationHandler
     {
+        // TODO add a class for this to maintaining the search reasults with expiration date
         public static Dictionary<string, TimeExpirationType> SearchResultPool = new Dictionary<string, TimeExpirationType>();
         
         private readonly IReservationRepository _reservationRepository;
