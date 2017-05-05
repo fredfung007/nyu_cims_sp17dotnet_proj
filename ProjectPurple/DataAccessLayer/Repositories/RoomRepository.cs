@@ -102,18 +102,16 @@ namespace DataAccessLayer.Repositories
         /// <returns></returns>
         public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
         {
-            throw new NotImplementedException();
-            //List<RoomOccupancy> roomOccupancies =
-            //    _context.RoomOccupancies.Where(ro => ro.ROOM_TYPE.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
-            //return roomOccupancies;
+            var roomOccupancies =
+                _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0).ToList();
+            return roomOccupancies;
         }
 
         public int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
         {
-            throw new NotImplementedException();
-            //return _context.RoomOccupancies.Where(ro => ro.ROOM_TYPE.Type == type && ro.Date.CompareTo(date) >= 0).Max(x => x.Occupancy);
+            return _context.RoomOccupancies.Where(ro => ro.RoomType.Type == type && ro.Date.CompareTo(date) >= 0)
+                .Max(x => x.Occupancy);
         }
-
 
         #region IDisposable Support
 
