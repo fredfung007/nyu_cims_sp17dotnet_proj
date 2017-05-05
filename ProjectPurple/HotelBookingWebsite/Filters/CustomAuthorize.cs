@@ -26,12 +26,22 @@ namespace HotelBookingWebsite.Filters
         }
     }
 
-    // TODO check identity (logged in and is staff) when ~/staff/ is visited
     public class StaffAuthorize : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuting(filterContext);
+            if (filterContext.HttpContext.User.Identity == null ||
+                !filterContext.HttpContext.User.Identity.IsAuthenticated ||
+                filterContext.HttpContext.User.Identity.Name != "staff"
+                )
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary
+                    {
+                        {"controller", "Home" },
+                        {"action", "Index" }
+                    });
+            }
         }
     }
 }

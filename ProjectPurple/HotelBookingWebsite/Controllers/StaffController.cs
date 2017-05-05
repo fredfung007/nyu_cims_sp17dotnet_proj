@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Handlers;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
+using HotelBookingWebsite.Filters;
 using HotelBookingWebsite.Models;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         // GET: Staff
+        [StaffAuthorize]
         public ActionResult Index()
         {
             return View(new DashboardModel
@@ -36,6 +38,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
+        [StaffAuthorize]
         public async Task<ActionResult> Occupancy(DateTime? date)
         {
             DateTime checkDate = date ?? DateTime.Today;
@@ -46,6 +49,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
+        [StaffAuthorize]
         public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -56,6 +60,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
+        [StaffAuthorize]
         public async Task<ActionResult> CheckOut(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -67,7 +72,6 @@ namespace HotelBookingWebsite.Controllers
 
         private List<CheckInListModel> getViewCheckInList()
         {
-            //TODO: add another layer so that we do not use EF.Reservation directly here
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTime.Today));
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach(Reservation reservation in reservations)
@@ -163,6 +167,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpPost]
+        [StaffAuthorize]
         public async Task<ActionResult> ModifiyRoomInventory(ROOM_TYPE type, int value)
         {
             try
