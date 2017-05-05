@@ -204,7 +204,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="date"></param>
         /// <returns>occupency percentage</returns>
-        private double GetHotelOccupancy(DateTime date)
+        public double GetHotelOccupancy(DateTime date)
         {
             int totalQuantity = 0;
             int totalOccupation = 0;
