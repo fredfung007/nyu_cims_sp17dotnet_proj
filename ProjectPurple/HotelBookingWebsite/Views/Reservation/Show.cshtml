@@ -1,7 +1,7 @@
 ﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
 
 @{
-    if (Model.isCanceled)
+    if (Model.IsCanceled)
     {
         ViewBag.Title = "Your Reservation is Canceled";
     } else {
@@ -80,5 +80,5 @@
 </div>
 
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Search")
 </p>

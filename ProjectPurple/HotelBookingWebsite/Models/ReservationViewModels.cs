@@ -29,6 +29,8 @@ namespace HotelBookingWebsite.Models
         public int SelectedIndex { get; set; }
         public List<Guest> Guests { get; set; }
         public Guid ReservationId { get; set; }
+        public bool IsConfirmed { get; set; }
+        public string ConfirmationId { get; set; }
     }
 
     public class ConfirmationViewModel
@@ -43,7 +45,8 @@ namespace HotelBookingWebsite.Models
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public List<int> PriceList { get; set; }
-        public bool isCanceled { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsConfirmed { get; set; }
     }
 
     public class ResultViewModel

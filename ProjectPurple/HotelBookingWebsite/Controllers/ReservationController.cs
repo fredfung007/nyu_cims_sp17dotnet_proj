@@ -47,7 +47,7 @@ namespace HotelBookingWebsite.Controllers
                 Guests = reservation.Guests.ToList(),
                 Type = reservation.RoomType.Type.ToString(),
                 Ameneties = reservation.RoomType.Ameneties,
-                isCanceled = reservation.IsCancelled,
+                IsCanceled = reservation.IsCancelled,
             });
         }
 
@@ -160,7 +160,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     StartDate = startDate,
                     EndDate = endDate,
-                    Name = type.ToString(),
+                    Name = NameString.ROOM_TYPE_NAME[(int) type],
                     Type = type,
                     // try async
                     //AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut),
@@ -396,6 +396,11 @@ namespace HotelBookingWebsite.Controllers
             var roomInfo = result.RoomPriceDetails[result.SelectedIndex];
             var userName = User.Identity.Name;
 
+            if (result.IsConfirmed && result.ConfirmationId != null)
+            {
+                return RedirectToAction("Confirm", new { ConfirmationId = result.ConfirmationId });
+            }
+
             if (!_roomHandler.IsAvailable(roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate))
             {
                 return RedirectToAction("NotAvailable", new { SessionId = model.SessionId });
@@ -407,7 +412,9 @@ namespace HotelBookingWebsite.Controllers
             //    roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate, model.Guests, roomInfo.PriceList.ToList());
 
             // TODO delete here? 
-            ReservationHandler.SearchResultPool.Remove(model.SessionId);
+            //ReservationHandler.SearchResultPool.Remove(model.SessionId);
+            result.IsConfirmed = true;
+            result.ConfirmationId = reservationId.ToString();
 
             return RedirectToAction("Confirm", new { ConfirmationId = reservationId.ToString() });
         }
