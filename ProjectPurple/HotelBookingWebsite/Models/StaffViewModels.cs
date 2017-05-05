@@ -8,7 +8,6 @@ namespace HotelBookingWebsite.Models
     public class CheckOutListModel
     {
         public Guid Id { get; set; }
-        public string email { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public DateTime checkInDate { get; set; }
@@ -19,7 +18,6 @@ namespace HotelBookingWebsite.Models
     public class CheckInListModel
     {
         public Guid Id { get; set; }
-        public string email { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public DateTime checkInDate { get; set; }
@@ -30,7 +28,6 @@ namespace HotelBookingWebsite.Models
     {
         public ROOM_TYPE type { get; set; }
         public int inventory { get; set; }
-        public int occupancy { get; set; }
     }
 
     public class OccupancyModel

@@ -1,34 +1,41 @@
 ﻿@using HotelBookingWebsite.Models
-
 @model List<ConfirmationViewModel>
 @{
     ViewBag.Title = "Upcoming Reservations";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <h2>@ViewBag.Title</h2>
 <div>
     <h4>You have @Model.Count Reservations.</h4>
-    <hr/>
-    @foreach (var item in Model)
-    {
+    <hr />
+    <table>
+        <col width="330">
+        <col width="200">
+        <col width="200">
+        <col width="150">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConfirmationId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guests.Count)
-            </td>
+            <th>Confirmation Id</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Guest Count</th>
         </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.ConfirmationId, "Confirm", "Reservation", new {item.ConfirmationId},null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guests.Count)
+                </td>
+            </tr>
+        }
+    </table>
 </div>
