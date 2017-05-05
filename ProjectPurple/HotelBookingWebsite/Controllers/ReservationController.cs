@@ -396,11 +396,12 @@ namespace HotelBookingWebsite.Controllers
 
             // comment for debug
             Guid reservationId = Guid.NewGuid();
-            //(ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).ReservationId = _reservationHandler.MakeReservation(userName,
-            //    roomInfo.Type, roomInfo.StartDate, roomInfo.EndDate, model.Guests, roomInfo.PriceList.ToList());
+            result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate, 
+                roomInfo.EndDate, result.Guests, roomInfo.PriceList.ToList());
 
             // TODO delete here? 
-            ReservationHandler.SearchResultPool.Remove(model.SessionId);
+            result.IsConfirmed = true;
+            //ReservationHandler.SearchResultPool.Remove(model.SessionId);
 
             return RedirectToAction("Confirm", new { ConfirmationId = reservationId.ToString() });
         }

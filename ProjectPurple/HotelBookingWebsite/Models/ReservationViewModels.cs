@@ -29,6 +29,8 @@ namespace HotelBookingWebsite.Models
         public int SelectedIndex { get; set; }
         public List<Guest> Guests { get; set; }
         public Guid ReservationId { get; set; }
+        public bool IsConfirmed { get; set; }
+        public string ConfirmationId { get; set; }
     }
 
     public class ConfirmationViewModel
