@@ -73,11 +73,6 @@
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
-    <Compile Include="Migrations\201705042230296_54630.cs" />
-    <Compile Include="Migrations\201705042230296_54630.Designer.cs">
-      <DependentUpon>201705042230296_54630.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\IAuthRepository.cs" />
@@ -96,11 +91,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705042230296_54630.resx">
-      <DependentUpon>201705042230296_54630.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
