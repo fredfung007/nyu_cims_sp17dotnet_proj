@@ -38,8 +38,12 @@ namespace HotelBookingWebsite.Controllers
 
             var reservationViewModels = upComingReservations.Select(reservation => new ConfirmationViewModel
                 {
-                    ConfirmationId = reservation.Id.ToString()
-                })
+                    ConfirmationId = reservation.Id.ToString(),
+                    StartDate = reservation.StartDate,
+                    EndDate = reservation.EndDate,
+                    Guests = reservation.Guests
+
+            })
                 .ToList();
             return View(reservationViewModels);
         }

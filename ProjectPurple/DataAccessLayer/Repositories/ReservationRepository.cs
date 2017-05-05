@@ -18,13 +18,14 @@ namespace DataAccessLayer.Repositories
 
         public Reservation GetReservation(Guid id)
         {
-            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices).
-                    Include(rsv=>rsv.RoomType).FirstOrDefault(rsv=>rsv.Id == id);
+            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv => rsv.DailyPrices)
+                .FirstOrDefault(rsv => rsv.Id == id);
         }
 
         public IEnumerable<Reservation> GetReservations()
         {
-            return _context.Reservations.Include(rsv => rsv.AspNetUser).ToList();
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.Guests).ToList();
         }
 
         public IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end)
