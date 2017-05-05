@@ -18,11 +18,13 @@ namespace HotelBookingWebsite.Controllers
     {
         private ReservationHandler _reservationHandler;
         private RoomHandler _roomHandler;
+        private AspNetUserHandler _userHandler;
 
         public ReservationController()
         {
             _reservationHandler = new ReservationHandler();
             _roomHandler = new RoomHandler();
+            _userHandler = new AspNetUserHandler();
         }
 
         // GET: Reservation
@@ -35,6 +37,8 @@ namespace HotelBookingWebsite.Controllers
         {
             Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTime.Now);
+
             return View(new ConfirmationViewModel
             {
                 ConfirmationId = reservation.Id.ToString(),
@@ -43,6 +47,7 @@ namespace HotelBookingWebsite.Controllers
                 Guests = reservation.Guests.ToList(),
                 Type = reservation.RoomType.Type.ToString(),
                 Ameneties = reservation.RoomType.Ameneties,
+                isCanceled = reservation.IsCancelled,
             });
         }
 
@@ -53,6 +58,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View(model);
             }
+            
             // return redirct to profile url TODO
             return RedirectToAction("Cancel", new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
@@ -256,16 +262,17 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Expired");
             }
 
-            string UserId = User.Identity.Name;
-
-            // TODO
-            /*
-             * Fill in the data to guest
-            */
-
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             var guests = _reservationHandler.GetEmptyGuestList(type);
+
+            // TOOD check here use extension function
+            if (User.Identity.IsAuthenticated)
+            {
+                var profile = _userHandler.GetProfile(User.Identity.Name);
+                guests[0].FirstName = profile.FirstName;
+                guests[1].LastName = profile.LastName;
+            }
 
             return View(new InputGuestViewModel
             {

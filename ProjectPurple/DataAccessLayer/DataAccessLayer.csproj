@@ -73,7 +73,6 @@
     <Compile Include="EF\Reservation.cs" />
     <Compile Include="EF\RoomOccupancy.cs" />
     <Compile Include="EF\RoomType.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\IAuthRepository.cs" />
@@ -85,7 +84,6 @@
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Migrations\TestDataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
