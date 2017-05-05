@@ -1,32 +1,30 @@
-﻿@model IEnumerable<HotelBookingWebsite.Models.OccupancyModel>
+﻿@model HotelBookingWebsite.Models.OccupancyModel
 
-<table class="table">
-    <tr>
-        <th>
-            Room Type
-        </th>
-        <th>
-            Total Amount 
-        </th>
-        <th>
-            Number of Rooms Occupied
-        </th>
-        <th></th>
-    </tr>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @* TODO make it mutable *@
-            @Html.DisplayFor(modelItem => item.type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.inventory)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.occupancy)
-        </td>
-    </tr>
-}
+<div class="form-horizontal">
+    <h3>Occupancy: @Html.DisplayFor(occupancy => occupancy.rate)</h3>
+    <div class="form-group">
+        @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-sm-2" })
+        <div class="col-sm-3">
+            <div class="input-group date" id="checkDatePicker">
+                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <script>
+        $("#checkDatePicker").datetimepicker(
+        {
+            defaultDate: '@Model.date.ToString("yyyy-MM-dd")',
+            format: 'MM-DD-YYYY',
+        });
+    </script>
 
-</table>
+</div>

@@ -8,7 +8,7 @@
 @Html.AntiForgeryToken()
 <h1> @ViewBag.Title </h1>
 <h2>Room Occupancies</h2>
-@Html.Partial("Occupancy", Model.occupancy)
+@Html.Partial("Inventory", Model.inventory)
 <h2>Upcoming Reservations for Checking-In</h2>
 @Html.Partial("ViewCheckInList", Model.checkInList)
 <h2>Reservations Checked-In</h2>

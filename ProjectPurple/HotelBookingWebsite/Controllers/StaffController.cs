@@ -4,7 +4,9 @@ using DataAccessLayer.EF;
 using HotelBookingWebsite.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -29,7 +31,17 @@ namespace HotelBookingWebsite.Controllers
             {
                 checkInList = getViewCheckInList(),
                 checkOutList = getViewCheckoutListAll(),
-                occupancy = getOccupancy()
+                inventory = getInventory()
+            });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Occupancy(DateTime? date)
+        {
+            DateTime checkDate = date ?? DateTime.Today;
+            return View(new OccupancyModel {
+                date = checkDate,
+                rate = _roomHandler.GetHotelOccupancy(checkDate).ToString("P", CultureInfo.InvariantCulture)
             });
         }
 
@@ -130,12 +142,12 @@ namespace HotelBookingWebsite.Controllers
             return View(getViewCheckoutListAll());
         }
 
-        private List<OccupancyModel> getOccupancy()
+        private List<InventoryModel> getInventory()
         {
-            List<OccupancyModel> models = new List<OccupancyModel>();
+            List<InventoryModel> models = new List<InventoryModel>();
             foreach(ROOM_TYPE type in _roomHandler.GetRoomTypes())
             {
-                models.Add(new OccupancyModel {
+                models.Add(new InventoryModel {
                     type = type,
                     inventory = _roomHandler.GetRoomInventory(type),
                     occupancy = _roomHandler.GetRoomInventory(type) - _roomHandler.GetBookedRoomOnDate(type, DateTime.Today)
@@ -145,9 +157,9 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        private ActionResult Occupancy()
+        private ActionResult Inventory()
         {
-            return View(getOccupancy());
+            return View(getInventory());
         }
 
         [HttpPost]
