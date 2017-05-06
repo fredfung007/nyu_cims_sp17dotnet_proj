@@ -38,7 +38,7 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end,
+        public Guid MakeReservation(string userName, ROOM_TYPE type, DateTime start, DateTime end,
             List<Guest> guests, List<int> prices)
         {
             var dailyPriceList = new List<DailyPrice>();
@@ -73,9 +73,12 @@ namespace BusinessLogic.Handlers
             _reservationRepository.Save();
 
             var newReservation = _reservationRepository.GetReservation(RsvId);
-            newReservation.AspNetUser = userHandler.GetAspNetUser(username);
-            _reservationRepository.UpdateReservationWithAspnetUser(newReservation);
-            _reservationRepository.Save();
+            //newReservation.AspNetUser = userHandler.GetAspNetUser(userName);
+            if (userName != null)
+            {
+                _reservationRepository.UpdateReservationWithAspnetUser(newReservation, userName);
+                _reservationRepository.Save();
+            }
 
             return RsvId;
         }

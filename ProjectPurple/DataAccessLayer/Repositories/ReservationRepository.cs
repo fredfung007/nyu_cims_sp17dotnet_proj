@@ -49,12 +49,17 @@ namespace DataAccessLayer.Repositories
             _context.Entry(reservation).State = EntityState.Modified;
         }
 
-        public void UpdateReservationWithAspnetUser(Reservation reservation)
+        public void UpdateReservationWithAspnetUser(Reservation reservation, string userName)
         {
-            _context.Entry(reservation).State = EntityState.Modified;
-            // shabi
-            _context.Entry(reservation.AspNetUser.Profile).State = EntityState.Detached;
-            _context.Entry(reservation.AspNetUser).State = EntityState.Detached;
+            //_context.Entry(reservation).State = EntityState.Modified;
+       
+            var aspUser = _context.AspNetUsers.Include(user => user.Profile).FirstOrDefault(user => user.UserName == userName);
+            var attachedEntry = _context.Entry(reservation);
+            reservation.AspNetUser = aspUser;
+
+            attachedEntry.CurrentValues.SetValues(reservation);
+            //_context.Entry(reservation.AspNetUser.Profile).State = EntityState.Detached;
+            //_context.Entry(reservation.AspNetUser).State = EntityState.Detached;
         }
 
         public IEnumerable<Reservation> GetReservationsByUserId(string username)

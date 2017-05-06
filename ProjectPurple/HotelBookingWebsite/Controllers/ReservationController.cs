@@ -394,7 +394,6 @@ namespace HotelBookingWebsite.Controllers
 
             var result = ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel;
             var roomInfo = result.RoomPriceDetails[result.SelectedIndex];
-            var userName = User.Identity.Name;
 
             if (result.IsConfirmed && result.ConfirmationId != null)
             {
@@ -406,6 +405,11 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("NotAvailable", new { SessionId = model.SessionId });
             }
 
+            string userName = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                userName = User.Identity.Name;
+            }
             // comment for debug
             result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate, 
                 roomInfo.EndDate, result.Guests, roomInfo.PriceList.ToList());
