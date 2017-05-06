@@ -46,13 +46,14 @@ namespace BusinessLogic.Handlers
 
             foreach (int price in prices)
             {
+                var curDate = start;
                 dailyPriceList.Add(new DailyPrice
                 {
                     Id = Guid.NewGuid(),
-                    Date = start,
+                    Date = curDate,
                     BillingPrice = price
                 });
-                start = start.AddDays(1);
+                curDate = curDate.AddDays(1);
             }
 
             AspNetUserHandler userHandler = new AspNetUserHandler();
