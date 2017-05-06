@@ -7,6 +7,8 @@
 <h2>@ViewBag.Title</h2>
 <p> Your reservation is Expired after 10 minutes. Start a new search by clicking @Html.ActionLink("Search", "Search")</p>
 
+@Html.AntiForgeryToken()
+
 <script>
         var timer = setTimeout(function() {
             window.location='~/Reservation/Search/'
