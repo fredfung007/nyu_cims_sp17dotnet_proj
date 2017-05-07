@@ -13,6 +13,7 @@
 @using (Ajax.BeginForm("Confirm", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ConfirmationId);
     <div id="content" class="print">
         <h4>You reservation</h4>
         <a href="#" onclick="window.print();return false;">Print this page</a>

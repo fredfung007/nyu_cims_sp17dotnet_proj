@@ -96,7 +96,7 @@ namespace HotelBookingWebsite.Controllers
 
             if (!success)
             {
-                ViewBag.Error = true;
+                ViewBag.Failed = true;
                 return View(model);
             }
 
@@ -296,18 +296,21 @@ namespace HotelBookingWebsite.Controllers
         private List<Guest> GetGuests(List<GuestViewModel> guestModels)
         {
             List<Guest> guests = new List<Guest>();
+            int order = 0;
             for (int i = 0; i < guestModels.Count; i++)
             {
                 if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
-                    guests.Add(new Guest
-                    {
-                        Id = guestModels[i].Id,
-                        FirstName = guestModels[i].FirstName,
-                        LastName = guestModels[i].LastName,
-                        Order = guestModels[i].Order,
-                    });
+                {
+                    continue;
+                }
+                guests.Add(new Guest
+                {
+                    Id = guestModels[i].Id,
+                    FirstName = guestModels[i].FirstName,
+                    LastName = guestModels[i].LastName,
+                    Order = order++,
+                });
             }
-
             return guests;
         }
 
