@@ -33,15 +33,16 @@ namespace HotelBookingWebsite.Controllers
             return View();
         }
 
-        public ActionResult Show(string ConfirmationId)
+        [HttpGet]
+        public ActionResult Show(Guid? ConfirmationId)
         {
-            if (!_reservationHandler.HashReservation(ConfirmationId))
+            Guid ConfirmationIdNotNull = ConfirmationId ?? Guid.Empty;
+            if (!_reservationHandler.HashReservation(ConfirmationIdNotNull.ToString()))
             {
                 return  RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
             }
-
-            Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
-
+            Reservation reservation = _reservationHandler.GetReservation(ConfirmationIdNotNull);
+            
             // TODO check this, it's supposed to be not null
             //if (reservation == null)
             //{
@@ -74,7 +75,7 @@ namespace HotelBookingWebsite.Controllers
             {
                 return View(model);
             }
-            
+
             // return redirct to profile url TODO
             return RedirectToAction("Cancel", "Reservation", new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
