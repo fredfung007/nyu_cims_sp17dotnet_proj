@@ -12,18 +12,21 @@
 
 <h1> @ViewBag.Title </h1>
 <div class="container">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <h2>Room Inventory</h2>
     </div>
-    <div class="col-md-3" id="occupancy">
+    <div class="col-md-4" id="occupancy">
         @Html.Partial("Occupancy", Model.Occupancy)
     </div>
     <div class="col-md-4">
-        @* TODO: NEED DATA TO TEST *@
         <input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />
     </div>
 </div>
-@Html.Partial("Inventory", Model.Inventory)
+<div class="container">
+    <div class="col-md-12" id="inventory">
+        @Html.Partial("Inventory", Model.Inventory)
+    </div>
+</div>
 @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
 
 <h2>Upcoming Reservations Today</h2>
@@ -38,7 +41,7 @@
 <script type="text/javascript">
     $("#occupancyDate").change(function () {
         var checkDate = $("#occupancyDate").val();
-        console.log(checkDate); // TODO remove this line
         $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
+        $("#inventory").load('@Url.Action("Inventory", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
     });
 </script>
