@@ -34,7 +34,8 @@ namespace HotelBookingWebsite.Controllers
                 CheckInList = getViewCheckInList(),
                 CheckOutList = getViewCheckoutListAll(),
                 Inventory = getInventory(date?? DateTime.Today),
-                Occupancy = getOccupancy(date?? DateTime.Today)
+                Occupancy = getOccupancy(date?? DateTime.Today),
+                CheckDate = date ?? DateTime.Today
             });
         }
 
