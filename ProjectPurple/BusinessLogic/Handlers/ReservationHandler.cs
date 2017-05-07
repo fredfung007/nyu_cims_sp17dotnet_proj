@@ -67,7 +67,7 @@ namespace BusinessLogic.Handlers
                 IsPaid = true,
                 IsCancelled = false,
                 DailyPrices = dailyPriceList,
-                RoomType = type,
+                RoomType = type
             };
 
             _reservationRepository.InsertReservation(reservation);
