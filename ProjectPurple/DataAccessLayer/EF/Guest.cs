@@ -12,5 +12,8 @@ namespace DataAccessLayer.EF
 
         [Required]
         public string LastName { get; set; }
+
+        [Required]
+        public int Order { get; set; }
     }
 }

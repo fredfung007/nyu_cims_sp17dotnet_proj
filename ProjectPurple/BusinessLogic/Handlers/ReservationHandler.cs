@@ -187,7 +187,7 @@ namespace BusinessLogic.Handlers
             
             for (int i = 0; i < guestMaxCount; i++)
             {
-                guests.Add(new Guest() { Id = Guid.NewGuid() });
+                guests.Add(new Guest() { Id = Guid.NewGuid(), Order = i});
             }
 
             return guests;
