@@ -14,10 +14,12 @@ namespace HotelBookingWebsite.Models
     {
         [Required(ErrorMessage = "Please select a start date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Please select an end date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
     }
 
