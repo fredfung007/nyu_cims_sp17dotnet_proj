@@ -1,0 +1,24 @@
+﻿@model HotelBookingWebsite.Models.OperationModel
+@{
+    ViewBag.Title = "Operations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reservation</h2>
+
+@{ 
+    if ((bool) !ViewBag.isCheckedIn)
+    {
+        @*if ((bool) ViewBag.canCancel)
+        {
+            @Html.ActionLink("Cancel", "Cancel", "Reservation", new { ConfirmationNum = Model.ConfirmationNum })
+        }*@
+        @Html.ActionLink("Check In", "CheckIn", new { ConfirmationNum = Model.Confirmation.ConfirmationId })
+    }
+    else
+    {
+        @Html.ActionLink("Check Out", "CheckOut", new { ConfirmationNum = Model.Confirmation.ConfirmationId })
+    }
+}
+
+@Html.Partial("~/Views/Reservation/Show.cshtml", Model.Confirmation)
