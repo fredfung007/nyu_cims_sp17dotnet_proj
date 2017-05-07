@@ -64,7 +64,7 @@ namespace BusinessLogic.Handlers
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
-                IsPaid = false,
+                IsPaid = true,
                 IsCancelled = false,
                 DailyPrices = dailyPriceList,
                 RoomType = type
@@ -179,6 +179,7 @@ namespace BusinessLogic.Handlers
             return false;
         }
 
+        [Obsolete]
         public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
         {
             var guests = new List<Guest>();

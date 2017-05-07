@@ -275,6 +275,43 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToAction("InputUser", "Reservation", new { SessionId = model.SessionId, Anomyous = false });
         }
 
+
+        public ActionResult AddGuest(int order)
+        {
+            return PartialView("_EmptyGuest", new Guest { Id = Guid.NewGuid(), Order = order });
+        }
+
+        private List<Guest> GetGuests(List<GuestViewModel> guestModels)
+        {
+            List<Guest> guests = new List<Guest>();
+            for (int i = 0; i < guestModels.Count; i++)
+            {
+                if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
+                guests.Add(new Guest
+                {
+                    Id = guestModels[i].Id,
+                    FirstName = guestModels[i].FirstName,
+                    LastName = guestModels[i].LastName,
+                    Order = guestModels[i].Order,
+                });
+            }
+
+            return guests;
+        }
+
+        private List<GuestViewModel> GetEmptyGuestModelList(ROOM_TYPE type)
+        {
+            var guests = new List<GuestViewModel>();
+            int guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
+
+            for (int i = 0; i < guestMaxCount; i++)
+            {
+                guests.Add(new GuestViewModel() { Id = Guid.NewGuid(), Order = i });
+            }
+
+            return guests;
+        }
+
         [CustomAuthorize]
         public async Task<ActionResult> InputUser(string SessionId, bool? Anonymous)
         {
@@ -297,7 +334,7 @@ namespace HotelBookingWebsite.Controllers
 
             var result = ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel;
             var type = result.RoomPriceDetails[result.SelectedIndex].Type;
-            result.Guests = _reservationHandler.GetEmptyGuestList(type);
+            result.Guests = GetEmptyGuestModelList(type);
 
             // TOOD check here use extension function
             if (User.Identity.IsAuthenticated)
@@ -346,6 +383,8 @@ namespace HotelBookingWebsite.Controllers
             {
                 return RedirectToAction("Expired", "Reservation");
             }
+
+            model.Guests.RemoveAll(guest => string.IsNullOrEmpty(guest.FirstName) && string.IsNullOrEmpty(guest.LastName));
 
             (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
 
@@ -445,7 +484,7 @@ namespace HotelBookingWebsite.Controllers
             }
             // comment for debug
             result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate, 
-                roomInfo.EndDate, result.Guests, roomInfo.PriceList.ToList());
+                roomInfo.EndDate, GetGuests(result.Guests), roomInfo.PriceList.ToList());
             result.IsConfirmed = true;
 
             //ReservationHandler.SearchResultPool.Remove(model.SessionId);
