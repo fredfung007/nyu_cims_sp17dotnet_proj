@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HotelBookingWebsite.Models.GlobalTimeViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -14,13 +16,31 @@
         <p>
             Please select the check-in and check-out date of your travel, we will help you to find all available room types and their prices.
         </p>
-        @Html.Partial("~/Views/Reservation/Search.cshtml")
+        @Html.Partial("~/Views/Reservation/Search.cshtml", new HotelBookingWebsite.Models.SearchInputModel())
     </div>
     <div class="col-md-4">
         <h2>Retrieve a Reservation</h2>
         <p>
             Please enter your reservation's confirmation number:
         </p>
-        @Html.Partial("~/Views/Reservation/Retrieve.cshtml")
+        @Html.Partial("~/Views/Reservation/Retrieve.cshtml", new HotelBookingWebsite.Models.RetrieveModel())
     </div>
 </div>
+<div id="today"><h2>Today is @Model.Current.ToString("yyyy-MM-dd")</h2></div>
+@using (Ajax.BeginForm("SetCurrentTime", "Home", new AjaxOptions { HttpMethod = "Post" }, new { htmlAttributes = new { @id = "setCurrentTimeForm" } }))
+{
+    <div class="form-group">
+        @Html.Label("Set Global Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="form-group input-group-sm">
+                @Html.EditorFor(model => model.Current, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Today.AddDays(1).Date.ToString("yyyy-MM-dd"), @id = "globalTime" } })
+                @Html.ValidationMessageFor(model => model.Current, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Set" class="btn btn-default" />
+        </div>
+    </div>
+}

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLogic.Handlers;
+using HotelBookingWebsite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,10 @@ namespace HotelBookingWebsite.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
-            return View();
+            return View(new GlobalTimeViewModel { Current = DateTimeHandler.GetCurrentTime() });
         }
 
         public ActionResult About()
@@ -25,6 +28,13 @@ namespace HotelBookingWebsite.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult SetCurrentTime(GlobalTimeViewModel model)
+        {
+            DateTimeHandler.SetCurrentTime(model.Current);
+            return RedirectToAction("Index");
         }
     }
 }
