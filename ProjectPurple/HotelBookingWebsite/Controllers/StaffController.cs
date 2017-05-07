@@ -111,7 +111,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach (Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
@@ -145,7 +145,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
@@ -200,7 +200,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
