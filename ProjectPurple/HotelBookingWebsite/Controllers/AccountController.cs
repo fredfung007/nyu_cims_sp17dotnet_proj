@@ -4,9 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using BusinessLogic.Handlers;
-using BusinessLogic.Helpers;
 using DataAccessLayer.Constructor;
 using DataAccessLayer.EF;
 using HotelBookingWebsite.Filters;
@@ -209,8 +207,25 @@ namespace HotelBookingWebsite.Controllers
         [CustomAuthorize]
         public ActionResult Update(string returnUrl)
         {
+
+            var userHandler = new AspNetUserHandler();
+            var user = userHandler.GetAspNetUser(User.Identity.GetUserName());
+
+            UpdateProfileViewModel model = new UpdateProfileViewModel
+            {
+                Address1 = user.Profile.Address.FirstLine,
+                Address2 = user.Profile.Address.SecondLine,
+                City = user.Profile.Address.City,
+                State = user.Profile.Address.State,
+                PostalCode = user.Profile.Address.ZipCode,
+                FirstName = user.Profile.FirstName,
+                LastName = user.Profile.LastName,
+                PhoneNumber = user.Profile.PhoneNumber,
+                PreferredRoomType = user.Profile.PreferredRoomType
+            };
+
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(model);
         }
 
         //
