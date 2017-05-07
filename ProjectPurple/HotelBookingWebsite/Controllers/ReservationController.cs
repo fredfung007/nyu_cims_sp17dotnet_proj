@@ -179,6 +179,16 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
+            if (model.StartDate.Date < DateTime.Now.Date)
+            {
+                return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "start date must be before end date" });
+            }
+
+            if (model.StartDate.Date >= model.EndDate.Date)
+            {
+                return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Start date must not be before now" });
+            }
+
             ViewBag.NoResult = false;
             DateTime startDate = model.StartDate;
             DateTime endDate = model.EndDate;
@@ -218,13 +228,8 @@ namespace HotelBookingWebsite.Controllers
 
                 return RedirectToAction("Result", "Reservation", new { SessionId = sessionId });
             }
-            else
-            {
-                return RedirectToAction("Error", "Reservation", new ErrorViewModel{ ErrorMsg = "No available room, please search again" });
-            }
 
-            //ViewBag.NoResult = true;
-            return View();
+            return RedirectToAction("Error", "Reservation", new ErrorViewModel{ ErrorMsg = "No available room, please search again" });
         }
 
         public ActionResult Result(string SessionId)
