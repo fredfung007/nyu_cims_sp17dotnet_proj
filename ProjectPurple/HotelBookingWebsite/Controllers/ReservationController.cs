@@ -36,12 +36,12 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public ActionResult Show(Guid? ConfirmationId)
         {
-            Guid ConfirmationIdNotNull = ConfirmationId ?? Guid.Empty;
-            if (!_reservationHandler.HashReservation(ConfirmationIdNotNull.ToString()))
+            Guid confirmationId = ConfirmationId ?? Guid.Empty;
+            if (!_reservationHandler.HashReservation(confirmationId.ToString()))
             {
                 return  RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
             }
-            Reservation reservation = _reservationHandler.GetReservation(ConfirmationIdNotNull);
+            Reservation reservation = _reservationHandler.GetReservation(confirmationId);
             
             // TODO check this, it's supposed to be not null
             //if (reservation == null)
