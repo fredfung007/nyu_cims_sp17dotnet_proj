@@ -217,7 +217,7 @@ namespace BusinessLogic.Handlers
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.EndDate) < 0)
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
                 checkDate = checkDate.AddDays(1);
@@ -247,7 +247,7 @@ namespace BusinessLogic.Handlers
 
             DateTime checkDate = today;
             // if stay shorter, here should use today. But this is not required
-            while (checkDate.CompareTo(reservation.EndDate) < 0)
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, -1);
                 checkDate = checkDate.AddDays(1);
