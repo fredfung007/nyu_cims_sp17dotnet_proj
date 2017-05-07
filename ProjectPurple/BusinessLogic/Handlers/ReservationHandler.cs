@@ -142,6 +142,18 @@ namespace BusinessLogic.Handlers
             return true;
         }
 
+        // check guid and check confirmation id
+        public bool HashReservation(string confirmationNumberStr)
+        {
+            Guid confirmationId;
+            if (!Guid.TryParse(confirmationNumberStr, out confirmationId))
+            {
+                return false;
+            }
+
+            return _reservationRepository.GetReservation(confirmationId) != null;
+        }
+
         public bool HasReservation(Guid confirmationNumber)
         {
             return _reservationRepository.GetReservation(confirmationNumber) != null;

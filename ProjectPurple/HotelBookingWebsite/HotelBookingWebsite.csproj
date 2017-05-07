@@ -370,6 +370,7 @@
     <Content Include="Views\Staff\Occupancy.cshtml" />
     <Content Include="Views\Staff\CheckOutAllExpired.cshtml" />
     <Content Include="Views\Staff\ModifyRoomInventory.cshtml" />
+    <Content Include="Views\Reservation\Retrieve.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

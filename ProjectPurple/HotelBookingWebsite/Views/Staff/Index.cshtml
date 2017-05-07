@@ -38,7 +38,7 @@
 <script type="text/javascript">
     $("#occupancyDate").change(function () {
         var checkDate = $("#occupancyDate").val();
-        console.log(checkDate);
+        console.log(checkDate); // TODO remove this line
         $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
     });
 </script>
