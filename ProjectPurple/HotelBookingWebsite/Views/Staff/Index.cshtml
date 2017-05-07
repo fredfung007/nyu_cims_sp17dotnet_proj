@@ -12,15 +12,20 @@
 
 <h1> @ViewBag.Title </h1>
 <div class="container">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <h2>Room Inventory</h2>
     </div>
-    <div class="col-md-3" id="occupancy">
+    <div class="col-md-4" id="occupancy">
         @Html.Partial("Occupancy", Model.Occupancy)
     </div>
     <div class="col-md-4">
         @* TODO: NEED DATA TO TEST *@
-        <input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />
+        <div class="form-group">
+            @Html.LabelFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control", @id = "occupancyDate", Value = DateTime.Today.Date.ToString("yyyy-MM-dd") } })
+        @Html.ValidationMessageFor(model => model.CheckDate, "", new { @class = "text-danger" })
+        @*<input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />*@
+        </div>
     </div>
 </div>
 @Html.Partial("Inventory", Model.Inventory)

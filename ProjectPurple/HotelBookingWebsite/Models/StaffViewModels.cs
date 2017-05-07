@@ -44,6 +44,9 @@ namespace HotelBookingWebsite.Models
         public List<CheckInListModel> CheckInList { get; set; }
         public List<CheckOutListModel> CheckOutList { get;  set;}
         public OccupancyModel Occupancy { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
+        public DateTime CheckDate { get; set; }
     }
 
     public class CheckInOutModel
