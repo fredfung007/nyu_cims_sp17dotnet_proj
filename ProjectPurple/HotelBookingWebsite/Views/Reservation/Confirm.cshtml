@@ -10,62 +10,75 @@
 
 <h2>@ViewBag.Title</h2>
 
-@Html.AntiForgeryToken()
-<div id="content" class="print" >
-    <h4>You reservation</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.Label("Check-in:")
-        </dt>
-        <dd>
-            @Model.StartDate.Date.ToString("MM/dd/yyyy")
-        </dd>
+@using (Ajax.BeginForm("Confirm", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="content" class="print">
+        <h4>You reservation</h4>
+        <a href="#" onclick="window.print();return false;">Print this page</a>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.Label("Check-in:")
+            </dt>
+            <dd>
+                @Model.StartDate.Date.ToString("MM/dd/yyyy")
+            </dd>
 
-        <dt>
-            @Html.Label("Check-out:")
-        </dt>
-        <dd>
-            @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)
-        </dd>
+            <dt>
+                @Html.Label("Check-out:")
+            </dt>
+            <dd>
+                @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)
+            </dd>
 
-        <dt>
-            @Html.Label("Number of Rooms:")
-        </dt>
-        <dd>
-            1
-        </dd>
+            <dt>
+                @Html.Label("Number of Rooms:")
+            </dt>
+            <dd>
+                1
+            </dd>
 
-        <dt>
-            @Html.Label("Total:")
-        </dt>
-        <dd>
-            @Model.PriceList.Sum().ToString("C2")
-        </dd>
+            <dt>
+                @Html.Label("Total:")
+            </dt>
+            <dd>
+                @Model.PriceList.Sum().ToString("C2")
+            </dd>
 
-        <dt>
-            @Html.Label("Confirmation Number:")
-        </dt>
-        <dd>
-            <b>@Html.DisplayFor(model => model.ReservationId)</b>
-        </dd>
+            <dt>
+                @Html.Label("Confirmation Number:")
+            </dt>
+            <dd>
+                <b>@Html.DisplayFor(model => model.ReservationId)</b>
+            </dd>
 
-        <dt>
-            @Html.Label("Room Type:")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
+            <dt>
+                @Html.Label("Room Type:")
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Type)
+            </dd>
 
-        <dt>
-            @Html.Label("Amenities:")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Ameneties)
-        </dd>
-    </dl>
-    <a href="#" onclick="window.print();return false;">Print this page</a>
-</div>
+            <dt>
+                @Html.Label("Amenities:")
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Ameneties)
+            </dd>
+        </dl>
+
+    </div>
+    if (!ViewBag.NoCancel)
+    {
+        @Html.HiddenFor(model => model.IsCanceled, new { @Value = true })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Cancel Reservation" class="btn btn-default" />
+            </div>
+        </div>
+    }
+}
 <p>
     @Html.ActionLink("Back to Index", "Index", "Home")
 </p>

@@ -494,7 +494,7 @@ namespace HotelBookingWebsite.Controllers
 
             //ReservationHandler.SearchResultPool.Remove(model.SessionId);
 
-            return RedirectToAction("Confirm", "Reservation", new { ConfirmationId = result.ReservationId.ToString() });
+            return RedirectToAction("Confirm", "Reservation", new { ConfirmationId = result.ReservationId.ToString(), NoCancel = true});
         }
 
         public ActionResult Error(ErrorViewModel error)
@@ -502,9 +502,11 @@ namespace HotelBookingWebsite.Controllers
             return View(error);
         }
 
-        public async Task<ActionResult> Confirm(string ConfirmationId)
+        public async Task<ActionResult> Confirm(Guid? ConfirmationId, bool? NoCancel)
         {
-            Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
+            ViewBag.NoCancel = NoCancel ?? false;
+
+            Reservation reservation = _reservationHandler.GetReservation(ConfirmationId?? Guid.NewGuid());
 
             //invalid confirmation Number
             if (reservation == null)
@@ -516,7 +518,7 @@ namespace HotelBookingWebsite.Controllers
 
             return View(new ConfirmationViewModel
             {
-                ConfirmationId = ConfirmationId,
+                ConfirmationId = ConfirmationId.ToString(),
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
                 Guests = reservation.Guests.ToList(),
@@ -525,6 +527,22 @@ namespace HotelBookingWebsite.Controllers
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
                 PriceList = priceList,
             });
+        }
+
+        [HttpPost]
+        public ActionResult Confirm(ConfirmationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.IsCanceled)
+            {
+                return RedirectToAction("Cancel", "Reservation", new { model = model, returnUrl = "~/Home/Index" });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
