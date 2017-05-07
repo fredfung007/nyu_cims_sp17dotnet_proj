@@ -32,7 +32,8 @@ namespace DataAccessLayer.Repositories
 
         public AspNetUser GetUser(string username)
         {
-            return _context.AspNetUsers.Include(user => user.Profile).FirstOrDefault(user => user.UserName == username);
+            return _context.AspNetUsers.Include(user => user.Profile).Include(user => user.Profile.Address)
+                .FirstOrDefault(user => user.UserName == username);
         }
 
         //public void InsertStaff(Staff staff)
