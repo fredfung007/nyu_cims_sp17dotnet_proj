@@ -51,4 +51,9 @@ namespace HotelBookingWebsite.Models
         public Guid ConfirmationNum { get; set; }
         public bool IsSuccess { get; set; }
     }
+
+    public class OperationModel
+    {
+        public ConfirmationViewModel Confirmation { get; set; }
+    }
 }

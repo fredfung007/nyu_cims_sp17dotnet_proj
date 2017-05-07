@@ -57,6 +57,34 @@ namespace HotelBookingWebsite.Controllers
 
         [HttpGet]
         [StaffAuthorize]
+        public async Task<ActionResult> Operations(Guid? ConfirmationNum)
+        {
+            Guid ConfirmationNumNotNull = ConfirmationNum ?? Guid.Empty;
+            if (!_reservationHandler.HashReservation(ConfirmationNumNotNull.ToString()))
+            {
+                return  RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
+            }
+            Reservation reservation = _reservationHandler.GetReservation(ConfirmationNumNotNull);
+            ViewBag.IsCheckedIn = reservation.CheckInDate != null;
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(ConfirmationNumNotNull, DateTime.Now);
+
+            // TODO extension functions
+            var priceList = reservation.DailyPrices.Select(x => x.BillingPrice).ToList();
+            
+            return View(new OperationModel { Confirmation = new ConfirmationViewModel {
+                ConfirmationId = reservation.Id.ToString(),
+                StartDate = reservation.StartDate,
+                EndDate = reservation.EndDate,
+                Guests = reservation.Guests.ToList(),
+                Type =  _roomHandler.GetRoomTypeName(reservation.RoomType),
+                Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
+                IsCanceled = reservation.IsCancelled,
+                PriceList = priceList
+            }});
+        }
+
+        [HttpGet]
+        [StaffAuthorize]
         public async Task<ActionResult> CheckIn(Guid? ConfirmationNum)
         {
             return View(new CheckInOutModel
@@ -167,7 +195,8 @@ namespace HotelBookingWebsite.Controllers
 
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
+            List<Reservation> reservations = new List<Reservation>(
+                _reservationHandler.GetAllCheckedInReservations(DateTime.Today.AddDays(1)));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
