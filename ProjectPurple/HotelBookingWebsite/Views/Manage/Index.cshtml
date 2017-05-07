@@ -16,4 +16,9 @@
     @Html.DisplayFor(m => m.LoyaltyProgress)
     <hr/>
     @Html.ActionLink("Upcoming Reservations", "UpcommingReservations", "Profile")
+    <hr/>
+    @if (ViewBag.isStaff)
+    {
+        @Html.ActionLink("Dashboard", "Index", "Staff")
+    }
 </div>

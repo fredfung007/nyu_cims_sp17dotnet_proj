@@ -34,9 +34,9 @@ namespace HotelBookingWebsite.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -57,27 +57,31 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess
-                    ? "Your password has been changed."
-                    : message == ManageMessageId.SetPasswordSuccess
-                        ? "Your password has been set."
-                        : message == ManageMessageId.SetTwoFactorSuccess
-                            ? "Your two-factor authentication provider has been set."
-                            : message == ManageMessageId.Error
-                                ? "An error has occurred."
-                                : message == ManageMessageId.AddPhoneSuccess
-                                    ? "Your phone number was added."
-                                    : message == ManageMessageId.RemovePhoneSuccess
-                                        ? "Your phone number was removed."
-                                        : "";
+            message == ManageMessageId.ChangePasswordSuccess
+            ? "Your password has been changed."
+            : message == ManageMessageId.SetPasswordSuccess
+            ? "Your password has been set."
+            : message == ManageMessageId.SetTwoFactorSuccess
+            ? "Your two-factor authentication provider has been set."
+            : message == ManageMessageId.Error
+            ? "An error has occurred."
+            :message == ManageMessageId.AddPhoneSuccess
+            ? "Your phone number was added."
+            : message == ManageMessageId.RemovePhoneSuccess
+            ? "Your phone number was removed."
+            : "";
 
+            if (User.IsInRole("staff"))
+            {
+                ViewBag.isStaff = true;
+            }
             var userId = User.Identity.GetUserId();
             var username = User.Identity.GetUserName();
             var userHandler = new AspNetUserHandler();
             var progress = userHandler.FindLoyaltyProgramInfo(username);
             var model = new IndexViewModel
             {
-                FreeNights = (int) Math.Floor(progress / 5.0),
+                FreeNights = (int)Math.Floor(progress / 5.0),
                 LoyaltyProgress = progress,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -346,7 +350,7 @@ namespace HotelBookingWebsite.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -397,6 +401,6 @@ namespace HotelBookingWebsite.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
