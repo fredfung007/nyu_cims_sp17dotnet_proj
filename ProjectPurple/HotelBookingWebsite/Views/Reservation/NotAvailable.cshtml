@@ -7,6 +7,8 @@
 
 <h2> @ViewBag.Title</h2>
 
+@Html.AntiForgeryToken()
+
 <div>
     <h4>The following room is no longer avaiable for reservation, please select another room</h4>
     <hr />
@@ -38,5 +40,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Search Again", "Search")
+    @Html.ActionLink("Search Again", "Index", "Home")
 </p>

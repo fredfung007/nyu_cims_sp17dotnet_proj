@@ -29,19 +29,19 @@
             @Html.ActionLink(item.Id.ToString(), "CheckOut", new { ConfirmationNum = item.Id })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.firstName)
+            @Html.DisplayFor(modelItem => item.FirstName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.lastName)
+            @Html.DisplayFor(modelItem => item.LastName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.checkInDate)
+            @Html.DisplayFor(modelItem => item.CheckInDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.checkOutDate)
+            @Html.DisplayFor(modelItem => item.CheckOutDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.actualCheckInDate)
+            @Html.DisplayFor(modelItem => item.ActualCheckInDate)
         </td>
     </tr>
 }

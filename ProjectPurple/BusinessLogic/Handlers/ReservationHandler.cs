@@ -38,7 +38,7 @@ namespace BusinessLogic.Handlers
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
         /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end,
+        public Guid MakeReservation(string userName, ROOM_TYPE type, DateTime start, DateTime end,
             List<Guest> guests, List<int> prices)
         {
             var dailyPriceList = new List<DailyPrice>();
@@ -46,13 +46,14 @@ namespace BusinessLogic.Handlers
 
             foreach (int price in prices)
             {
+                var curDate = start;
                 dailyPriceList.Add(new DailyPrice
                 {
                     Id = Guid.NewGuid(),
-                    Date = start,
+                    Date = curDate,
                     BillingPrice = price
                 });
-                start = start.AddDays(1);
+                curDate = curDate.AddDays(1);
             }
 
             AspNetUserHandler userHandler = new AspNetUserHandler();
@@ -73,9 +74,12 @@ namespace BusinessLogic.Handlers
             _reservationRepository.Save();
 
             var newReservation = _reservationRepository.GetReservation(RsvId);
-            newReservation.AspNetUser = userHandler.GetAspNetUser(username);
-            _reservationRepository.UpdateReservationWithAspnetUser(newReservation);
-            _reservationRepository.Save();
+            //newReservation.AspNetUser = userHandler.GetAspNetUser(userName);
+            if (userName != null)
+            {
+                _reservationRepository.UpdateReservationWithAspnetUser(newReservation, userName);
+                _reservationRepository.Save();
+            }
 
             return RsvId;
         }
@@ -138,6 +142,18 @@ namespace BusinessLogic.Handlers
             return true;
         }
 
+        // check guid and check confirmation id
+        public bool HashReservation(string confirmationNumberStr)
+        {
+            Guid confirmationId;
+            if (!Guid.TryParse(confirmationNumberStr, out confirmationId))
+            {
+                return false;
+            }
+
+            return _reservationRepository.GetReservation(confirmationId) != null;
+        }
+
         public bool HasReservation(Guid confirmationNumber)
         {
             return _reservationRepository.GetReservation(confirmationNumber) != null;
@@ -187,17 +203,26 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
+            if (reservation == null || reservation.CheckInDate != null ||  reservation.StartDate > today || reservation.EndDate < today)
+            {
+                return false;
+            }
+
+            // check current checkedin number v.s. inventory number
+            var currentAmount = _roomRepository.GetRoomOccupancyByDate(reservation.RoomType, today);
+            var totalAmount = _roomRepository.GetRoomTotalAmount(reservation.RoomType);
+            if (currentAmount >= totalAmount)
             {
                 return false;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
                 checkDate = checkDate.AddDays(1);
             }
+            _roomRepository.Save();
 
             reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
@@ -215,15 +240,16 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
+            if (reservation == null || reservation.CheckOutDate != null ||　reservation.CheckInDate == null || reservation.CheckInDate > today)
             {
                 return false;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            // if stay shorter, here should use today. But this is not required
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, -1);
                 checkDate = checkDate.AddDays(1);
             }
             _roomRepository.Save();

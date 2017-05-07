@@ -25,7 +25,7 @@ namespace DataAccessLayer.Repositories
         void DeleteReservation(Guid id);
         void CancelReservation(Guid id);
         void UpdateReservation(Reservation reservation);
-        void UpdateReservationWithAspnetUser(Reservation reservation);
+        void UpdateReservationWithAspnetUser(Reservation reservation, string userName);
         void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
         void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
         IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate);

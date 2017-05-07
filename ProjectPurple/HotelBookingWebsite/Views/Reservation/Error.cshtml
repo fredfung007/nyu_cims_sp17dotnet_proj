@@ -7,6 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.AntiForgeryToken()
 <div>
     @*<h4>ErrorViewModel</h4>*@
     <hr />
@@ -22,5 +23,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Search")
+    @Html.ActionLink("Back to Index", "Index", "Home")
 </p>

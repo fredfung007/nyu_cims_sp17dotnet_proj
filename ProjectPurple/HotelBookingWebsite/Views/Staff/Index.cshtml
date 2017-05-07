@@ -4,7 +4,11 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@*TODO use bundle here*@
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+
+@Html.AntiForgeryToken()
 
 <h1> @ViewBag.Title </h1>
 <div class="container">
@@ -12,25 +16,29 @@
         <h2>Room Inventory</h2>
     </div>
     <div class="col-md-3" id="occupancy">
-        @Html.Partial("Occupancy", Model.occupancy)
+        @Html.Partial("Occupancy", Model.Occupancy)
     </div>
     <div class="col-md-4">
         @* TODO: NEED DATA TO TEST *@
         <input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />
     </div>
 </div>
-@Html.Partial("Inventory", Model.inventory)
+@Html.Partial("Inventory", Model.Inventory)
 @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
+
 <h2>Upcoming Reservations Today</h2>
-@Html.Partial("ViewCheckInList", Model.checkInList)
+
+@Html.Partial("ViewCheckInList", Model.CheckInList)
+
 <h2>Checked-In Reservations</h2>
+
 @Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
-@Html.Partial("ViewCheckoutListAll", Model.checkOutList)
+@Html.Partial("ViewCheckoutListAll", Model.CheckOutList)
 
 <script type="text/javascript">
-    $("#occupancyDate").change(function() {
+    $("#occupancyDate").change(function () {
         var checkDate = $("#occupancyDate").val();
-        console.log(checkDate);
+        console.log(checkDate); // TODO remove this line
         $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
     });
 </script>

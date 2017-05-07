@@ -22,10 +22,10 @@ namespace DataAccessLayer.Repositories
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);
-        void UpdateRoomUsage(ROOM_TYPE type, DateTime date, int quantity);
+        void UpdateRoomOccupancy(ROOM_TYPE type, DateTime date, int quantity);
 
         // How many room of the type is reserved on some date
-        int GetRoomReservationAmount(ROOM_TYPE type, DateTime date);
+        int GetRoomOccupancyByDate(ROOM_TYPE type, DateTime date);
 
         // The total amount of a roomtype, roomtype.inventory
         int GetRoomTotalAmount(ROOM_TYPE type);

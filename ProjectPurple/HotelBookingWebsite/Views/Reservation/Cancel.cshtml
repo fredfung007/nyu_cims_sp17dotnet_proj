@@ -7,6 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.AntiForgeryToken()
 <div>
     <h4>ReservationViewModel</h4>
     <hr />
@@ -37,7 +38,7 @@
     }
     else
     {
-        @Html.ActionLink("Return", "Index")
+        @Html.ActionLink("Back to Index", "Index", "Home")
     }
 
 </p>

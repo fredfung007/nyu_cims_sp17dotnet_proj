@@ -48,7 +48,7 @@ namespace DataAccessLayer.Repositories
             return _context.RoomTypes.ToList();
         }
 
-        public void UpdateRoomUsage(ROOM_TYPE type, DateTime date, int quantity)
+        public void UpdateRoomOccupancy(ROOM_TYPE type, DateTime date, int quantity)
         {
             // check if record exists
             RoomOccupancy roomOccupancy =
@@ -67,17 +67,18 @@ namespace DataAccessLayer.Repositories
                 {
                     Id = Guid.NewGuid(),
                     Date = date,
-                    Occupancy = GetRoomTotalAmount(type) + quantity,
+                    Occupancy = quantity,
                     RoomType = type
                 };
                 _context.RoomOccupancies.Add(roomOccupancy);
             }
         }
 
-        public int GetRoomReservationAmount(ROOM_TYPE type, DateTime date)
+        public int GetRoomOccupancyByDate(ROOM_TYPE type, DateTime date)
         {
             RoomOccupancy roomOccupancy =
                 _context.RoomOccupancies.FirstOrDefault(ro => ro.Date == date && ro.RoomType == type);
+
             return roomOccupancy?.Occupancy ?? 0;
         }
 
@@ -113,7 +114,7 @@ namespace DataAccessLayer.Repositories
         {
             IEnumerable<RoomOccupancy> occupancies = _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0);
             int maxOccupancy = 0;
-            foreach(RoomOccupancy occupancy in occupancies)
+            foreach (RoomOccupancy occupancy in occupancies)
             {
                 maxOccupancy = maxOccupancy < occupancy.Occupancy ? occupancy.Occupancy : maxOccupancy;
             }

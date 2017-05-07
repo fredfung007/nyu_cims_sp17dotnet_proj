@@ -10,6 +10,7 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.AntiForgeryToken()
 <div id="content" class="print" >
     <h4>You reservation</h4>
     <hr />
@@ -66,5 +67,5 @@
     <a href="#" onclick="window.print();return false;">Print this page</a>
 </div>
 <p>
-    @Html.ActionLink("Back to Search", "Search")
+    @Html.ActionLink("Back to Index", "Index", "Home")
 </p>

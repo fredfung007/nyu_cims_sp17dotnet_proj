@@ -21,6 +21,12 @@ namespace HotelBookingWebsite.Models
         public DateTime EndDate { get; set; }
     }
 
+    public class RetrieveModel
+    {
+        [Required(ErrorMessage = "Please input confirmation Id")]
+        public string ConfirmationId { get; set;}
+    }
+
     public class RoomSearchResultModel : TimeExpirationType
     {
         //public DateTime StartDate { get; set; }
@@ -35,6 +41,7 @@ namespace HotelBookingWebsite.Models
 
     public class ConfirmationViewModel
     {
+        // TODO merge with reservatonId
         public string ConfirmationId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
