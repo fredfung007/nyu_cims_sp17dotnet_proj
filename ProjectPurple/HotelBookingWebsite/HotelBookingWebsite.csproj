@@ -378,7 +378,6 @@
     <Content Include="Views\Staff\ModifyRoomInventory.cshtml" />
     <Content Include="Views\Reservation\Retrieve.cshtml" />
     <Content Include="Views\Staff\Operations.cshtml" />
-    <Content Include="Views\Home\GetCurrentTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
