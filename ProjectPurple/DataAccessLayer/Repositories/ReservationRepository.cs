@@ -122,7 +122,10 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)
         {
-            return _context.Reservations.Where(reservation => reservation.CheckInDate != null
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(reservation => reservation.CheckInDate != null
                                                               && reservation.CheckInDate < checkInDate
                                                               && reservation.EndDate >= checkInDate)
                 .ToList();
