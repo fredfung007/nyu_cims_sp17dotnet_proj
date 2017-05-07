@@ -2,6 +2,7 @@
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 using HotelBookingWebsite.Filters;
+using HotelBookingWebsite.Helper;
 using HotelBookingWebsite.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -108,6 +109,24 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToLocal(ViewBag.returnUrl);
         }
 
+        //private List<GuestViewModel> GetGuestModelList(List<Guest> guests)
+        //{
+        //    List<GuestViewModel> guestModelList = new List<GuestViewModel>();
+        //    foreach (Guest guest in guests)
+        //    {
+        //        guestModelList.Add(new GuestViewModel
+        //        {
+        //            FirstName = guest.FirstName,
+        //            LastName = guest.LastName,
+        //            Id = guest.Id,
+        //            Order = guest.Order,
+        //        });
+        //    }
+        //    guestModelList.OrderBy(guest => guest.Order);
+
+        //    return guestModelList;
+        //}
+
         private ConfirmationViewModel GetConfirmationViewModel(Reservation reservation)
         {
             var priceList = reservation.DailyPrices.Select(x => x.BillingPrice).ToList();
@@ -116,7 +135,7 @@ namespace HotelBookingWebsite.Controllers
                 ConfirmationId = reservation.Id.ToString(),
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
-                Guests = reservation.Guests.ToList(),
+                Guests = reservation.Guests.ToList().ToGuestModelList(),
                 ReservationId = reservation.Id,
                 Type = _roomHandler.GetRoomTypeName(reservation.RoomType),
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
@@ -293,26 +312,26 @@ namespace HotelBookingWebsite.Controllers
             return PartialView("_EmptyGuest", new Guest { Id = Guid.NewGuid(), Order = order });
         }
 
-        private List<Guest> GetGuests(List<GuestViewModel> guestModels)
-        {
-            List<Guest> guests = new List<Guest>();
-            int order = 0;
-            for (int i = 0; i < guestModels.Count; i++)
-            {
-                if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
-                {
-                    continue;
-                }
-                guests.Add(new Guest
-                {
-                    Id = guestModels[i].Id,
-                    FirstName = guestModels[i].FirstName,
-                    LastName = guestModels[i].LastName,
-                    Order = order++,
-                });
-            }
-            return guests;
-        }
+        //private List<Guest> GetGuests(List<GuestViewModel> guestModels)
+        //{
+        //    List<Guest> guests = new List<Guest>();
+        //    int order = 0;
+        //    for (int i = 0; i < guestModels.Count; i++)
+        //    {
+        //        if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
+        //        {
+        //            continue;
+        //        }
+        //        guests.Add(new Guest
+        //        {
+        //            Id = guestModels[i].Id,
+        //            FirstName = guestModels[i].FirstName,
+        //            LastName = guestModels[i].LastName,
+        //            Order = order++,
+        //        });
+        //    }
+        //    return guests;
+        //}
 
         private List<GuestViewModel> GetEmptyGuestModelList(ROOM_TYPE type)
         {
@@ -481,7 +500,7 @@ namespace HotelBookingWebsite.Controllers
 
             // TODO check guests
             result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate,
-                roomInfo.EndDate, GetGuests(result.Guests), roomInfo.PriceList.ToList());
+                roomInfo.EndDate, result.Guests.ToGuestList(), roomInfo.PriceList.ToList());
             result.IsConfirmed = true;
 
             //ReservationHandler.SearchResultPool.Remove(model.SessionId);
