@@ -90,7 +90,7 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
             });
         }
 
@@ -101,7 +101,7 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
             });
         }
 
