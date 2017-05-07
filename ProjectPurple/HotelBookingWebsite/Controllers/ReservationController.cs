@@ -36,12 +36,12 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public ActionResult Show(Guid? ConfirmationId)
         {
-            Guid confirmationId = ConfirmationId ?? Guid.Empty;
+            var confirmationId = ConfirmationId ?? Guid.Empty;
             if (!_reservationHandler.HashReservation(confirmationId.ToString()))
             {
                 return  RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
             }
-            Reservation reservation = _reservationHandler.GetReservation(confirmationId);
+            var reservation = _reservationHandler.GetReservation(confirmationId);
             
             // TODO check this, it's supposed to be not null
             //if (reservation == null)
@@ -105,7 +105,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            bool success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTime.Now);
+            var success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTime.Now);
             ViewBag.ReturnUrl = returnUrl;
 
             if (!success)
@@ -168,9 +168,6 @@ namespace HotelBookingWebsite.Controllers
         /// <summary>
         /// Return available room list within [start, end). The result type is AvailableRoomViewModel
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Search(SearchInputModel model)
         {
@@ -180,51 +177,40 @@ namespace HotelBookingWebsite.Controllers
             }
 
             ViewBag.NoResult = false;
-            DateTime startDate = model.StartDate;
-            DateTime endDate = model.EndDate;
-            List<ROOM_TYPE> availableTypes = _roomHandler.CheckAvailableTypeForDuration(startDate, endDate);
-            // try async
-            //List<ROOM_TYPE> availableTypes = await _roomHandler.CheckAvailableTypeForDurationAsync(checkIn, checkOut);
-            List<RoomPriceDetail> availableRooms = new List<RoomPriceDetail>();
+            var startDate = model.StartDate;
+            var endDate = model.EndDate;
+            var availableRooms = new List<RoomPriceDetail>();
 
-            foreach (ROOM_TYPE type in availableTypes)
+            foreach (ROOM_TYPE type in Enum.GetValues(typeof(ROOM_TYPE)))
             {
+                if (!_roomHandler.IsAvailable(type, startDate, endDate)) continue;
+                var prices = _roomHandler.GetRoomPriceList(type, startDate, endDate);
                 availableRooms.Add(new RoomPriceDetail
                 {
                     StartDate = startDate,
                     EndDate = endDate,
                     Name = _roomHandler.GetRoomTypeName(type),
                     Type = type,
-                    // try async
-                    //AvaragePrice = await _roomHandler.GetAveragePriceAsync(type, checkIn, checkOut),
-                    //PriceList = await _roomHandler.GetRoomPriceListAsync(type, checkIn, checkOut),
-                    AvaragePrice = _roomHandler.GetAveragePrice(type, startDate, endDate),
-                    PriceList = _roomHandler.GetRoomPriceList(type, startDate, endDate),
+                    PriceList = prices,
+                    AvaragePrice = prices.Sum() / (endDate - startDate).Days,
                     Description = _roomHandler.GetRoomDescription(type),
                     Ameneties = _roomHandler.GetRoomAmeneties(type),
                     PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
                 });
             }
 
-            if (availableTypes.Count > 0)
+            if (availableRooms.Count <= 0)
+                return RedirectToAction("Error", "Reservation",
+                    new ErrorViewModel {ErrorMsg = "No available room, please search again"});
+            var sessionId = Guid.NewGuid().ToString();
+            ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
             {
-                string sessionId = Guid.NewGuid().ToString();
-                ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
-                {
-                    SessionId = Guid.NewGuid().ToString(),
-                    Expiration = DateTime.Now.AddMinutes(10),
-                    RoomPriceDetails = availableRooms
-                };
+                SessionId = Guid.NewGuid().ToString(),
+                Expiration = DateTime.Now.AddMinutes(10),
+                RoomPriceDetails = availableRooms
+            };
 
-                return RedirectToAction("Result", "Reservation", new { SessionId = sessionId });
-            }
-            else
-            {
-                return RedirectToAction("Error", "Reservation", new ErrorViewModel{ ErrorMsg = "No available room, please search again" });
-            }
-
-            //ViewBag.NoResult = true;
-            return View();
+            return RedirectToAction("Result", "Reservation", new {SessionId = sessionId});
         }
 
         public ActionResult Result(string SessionId)
@@ -283,8 +269,8 @@ namespace HotelBookingWebsite.Controllers
 
         private List<Guest> GetGuests(List<GuestViewModel> guestModels)
         {
-            List<Guest> guests = new List<Guest>();
-            for (int i = 0; i < guestModels.Count; i++)
+            var guests = new List<Guest>();
+            for (var i = 0; i < guestModels.Count; i++)
             {
                 if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
                 guests.Add(new Guest
@@ -302,9 +288,9 @@ namespace HotelBookingWebsite.Controllers
         private List<GuestViewModel> GetEmptyGuestModelList(ROOM_TYPE type)
         {
             var guests = new List<GuestViewModel>();
-            int guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
+            var guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
 
-            for (int i = 0; i < guestMaxCount; i++)
+            for (var i = 0; i < guestMaxCount; i++)
             {
                 guests.Add(new GuestViewModel() { Id = Guid.NewGuid(), Order = i });
             }
@@ -499,7 +485,7 @@ namespace HotelBookingWebsite.Controllers
 
         public async Task<ActionResult> Confirm(string ConfirmationId)
         {
-            Reservation reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
+            var reservation = _reservationHandler.GetReservation(Guid.Parse(ConfirmationId));
 
             //invalid confirmation Number
             if (reservation == null)
