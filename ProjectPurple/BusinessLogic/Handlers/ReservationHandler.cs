@@ -33,20 +33,22 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// Create a new Reservation.
         /// </summary>
+        /// <param name="username">The username used to make this reservation</param>
         /// <param name="type">ROOM_TYPE</param>
         /// <param name="start">check-in date</param>
         /// <param name="end">check-out date</param>
         /// <param name="guests">list of guests attending</param>
-        /// <returns>TODO RETURNS</returns>
-        public Guid MakeReservation(string userName, ROOM_TYPE type, DateTime start, DateTime end,
+        /// <param name="prices">list of prices for each day of the reservation</param>
+        /// <returns>the Id of the created reservation</returns>
+        public Guid MakeReservation(string username, ROOM_TYPE type, DateTime start, DateTime end,
             List<Guest> guests, List<int> prices)
         {
             var dailyPriceList = new List<DailyPrice>();
-            Guid RsvId = Guid.NewGuid();
+            var rsvId = Guid.NewGuid();
 
-            foreach (int price in prices)
+            var curDate = start;
+            foreach (var price in prices)
             {
-                var curDate = start;
                 dailyPriceList.Add(new DailyPrice
                 {
                     Id = Guid.NewGuid(),
@@ -56,32 +58,29 @@ namespace BusinessLogic.Handlers
                 curDate = curDate.AddDays(1);
             }
 
-            AspNetUserHandler userHandler = new AspNetUserHandler();
             var reservation = new Reservation
             {
-                Id = RsvId,
-                //AspNetUser = userHandler.GetAspNetUser(username),
+                Id = rsvId,
                 StartDate = start,
                 EndDate = end,
                 Guests = guests,
-                IsPaid = false,
+                IsPaid = true,
                 IsCancelled = false,
                 DailyPrices = dailyPriceList,
                 RoomType = type
             };
 
-            _reservationRepository.InsertReservation(reservation);
-            _reservationRepository.Save();
-
-            var newReservation = _reservationRepository.GetReservation(RsvId);
-            //newReservation.AspNetUser = userHandler.GetAspNetUser(userName);
-            if (userName != null)
+            if (username != null)
             {
-                _reservationRepository.UpdateReservationWithAspnetUser(newReservation, userName);
+                _reservationRepository.InsertReservationWithAspnetUser(reservation, username);
                 _reservationRepository.Save();
             }
-
-            return RsvId;
+            else
+            {
+                _reservationRepository.InsertReservation(reservation);
+                _reservationRepository.Save();
+            }
+            return rsvId;
         }
 
         public void PayReservation(Guid confirmationNumber, Profile billingInfo)
@@ -180,6 +179,7 @@ namespace BusinessLogic.Handlers
             return false;
         }
 
+        [Obsolete]
         public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
         {
             var guests = new List<Guest>();

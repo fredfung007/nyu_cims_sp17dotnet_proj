@@ -91,7 +91,7 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
             });
         }
 
@@ -102,7 +102,7 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
             });
         }
 
@@ -112,7 +112,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach (Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
@@ -146,7 +146,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
@@ -201,7 +201,7 @@ namespace HotelBookingWebsite.Controllers
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.FirstOrDefault();
+                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                 string firstName = "";
                 string lastName = "";
                 if (firstGuest != null)
@@ -246,9 +246,9 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        private ActionResult Inventory(DateTime? date)
+        public PartialViewResult Inventory(DateTime? date)
         {
-            return View(getInventory(date?? DateTime.Today));
+            return PartialView(getInventory(date?? DateTime.Today));
         }
 
         [StaffAuthorize]

@@ -19,7 +19,6 @@
         @Html.Partial("Occupancy", Model.Occupancy)
     </div>
     <div class="col-md-4">
-        @* TODO: NEED DATA TO TEST *@
         <div class="form-group">
             @Html.LabelFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control", @id = "occupancyDate", Value = DateTime.Today.Date.ToString("yyyy-MM-dd") } })
@@ -28,7 +27,11 @@
         </div>
     </div>
 </div>
-@Html.Partial("Inventory", Model.Inventory)
+<div class="container">
+    <div class="col-md-12" id="inventory">
+        @Html.Partial("Inventory", Model.Inventory)
+    </div>
+</div>
 @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
 
 <h2>Upcoming Reservations Today</h2>
@@ -43,7 +46,7 @@
 <script type="text/javascript">
     $("#occupancyDate").change(function () {
         var checkDate = $("#occupancyDate").val();
-        console.log(checkDate); // TODO remove this line
         $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
+        $("#inventory").load('@Url.Action("Inventory", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
     });
 </script>

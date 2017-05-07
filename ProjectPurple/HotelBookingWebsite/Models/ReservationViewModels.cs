@@ -23,6 +23,18 @@ namespace HotelBookingWebsite.Models
         public DateTime EndDate { get; set; }
     }
 
+    public class GuestViewModel
+    {
+        public Guid Id { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        [Required]
+        public int Order { get; set; }
+    }
+
     public class RetrieveModel
     {
         [Required(ErrorMessage = "Please input confirmation Id")]
@@ -35,7 +47,7 @@ namespace HotelBookingWebsite.Models
         //public DateTime EndDate { get; set; }
         public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
         public int SelectedIndex { get; set; }
-        public List<Guest> Guests { get; set; }
+        public List<GuestViewModel> Guests { get; set; }
         public Guid ReservationId { get; set; }
         public bool IsConfirmed { get; set; }
         public string ConfirmationId { get; set; }
@@ -78,7 +90,7 @@ namespace HotelBookingWebsite.Models
 
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
-        public List<Guest> Guests { get; set; }
+        public List<GuestViewModel> Guests { get; set; }
     }
 
     public class CreateReservationViewModel
