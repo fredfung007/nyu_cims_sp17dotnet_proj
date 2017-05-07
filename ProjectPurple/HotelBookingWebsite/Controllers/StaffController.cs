@@ -245,9 +245,9 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpGet]
-        private ActionResult Inventory(DateTime? date)
+        public PartialViewResult Inventory(DateTime? date)
         {
-            return View(getInventory(date?? DateTime.Today));
+            return PartialView(getInventory(date?? DateTime.Today));
         }
 
         [StaffAuthorize]
