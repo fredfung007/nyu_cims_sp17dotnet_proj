@@ -196,7 +196,7 @@ namespace BusinessLogic.Handlers
         private int GetCurrentRoomAvailability(ROOM_TYPE type, DateTime date)
         {
             DataAccessLayer.EF.RoomType room = _roomRepository.GetRoomType(type);
-            return _roomRepository.GetRoomTotalAmount(room.Type) - _roomRepository.GetRoomReservationAmount(room.Type, date);
+            return _roomRepository.GetRoomTotalAmount(room.Type) - _roomRepository.GetRoomOccupancyByDate(room.Type, date);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace BusinessLogic.Handlers
             foreach (DataAccessLayer.EF.RoomType room in types)
             {
                 totalQuantity += _roomRepository.GetRoomTotalAmount(room.Type);
-                totalOccupation += _roomRepository.GetRoomReservationAmount(room.Type, date);
+                totalOccupation += _roomRepository.GetRoomOccupancyByDate(room.Type, date);
             }
             return totalOccupation * 1.0 / totalQuantity;
         }
@@ -226,7 +226,7 @@ namespace BusinessLogic.Handlers
         /// <returns>booked room amount</returns>
         public int GetBookedRoomOnDate(ROOM_TYPE type, DateTime date)
         {
-            return _roomRepository.GetRoomReservationAmount(type, date);
+            return _roomRepository.GetRoomOccupancyByDate(type, date);
         }
 
         // obsolete. duplicated with UpdateRoomInventory()
@@ -346,6 +346,7 @@ namespace BusinessLogic.Handlers
                 int maxOccupancy = _roomRepository.GetMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTime.Today);
                 if (maxOccupancy > quantity)
                 {
+                    // TODO not throwing exception here, use return false
                     throw new ArgumentOutOfRangeException(
                         "new room inventory cannot be smaller than the occupied room amount");
                 }

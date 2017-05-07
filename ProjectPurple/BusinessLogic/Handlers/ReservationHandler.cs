@@ -203,17 +203,26 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckInDate > today || reservation.CheckOutDate < today)
+            if (reservation == null || reservation.CheckInDate != null ||  reservation.StartDate > today || reservation.EndDate < today)
+            {
+                return false;
+            }
+
+            // check current checkedin number v.s. inventory number
+            var currentAmount = _roomRepository.GetRoomOccupancyByDate(reservation.RoomType, today);
+            var totalAmount = _roomRepository.GetRoomTotalAmount(reservation.RoomType);
+            if (currentAmount >= totalAmount)
             {
                 return false;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            while (checkDate.CompareTo(reservation.EndDate) < 0)
             {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, -1);
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
                 checkDate = checkDate.AddDays(1);
             }
+            _roomRepository.Save();
 
             reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
@@ -231,15 +240,16 @@ namespace BusinessLogic.Handlers
             Reservation reservation =
                 _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckInDate == null || reservation.CheckInDate > today)
+            if (reservation == null || reservation.CheckOutDate != null ||　reservation.CheckInDate == null || reservation.CheckInDate > today)
             {
                 return false;
             }
 
             DateTime checkDate = today;
-            while (checkDate.CompareTo(reservation.CheckOutDate) < 0)
+            // if stay shorter, here should use today. But this is not required
+            while (checkDate.CompareTo(reservation.EndDate) < 0)
             {
-                _roomRepository.UpdateRoomUsage(reservation.RoomType, checkDate, +1);
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, -1);
                 checkDate = checkDate.AddDays(1);
             }
             _roomRepository.Save();
