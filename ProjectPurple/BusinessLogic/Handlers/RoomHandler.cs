@@ -183,7 +183,7 @@ namespace BusinessLogic.Handlers
         private int GetRoomPrice(ROOM_TYPE type, DateTime date)
         {
             // compute price multipler
-            double rate = 1.0 + GetHotelOccupancy(date);
+            double rate = 1.0 + GetHotelOccupancyRate(date);
             return (int)Math.Ceiling(_roomRepository.GetRoomType(type).BaseRate * rate);
         }
 
@@ -204,7 +204,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="date"></param>
         /// <returns>occupency percentage</returns>
-        public double GetHotelOccupancy(DateTime date)
+        public double GetHotelOccupancyRate(DateTime date)
         {
             int totalQuantity = 0;
             int totalOccupation = 0;
@@ -215,6 +215,14 @@ namespace BusinessLogic.Handlers
                 totalQuantity += _roomRepository.GetRoomTotalAmount(room.Type);
                 totalOccupation += _roomRepository.GetRoomOccupancyByDate(room.Type, date);
             }
+            return totalOccupation * 1.0 / totalQuantity;
+        }
+
+        public double GetRoomOccupancyRate(ROOM_TYPE type, DateTime date)
+        {
+            int totalQuantity = _roomRepository.GetRoomTotalAmount(type);
+            int totalOccupation = _roomRepository.GetRoomOccupancyByDate(type, date);
+
             return totalOccupation * 1.0 / totalQuantity;
         }
 

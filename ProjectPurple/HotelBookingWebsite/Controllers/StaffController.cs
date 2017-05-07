@@ -31,10 +31,10 @@ namespace HotelBookingWebsite.Controllers
         {
             return View(new DashboardModel
             {
-                checkInList = getViewCheckInList(),
-                checkOutList = getViewCheckoutListAll(),
-                inventory = getInventory(),
-                occupancy = getOccupancy(date?? DateTime.Today)
+                CheckInList = getViewCheckInList(),
+                CheckOutList = getViewCheckoutListAll(),
+                Inventory = getInventory(date?? DateTime.Today),
+                Occupancy = getOccupancy(date?? DateTime.Today)
             });
         }
 
@@ -42,8 +42,8 @@ namespace HotelBookingWebsite.Controllers
         {
             return new OccupancyModel
             {
-                date = checkDate,
-                rate = _roomHandler.GetHotelOccupancy(checkDate).ToString("P", CultureInfo.InvariantCulture)
+                Date = checkDate,
+                Rate = _roomHandler.GetHotelOccupancyRate(checkDate).ToString("P", CultureInfo.InvariantCulture)
             };
         }
 
@@ -61,8 +61,8 @@ namespace HotelBookingWebsite.Controllers
         {
             return View(new CheckInOutModel
             {
-                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                isSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
             });
         }
 
@@ -72,8 +72,8 @@ namespace HotelBookingWebsite.Controllers
         {
             return View(new CheckInOutModel
             {
-                confirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                isSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
+                ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
+                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Today)
             });
         }
 
@@ -96,10 +96,10 @@ namespace HotelBookingWebsite.Controllers
                     models.Add(new CheckInListModel
                     {
                         Id = reservation.Id,
-                        firstName = firstName,
-                        lastName = lastName,
-                        checkInDate = reservation.StartDate,
-                        checkOutDate = reservation.EndDate
+                        FirstName = firstName,
+                        LastName = lastName,
+                        CheckInDate = reservation.StartDate,
+                        CheckOutDate = reservation.EndDate
                     });
                 }
             }
@@ -130,11 +130,11 @@ namespace HotelBookingWebsite.Controllers
                     models.Add(new CheckOutListModel
                     {
                         Id = reservation.Id,
-                        firstName = firstName,
-                        lastName = lastName,
-                        checkInDate = reservation.StartDate,
-                        checkOutDate = reservation.EndDate,
-                        actualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                        FirstName = firstName,
+                        LastName = lastName,
+                        CheckInDate = reservation.StartDate,
+                        CheckOutDate = reservation.EndDate,
+                        ActualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                     });
                 }
             }
@@ -184,11 +184,11 @@ namespace HotelBookingWebsite.Controllers
                     models.Add(new CheckOutListModel
                     {
                         Id = reservation.Id,
-                        firstName = firstName,
-                        lastName = lastName,
-                        checkInDate = reservation.StartDate,
-                        checkOutDate = reservation.EndDate,
-                        actualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                        FirstName = firstName,
+                        LastName = lastName,
+                        CheckInDate = reservation.StartDate,
+                        CheckOutDate = reservation.EndDate,
+                        ActualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
                     });
                 }
             }
@@ -201,23 +201,24 @@ namespace HotelBookingWebsite.Controllers
             return View(getViewCheckoutListAll());
         }
 
-        private List<InventoryModel> getInventory()
+        private List<InventoryModel> getInventory(DateTime date)
         {
             List<InventoryModel> models = new List<InventoryModel>();
             foreach(ROOM_TYPE type in _roomHandler.GetRoomTypes())
             {
                 models.Add(new InventoryModel {
-                    type = type,
-                    inventory = _roomHandler.GetRoomInventory(type),
+                    Type = type,
+                    Inventory = _roomHandler.GetRoomInventory(type),
+                    Rate = _roomHandler.GetRoomOccupancyRate(type, date).ToString("P", CultureInfo.InvariantCulture)
                 });
             }
             return models;
         }
 
         [HttpGet]
-        private ActionResult Inventory()
+        private ActionResult Inventory(DateTime? date)
         {
-            return View(getInventory());
+            return View(getInventory(date?? DateTime.Today));
         }
 
         [StaffAuthorize]

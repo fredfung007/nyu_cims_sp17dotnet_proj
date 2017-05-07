@@ -8,45 +8,47 @@ namespace HotelBookingWebsite.Models
     public class CheckOutListModel
     {
         public Guid Id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public DateTime checkInDate { get; set; }
-        public DateTime checkOutDate { get; set; }
-        public DateTime actualCheckInDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
+        // TODO Why using this property?
+        public DateTime ActualCheckInDate { get; set; }
     }
 
     public class CheckInListModel
     {
         public Guid Id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public DateTime checkInDate { get; set; }
-        public DateTime checkOutDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
     }
 
     public class InventoryModel
     {
-        public ROOM_TYPE type { get; set; }
-        public int inventory { get; set; }
+        public ROOM_TYPE Type { get; set; }
+        public int Inventory { get; set; }
+        public string Rate { get; set; }
     }
 
     public class OccupancyModel
     {
-        public DateTime date { get; set; }
-        public string rate { get; set; }
+        public DateTime Date { get; set; }
+        public string Rate { get; set; }
     }
 
     public class DashboardModel
     {
-        public List<InventoryModel> inventory { get; set; }
-        public List<CheckInListModel> checkInList { get; set; }
-        public List<CheckOutListModel> checkOutList { get;  set;}
-        public OccupancyModel occupancy { get; set; }
+        public List<InventoryModel> Inventory { get; set; }
+        public List<CheckInListModel> CheckInList { get; set; }
+        public List<CheckOutListModel> CheckOutList { get;  set;}
+        public OccupancyModel Occupancy { get; set; }
     }
 
     public class CheckInOutModel
     {
-        public Guid confirmationNum { get; set; }
-        public bool isSuccess { get; set; }
+        public Guid ConfirmationNum { get; set; }
+        public bool IsSuccess { get; set; }
     }
 }
