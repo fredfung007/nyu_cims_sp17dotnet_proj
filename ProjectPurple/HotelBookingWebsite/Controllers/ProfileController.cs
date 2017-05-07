@@ -9,6 +9,7 @@ using DataAccessLayer.EF;
 using HotelBookingWebsite.Filters;
 using HotelBookingWebsite.Models;
 using Microsoft.AspNet.Identity;
+using HotelBookingWebsite.Helper;
 
 namespace HotelBookingWebsite.Controllers
 {
@@ -37,12 +38,11 @@ namespace HotelBookingWebsite.Controllers
                 await new ReservationHandler().GetUpComingReservations(User.Identity.GetUserId());
 
             var reservationViewModels = upComingReservations.Select(reservation => new ConfirmationViewModel
-                {
-                    ConfirmationId = reservation.Id.ToString(),
-                    StartDate = reservation.StartDate,
-                    EndDate = reservation.EndDate,
-                    Guests = reservation.Guests
-
+            {
+                ConfirmationId = reservation.Id.ToString(),
+                StartDate = reservation.StartDate,
+                EndDate = reservation.EndDate,
+                Guests = reservation.Guests.ToList().ToGuestModelList()
             })
                 .ToList();
             return View(reservationViewModels);
