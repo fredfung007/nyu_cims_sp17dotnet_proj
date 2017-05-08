@@ -222,19 +222,19 @@ namespace BusinessLogic.Handlers
         ///     Check out a reservation on specific date by its confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
-        /// <param name="today">check out date</param>
-        public bool CheckOut(Guid confirmationNumber, DateTime today)
+        /// <param name="checkOutDateTime">check out date</param>
+        public bool CheckOut(Guid confirmationNumber, DateTime checkOutDateTime)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             if (reservation == null || reservation.CheckOutDate != null || reservation.CheckInDate == null ||
-                reservation.CheckInDate > today)
+                reservation.CheckInDate > checkOutDateTime)
             {
                 return false;
             }
 
-            DateTime checkDate = today.Date;
-            // if stay shorter, here should use today. But this is not required
+            DateTime checkDate = checkOutDateTime.Date;
+            // if stay shorter, here should use checkOutDateTime. But this is not required
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, -1);
@@ -248,29 +248,29 @@ namespace BusinessLogic.Handlers
             if (user != null)
             {
                 var stayLength = 0;
-                if (user.LoyaltyYear != null && ((DateTime) user.LoyaltyYear).Year == today.Year)
+                if (user.LoyaltyYear != null && ((DateTime) user.LoyaltyYear).Year == checkOutDateTime.Year)
                 {
                     // Checkout date is the same year as the loyalty program
-                    stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
+                    stayLength = Math.Min((checkOutDateTime - checkInDate).Days, checkOutDateTime.DayOfYear);
                     reservation.AspNetUser.LoyaltyProgress += stayLength;
                 }
                 else
                 {
                     // Checkout date is a new year
-                    var newYear = new DateTime(today.Year, 1, 1);
-                    stayLength = (today - newYear).Days;
+                    var newYear = new DateTime(checkOutDateTime.Year, 1, 1);
+                    stayLength = (checkOutDateTime - newYear).Days;
                     reservation.AspNetUser.LoyaltyProgress = stayLength;
                     reservation.AspNetUser.LoyaltyYear = newYear;
                 }
             }
-            reservation.CheckOutDate = today;
+            reservation.CheckOutDate = checkOutDateTime;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
             return true;
         }
 
         /// <summary>
-        ///     Get all reservations that will check out today
+        ///     Get all reservations that will check out checkOutDateTime
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
