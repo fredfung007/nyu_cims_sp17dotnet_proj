@@ -172,7 +172,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Show", "Reservation", new {model.ConfirmationId});
+            return RedirectToAction("Confirm", "Reservation", new {model.ConfirmationId});
         }
 
         public ActionResult Search()
