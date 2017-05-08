@@ -104,10 +104,9 @@ namespace DataAccessLayer.Repositories
         public int GetRealOccupancyByTypeDate(ROOM_TYPE type, DateTime date)
         {
             date = date.Date;
-            return _context.Reservations.Include(rsv => rsv.DailyPrices).Include(rsv => rsv.Guests)
-                .Count(rsv => rsv.EndDate >= date
-                        && rsv.CheckInDate != null
-                        && rsv.CheckOutDate == null);
+            return _context.Reservations.Count(rsv => rsv.EndDate >= date
+                                                && rsv.CheckInDate != null
+                                                && rsv.CheckOutDate == null);
         }
 
         public void Save()
