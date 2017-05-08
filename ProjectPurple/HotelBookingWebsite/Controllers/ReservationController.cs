@@ -32,7 +32,7 @@ namespace HotelBookingWebsite.Controllers
         // GET: Reservation
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
