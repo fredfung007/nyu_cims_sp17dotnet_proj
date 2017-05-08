@@ -8,7 +8,10 @@ namespace HotelBookingWebsite.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.isStaff = User.IsInRole("staff");
+            if (User != null)
+            {
+                ViewBag.isStaff = User.IsInRole("staff");
+            }
             return View(new GlobalTimeViewModel {CurrentTime = DateTimeHandler.GetCurrentTime()});
         }
 
