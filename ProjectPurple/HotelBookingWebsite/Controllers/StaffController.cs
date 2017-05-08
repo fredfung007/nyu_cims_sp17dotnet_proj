@@ -43,8 +43,8 @@ namespace HotelBookingWebsite.Controllers
         {
             return new OccupancyModel
             {
-                Date = checkDate,
-                Rate = _roomHandler.GetHotelOccupancyRate(checkDate).ToString("P", CultureInfo.InvariantCulture)
+                Date = checkDate.Date,
+                Rate = _roomHandler.GetHotelOccupancyRate(checkDate.Date).ToString("P", CultureInfo.InvariantCulture)
             };
         }
 
@@ -241,7 +241,7 @@ namespace HotelBookingWebsite.Controllers
                 {
                     Type = type,
                     Inventory = _roomHandler.GetRoomInventory(type),
-                    Rate = _roomHandler.GetRoomOccupancyRate(type, date).ToString("P", CultureInfo.InvariantCulture)
+                    Rate = _roomHandler.GetRoomOccupancyRate(type, date.Date).ToString("P", CultureInfo.InvariantCulture)
                 });
             return models;
         }
