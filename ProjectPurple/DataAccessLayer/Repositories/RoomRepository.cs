@@ -58,6 +58,11 @@ namespace DataAccessLayer.Repositories
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="date">DateTime date is a date, no time</param>
+        /// <returns></returns>
         public int GetRoomOccupancyByDate(ROOM_TYPE type, DateTime date)
         {
             RoomOccupancy roomOccupancy =

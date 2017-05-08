@@ -14,7 +14,7 @@ namespace BusinessLogic.Handlers
     public class RoomHandler
     {
         /// <summary>
-        ///     list of ROOM_TYPE that are available during given date
+        ///     list of RoomType that are available during given date
         /// </summary>
         private readonly IRoomRepository _roomRepository;
 
@@ -37,30 +37,31 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        ///     Return true if the ROOM_TYPE is available during [checkIn, checkOut).
+        ///     Return true if the RoomType is available during [startDateTime, endDateTime).
         /// </summary>
-        /// <param name="type">ROOM_TYPE instance</param>
-        /// <param name="checkIn">check-in date</param>
-        /// <param name="checkOut">check-out date</param>
+        /// <param name="type">RoomType instance</param>
+        /// <param name="startDateTime">check-in date</param>
+        /// <param name="endDateTime">check-out date</param>
         /// <returns></returns>
-        public bool IsAvailable(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        public bool IsAvailable(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime)
         {
-            return IsRoomAvailableForNRoom(type, checkIn, checkOut, 1);
+            return IsRoomAvailableForNRoom(type, startDateTime, endDateTime, 1);
         }
 
         /// <summary>
-        ///     Return true if the roomType is available for RoomAmount rooms during [CheckIn, checkOut).
+        ///     Return true if the roomType is available for roomAmount rooms during [CheckIn, endDateTime).
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="checkIn"></param>
-        /// <param name="checkOut"></param>
+        /// <param name="startDateTime"></param>
+        /// <param name="endDateTime"></param>
         /// <param name="roomAmount"></param>
         /// <returns></returns>
-        private bool IsRoomAvailableForNRoom(ROOM_TYPE type, DateTime checkIn, DateTime checkOut, int roomAmount)
+        private bool IsRoomAvailableForNRoom(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime,
+            int roomAmount)
         {
-            DateTime checkDate = checkIn;
+            DateTime checkDate = startDateTime.Date;
 
-            while (checkDate.CompareTo(checkOut) < 0)
+            while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
                 if (GetCurrentRoomAvailability(type, checkDate) < roomAmount)
                     return false;
@@ -70,39 +71,70 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        ///     Return a list of ROOM_TYPE that is available during the the date [checkIn, checkOut).
+        ///     Return a list of RoomType that is available during the the date [startDateTime, endDateTime).
         /// </summary>
-        /// <param name="checkIn">check-in date</param>
-        /// <param name="checkOut">check-out date</param>
+        /// <param name="startDateTime">check-in date</param>
+        /// <param name="endDateTime">check-out date</param>
         /// <returns>a list of RoomTypes that are available during the given date</returns>
         /// <exception cref="ArgumentException">if check-in date is later than the check-out date</exception>
-        public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime checkIn, DateTime checkOut)
+        public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime startDateTime, DateTime endDateTime)
+        {
+            if (startDateTime == null || endDateTime == null)
+                throw new ArgumentException("null check-in date or check-out date");
+            if (startDateTime >= endDateTime)
+                throw new ArgumentException("check-in date later then check-out date");
+            return (from room in _roomRepository.GetRoomTypes()
+                where IsAvailable(room.Type, startDateTime, endDateTime)
+                select room.Type).ToList();
+        }
+
+        public async Task<List<ROOM_TYPE>> CheckAvailableTypeForDurationAsync(DateTime startDateTime,
+            DateTime endDateTime)
+        {
+            if (startDateTime == null || endDateTime == null)
+                throw new ArgumentException("null check-in date or check-out date");
+            if (startDateTime >= endDateTime)
+                throw new ArgumentException("check-in date later then check-out date");
+            return (from room in _roomRepository.GetRoomTypes()
+                where IsAvailable(room.Type, startDateTime, endDateTime)
+                select room.Type).ToList();
+        }
+
+        /// <summary>
+        ///     Return a list of roomType that is available during the date [startDateTime, endDateTime) for roomAmount of rooms.
+        ///     For multiple room selection extension
+        /// </summary>
+        /// <param name="checkIn"></param>
+        /// <param name="checkOut"></param>
+        /// <returns></returns>
+        public List<ROOM_TYPE> CheckAvailableTypeForDurationForNRoom(DateTime checkIn, DateTime checkOut,
+            int roomAmount)
         {
             if (checkIn == null || checkOut == null)
                 throw new ArgumentException("null check-in date or check-out date");
             if (checkIn >= checkOut)
                 throw new ArgumentException("check-in date later then check-out date");
             return (from room in _roomRepository.GetRoomTypes()
-                where IsAvailable(room.Type, checkIn, checkOut)
+                where IsRoomAvailableForNRoom(room.Type, checkIn, checkOut, roomAmount)
                 select room.Type).ToList();
         }
 
         /// <summary>
-        ///     Get the price list for a room type during [checkIn, checkOut).
+        ///     Get the price list for a room type during [startDateTime, endDateTime).
         /// </summary>
         /// <param name="type">Room type of ROOM_TYPE</param>
-        /// <param name="checkIn">check-in date</param>
-        /// <param name="checkOut">check-out date</param>
+        /// <param name="startDateTime">check-in date</param>
+        /// <param name="endDateTime">check-out date</param>
         /// <returns>list for price</returns>
-        public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime)
         {
-            if (checkIn == null || checkOut == null)
+            if (startDateTime == null || endDateTime == null)
                 throw new ArgumentException("null check-in date or check-out date");
-            if (checkIn >= checkOut)
+            if (startDateTime >= endDateTime)
                 throw new ArgumentException("check-in date later then check-out date");
             var priceList = new List<int>();
-            DateTime checkDate = checkIn;
-            while (checkDate.CompareTo(checkOut) < 0)
+            DateTime checkDate = startDateTime.Date;
+            while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
                 var baseRate = _roomRepository.GetRoomType(type).BaseRate;
                 priceList.Add(GetRoomPrice(baseRate, checkDate));
@@ -111,15 +143,15 @@ namespace BusinessLogic.Handlers
             return priceList;
         }
 
-        public async Task<List<int>> GetRoomPriceListAsync(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        public async Task<List<int>> GetRoomPriceListAsync(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime)
         {
-            if (checkIn == null || checkOut == null)
+            if (startDateTime == null || endDateTime == null)
                 throw new ArgumentException("null check-in date or check-out date");
-            if (checkIn >= checkOut)
+            if (startDateTime >= endDateTime)
                 throw new ArgumentException("check-in date later then check-out date");
             var priceList = new List<int>();
-            DateTime checkDate = checkIn;
-            while (checkDate.CompareTo(checkOut) < 0)
+            DateTime checkDate = startDateTime.Date;
+            while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
                 var baseRate = _roomRepository.GetRoomType(type).BaseRate;
                 priceList.Add(GetRoomPrice(baseRate, checkDate));
@@ -193,6 +225,17 @@ namespace BusinessLogic.Handlers
             return _roomRepository.GetRoomOccupancyByDate(type, date);
         }
 
+        // obsolete. duplicated with UpdateRoomInventory()
+        ///// <summary>
+        ///// Set room inventory
+        ///// </summary>
+        ///// <param name="type">Room type of ROOM_TYPE</param>
+        ///// <param name="amount">Room amount</param>
+        ///// <returns>true if succeeded</returns>
+        //void SetRoomInventory(ROOM_TYPE type, int amount)
+        //{
+        //}
+
         /// <summary>
         ///     Get room inventory
         /// </summary>
@@ -257,6 +300,26 @@ namespace BusinessLogic.Handlers
             return _roomRepository.GetRoomType(type).ImageUrl;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="type">Room type of ROOM_TYPE</param>
+        /// <param name="urls">Url List</param>
+        /// <returns>true if succeeded</returns>
+        public bool UpdateRoomPictureUrls(RoomType type, List<string> urls)
+        {
+            // TODO
+            return false;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="type">Room type of ROOM_TYPE</param>
+        /// <param name="url">picture url</param>
+        /// <returns>true if succeded</returns>
+        public bool InsertPictureUrl(RoomType type, string url)
+        {
+            return false;
+        }
 
         /// <summary>
         ///     Update room inventory quantity. Will first validate the new quantity
@@ -282,6 +345,19 @@ namespace BusinessLogic.Handlers
             room.Inventory = quantity;
             _roomRepository.UpdateRoom(room);
             _roomRepository.Save();
+        }
+
+        public async Task<int> GetAveragePriceAsync(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        {
+            var priceList = await GetRoomPriceListAsync(type, checkIn, checkOut);
+            var total = priceList.Sum();
+            return total / (checkOut - checkIn).Days;
+        }
+
+        public int GetAveragePrice(ROOM_TYPE type, DateTime checkIn, DateTime checkOut)
+        {
+            var total = GetRoomPriceList(type, checkIn, checkOut).Sum();
+            return total / (checkOut - checkIn).Days;
         }
     }
 }
