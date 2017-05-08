@@ -7,5 +7,9 @@ namespace DataAccessLayer.Repositories
     public interface IAuthRepository : IDisposable
     {
         AspNetUser GetUser(string username);
+
+        void UpdateUser(AspNetUser user);
+
+        void Save();
     }
 }

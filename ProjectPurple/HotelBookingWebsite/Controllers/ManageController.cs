@@ -62,10 +62,12 @@ namespace HotelBookingWebsite.Controllers
 
             ViewBag.isStaff = User.IsInRole("staff");
 
+
             var userId = User.Identity.GetUserId();
             var username = User.Identity.GetUserName();
             var userHandler = new AspNetUserHandler();
-            var progress = userHandler.FindLoyaltyProgramInfo(username);
+            var progress = userHandler.FindLoyaltyProgramInfo(username, DateTimeHandler.GetCurrentDate());
+
             var model = new IndexViewModel
             {
                 FreeNights = (int) Math.Floor(progress / 5.0),
@@ -76,6 +78,8 @@ namespace HotelBookingWebsite.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+            ViewBag.No = User.Identity.GetUserId();
+            ViewBag.Year = DateTimeHandler.GetCurrentDate().Year;
             return View(model);
         }
 
