@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DataAccessLayer.EF;
 using DataAccessLayer.Constants;
 
@@ -31,5 +32,7 @@ namespace DataAccessLayer.Repositories
         int GetRoomTotalAmount(ROOM_TYPE type);
 
         void Save();
+
+        Task<RoomType> GetRoomTypeAsync(ROOM_TYPE type);
     }
 }
