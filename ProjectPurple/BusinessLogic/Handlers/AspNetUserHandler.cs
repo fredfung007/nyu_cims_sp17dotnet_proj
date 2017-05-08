@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.EF;
+﻿using System;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
@@ -21,10 +22,19 @@ namespace BusinessLogic.Handlers
         ///     Get the loyalty program progress by username.
         /// </summary>
         /// <param name="username">Username</param>
+        /// <param name="today">Date</param>
         /// <returns>Corresponding loyalty program progress</returns>
-        public int FindLoyaltyProgramInfo(string username)
+        public int FindLoyaltyProgramInfo(string username, DateTime today)
         {
             AspNetUser user = _userRepository.GetUser(username);
+            if (user.LoyaltyYear == null || ((DateTime) user.LoyaltyYear).Year != today.Year)
+            {
+                var newYear = new DateTime(today.Year, 1, 1);
+                user.LoyaltyProgress = 0;
+                user.LoyaltyYear = newYear;
+                _userRepository.UpdateUser(user);
+                _userRepository.Save();
+            }
             return user.LoyaltyProgress;
         }
 
