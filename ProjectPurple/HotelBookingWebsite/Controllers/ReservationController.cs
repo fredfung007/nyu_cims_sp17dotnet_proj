@@ -129,22 +129,29 @@ namespace HotelBookingWebsite.Controllers
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
                 Guests = reservation.Guests.ToList().ToGuestModelList(),
-                ReservationId = reservation.Id,
+                //ReservationId = reservation.Id,
                 Type = _roomHandler.GetRoomTypeName(reservation.RoomType),
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
-                PriceList = priceList
+                PriceList = priceList,
+                IsCanceled =  reservation.IsCancelled,
             };
         }
 
         public ActionResult Cancel(Guid? confirmationId, string returnUrl)
         {
             if (confirmationId == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            {
+                return RedirectToAction("Error", "Reservation",
+                    new ErrorViewModel { ErrorMsg = "No Confirmation Id" });
+            }
+            //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             Reservation reservation = _reservationHandler.GetReservation((Guid) confirmationId);
             if (reservation == null)
+            {
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel {ErrorMsg = "Invalid Confirmation Id"});
+            }
 
             ViewBag.returnUrl = returnUrl;
 
@@ -441,8 +448,10 @@ namespace HotelBookingWebsite.Controllers
 
             //invalid confirmation Number
             if (reservation == null)
+            {
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel {ErrorMsg = "Wrong confirmation number"});
+            }
 
             return View(GetConfirmationViewModel(reservation));
         }
