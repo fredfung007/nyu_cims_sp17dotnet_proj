@@ -306,7 +306,7 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        public IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
+        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime today)
         {
             return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
         }

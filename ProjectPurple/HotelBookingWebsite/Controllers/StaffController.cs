@@ -180,7 +180,7 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public ActionResult CheckOutAllExpired()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTimeHandler.GetCurrentTime()));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllReservationsCanBeCheckedOut(DateTimeHandler.GetCurrentEndTime()));
 
             // check out today's reservation if passed 2:00 p.m.
             bool includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();
@@ -198,7 +198,7 @@ namespace HotelBookingWebsite.Controllers
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(
-                _reservationHandler.GetAllCheckedInReservations(DateTimeHandler.GetCurrentEndTime().AddDays(1)));
+                _reservationHandler.GetAllReservationsCanBeCheckedOut(DateTimeHandler.GetCurrentEndTime().AddDays(1)));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
