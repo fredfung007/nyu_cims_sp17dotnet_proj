@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using BusinessLogic.Type;
 using DataAccessLayer.Constants;
+using HotelBookingWebsite.Helper;
 
 namespace HotelBookingWebsite.Models
 {
@@ -23,9 +25,7 @@ namespace HotelBookingWebsite.Models
     public class GuestViewModel
     {
         public Guid Id { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
 
         [Required]
@@ -91,6 +91,7 @@ namespace HotelBookingWebsite.Models
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
 
+        [MustHaveFirsGuestAttribute(ErrorMessage = "Please input at least one guest's first and last name, input both first name and last name for any available guests")]
         public List<GuestViewModel> Guests { get; set; }
     }
 
