@@ -51,7 +51,7 @@ namespace HotelBookingWebsite.Controllers
             //    return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
             //}
 
-            ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTime.Now);
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTimeHandler.GetCurrentTime());
 
             return View(GetConfirmationViewModel(reservation));
         }
@@ -93,7 +93,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            bool success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTime.Now);
+            bool success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTimeHandler.GetCurrentTime());
 
             if (!success)
             {
@@ -216,10 +216,13 @@ namespace HotelBookingWebsite.Controllers
                     PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
                 });
             }
-
+            
             if (availableRooms.Count <= 0)
+            {
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel {ErrorMsg = "No available room, please search again"});
+            }
+            
             var sessionId = Guid.NewGuid().ToString();
             ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
             {
@@ -227,7 +230,7 @@ namespace HotelBookingWebsite.Controllers
                 Expiration = DateTime.Now.AddMinutes(10),
                 RoomPriceDetails = availableRooms
             };
-
+            
             return RedirectToAction("Result", "Reservation", new {SessionId = sessionId});
         }
 
@@ -245,7 +248,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -268,7 +271,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            if (model.Expiration < DateTime.Now)
+            if (model.Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -334,7 +337,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -367,7 +370,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            if (model.Expiration < DateTime.Now)
+            if (model.Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -393,7 +396,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTime.Now)
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -447,7 +450,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            if (model.Expiration < DateTime.Now)
+            if (model.Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }

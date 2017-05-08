@@ -169,8 +169,7 @@ namespace BusinessLogic.Handlers
 
             return reservations.Where(reservation => reservation.AspNetUser != null &&
                                                      reservation.AspNetUser.Id.Equals(userId) &&
-                                                     reservation.IsCancelled==false &&
-                                                     reservation.EndDate.CompareTo(DateTime.Now) > 0 &&
+                                                     reservation.EndDate.CompareTo(DateTimeHandler.GetCurrentTime()) > 0 &&
                                                      reservation.CheckOutDate == null).ToList();
         }
 
@@ -305,11 +304,11 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
         /// </summary>
-        /// <param name="today"></param>
+        /// <param name="EndTime"></param>
         /// <returns></returns>
-        public IEnumerable<Reservation> GetAllCheckedInReservations(DateTime today)
+        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime EndTime)
         {
-            return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
+            return _reservationRepository.GetReservationsCheckedInBeforeDate(EndTime);
         }
     }
 }
