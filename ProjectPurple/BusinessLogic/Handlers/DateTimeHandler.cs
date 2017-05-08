@@ -8,7 +8,7 @@ namespace BusinessLogic.Handlers
 {
     public static class DateTimeHandler
     {
-        private static DateTime _currentTime = new DateTime();
+        private static DateTime _currentTime = DateTime.Now;
 
         public static DateTime GetCurrentTime()
         {
