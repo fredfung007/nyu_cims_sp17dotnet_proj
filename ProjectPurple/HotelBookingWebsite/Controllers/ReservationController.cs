@@ -111,24 +111,6 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToLocal(ViewBag.returnUrl);
         }
 
-        //private List<GuestViewModel> GetGuestModelList(List<Guest> guests)
-        //{
-        //    List<GuestViewModel> guestModelList = new List<GuestViewModel>();
-        //    foreach (Guest guest in guests)
-        //    {
-        //        guestModelList.Add(new GuestViewModel
-        //        {
-        //            FirstName = guest.FirstName,
-        //            LastName = guest.LastName,
-        //            Id = guest.Id,
-        //            Order = guest.Order,
-        //        });
-        //    }
-        //    guestModelList.OrderBy(guest => guest.Order);
-
-        //    return guestModelList;
-        //}
-
         private ConfirmationViewModel GetConfirmationViewModel(Reservation reservation)
         {
             var priceList = reservation.DailyPrices.Select(x => x.BillingPrice).ToList();
@@ -317,7 +299,7 @@ namespace HotelBookingWebsite.Controllers
                     model.SelectedIndex;
             }
 
-            return RedirectToAction("InputUser", "Reservation", new {model.SessionId, Anomyous = false});
+            return RedirectToAction("InputUser", "Reservation", new {model.SessionId, anomyous = false});
         }
 
         public ActionResult AddGuest(int order)
