@@ -47,6 +47,7 @@ namespace HotelBookingWebsite.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime CheckDate { get; set; }
+        public DateTime CurrentTime { get; set; }
     }
 
     public class CheckInOutModel

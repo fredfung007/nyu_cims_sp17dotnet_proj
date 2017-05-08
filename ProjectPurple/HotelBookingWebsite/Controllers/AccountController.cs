@@ -184,7 +184,7 @@ namespace HotelBookingWebsite.Controllers
                     Profile = profile,
                     UserName = model.Email,
                     Email = model.Email,
-                    LoyaltyYear = DateTime.Now,
+                    LoyaltyYear = DateTimeHandler.GetCurrentTime(),
                     LoyaltyProgress = 0
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -314,7 +314,7 @@ namespace HotelBookingWebsite.Controllers
                     Profile = profile,
                     UserName = model.Email,
                     Email = model.Email,
-                    LoyaltyYear = DateTime.Now,
+                    LoyaltyYear = DateTimeHandler.GetCurrentTime(),
                     LoyaltyProgress = 0
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);

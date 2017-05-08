@@ -8,8 +8,8 @@ namespace HotelBookingWebsite.Models
 {
     public class GlobalTimeViewModel
     {
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
         [DataType(DataType.Date)]
-        public DateTime Current { get; set; }
+        public DateTime CurrentTime { get; set; }
     }
 }

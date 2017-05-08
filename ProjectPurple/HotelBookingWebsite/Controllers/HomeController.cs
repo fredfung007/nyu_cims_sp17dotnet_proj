@@ -13,7 +13,7 @@ namespace HotelBookingWebsite.Controllers
 
         public ActionResult Index()
         {
-            return View(new GlobalTimeViewModel { Current = DateTimeHandler.GetCurrentTime() });
+            return View(new GlobalTimeViewModel { CurrentTime = DateTimeHandler.GetCurrentTime() });
         }
 
         public ActionResult About()
@@ -33,7 +33,7 @@ namespace HotelBookingWebsite.Controllers
         [HttpPost]
         public ActionResult SetCurrentTime(GlobalTimeViewModel model)
         {
-            DateTimeHandler.SetCurrentTime(model.Current);
+            DateTimeHandler.SetCurrentTime(model.CurrentTime);
             return RedirectToAction("Index");
         }
     }

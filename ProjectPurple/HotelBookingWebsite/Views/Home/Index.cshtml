@@ -26,15 +26,15 @@
         @Html.Partial("~/Views/Reservation/Retrieve.cshtml", new HotelBookingWebsite.Models.RetrieveModel())
     </div>
 </div>
-<div id="today"><h2>Today is @Model.Current.ToString("yyyy-MM-dd")</h2></div>
+<div id="today"><h2>Current Time is @Model.CurrentTime.ToString("yyyy-MM-dd HH:mm:ss")</h2></div>
 @using (Ajax.BeginForm("SetCurrentTime", "Home", new AjaxOptions { HttpMethod = "Post" }, new { htmlAttributes = new { @id = "setCurrentTimeForm" } }))
 {
     <div class="form-group">
         @Html.Label("Set Global Date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="form-group input-group-sm">
-                @Html.EditorFor(model => model.Current, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Today.AddDays(1).Date.ToString("yyyy-MM-dd"), @id = "globalTime" } })
-                @Html.ValidationMessageFor(model => model.Current, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CurrentTime, new { htmlAttributes = new { @class = "form-control", Value = Model.CurrentTime.ToString("yyyy-MM-dd"), @id = "globalTime" } })
+                @Html.ValidationMessageFor(model => model.CurrentTime, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
