@@ -192,7 +192,7 @@ namespace HotelBookingWebsite.Controllers
         public ActionResult CheckOutAllExpired()
         {
             var reservations = new List<Reservation>(
-                _reservationHandler.GetAllReservationsCanBeCheckedOut(DateTimeHandler.GetCurrentEndTime()));
+                _reservationHandler.GetExpiredReservations(DateTimeHandler.GetCurrentEndTime()));
 
             // check out today's reservation if passed 2:00 p.m.
             var includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();

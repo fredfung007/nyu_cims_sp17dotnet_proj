@@ -90,6 +90,16 @@ namespace DataAccessLayer.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Reservation> GetExpiredReservations(DateTime endTime)
+        {
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(rsv => rsv.EndDate <= endTime
+                              && rsv.CheckOutDate == null)
+                .ToList();
+        }
+
         public void Save()
         {
             //_context.SaveChanges();
