@@ -28,10 +28,7 @@ namespace HotelBookingWebsite.Controllers
         [StaffAuthorize]
         public ActionResult Index(DateTime? date)
         {
-            if (User.IsInRole("staff"))
-            {
-                ViewBag.isStaff = true;
-            }
+            ViewBag.isStaff = User.IsInRole("staff");
             return View(new DashboardModel
             {
                 CheckInList = GetViewCheckInList(),
