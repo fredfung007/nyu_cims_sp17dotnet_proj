@@ -30,7 +30,7 @@ namespace DataAccessLayer.Repositories
         void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
         IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate);
         IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate);
-        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate);
+        IEnumerable<Reservation> GetReservationsCheckedInBeforeEndDate(DateTime checkInDate);
         void Save();
     }
 }
