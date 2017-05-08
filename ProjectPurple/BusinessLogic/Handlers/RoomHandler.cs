@@ -351,7 +351,7 @@ namespace BusinessLogic.Handlers
 
             if (quantity < currentQuantity)
             {
-                int maxOccupancy = _roomRepository.GetMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTimeHandler.GetCurrentTime());
+                int maxOccupancy = _roomRepository.GetMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTimeHandler.GetCurrentDate());
                 if (maxOccupancy > quantity)
                 {
                     // TODO not throwing exception here, use return false

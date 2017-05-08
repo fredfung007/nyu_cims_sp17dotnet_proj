@@ -109,7 +109,7 @@ namespace HotelBookingWebsite.Controllers
 
         private List<CheckInListModel> getViewCheckInList()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTimeHandler.GetCurrentTime()));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTimeHandler.GetCurrentStartTime()));
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach (Reservation reservation in reservations)
             {
@@ -143,7 +143,7 @@ namespace HotelBookingWebsite.Controllers
 
         private List<CheckOutListModel> getViewCheckoutList()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTimeHandler.GetCurrentTime()));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTimeHandler.GetCurrentEndTime()));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
@@ -183,10 +183,10 @@ namespace HotelBookingWebsite.Controllers
             List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTimeHandler.GetCurrentTime()));
 
             // check out today's reservation if passed 2:00 p.m.
-            bool includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentTime().Date.AddHours(14);
+            bool includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();
             foreach(Reservation reservation in reservations)
             {
-                if (reservation.EndDate < DateTimeHandler.GetCurrentTime() || (reservation.EndDate == DateTimeHandler.GetCurrentTime() && includeToday))
+                if (reservation.EndDate < DateTimeHandler.GetCurrentEndTime() || (reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday))
                 {
                     _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
                 }
@@ -198,7 +198,7 @@ namespace HotelBookingWebsite.Controllers
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(
-                _reservationHandler.GetAllCheckedInReservations(DateTimeHandler.GetCurrentTime().AddDays(1)));
+                _reservationHandler.GetAllCheckedInReservations(DateTimeHandler.GetCurrentEndTime().AddDays(1)));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
