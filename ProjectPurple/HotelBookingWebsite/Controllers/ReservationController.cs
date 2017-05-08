@@ -216,17 +216,21 @@ namespace HotelBookingWebsite.Controllers
                     PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
                 });
             }
-
-            if (availableTypes.Count > 0)
+            
+            if (availableRooms.Count <= 0)
             {
-                string sessionId = Guid.NewGuid().ToString();
-                ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
-                {
-                    SessionId = Guid.NewGuid().ToString(),
-                    Expiration = DateTimeHandler.GetCurrentTime().AddMinutes(10),
-                    RoomPriceDetails = availableRooms
-                };
-
+                return RedirectToAction("Error", "Reservation",
+                    new ErrorViewModel {ErrorMsg = "No available room, please search again"});
+            }
+            
+            var sessionId = Guid.NewGuid().ToString();
+            ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
+            {
+                SessionId = sessionId,
+                Expiration = DateTime.Now.AddMinutes(10),
+                RoomPriceDetails = availableRooms
+            };
+            
             return RedirectToAction("Result", "Reservation", new {SessionId = sessionId});
         }
 
