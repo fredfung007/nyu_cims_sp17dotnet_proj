@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using DataAccessLayer.EF;
@@ -15,35 +14,9 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public Guest GetGuest(Guid id)
-        {
-            return _context.Guests.Find(id);
-        }
-
-        public IEnumerable<Guest> GetGuests()
-        {
-            return _context.Guests.ToList();
-        }
-
         public Profile GetProfile(Guid id)
         {
             return _context.Profiles.Include(p => p.Address).FirstOrDefault(p => p.Id == id);
-        }
-
-        public IEnumerable<Profile> GetProfiles()
-        {
-            return _context.Profiles.ToList();
-        }
-
-        public void InsertProfile(Profile profile)
-        {
-            _context.Profiles.Add(profile);
-        }
-
-        public void DeleteProfile(Guid id)
-        {
-            Profile profile = _context.Profiles.Find(id);
-            _context.Profiles.Remove(profile);
         }
 
         public void UpdateProfile(Profile profile)
@@ -51,34 +24,9 @@ namespace DataAccessLayer.Repositories
             _context.Entry(profile).State = EntityState.Modified;
         }
 
-        public void InsertGuest(Guest guest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteGuest(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateGuest(Guest guest)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Save()
         {
             _context.SaveChanges();
-        }
-
-        public Address GetAddress(int id)
-        {
-            return _context.Addresses.Find(id);
-        }
-
-        public IEnumerable<Address> GetAddresses()
-        {
-            throw new NotImplementedException();
         }
 
         #region IDisposable Support

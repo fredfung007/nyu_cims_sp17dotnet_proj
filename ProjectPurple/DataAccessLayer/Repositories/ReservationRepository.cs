@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using DataAccessLayer.EF;
 
@@ -18,30 +19,22 @@ namespace DataAccessLayer.Repositories
 
         public Reservation GetReservation(Guid id)
         {
-            return _context.Reservations.Include(rsv => rsv.Guests).Include(rsv=>rsv.DailyPrices)
-                .Include(rsv=>rsv.AspNetUser).FirstOrDefault(rsv=>rsv.Id == id);
+            return _context.Reservations.Include(rsv => rsv.Guests)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.AspNetUser)
+                .FirstOrDefault(rsv => rsv.Id == id);
         }
 
         public IEnumerable<Reservation> GetReservations()
         {
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
-                .Include(rsv => rsv.Guests).ToList();
-        }
-
-        public IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end)
-        {
-            throw new NotImplementedException();
+                .Include(rsv => rsv.Guests)
+                .ToList();
         }
 
         public void InsertReservation(Reservation reservation)
         {
             _context.Reservations.Add(reservation);
-        }
-
-        public void DeleteReservation(Guid id)
-        {
-            Reservation reservation = _context.Reservations.Find(id);
-            _context.Reservations.Remove(reservation);
         }
 
         public void UpdateReservation(Reservation reservation)
@@ -52,38 +45,12 @@ namespace DataAccessLayer.Repositories
         public void InsertReservationWithAspnetUser(Reservation reservation, string userName)
         {
             _context.Reservations.Add(reservation);
-            var aspUser = _context.AspNetUsers.Include(user => user.Profile).FirstOrDefault(user => user.UserName == userName);
+            AspNetUser aspUser = _context.AspNetUsers.Include(user => user.Profile)
+                .FirstOrDefault(user => user.UserName == userName);
             var attachedEntry = _context.Entry(reservation);
             reservation.AspNetUser = aspUser;
 
             attachedEntry.CurrentValues.SetValues(reservation);
-        }
-
-        public IEnumerable<Reservation> GetReservationsByUserId(string username)
-        {
-            return _context.Reservations.Where(reservation => reservation.AspNetUser.UserName == username).ToList();
-        }
-
-        public IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate)
-        {
-            return _context.Reservations.Where(reservatoin => reservatoin.EndDate == checkOutDate).ToList();
-        }
-
-        public IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate)
-        {
-            return _context.Reservations.Where(reservation => reservation.StartDate == checkInDate).ToList();
-        }
-
-        public void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate)
-        {
-            reservation.CheckInDate = checkInDate;
-            _context.Entry(reservation).State = EntityState.Modified;
-        }
-
-        public void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate)
-        {
-            reservation.CheckOutDate = checkOutDate;
-            _context.Entry(reservation).State = EntityState.Modified;
         }
 
         public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
@@ -96,45 +63,33 @@ namespace DataAccessLayer.Repositories
                 .ToList();
         }
 
-        private void CancelReservation(Reservation reservation)
-        {
-            reservation.IsCancelled = true;
-            _context.Entry(reservation).State = EntityState.Modified;
-        }
-
         public void CancelReservation(Guid id)
         {
-            var reservation = GetReservation(id);
+            Reservation reservation = GetReservation(id);
             CancelReservation(reservation);
         }
 
-        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime StartTime)
+        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime)
         {
-            DateTime tomorrow = StartTime.AddDays(1);
+            DateTime tomorrow = startTime.AddDays(1);
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
                 .Include(rsv => rsv.DailyPrices)
                 .Include(rsv => rsv.Guests)
-                .Where(reservation => reservation.StartDate >= StartTime && reservation.StartDate < tomorrow).ToList();
+                .Where(reservation => reservation.StartDate >= startTime && reservation.StartDate < tomorrow)
+                .ToList();
         }
 
-        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime EndTime)
+        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime)
         {
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
                 .Include(rsv => rsv.DailyPrices)
                 .Include(rsv => rsv.Guests)
                 .Where(reservation => reservation.CheckInDate != null
-                                                              && reservation.CheckInDate < EndTime
-                                                              && reservation.EndDate <= EndTime)
+                                      && reservation.CheckInDate < endTime
+                                      && reservation.EndDate <= endTime)
                 .ToList();
         }
 
-        // commentted for now, did not find use cases for this method
-        // public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
-        // {
-        //     return context.Reservation
-        //                 .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
-        //                 .ToList();
-        // }
         public void Save()
         {
             //_context.SaveChanges();
@@ -142,24 +97,27 @@ namespace DataAccessLayer.Repositories
             {
                 _context.SaveChanges();
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            catch (DbEntityValidationException dbEx)
             {
                 Exception raise = dbEx;
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                foreach (DbEntityValidationResult validationErrors in dbEx.EntityValidationErrors)
+                foreach (DbValidationError validationError in validationErrors.ValidationErrors)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        string message = string.Format("{0}:{1}",
-                            validationErrors.Entry.Entity.ToString(),
-                            validationError.ErrorMessage);
-                        // raise a new exception nesting
-                        // the current instance as InnerException
-                        raise = new InvalidOperationException(message, raise);
-                    }
+                    var message = string.Format("{0}:{1}",
+                        validationErrors.Entry.Entity,
+                        validationError.ErrorMessage);
+                    // raise a new exception nesting
+                    // the current instance as InnerException
+                    raise = new InvalidOperationException(message, raise);
                 }
                 throw raise;
             }
+        }
 
+        private void CancelReservation(Reservation reservation)
+        {
+            reservation.IsCancelled = true;
+            _context.Entry(reservation).State = EntityState.Modified;
         }
 
         #region IDisposable Support
@@ -189,7 +147,6 @@ namespace DataAccessLayer.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
 
         #endregion
     }

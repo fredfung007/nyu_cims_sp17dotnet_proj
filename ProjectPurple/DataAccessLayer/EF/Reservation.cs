@@ -1,7 +1,7 @@
-using DataAccessLayer.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.EF
 {
@@ -33,7 +33,7 @@ namespace DataAccessLayer.EF
         public virtual ICollection<DailyPrice> DailyPrices { get; set; }
 
         public virtual ICollection<Guest> Guests { get; set; }
-        
+
         public ROOM_TYPE RoomType { get; set; }
     }
 }

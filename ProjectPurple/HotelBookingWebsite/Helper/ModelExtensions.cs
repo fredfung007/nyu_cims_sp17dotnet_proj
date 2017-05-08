@@ -1,9 +1,7 @@
-﻿using DataAccessLayer.EF;
-using HotelBookingWebsite.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using DataAccessLayer.EF;
+using HotelBookingWebsite.Models;
 
 namespace HotelBookingWebsite.Helper
 {
@@ -11,38 +9,28 @@ namespace HotelBookingWebsite.Helper
     {
         public static List<Guest> ToGuestList(this List<GuestViewModel> guestModels)
         {
-            List<Guest> guests = new List<Guest>();
-            int order = 0;
-            for (int i = 0; i < guestModels.Count; i++)
-            {
-                if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
+            var order = 0;
+            return (from t in guestModels
+                where !string.IsNullOrEmpty(t.LastName) || !string.IsNullOrEmpty(t.FirstName)
+                select new Guest
                 {
-                    continue;
-                }
-                guests.Add(new Guest
-                {
-                    Id = guestModels[i].Id,
-                    FirstName = guestModels[i].FirstName,
-                    LastName = guestModels[i].LastName,
-                    Order = order++,
-                });
-            }
-            return guests;
+                    Id = t.Id,
+                    FirstName = t.FirstName,
+                    LastName = t.LastName,
+                    Order = order++
+                }).ToList();
         }
 
         public static List<GuestViewModel> ToGuestModelList(this List<Guest> guests)
         {
-            List<GuestViewModel> guestModelList = new List<GuestViewModel>();
-            foreach (Guest guest in guests)
-            {
-                guestModelList.Add(new GuestViewModel
+            var guestModelList = guests.Select(guest => new GuestViewModel
                 {
                     FirstName = guest.FirstName,
                     LastName = guest.LastName,
                     Id = guest.Id,
-                    Order = guest.Order,
-                });
-            }
+                    Order = guest.Order
+                })
+                .ToList();
             guestModelList.OrderBy(guest => guest.Order);
 
             return guestModelList;

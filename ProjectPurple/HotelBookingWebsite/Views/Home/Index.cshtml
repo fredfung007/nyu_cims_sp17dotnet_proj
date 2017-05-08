@@ -1,4 +1,5 @@
-﻿@model HotelBookingWebsite.Models.GlobalTimeViewModel
+﻿@using HotelBookingWebsite.Models
+@model HotelBookingWebsite.Models.GlobalTimeViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -7,7 +8,9 @@
 <div class="jumbotron">
     <h1>Project Purple</h1>
     <p class="lead">Welcome to Project Purple Hotel Booking System</p>
-    <p><a href="home/about" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p>
+        <a href="home/about" class="btn btn-primary btn-lg">Learn more &raquo;</a>
+    </p>
 </div>
 
 <div class="row">
@@ -16,31 +19,33 @@
         <p>
             Please select the check-in and check-out date of your travel, we will help you to find all available room types and their prices.
         </p>
-        @Html.Partial("~/Views/Reservation/Search.cshtml", new HotelBookingWebsite.Models.SearchInputModel())
+        @Html.Partial("~/Views/Reservation/Search.cshtml", new SearchInputModel())
     </div>
     <div class="col-md-6">
         <h2>Retrieve a Reservation</h2>
         <p>
             Please enter your reservation's confirmation number:
         </p>
-        @Html.Partial("~/Views/Reservation/Retrieve.cshtml", new HotelBookingWebsite.Models.RetrieveModel())
+        @Html.Partial("~/Views/Reservation/Retrieve.cshtml", new RetrieveModel())
     </div>
 </div>
-<div id="today"><h2>Current Time is @Model.CurrentTime.ToString("yyyy-MM-dd HH:mm:ss")</h2></div>
-@using (Ajax.BeginForm("SetCurrentTime", "Home", new AjaxOptions { HttpMethod = "Post" }, new { htmlAttributes = new { @id = "setCurrentTimeForm" } }))
+<div id="today">
+    <h2>Current Time is @Model.CurrentTime.ToString("yyyy-MM-dd HH:mm:ss")</h2>
+</div>
+@using (Ajax.BeginForm("SetCurrentTime", "Home", new AjaxOptions {HttpMethod = "Post"}, new {htmlAttributes = new {id = "setCurrentTimeForm"}}))
 {
     <div class="form-group">
-        @Html.Label("Set Global Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Set Global Date", new {@class = "control-label col-md-2"})
         <div class="col-md-10">
             <div class="form-group input-group-sm">
-                @Html.EditorFor(model => model.CurrentTime, new { htmlAttributes = new { @class = "form-control", Value = Model.CurrentTime, @id = "globalTime" } })
-                @Html.ValidationMessageFor(model => model.CurrentTime, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CurrentTime, new {htmlAttributes = new {@class = "form-control", Value = Model.CurrentTime, id = "globalTime"}})
+                @Html.ValidationMessageFor(model => model.CurrentTime, "", new {@class = "text-danger"})
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Set" class="btn btn-default" />
+            <input type="submit" value="Set" class="btn btn-default"/>
         </div>
     </div>
 }

@@ -2,25 +2,25 @@
 
 
 @*@using (Html.BeginForm())*@
-@using (Ajax.BeginForm("Retrieve", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
-    {
+@using (Ajax.BeginForm("Retrieve", "Reservation", new AjaxOptions {HttpMethod = "Post"}))
+{
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         @*<h4>RetrieveModel</h4>*@
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
         <div class="form-group">
-            @Html.Label("Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Number", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ConfirmationId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ConfirmationId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ConfirmationId, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.ConfirmationId, "", new {@class = "text-danger"})
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Retrieve" class="btn btn-default" />
+                <input type="submit" value="Retrieve" class="btn btn-default"/>
             </div>
         </div>
     </div>

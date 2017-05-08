@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using DataAccessLayer.EF;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public interface IRoomRepository : IDisposable
     {
-        RoomType GetRoomType(Guid id);
-        RoomType GetRoomType(Constants.ROOM_TYPE type);
+        RoomType GetRoomType(ROOM_TYPE type);
         IEnumerable<RoomType> GetRoomTypes();
-        void InsertRoom(RoomType room);
-        void DeleteRoom(Guid id);
         void UpdateRoom(RoomType room);
-
-        // room inventory
         void UpdateRoomOccupancy(RoomOccupancy roomOccupancy);
-
-        IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date);
-        int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date);
+        int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date);
 
         // room usage, if check in a room, call UpdateRoomUsage(roomType, 1).
         // if check out a room, call UpdateRoomUsage(roomType, -1);
@@ -32,7 +24,5 @@ namespace DataAccessLayer.Repositories
         int GetRoomTotalAmount(ROOM_TYPE type);
 
         void Save();
-
-        Task<RoomType> GetRoomTypeAsync(ROOM_TYPE type);
     }
 }

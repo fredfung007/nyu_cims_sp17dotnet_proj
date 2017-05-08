@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Handlers;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
@@ -13,17 +12,17 @@ namespace BusinessLogicTest
     [TestClass]
     public class RoomHandlerTests
     {
-        private const int _LEN = 5;
-        private const int _RATE = 300;
-        private const int _INV = 30;
-        private const ROOM_TYPE _TYPE = ROOM_TYPE.QueenRoom;
+        private const int Len = 5;
+        private const int Rate = 300;
+        private const int Inv = 30;
+        private const ROOM_TYPE Type = ROOM_TYPE.QueenRoom;
+        private Guid _confirmationNum = Guid.NewGuid();
 
         private RoomHandler _handler;
-        private RoomType _room;
-        private Reservation _reservation;
-        private Guid _confirmationNum = Guid.NewGuid();
-        private Mock<IRoomRepository> _mockRoomRepo;
         private Mock<IReservationRepository> _mockReservationRepo;
+        private Mock<IRoomRepository> _mockRoomRepo;
+        private Reservation _reservation;
+        private RoomType _room;
 
         [TestInitialize]
         public void TestInit()
@@ -33,128 +32,115 @@ namespace BusinessLogicTest
             _room = new RoomType
             {
                 Id = Guid.NewGuid(),
-                BaseRate = _RATE,
+                BaseRate = Rate,
                 Ameneties = "amenety",
                 Description = "desc",
                 ImageUrl = "imgUrl",
-                Inventory = _INV,
-                Type = _TYPE
+                Inventory = Inv,
+                Type = Type
             };
-            _mockRoomRepo.Setup(m => m.GetRoomTypes()).Returns(new List<RoomType> { _room });
-            _mockRoomRepo.Setup(m => m.GetRoomType(_TYPE)).Returns(_room);
-            _mockRoomRepo.Setup(m => m.GetRoomTotalAmount(_room.Type)).Returns(_INV);
-            for (int i = 0; i <= _LEN; i++)
+            _mockRoomRepo.Setup(m => m.GetRoomTypes()).Returns(new List<RoomType> {_room});
+            _mockRoomRepo.Setup(m => m.GetRoomType(Type)).Returns(_room);
+            _mockRoomRepo.Setup(m => m.GetRoomTotalAmount(_room.Type)).Returns(Inv);
+            for (var i = 0; i <= Len; i++)
             {
-                _mockRoomRepo.Setup(m => m.GetMaxRoomOccupanciesByRoomTypeAfterDate(_TYPE, DateTime.Now.AddDays(i))).Returns(_INV);
-                _mockRoomRepo.Setup(m => m.GetRoomOccupancyByDate(_room.Type, DateTime.Now.AddDays(i))).Returns(_INV - 1);
+                _mockRoomRepo.Setup(m => m.GetMaxRoomOccupanciesByRoomTypeAfterDate(Type, DateTime.Now.AddDays(i)))
+                    .Returns(Inv);
+                _mockRoomRepo.Setup(m => m.GetRoomOccupancyByDate(_room.Type, DateTime.Now.AddDays(i)))
+                    .Returns(Inv - 1);
             }
 
             // mock the ReservationRepository
             _mockReservationRepo = new Mock<IReservationRepository>();
-            _reservation = new Reservation {
-                AspNetUser = new AspNetUser {  },
-
+            _reservation = new Reservation
+            {
+                AspNetUser = new AspNetUser()
             };
 
             // generate the handler
-            var roomRepo = _mockRoomRepo.Object;
-            var reservationRepo = _mockReservationRepo.Object;
+            IRoomRepository roomRepo = _mockRoomRepo.Object;
+            IReservationRepository reservationRepo = _mockReservationRepo.Object;
             _handler = new RoomHandler(roomRepo);
         }
 
         /// <summary>
-        /// pass if no reservations in the database
+        ///     pass if no reservations in the database
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void CheckAvailableTypeForDurationTest()
         {
-            List<ROOM_TYPE> result = _handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(_LEN));
+            var result = _handler.CheckAvailableTypeForDuration(DateTime.Today, DateTime.Today.AddDays(Len));
             Assert.AreEqual(1, result.Count);
         }
 
         /// <summary>
-        /// pass if throw ArgumentException or returns no available rooms
+        ///     pass if throw ArgumentException or returns no available rooms
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CheckAvailableTypeForDurationWithInvalidInputTest()
         {
-            List<ROOM_TYPE> result = _handler.CheckAvailableTypeForDuration(DateTime.Today.AddDays(365), DateTime.Today);
+            var result = _handler.CheckAvailableTypeForDuration(DateTime.Today.AddDays(365), DateTime.Today);
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetRoomPriceListTest()
         {
-            List<int> prices = _handler.GetRoomPriceList(_TYPE, DateTime.Today, DateTime.Today.AddDays(_LEN));
-            Assert.AreEqual(_LEN, prices.Count);
-            foreach (int price in prices)
-            {
-                Assert.IsTrue(price >= _RATE);
-            }
+            var prices = _handler.GetRoomPriceList(Type, DateTime.Today, DateTime.Today.AddDays(Len));
+            Assert.AreEqual(Len, prices.Count);
+            foreach (var price in prices)
+                Assert.IsTrue(price >= Rate);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetBookedRoomOnDateTest()
         {
-            int result = _handler.GetBookedRoomOnDate(_TYPE, DateTime.Today);
+            var result = _handler.GetBookedRoomOnDate(Type, DateTime.Today);
             Assert.IsTrue(result >= 0 && result <= _room.Inventory);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetRooomInventoryTest()
         {
             Assert.AreEqual(_room.Inventory, _handler.GetRoomInventory(_room.Type));
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateRoomDescriptionTest()
         {
-            string original = _handler.GetRoomDescription(_room.Type);
-            string newDesc = "testDesc";
+            var original = _handler.GetRoomDescription(_room.Type);
+            var newDesc = "testDesc";
             _handler.UpdateRoomDescription(_room.Type, newDesc);
             Assert.AreEqual(_handler.GetRoomDescription(_room.Type), newDesc);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateRoomInventoryTest()
         {
-            int original = _handler.GetRoomInventory(_room.Type);
-            int newInv = original + 10;
+            var original = _handler.GetRoomInventory(_room.Type);
+            var newInv = original + 10;
             _handler.UpdateRoomInventory(_room.Type, newInv);
             Assert.AreEqual(newInv, _handler.GetRoomInventory(_room.Type));
         }
 
-        [TestMethod()]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void UpdateRoomInventoryNegativeTest()
         {
-            int original = _handler.GetRoomInventory(_room.Type);
-            int newInv = -10;
+            var original = _handler.GetRoomInventory(_room.Type);
+            var newInv = -10;
             _handler.UpdateRoomInventory(_room.Type, newInv);
         }
 
-        [TestMethod()]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void UpdateRoomInventoryInvalidTest()
         {
-            int original = _handler.GetRoomInventory(_room.Type);
-            var repo = _mockRoomRepo.Object;
-            int maxOccu = repo.GetMaxRoomOccupanciesByRoomTypeAfterDate(_TYPE, DateTime.Today);
+            var original = _handler.GetRoomInventory(_room.Type);
+            IRoomRepository repo = _mockRoomRepo.Object;
+            var maxOccu = repo.GetMaxRoomOccupanciesByRoomTypeAfterDate(Type, DateTime.Today);
             _handler.UpdateRoomInventory(_room.Type, maxOccu - 1);
         }
-
-        //TODO do these in integration tests
-        //[TestMethod()]
-        //public void CheckInInvalidConfirmationNumTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void CheckOutTest()
-        //{
-        //    Assert.Fail();
-        //}
     }
 }

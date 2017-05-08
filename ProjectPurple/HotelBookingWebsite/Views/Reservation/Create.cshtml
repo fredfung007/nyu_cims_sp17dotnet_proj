@@ -11,26 +11,26 @@
 
 <div>
     <h4> Room Price for @Model.TypeName from @Model.StartDate.Date.ToString("MM/dd/yyyy") to @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)</h4>
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>Date</dt>
         <dd>Price</dd>
-        @{var sum = 0;}
-        @{var priceList = Model.PriceList; }
-        @{DateTime showDate = Model.StartDate;}
-        @for (int i = 0; i < priceList.Count; i++)
+        @{ var sum = 0; }
+        @{ var priceList = Model.PriceList; }
+        @{ DateTime showDate = Model.StartDate; }
+        @for (var i = 0; i < priceList.Count; i++)
         {
             <dt>@showDate.Date.ToString("MM/dd/yyyy")</dt>
-            <dd>USD @((Model.PriceList[i]/100.00).ToString("C2"))</dd>
+            <dd>USD @((Model.PriceList[i] / 100.00).ToString("C2"))</dd>
             sum += priceList[i];
             showDate = showDate.AddDays(1);
         }
     </dl>
-    <hr />
-    <h4>Summary of charges: USD @((sum/100.00).ToString("C2"))</h4>
-    
+    <hr/>
+    <h4>Summary of charges: USD @((sum / 100.00).ToString("C2"))</h4>
+
 </div>
-<hr />
+<hr/>
 
 @using (Html.BeginForm())
 {
@@ -40,66 +40,66 @@
 
     <div class="form-horizontal">
         <h4>Billing Information (Optional)</h4>
-        <hr />
+        <hr/>
 
         <div class="form-group">
-            @Html.Label("First Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("First Name", new {@class = "control-label col-md-2"})
             <div class="col-md-4">
                 <input autocomplete='off' class='form-control card-number' size='20' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Last Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Last Name", new {@class = "control-label col-md-2"})
             <div class="col-md-4">
                 <input autocomplete='off' class='form-control card-number' size='20' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Address", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input autocomplete='off' class='form-control' size='20' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-           @Html.Label("City", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("City", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input autocomplete='off' class='form-control card-cvc' placeholder='New York' size='4' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("State", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("State", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input class='form-control billing-state' placeholder='NY' size='2' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Zip Code", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Zip Code", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input class='form-control billing-zip-code' placeholder='10000' size='4' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Email Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Email Address", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input class='form-control billing-zip-code' placeholder='hello@nyu.edu' size='4' type='text'>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Telephone", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Telephone", new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <input class='form-control billing-zip-code' placeholder='(123) 456-7890' size='4' type='text'>
             </div>
         </div>
 
         <div class="form-horizontal">
-            <input type="submit" value="Pay" class="btn btn-default" />
+            <input type="submit" value="Pay" class="btn btn-default"/>
         </div>
     </div>
 }

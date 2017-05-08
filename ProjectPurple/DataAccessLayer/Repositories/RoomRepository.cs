@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
-using DataAccessLayer.EF;
 using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
-    public class RoomRepository : IRoomRepository, IDisposable
+    public class RoomRepository : IRoomRepository
     {
         private readonly HotelModelContext _context;
 
@@ -17,28 +16,12 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public void InsertRoom(RoomType room)
-        {
-            _context.RoomTypes.Add(room);
-        }
-
-        public void DeleteRoom(Guid id)
-        {
-            RoomType room = _context.RoomTypes.Find(id);
-            if (room != null) _context.RoomTypes.Remove(room);
-        }
-
         public void UpdateRoom(RoomType room)
         {
             _context.Entry(room).State = EntityState.Modified;
         }
 
-        public RoomType GetRoomType(Guid id)
-        {
-            return _context.RoomTypes.Find(id);
-        }
-
-        public RoomType GetRoomType(Constants.ROOM_TYPE type)
+        public RoomType GetRoomType(ROOM_TYPE type)
         {
             //throw new NotImplementedException();
             return _context.RoomTypes.FirstOrDefault(room => room.Type == type);
@@ -62,7 +45,7 @@ namespace DataAccessLayer.Repositories
             }
             else
             {
-                var roomType = GetRoomType(type);
+                RoomType roomType = GetRoomType(type);
                 // create new and add it into RoomOccupancy
                 roomOccupancy = new RoomOccupancy
                 {
@@ -76,7 +59,6 @@ namespace DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="type"></param>
         /// <param name="date">DateTime date is a date, no time</param>
@@ -99,38 +81,16 @@ namespace DataAccessLayer.Repositories
             _context.SaveChanges();
         }
 
-        public Task<RoomType> GetRoomTypeAsync(ROOM_TYPE id)
-        {
-            return _context.RoomTypes.FindAsync(id);
-        }
-
         public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
         {
             _context.Entry(roomOccupancy).State = EntityState.Modified;
         }
 
-        /// <summary>
-        ///     Return all RoomOccupancy including and after the date
-        /// </summary>
-        /// <param name="type">ROOM_TYPE</param>
-        /// <param name="date">date query starts</param>
-        /// <returns></returns>
-        public IEnumerable<RoomOccupancy> GetRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
+        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(ROOM_TYPE type, DateTime date)
         {
-            var roomOccupancies =
-                _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0).ToList();
-            return roomOccupancies;
-        }
-
-        public int GetMaxRoomOccupanciesByRoomTypeAfterDate(Constants.ROOM_TYPE type, DateTime date)
-        {
-            IEnumerable<RoomOccupancy> occupancies = _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0);
-            int maxOccupancy = 0;
-            foreach (RoomOccupancy occupancy in occupancies)
-            {
-                maxOccupancy = maxOccupancy < occupancy.Occupancy ? occupancy.Occupancy : maxOccupancy;
-            }
-            return maxOccupancy;
+            IEnumerable<RoomOccupancy> occupancies =
+                _context.RoomOccupancies.Where(ro => ro.RoomType == type && ro.Date.CompareTo(date) >= 0);
+            return occupancies.Select(occupancy => occupancy.Occupancy).Concat(new[] {0}).Max();
         }
 
         #region IDisposable Support

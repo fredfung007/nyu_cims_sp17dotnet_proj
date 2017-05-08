@@ -13,6 +13,6 @@
 
     public class NameString
     {
-        readonly public static string[] ROOM_TYPE_NAME = new string[] { "Double Bed Room", "Queen Room", "King Room", "Suite" };
+        public static readonly string[] ROOM_TYPE_NAME = {"Double Bed Room", "Queen Room", "King Room", "Suite"};
     }
 }

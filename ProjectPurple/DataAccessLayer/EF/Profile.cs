@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DataAccessLayer.Constants;
 
@@ -22,6 +21,5 @@ namespace DataAccessLayer.EF
         public ROOM_TYPE PreferredRoomType { get; set; }
 
         public virtual Address Address { get; set; }
-
     }
 }

@@ -6,9 +6,9 @@
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
     <h4>Change your account settings</h4>
-    <hr />
+    <hr/>
     @Html.ActionLink("View and Update Your Profile Information", "Index", "Profile")
-    <hr />
+    <hr/>
     <h4>YOUR LOYALTY REWARDS™</h4>
     @if (Model.LoyaltyProgress >= 5)
     {

@@ -14,23 +14,14 @@ namespace DataAccessLayer.Repositories
         Reservation GetReservation(Guid id);
 
         IEnumerable<Reservation> GetReservations();
-        IEnumerable<Reservation> GetReservationsByUserId(string username);
-        IEnumerable<Reservation> GetReservationsByCheckOutDate(DateTime checkOutDate);
-        IEnumerable<Reservation> GetReservationsByCheckInDate(DateTime checkInDate);
-
-        [Obsolete]
-        IEnumerable<Reservation> GetReservationsByPeriod(DateTime start, DateTime end);
-
         void InsertReservation(Reservation reservation);
-        void DeleteReservation(Guid id);
         void CancelReservation(Guid id);
         void UpdateReservation(Reservation reservation);
         void InsertReservationWithAspnetUser(Reservation reservation, string userName);
-        void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
-        void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
-        IEnumerable<Reservation> GetReservationsByEndDate(DateTime EndTime);
-        IEnumerable<Reservation> GetReservationsByStartDate(DateTime StartTime);
-        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime EndTime);
+        IEnumerable<Reservation> GetReservationsByEndDate(DateTime endTime);
+        IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime);
+        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime);
+
         void Save();
     }
 }

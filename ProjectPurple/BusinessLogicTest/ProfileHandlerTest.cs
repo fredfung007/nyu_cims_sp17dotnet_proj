@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Web.Helpers;
 using BusinessLogic.Handlers;
-using DataAccessLayer;
 using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
 
 namespace BusinessLogicTest
 {
@@ -17,7 +14,7 @@ namespace BusinessLogicTest
         public void TestGetProfile()
         {
             var mock = new Mock<IProfileRepository>();
-            Guid profileGuid = new Guid();
+            var profileGuid = new Guid();
             var profile = new Profile
             {
                 FirstName = "testFristName",
@@ -26,7 +23,7 @@ namespace BusinessLogicTest
             };
             mock.Setup(framework => framework.GetProfile(profileGuid))
                 .Returns(profile);
-            var profileRepository = mock.Object;
+            IProfileRepository profileRepository = mock.Object;
             var profileHandler = new ProfileHandler(profileRepository);
             Assert.AreEqual("testFristName", profileHandler.GetProfile(profileGuid).FirstName);
             Assert.AreEqual("testLastName", profileHandler.GetProfile(profileGuid).LastName);
@@ -37,7 +34,7 @@ namespace BusinessLogicTest
         public void TestGetAddress()
         {
             var mock = new Mock<IProfileRepository>();
-            Guid profileGuid = new Guid();
+            var profileGuid = new Guid();
             var profile = new Profile
             {
                 Address = new Address
@@ -48,7 +45,7 @@ namespace BusinessLogicTest
             };
             mock.Setup(framework => framework.GetProfile(profileGuid))
                 .Returns(profile);
-            var profileRepository = mock.Object;
+            IProfileRepository profileRepository = mock.Object;
             var profileHandler = new ProfileHandler(profileRepository);
             Assert.AreEqual("10001", profileHandler.GetAddress(profileGuid).ZipCode);
         }

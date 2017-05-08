@@ -9,7 +9,7 @@
 
 <div>
     <h4>From @Model.RoomPriceDetails[0].StartDate.Date.ToString("MM/dd/yyyy") to @Model.RoomPriceDetails[0].EndDate.Date.ToString("MM/dd/yyyy")</h4>
-    <hr />
+    <hr/>
 </div>
 
 @*add checkbox and add form for submit*@
@@ -22,14 +22,14 @@
 
     <div class="form-horizontal">
         <div>
-            @for (int i = 0; i < Model.RoomPriceDetails.Count; i++)
+            @for (var i = 0; i < Model.RoomPriceDetails.Count; i++)
             {
                 <dl class="dl-horizontal">
                     <dt>
                         @Html.DisplayFor(model => model.RoomPriceDetails[i].Name)
                     </dt>
                     <dd>
-                        @Html.Raw("<img src=\"" + (Model.RoomPriceDetails[i].PictureUlrs) + "\" width=\"400\" heidth=\"600\">")
+                        @Html.Raw("<img src=\"" + Model.RoomPriceDetails[i].PictureUlrs + "\" width=\"400\" heidth=\"600\">")
                     </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.RoomPriceDetails[i].Name)
@@ -59,16 +59,16 @@
                         @Html.Label("Select")
                     </dt>
                     <dd>
-                        @Html.RadioButtonFor(model => model.SelectedIndex, i)  @Html.Label(Model.RoomPriceDetails[i].Name)     
+                        @Html.RadioButtonFor(model => model.SelectedIndex, i) @Html.Label(Model.RoomPriceDetails[i].Name)
                     </dd>
                 </dl>
-                <hr />
+                <hr/>
             }
             @*@Html.ValidationMessageFor(model => model.SelectedIndex, "Please select a room type", new { @class = "text-danger" })*@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit" class="btn btn-default" />
+                <input type="submit" value="Submit" class="btn btn-default"/>
             </div>
         </div>
     </div>

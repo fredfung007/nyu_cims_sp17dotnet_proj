@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HotelBookingWebsite.Models.InventoryModel>
+﻿@using HotelBookingWebsite.Models
+@model IEnumerable<HotelBookingWebsite.Models.InventoryModel>
 
 <table class="table">
     <tr>
@@ -6,25 +7,26 @@
             Room Type
         </th>
         <th>
-            Total Amount 
+            Total Amount
         </th>
         <th>
             Occupancy
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Inventory)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rate)
-        </td>
-    </tr>
-}
+    @foreach (InventoryModel item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Inventory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rate)
+            </td>
+        </tr>
+    }
 
 </table>

@@ -8,10 +8,12 @@ namespace DataAccessLayer.Constructor
     {
         private readonly Profile _profile;
 
-        public ProfileConstructor(Guid Id)
+        public ProfileConstructor(Guid id)
         {
-            _profile = new Profile();
-            _profile.Id = Id;
+            _profile = new Profile
+            {
+                Id = id
+            };
         }
 
         public ProfileConstructor AddName(string firstName, string lastName)

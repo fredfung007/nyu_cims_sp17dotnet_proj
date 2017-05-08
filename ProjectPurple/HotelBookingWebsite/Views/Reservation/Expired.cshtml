@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Expired";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,8 +9,8 @@
 @Html.AntiForgeryToken()
 
 <script>
-        var timer = setTimeout(function() {
-            window.location='/Home/Index/'
-        }, 3000);
+    var timer = setTimeout(function() {
+            window.location = '/Home/Index/';
+        },
+        3000);
 </script>
-
