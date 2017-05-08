@@ -2,7 +2,14 @@
 @{
     ViewBag.Title = "CheckIn";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Status = Model.IsSuccess ? "Succeeded" : "Failed";
+    if ((bool) ViewBag.StartCheckIn)
+    {
+        ViewBag.Status = Model.IsSuccess ? "Succeeded" : "Failed. No enough rooms right now.";
+    }
+    else
+    {
+        ViewBag.Status = "Failed. The hotel has not started to check in today.";
+    }
 }
 
 <h2>CheckIn @ViewBag.Status </h2>

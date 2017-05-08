@@ -96,6 +96,7 @@ namespace HotelBookingWebsite.Controllers
         [StaffAuthorize]
         public async Task<ActionResult> CheckIn(Guid? confirmationNum)
         {
+            ViewBag.StartCheckIn = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentStartTime();
             return View(new CheckInOutModel
             {
                 ConfirmationNum = confirmationNum ?? Guid.NewGuid(),
@@ -291,6 +292,7 @@ namespace HotelBookingWebsite.Controllers
         [StaffAuthorize]
         public async Task<ActionResult> ModifyRoomInventory(ROOM_TYPE? type, int? inventory)
         {
+            ViewBag.Inventory = GetInventory(DateTimeHandler.GetCurrentDate());
             if (type != null && inventory != null)
             {
                 try
