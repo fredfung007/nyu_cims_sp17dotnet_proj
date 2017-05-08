@@ -62,8 +62,11 @@ namespace HotelBookingWebsite.Controllers
         {
             Guid confirmationNumNotNull = confirmationNum ?? Guid.Empty;
             if (!_reservationHandler.HashReservation(confirmationNumNotNull.ToString()))
+            {
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel {ErrorMsg = "Invalid Confirmation Id"});
+            }
+
             Reservation reservation = _reservationHandler.GetReservation(confirmationNumNotNull);
             ViewBag.IsCheckedIn = reservation.CheckInDate != null;
             ViewBag.canCancel =
@@ -128,6 +131,7 @@ namespace HotelBookingWebsite.Controllers
                     lastName = firstGuest.LastName;
                 }
                 if (reservation.CheckInDate == null && !reservation.IsCancelled)
+                {
                     models.Add(new CheckInListModel
                     {
                         Id = reservation.Id,
@@ -136,6 +140,7 @@ namespace HotelBookingWebsite.Controllers
                         CheckInDate = reservation.StartDate,
                         CheckOutDate = reservation.EndDate
                     });
+                }
             }
             return models;
         }
@@ -161,6 +166,7 @@ namespace HotelBookingWebsite.Controllers
                     lastName = firstGuest.LastName;
                 }
                 if (reservation.CheckInDate != null && reservation.CheckOutDate == null && !reservation.IsCancelled)
+                {
                     models.Add(new CheckOutListModel
                     {
                         Id = reservation.Id,
@@ -171,6 +177,7 @@ namespace HotelBookingWebsite.Controllers
                         ActualCheckInDate = reservation.CheckInDate ??
                                             DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
                     });
+                }
             }
             return models;
         }
@@ -190,9 +197,13 @@ namespace HotelBookingWebsite.Controllers
             // check out today's reservation if passed 2:00 p.m.
             var includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();
             foreach (Reservation reservation in reservations)
+            {
                 if (reservation.EndDate < DateTimeHandler.GetCurrentEndTime() ||
                     reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday)
+                {
                     _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
+                }
+            }
 
             return View();
         }
@@ -213,6 +224,7 @@ namespace HotelBookingWebsite.Controllers
                     lastName = firstGuest.LastName;
                 }
                 if (reservation.CheckInDate != null && reservation.CheckOutDate == null && !reservation.IsCancelled)
+                {
                     models.Add(new CheckOutListModel
                     {
                         Id = reservation.Id,
@@ -223,6 +235,7 @@ namespace HotelBookingWebsite.Controllers
                         ActualCheckInDate = reservation.CheckInDate ??
                                             DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
                     });
+                }
             }
             return models;
         }
@@ -237,12 +250,15 @@ namespace HotelBookingWebsite.Controllers
         {
             var models = new List<InventoryModel>();
             foreach (ROOM_TYPE type in _roomHandler.GetRoomTypes())
+            {
                 models.Add(new InventoryModel
                 {
                     Type = type,
                     Inventory = _roomHandler.GetRoomInventory(type),
                     Rate = _roomHandler.GetRoomOccupancyRate(type, date.Date).ToString("P", CultureInfo.InvariantCulture)
                 });
+            }
+
             return models;
         }
 
@@ -256,6 +272,7 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> ModifyRoomInventory(ROOM_TYPE? type, int? inventory)
         {
             if (type != null && inventory != null)
+            {
                 try
                 {
                     _roomHandler.UpdateRoomInventory((ROOM_TYPE) type, (int) inventory);
@@ -265,6 +282,8 @@ namespace HotelBookingWebsite.Controllers
                 {
                     ViewBag.Status = "Unsuccessful! The new inventory value is invalid.";
                 }
+            }
+
             return View();
         }
     }

@@ -78,8 +78,11 @@ namespace HotelBookingWebsite
             manager.SmsService = new SmsService();
             IDataProtectionProvider dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
+            {
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<AspNetUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            }
+
             return manager;
         }
     }

@@ -60,7 +60,10 @@ namespace HotelBookingWebsite.Controllers
                                         : "";
 
             if (User.IsInRole("staff"))
+            {
                 ViewBag.isStaff = true;
+            }
+
             var userId = User.Identity.GetUserId();
             var username = User.Identity.GetUserName();
             var userHandler = new AspNetUserHandler();
@@ -91,7 +94,10 @@ namespace HotelBookingWebsite.Controllers
             {
                 AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
+                {
                     await SignInManager.SignInAsync(user, false, false);
+                }
+
                 message = ManageMessageId.RemoveLoginSuccess;
             }
             else
@@ -115,7 +121,9 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
             // Generate the token and send it
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
             if (UserManager.SmsService != null)
@@ -139,7 +147,10 @@ namespace HotelBookingWebsite.Controllers
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
             AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
+            {
                 await SignInManager.SignInAsync(user, false, false);
+            }
+
             return RedirectToAction("Index", "Manage");
         }
 
@@ -152,7 +163,10 @@ namespace HotelBookingWebsite.Controllers
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
             AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
+            {
                 await SignInManager.SignInAsync(user, false, false);
+            }
+
             return RedirectToAction("Index", "Manage");
         }
 
@@ -174,14 +188,20 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
+
             IdentityResult result =
                 await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
                 AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
+                {
                     await SignInManager.SignInAsync(user, false, false);
+                }
+
                 return RedirectToAction("Index", new {Message = ManageMessageId.AddPhoneSuccess});
             }
             // If we got this far, something failed, redisplay form
@@ -197,10 +217,16 @@ namespace HotelBookingWebsite.Controllers
         {
             IdentityResult result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
             if (!result.Succeeded)
+            {
                 return RedirectToAction("Index", new {Message = ManageMessageId.Error});
+            }
+
             AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
+            {
                 await SignInManager.SignInAsync(user, false, false);
+            }
+
             return RedirectToAction("Index", new {Message = ManageMessageId.RemovePhoneSuccess});
         }
 
@@ -218,14 +244,20 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
+
             IdentityResult result =
                 await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
+                {
                     await SignInManager.SignInAsync(user, false, false);
+                }
+
                 return RedirectToAction("Index", new {Message = ManageMessageId.ChangePasswordSuccess});
             }
             AddErrors(result);
@@ -253,7 +285,10 @@ namespace HotelBookingWebsite.Controllers
                 {
                     AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                     if (user != null)
+                    {
                         await SignInManager.SignInAsync(user, false, false);
+                    }
+
                     return RedirectToAction("Index", new {Message = ManageMessageId.SetPasswordSuccess});
                 }
                 AddErrors(result);
@@ -275,7 +310,10 @@ namespace HotelBookingWebsite.Controllers
                         : "";
             AspNetUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
+            {
                 return View("Error");
+            }
+
             var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes()
                 .Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider))
@@ -306,7 +344,10 @@ namespace HotelBookingWebsite.Controllers
             ExternalLoginInfo loginInfo =
                 await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
+            {
                 return RedirectToAction("ManageLogins", new {Message = ManageMessageId.Error});
+            }
+
             IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded
                 ? RedirectToAction("ManageLogins")
@@ -334,14 +375,19 @@ namespace HotelBookingWebsite.Controllers
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
+            {
                 ModelState.AddModelError("", error);
+            }
         }
 
         private bool HasPassword()
         {
             AspNetUser user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
+            {
                 return user.PasswordHash != null;
+            }
+
             return false;
         }
 
@@ -349,7 +395,10 @@ namespace HotelBookingWebsite.Controllers
         {
             AspNetUser user = UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
+            {
                 return user.PhoneNumber != null;
+            }
+
             return false;
         }
 

@@ -90,7 +90,9 @@ namespace BusinessLogicTest
             var prices = _handler.GetRoomPriceList(Type, DateTime.Today, DateTime.Today.AddDays(Len));
             Assert.AreEqual(Len, prices.Count);
             foreach (var price in prices)
+            {
                 Assert.IsTrue(price >= Rate);
+            }
         }
 
         [TestMethod]
