@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
         IEnumerable<Reservation> GetReservationsByEndDate(DateTime endTime);
         IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime);
         IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime);
-
+        IEnumerable<Reservation> GetExpiredReservations(DateTime endTime);
         void Save();
     }
 }

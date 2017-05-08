@@ -298,5 +298,10 @@ namespace BusinessLogic.Handlers
         {
             return _reservationRepository.GetReservationsCheckedInBeforeDate(endTime);
         }
+
+        public IEnumerable<Reservation> GetExpiredReservations(DateTime endTime)
+        {
+            return _reservationRepository.GetExpiredReservations(endTime);
+        }
     }
 }

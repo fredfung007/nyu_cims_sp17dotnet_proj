@@ -1,8 +1,9 @@
-﻿@{
+﻿@model IEnumerable<HotelBookingWebsite.Models.CheckOutListModel>
+@{
     ViewBag.Title = "CheckOutAllExpired";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CheckOutAllExpired</h2>
-Done.
+<h2>Reservations Checked Out</h2>
+@Html.Partial("ViewCheckoutList", Model)
 @Html.ActionLink("Back", "Index")
