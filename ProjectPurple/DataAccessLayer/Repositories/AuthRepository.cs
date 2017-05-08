@@ -21,6 +21,17 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefault(user => user.UserName == username);
         }
 
+        public void UpdateUser(AspNetUser user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+
         #region IDisposable Support
 
         private bool _disposedValue; // To detect redundant calls
