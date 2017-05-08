@@ -32,7 +32,10 @@ namespace BusinessLogic.Handlers
         {
             var types = new List<ROOM_TYPE>();
             foreach (RoomType room in _roomRepository.GetRoomTypes())
+            {
                 types.Add(room.Type);
+            }
+
             return types;
         }
 
@@ -64,7 +67,10 @@ namespace BusinessLogic.Handlers
             while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
                 if (GetCurrentRoomAvailability(type, checkDate) < roomAmount)
+                {
                     return false;
+                }
+
                 checkDate = checkDate.AddDays(1);
             }
             return true;
@@ -80,9 +86,15 @@ namespace BusinessLogic.Handlers
         public List<ROOM_TYPE> CheckAvailableTypeForDuration(DateTime startDateTime, DateTime endDateTime)
         {
             if (startDateTime == null || endDateTime == null)
+            {
                 throw new ArgumentException("null check-in date or check-out date");
+            }
+
             if (startDateTime >= endDateTime)
+            {
                 throw new ArgumentException("check-in date later then check-out date");
+            }
+
             return (from room in _roomRepository.GetRoomTypes()
                 where IsAvailable(room.Type, startDateTime, endDateTime)
                 select room.Type).ToList();
@@ -92,9 +104,15 @@ namespace BusinessLogic.Handlers
             DateTime endDateTime)
         {
             if (startDateTime == null || endDateTime == null)
+            {
                 throw new ArgumentException("null check-in date or check-out date");
+            }
+
             if (startDateTime >= endDateTime)
+            {
                 throw new ArgumentException("check-in date later then check-out date");
+            }
+
             return (from room in _roomRepository.GetRoomTypes()
                 where IsAvailable(room.Type, startDateTime, endDateTime)
                 select room.Type).ToList();
@@ -111,9 +129,15 @@ namespace BusinessLogic.Handlers
             int roomAmount)
         {
             if (checkIn == null || checkOut == null)
+            {
                 throw new ArgumentException("null check-in date or check-out date");
+            }
+
             if (checkIn >= checkOut)
+            {
                 throw new ArgumentException("check-in date later then check-out date");
+            }
+
             return (from room in _roomRepository.GetRoomTypes()
                 where IsRoomAvailableForNRoom(room.Type, checkIn, checkOut, roomAmount)
                 select room.Type).ToList();
@@ -129,9 +153,15 @@ namespace BusinessLogic.Handlers
         public List<int> GetRoomPriceList(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime)
         {
             if (startDateTime == null || endDateTime == null)
+            {
                 throw new ArgumentException("null check-in date or check-out date");
+            }
+
             if (startDateTime >= endDateTime)
+            {
                 throw new ArgumentException("check-in date later then check-out date");
+            }
+
             var priceList = new List<int>();
             DateTime checkDate = startDateTime.Date;
             int baseRate = _roomRepository.GetRoomType(type).BaseRate;
@@ -146,9 +176,15 @@ namespace BusinessLogic.Handlers
         public async Task<List<int>> GetRoomPriceListAsync(ROOM_TYPE type, DateTime startDateTime, DateTime endDateTime)
         {
             if (startDateTime == null || endDateTime == null)
+            {
                 throw new ArgumentException("null check-in date or check-out date");
+            }
+
             if (startDateTime >= endDateTime)
+            {
                 throw new ArgumentException("check-in date later then check-out date");
+            }
+
             var priceList = new List<int>();
             DateTime checkDate = startDateTime.Date;
             int baseRate = _roomRepository.GetRoomType(type).BaseRate;
@@ -286,7 +322,10 @@ namespace BusinessLogic.Handlers
         {
             var idx = (int) type;
             if (idx < 0 || idx >= NameString.ROOM_TYPE_NAME.Count())
+            {
                 return "Invalid Room Type";
+            }
+
             return NameString.ROOM_TYPE_NAME[idx];
         }
 
@@ -339,8 +378,10 @@ namespace BusinessLogic.Handlers
                 var maxOccupancy =
                     _roomRepository.GetMaxRoomOccupanciesByRoomTypeAfterDate(type, DateTimeHandler.GetCurrentDate());
                 if (maxOccupancy > quantity)
+                {
                     throw new ArgumentOutOfRangeException(
                         "new room inventory cannot be smaller than the occupied room amount");
+                }
             }
 
             room.Inventory = quantity;
