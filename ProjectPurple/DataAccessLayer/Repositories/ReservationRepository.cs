@@ -101,7 +101,8 @@ namespace DataAccessLayer.Repositories
             {
                 Exception raise = dbEx;
                 foreach (DbEntityValidationResult validationErrors in dbEx.EntityValidationErrors)
-                foreach (DbValidationError validationError in validationErrors.ValidationErrors)
+                {
+                    foreach (DbValidationError validationError in validationErrors.ValidationErrors)
                 {
                     var message = string.Format("{0}:{1}",
                         validationErrors.Entry.Entity,
@@ -110,6 +111,8 @@ namespace DataAccessLayer.Repositories
                     // the current instance as InnerException
                     raise = new InvalidOperationException(message, raise);
                 }
+                }
+
                 throw raise;
             }
         }
@@ -129,7 +132,9 @@ namespace DataAccessLayer.Repositories
             if (!_disposedValue)
             {
                 if (disposing)
+                {
                     _context.Dispose();
+                }
 
                 _disposedValue = true;
             }

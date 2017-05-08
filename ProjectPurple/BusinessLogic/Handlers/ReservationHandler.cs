@@ -82,6 +82,16 @@ namespace BusinessLogic.Handlers
                 _reservationRepository.InsertReservation(reservation);
                 _reservationRepository.Save();
             }
+
+            // update room occupancy
+            DateTime checkDate = start.Date;
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
+            {
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+                checkDate = checkDate.AddDays(1);
+            }
+            _roomRepository.Save();
+
             return rsvId;
         }
 
@@ -106,9 +116,18 @@ namespace BusinessLogic.Handlers
         public bool CancelReservation(Guid confirmationNumber, DateTime now)
         {
             if (!CanBeCanceled(confirmationNumber, now))
+            {
                 return false;
+            }
 
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
             _reservationRepository.CancelReservation(confirmationNumber);
+            DateTime checkDate = now.Date;
+            while (checkDate < reservation.EndDate)
+            {
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+            }
+            _roomRepository.Save();
             _reservationRepository.Save();
             return true;
         }
@@ -119,15 +138,21 @@ namespace BusinessLogic.Handlers
 
             // is already canceled
             if (reservation.IsCancelled)
+            {
                 return false;
+            }
 
             // refuse to cancel if checkin
             if (reservation.CheckInDate != null && reservation.CheckInDate < now)
+            {
                 return false;
+            }
 
             // refuse to cancel if the date is before the present date, now must 
             if (reservation.StartDate == null || reservation.StartDate < now)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -137,7 +162,9 @@ namespace BusinessLogic.Handlers
         {
             Guid confirmationId;
             if (!Guid.TryParse(confirmationNumberStr, out confirmationId))
+            {
                 return false;
+            }
 
             return _reservationRepository.GetReservation(confirmationId) != null;
         }
@@ -172,21 +199,17 @@ namespace BusinessLogic.Handlers
 
             if (reservation == null || reservation.CheckInDate != null || reservation.StartDate > today ||
                 reservation.EndDate < today)
+            {
                 return false;
+            }
 
             // check current checkedin number v.s. inventory number
             var currentAmount = _roomRepository.GetRoomOccupancyByDate(reservation.RoomType, today);
             var totalAmount = _roomRepository.GetRoomTotalAmount(reservation.RoomType);
             if (currentAmount >= totalAmount)
-                return false;
-
-            DateTime checkDate = today;
-            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
-                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
-                checkDate = checkDate.AddDays(1);
+                return false;
             }
-            _roomRepository.Save();
 
             reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
@@ -205,9 +228,11 @@ namespace BusinessLogic.Handlers
 
             if (reservation == null || reservation.CheckOutDate != null || reservation.CheckInDate == null ||
                 reservation.CheckInDate > today)
+            {
                 return false;
+            }
 
-            DateTime checkDate = today;
+            DateTime checkDate = today.Date;
             // if stay shorter, here should use today. But this is not required
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {

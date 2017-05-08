@@ -9,12 +9,17 @@ namespace HotelBookingWebsite.Filters
         {
             var anonymous = false;
             if (!filterContext.ActionParameters.ContainsKey("Anonymous"))
+            {
                 anonymous = false;
+            }
             else
+            {
                 anonymous = (bool?) filterContext.ActionParameters["Anonymous"] ?? false;
+            }
 
             if (!anonymous && (filterContext.HttpContext.User.Identity == null ||
                                !filterContext.HttpContext.User.Identity.IsAuthenticated))
+            {
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary
                     {
@@ -22,6 +27,7 @@ namespace HotelBookingWebsite.Filters
                         {"action", "Login"},
                         {"returnUrl", filterContext.HttpContext.Request.RawUrl}
                     });
+            }
         }
     }
 
@@ -33,12 +39,14 @@ namespace HotelBookingWebsite.Filters
                 !filterContext.HttpContext.User.Identity.IsAuthenticated ||
                 !filterContext.HttpContext.User.IsInRole("staff")
             )
+            {
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary
                     {
                         {"controller", "Home"},
                         {"action", "Index"}
                     });
+            }
         }
     }
 }

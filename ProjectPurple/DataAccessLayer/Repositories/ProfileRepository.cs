@@ -38,7 +38,9 @@ namespace DataAccessLayer.Repositories
             if (!_disposedValue)
             {
                 if (disposing)
+                {
                     _context.Dispose();
+                }
 
                 _disposedValue = true;
             }

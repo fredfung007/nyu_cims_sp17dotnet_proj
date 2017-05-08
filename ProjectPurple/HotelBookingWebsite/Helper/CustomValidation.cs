@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HotelBookingWebsite.Helper
 {
-    public class MustHaveFirsGuestAttribute : ValidationAttribute
+    public class MustHaveFirstGuestAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
