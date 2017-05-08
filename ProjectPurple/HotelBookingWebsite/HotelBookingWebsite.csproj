@@ -177,6 +177,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\CustomValidation.cs" />
     <Compile Include="Helper\ModelExtensions.cs" />
     <Compile Include="Helper\RenderFormat.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
