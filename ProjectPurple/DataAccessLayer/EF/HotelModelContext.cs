@@ -6,8 +6,8 @@ namespace DataAccessLayer.EF
     public class HotelModelContext : IdentityDbContext
     {
 #if DEBUG
-        private static string _name = "name=ProductionConnection";
-        //private static readonly string _name = "name=HotelModelContext";
+        //private static string _name = "name=ProductionConnection";
+        private static readonly string _name = "name=HotelModelContext";
 #else
         private static string _name = "name=ProductionConnection";
 #endif
