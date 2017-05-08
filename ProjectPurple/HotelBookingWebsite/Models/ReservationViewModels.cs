@@ -61,7 +61,6 @@ namespace HotelBookingWebsite.Models
         public string Type { get; set; }
         public string Ameneties { get; set; }
         public List<GuestViewModel> Guests { get; set; }
-        public Guid ReservationId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public List<int> PriceList { get; set; }
