@@ -59,6 +59,7 @@ namespace HotelBookingWebsite.Controllers
                                         ? "Your phone number was removed."
                                         : "";
 
+            ViewBag.isStaff = User.IsInRole("staff");
 
             ViewBag.isStaff = User.IsInRole("staff");
 

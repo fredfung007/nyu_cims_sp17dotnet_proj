@@ -8,21 +8,8 @@ namespace HotelBookingWebsite.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.isStaff = User.IsInRole("staff");
             return View(new GlobalTimeViewModel {CurrentTime = DateTimeHandler.GetCurrentTime()});
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
 
         [HttpPost]
