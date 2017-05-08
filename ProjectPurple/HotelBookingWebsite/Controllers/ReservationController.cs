@@ -111,24 +111,6 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToLocal(ViewBag.returnUrl);
         }
 
-        //private List<GuestViewModel> GetGuestModelList(List<Guest> guests)
-        //{
-        //    List<GuestViewModel> guestModelList = new List<GuestViewModel>();
-        //    foreach (Guest guest in guests)
-        //    {
-        //        guestModelList.Add(new GuestViewModel
-        //        {
-        //            FirstName = guest.FirstName,
-        //            LastName = guest.LastName,
-        //            Id = guest.Id,
-        //            Order = guest.Order,
-        //        });
-        //    }
-        //    guestModelList.OrderBy(guest => guest.Order);
-
-        //    return guestModelList;
-        //}
-
         private ConfirmationViewModel GetConfirmationViewModel(Reservation reservation)
         {
             var priceList = reservation.DailyPrices.Select(x => x.BillingPrice).ToList();
@@ -138,10 +120,11 @@ namespace HotelBookingWebsite.Controllers
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
                 Guests = reservation.Guests.ToList().ToGuestModelList(),
-                ReservationId = reservation.Id,
+                //ReservationId = reservation.Id,
                 Type = _roomHandler.GetRoomTypeName(reservation.RoomType),
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
-                PriceList = priceList
+                PriceList = priceList,
+                IsCanceled =  reservation.IsCancelled,
             };
         }
 
@@ -149,8 +132,10 @@ namespace HotelBookingWebsite.Controllers
         {
             if (confirmationId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Error", "Reservation",
+                    new ErrorViewModel { ErrorMsg = "No Confirmation Id" });
             }
+            //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             Reservation reservation = _reservationHandler.GetReservation((Guid) confirmationId);
             if (reservation == null)
@@ -314,7 +299,7 @@ namespace HotelBookingWebsite.Controllers
                     model.SelectedIndex;
             }
 
-            return RedirectToAction("InputUser", "Reservation", new {model.SessionId, Anomyous = false});
+            return RedirectToAction("InputUser", "Reservation", new {model.SessionId, anomyous = false});
         }
 
         public ActionResult AddGuest(int order)

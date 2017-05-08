@@ -126,6 +126,7 @@ namespace BusinessLogic.Handlers
             while (checkDate < reservation.EndDate)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+                checkDate = checkDate.AddDays(1);
             }
             _roomRepository.Save();
             _reservationRepository.Save();
@@ -296,6 +297,11 @@ namespace BusinessLogic.Handlers
         public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime endTime)
         {
             return _reservationRepository.GetReservationsCheckedInBeforeDate(endTime);
+        }
+
+        public IEnumerable<Reservation> GetExpiredReservations(DateTime endTime)
+        {
+            return _reservationRepository.GetExpiredReservations(endTime);
         }
     }
 }

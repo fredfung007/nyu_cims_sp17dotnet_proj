@@ -61,6 +61,8 @@ namespace HotelBookingWebsite.Controllers
 
             ViewBag.isStaff = User.IsInRole("staff");
 
+            ViewBag.isStaff = User.IsInRole("staff");
+
             var userId = User.Identity.GetUserId();
             var username = User.Identity.GetUserName();
             var userHandler = new AspNetUserHandler();
