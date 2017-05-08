@@ -126,6 +126,7 @@ namespace BusinessLogic.Handlers
             while (checkDate < reservation.EndDate)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+                checkDate = checkDate.AddDays(1);
             }
             _roomRepository.Save();
             _reservationRepository.Save();

@@ -61,7 +61,6 @@ namespace HotelBookingWebsite.Models
         public string Type { get; set; }
         public string Ameneties { get; set; }
         public List<GuestViewModel> Guests { get; set; }
-        public Guid ReservationId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public List<int> PriceList { get; set; }
@@ -91,7 +90,7 @@ namespace HotelBookingWebsite.Models
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
 
-        [MustHaveFirsGuestAttribute(ErrorMessage = "Please input at least one guest's first and last name, input both first name and last name for any available guests")]
+        [MustHaveFirstGuestAttribute(ErrorMessage = "Please input at least one guest's first and last name, input both first name and last name for any available guests")]
         public List<GuestViewModel> Guests { get; set; }
     }
 
