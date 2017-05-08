@@ -248,7 +248,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -337,7 +337,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -396,7 +396,7 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Search", "Reservation");
             }
 
-            if ((ReservationHandler.SearchResultPool[SessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
+            if ((ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel).Expiration < DateTimeHandler.GetCurrentTime())
             {
                 return RedirectToAction("Expired", "Reservation");
             }
