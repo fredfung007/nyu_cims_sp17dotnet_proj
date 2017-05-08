@@ -1,17 +1,40 @@
-﻿@model DataAccessLayer.EF.RoomType
+﻿@using HotelBookingWebsite.Models
+@model DataAccessLayer.EF.RoomType
 
 @{
     ViewBag.Title = "ModifyRoomInventory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ModifiyRoomInventory</h2>
+<h2>Modifiy Room Inventory</h2>
+<table class="table">
+    <tr>
+        <th>
+            Room Type
+        </th>
+        <th>
+            Total Amount
+        </th>
+    </tr>
+
+    @foreach (InventoryModel item in ViewBag.Inventory)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Inventory)
+            </td>
+        </tr>
+    }
+
+</table>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ROOM_TYPE</h4>
         <hr/>
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})
         @Html.HiddenFor(model => model.Id)
