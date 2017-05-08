@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HotelBookingWebsite.Models.CheckOutListModel>
+﻿@using HotelBookingWebsite.Models
+@model IEnumerable<HotelBookingWebsite.Models.CheckOutListModel>
 
 <table class="table">
     <tr>
@@ -23,27 +24,28 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Id.ToString(), "Operations", new { ConfirmationNum = item.Id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CheckInDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CheckOutDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ActualCheckInDate)
-        </td>
-    </tr>
-}
+    @foreach (CheckOutListModel item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Id.ToString(), "Operations", new {ConfirmationNum = item.Id})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckInDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckOutDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualCheckInDate)
+            </td>
+        </tr>
+    }
 
 </table>

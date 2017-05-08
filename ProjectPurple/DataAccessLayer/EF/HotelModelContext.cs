@@ -6,15 +6,15 @@ namespace DataAccessLayer.EF
     public class HotelModelContext : IdentityDbContext
     {
 #if DEBUG
-        //private static string name = "name=HotelModelContext";
-        private static string name = "name=ProductionConnection";
+        private static readonly string _name = "name=HotelModelContext";
 #else
-        private static string name = "name=ProductionConnection";
+        private static string _name = "name=ProductionConnection";
 #endif
+
         public HotelModelContext()
-            : base(name)
+            : base(_name)
         {
-            Database.SetInitializer<HotelModelContext>(null);// Remove default initializer
+            Database.SetInitializer<HotelModelContext>(null);
             Configuration.ProxyCreationEnabled = false;
             Configuration.LazyLoadingEnabled = false;
         }

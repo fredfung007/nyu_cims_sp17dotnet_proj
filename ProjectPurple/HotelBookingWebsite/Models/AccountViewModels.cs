@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
+using System.Web.Mvc;
 using DataAccessLayer.Constants;
 
 namespace HotelBookingWebsite.Models
@@ -21,7 +20,7 @@ namespace HotelBookingWebsite.Models
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+        public ICollection<SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
         public bool RememberMe { get; set; }
     }
@@ -34,6 +33,7 @@ namespace HotelBookingWebsite.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
@@ -80,7 +80,8 @@ namespace HotelBookingWebsite.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
+            "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -125,7 +126,6 @@ namespace HotelBookingWebsite.Models
         [Required]
         [Display(Name = "Preferred Room Type")]
         public ROOM_TYPE PreferredRoomType { get; set; }
-
     }
 
     public class UpdateProfileViewModel
@@ -172,7 +172,6 @@ namespace HotelBookingWebsite.Models
         [Required]
         [Display(Name = "Preferred Room Type")]
         public ROOM_TYPE PreferredRoomType { get; set; }
-
     }
 
     public class ResetPasswordViewModel
@@ -190,7 +189,8 @@ namespace HotelBookingWebsite.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
+            "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

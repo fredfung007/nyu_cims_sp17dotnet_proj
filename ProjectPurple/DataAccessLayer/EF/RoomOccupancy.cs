@@ -1,5 +1,5 @@
-using DataAccessLayer.Constants;
 using System;
+using DataAccessLayer.Constants;
 
 namespace DataAccessLayer.EF
 {

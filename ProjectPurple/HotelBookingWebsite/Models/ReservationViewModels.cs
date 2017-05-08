@@ -1,12 +1,9 @@
-﻿using DataAccessLayer.Constants;
-using DataAccessLayer.EF;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using BusinessLogic.Type;
-using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Constants;
 
 namespace HotelBookingWebsite.Models
 {
@@ -38,7 +35,7 @@ namespace HotelBookingWebsite.Models
     public class RetrieveModel
     {
         [Required(ErrorMessage = "Please input confirmation Id")]
-        public string ConfirmationId { get; set;}
+        public string ConfirmationId { get; set; }
     }
 
     public class RoomSearchResultModel : TimeExpirationType
@@ -46,6 +43,7 @@ namespace HotelBookingWebsite.Models
         //public DateTime StartDate { get; set; }
         //public DateTime EndDate { get; set; }
         public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
+
         public int SelectedIndex { get; set; }
         public List<GuestViewModel> Guests { get; set; }
         public Guid ReservationId { get; set; }
@@ -57,6 +55,7 @@ namespace HotelBookingWebsite.Models
     {
         // TODO merge with reservatonId
         public string ConfirmationId { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Type { get; set; }
@@ -77,6 +76,7 @@ namespace HotelBookingWebsite.Models
 
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
+
         public IList<RoomPriceDetail> RoomPriceDetails { get; set; }
 
         [Required(ErrorMessage = "Please select a room type")]
@@ -90,6 +90,7 @@ namespace HotelBookingWebsite.Models
 
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
+
         public List<GuestViewModel> Guests { get; set; }
     }
 
@@ -142,6 +143,4 @@ namespace HotelBookingWebsite.Models
     //    public bool Cancel { get; set; }
     //    Profile BillInfo { get; set; }
     //}
-
-
 }

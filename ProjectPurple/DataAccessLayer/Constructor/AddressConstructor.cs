@@ -8,10 +8,12 @@ namespace DataAccessLayer.Constructor
     {
         private readonly Address _address;
 
-        public AddressConstructor(Guid Id)
+        public AddressConstructor(Guid id)
         {
-            _address = new Address();
-            _address.Id = Id;
+            _address = new Address
+            {
+                Id = id
+            };
         }
 
         public AddressConstructor AddFirstLine(string firstLine)

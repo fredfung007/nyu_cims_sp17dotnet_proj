@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using DataAccessLayer.EF;
@@ -15,67 +14,11 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        //public Staff GetStaff(string username)
-        //{
-        //    return _context.Staffs.Find(username);
-        //}
-
-        //public IEnumerable<Staff> GetStaffs()
-        //{
-        //    return _context.Staffs.ToList();
-        //}
-
-        public IEnumerable<AspNetUser> GetUsers()
-        {
-            return _context.AspNetUsers.ToList();
-        }
-
         public AspNetUser GetUser(string username)
         {
-            return _context.AspNetUsers.Include(user => user.Profile).Include(user => user.Profile.Address)
+            return _context.AspNetUsers.Include(user => user.Profile)
+                .Include(user => user.Profile.Address)
                 .FirstOrDefault(user => user.UserName == username);
-        }
-
-        //public void InsertStaff(Staff staff)
-        //{
-        //    _context.Staffs.Add(staff);
-        //}
-
-        //public void DeleteStaff(string username)
-        //{
-        //    Staff staff = _context.Staffs.Find(username);
-        //    if (staff != null) _context.Staffs.Remove(staff);
-        //}
-
-        //public void UpdateStaff(Staff staff)
-        //{
-        //    _context.Entry(staff).State = EntityState.Modified;
-        //}
-
-        public void InsertUser(AspNetUser user)
-        {
-            _context.AspNetUsers.Add(user);
-        }
-
-        public void DeleteUser(string username)
-        {
-            AspNetUser user = _context.AspNetUsers.Find(username);
-            if (user != null) _context.AspNetUsers.Remove(user);
-        }
-
-        public void UpdateUser(AspNetUser user)
-        {
-            _context.Entry(user).State = EntityState.Modified;
-        }
-
-        public int GetLoyaltyProgressByUserId(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            _context.SaveChanges();
         }
 
         #region IDisposable Support

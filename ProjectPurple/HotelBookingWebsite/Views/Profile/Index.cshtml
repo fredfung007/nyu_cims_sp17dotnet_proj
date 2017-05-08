@@ -1,5 +1,4 @@
-﻿@using BusinessLogic.Helpers
-@model HotelBookingWebsite.Models.ProfileViewModel
+﻿@model HotelBookingWebsite.Models.ProfileViewModel
 
 @{
     ViewBag.Title = "Your Profile Information";
@@ -16,13 +15,13 @@
     @Html.LabelFor(m => m.LastName)
     <p>
         @Html.DisplayFor(m => m.LastName)
-</p>
+    </p>
 </div>
 <div>
     @Html.LabelFor(m => m.PreferredRoomType)
     <p>
         @Html.DisplayFor(m => m.PreferredRoomType)
-</p>
+    </p>
 </div>
 <div>
     @Html.LabelFor(m => m.Address1)
@@ -43,7 +42,7 @@
     @Html.LabelFor(m => m.City)
     <p>
         @Html.DisplayFor(m => m.City)
-</p>
+    </p>
 </div>
 <div>
     @Html.LabelFor(m => m.State)
@@ -55,13 +54,13 @@
     @Html.LabelFor(m => m.PostalCode)
     <p>
         @Html.DisplayFor(m => m.PostalCode)
-</p>
+    </p>
 </div>
 <div>
     @Html.LabelFor(m => m.PhoneNumber)
     <p>
         @Html.DisplayFor(m => m.PhoneNumber)
-</p>
+    </p>
 </div>
 @Html.ActionLink("Edit Information", "Update", "Account")
 

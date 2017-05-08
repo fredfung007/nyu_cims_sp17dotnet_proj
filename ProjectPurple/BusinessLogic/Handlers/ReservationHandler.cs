@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories;
+using BusinessLogic.Type;
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
-using BusinessLogic.Type;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
     /// <summary>
-    /// A handler class for editing reservation for user. 
+    ///     A handler class for editing reservation for user.
     /// </summary>
     public class ReservationHandler
     {
         // TODO add a class for this to maintaining the search reasults with expiration date
-        public static Dictionary<string, TimeExpirationType> SearchResultPool = new Dictionary<string, TimeExpirationType>();
-        
+        public static Dictionary<string, TimeExpirationType> SearchResultPool =
+            new Dictionary<string, TimeExpirationType>();
+
         private readonly IReservationRepository _reservationRepository;
+
         private readonly IRoomRepository _roomRepository;
         //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
 
@@ -31,7 +33,7 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Create a new Reservation.
+        ///     Create a new Reservation.
         /// </summary>
         /// <param name="username">The username used to make this reservation</param>
         /// <param name="type">ROOM_TYPE</param>
@@ -44,9 +46,9 @@ namespace BusinessLogic.Handlers
             List<Guest> guests, List<int> prices)
         {
             var dailyPriceList = new List<DailyPrice>();
-            var rsvId = Guid.NewGuid();
+            Guid rsvId = Guid.NewGuid();
 
-            var curDate = start;
+            DateTime curDate = start;
             foreach (var price in prices)
             {
                 dailyPriceList.Add(new DailyPrice
@@ -97,16 +99,14 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Cacnel a reservation by its creator's username and confirmation number
+        ///     Cacnel a reservation by its creator's username and confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <returns>true if successfully cancelled</returns>
         public bool CancelReservation(Guid confirmationNumber, DateTime now)
         {
             if (!CanBeCanceled(confirmationNumber, now))
-            {
                 return false;
-            }
 
             _reservationRepository.CancelReservation(confirmationNumber);
             _reservationRepository.Save();
@@ -119,21 +119,15 @@ namespace BusinessLogic.Handlers
 
             // is already canceled
             if (reservation.IsCancelled)
-            {
                 return false;
-            }
 
             // refuse to cancel if checkin
             if (reservation.CheckInDate != null && reservation.CheckInDate < now)
-            {
                 return false;
-            }
 
             // refuse to cancel if the date is before the present date, now must 
             if (reservation.StartDate == null || reservation.StartDate < now)
-            {
                 return false;
-            }
 
             return true;
         }
@@ -143,16 +137,9 @@ namespace BusinessLogic.Handlers
         {
             Guid confirmationId;
             if (!Guid.TryParse(confirmationNumberStr, out confirmationId))
-            {
                 return false;
-            }
 
             return _reservationRepository.GetReservation(confirmationId) != null;
-        }
-
-        public bool HasReservation(Guid confirmationNumber)
-        {
-            return _reservationRepository.GetReservation(confirmationNumber) != null;
         }
 
         public Reservation GetReservation(Guid confirmationNum)
@@ -167,53 +154,33 @@ namespace BusinessLogic.Handlers
 
             return reservations.Where(reservation => reservation.AspNetUser != null &&
                                                      reservation.AspNetUser.Id.Equals(userId) &&
-                                                     reservation.EndDate.CompareTo(DateTimeHandler.GetCurrentTime()) > 0 &&
-                                                     reservation.CheckOutDate == null).ToList();
-        }
-
-        [Obsolete]
-        public bool FillGuestInfo(Reservation reservation, List<Guest> customers)
-        {
-            return false;
-        }
-
-        [Obsolete]
-        public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
-        {
-            var guests = new List<Guest>();
-            var guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
-            
-            for (var i = 0; i < guestMaxCount; i++)
-            {
-                guests.Add(new Guest() { Id = Guid.NewGuid(), Order = i});
-            }
-
-            return guests;
+                                                     reservation.EndDate.CompareTo(DateTimeHandler.GetCurrentTime()) >
+                                                     0 &&
+                                                     reservation.IsCancelled == false &&
+                                                     reservation.CheckOutDate == null)
+                .ToList();
         }
 
         /// <summary>
-        /// Check in a reservation on specific date by its confirmation number
+        ///     Check in a reservation on specific date by its confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the date</param>
         /// <param name="today">check in date</param>
         public bool CheckIn(Guid confirmationNumber, DateTime today)
         {
-            var reservation = _reservationRepository.GetReservation(confirmationNumber);
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckInDate != null ||  reservation.StartDate > today || reservation.EndDate < today)
-            {
+            if (reservation == null || reservation.CheckInDate != null || reservation.StartDate > today ||
+                reservation.EndDate < today)
                 return false;
-            }
 
             // check current checkedin number v.s. inventory number
             var currentAmount = _roomRepository.GetRoomOccupancyByDate(reservation.RoomType, today);
             var totalAmount = _roomRepository.GetRoomTotalAmount(reservation.RoomType);
             if (currentAmount >= totalAmount)
-            {
                 return false;
-            }
 
-            var checkDate = today;
+            DateTime checkDate = today;
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
@@ -228,20 +195,19 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Check out a reservation on specific date by its confirmation number
+        ///     Check out a reservation on specific date by its confirmation number
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <param name="today">check out date</param>
         public bool CheckOut(Guid confirmationNumber, DateTime today)
         {
-            var reservation = _reservationRepository.GetReservation(confirmationNumber);
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
-            if (reservation == null || reservation.CheckOutDate != null ||　reservation.CheckInDate == null || reservation.CheckInDate > today)
-            {
+            if (reservation == null || reservation.CheckOutDate != null || reservation.CheckInDate == null ||
+                reservation.CheckInDate > today)
                 return false;
-            }
 
-            var checkDate = today;
+            DateTime checkDate = today;
             // if stay shorter, here should use today. But this is not required
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
@@ -251,12 +217,12 @@ namespace BusinessLogic.Handlers
             _roomRepository.Save();
 
             // loyalty program
-            var user = reservation.AspNetUser;
-            var checkInDate = (DateTime)reservation.CheckInDate;
+            AspNetUser user = reservation.AspNetUser;
+            var checkInDate = (DateTime) reservation.CheckInDate;
             if (user != null)
             {
                 var stayLength = 0;
-                if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
+                if (user.LoyaltyYear != null && ((DateTime) user.LoyaltyYear).Year == today.Year)
                 {
                     // Checkout date is the same year as the loyalty program
                     stayLength = Math.Min((today - checkInDate).Days, today.DayOfYear);
@@ -278,7 +244,7 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Get all reservations that will check out today
+        ///     Get all reservations that will check out today
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
@@ -288,7 +254,7 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// Get all reservations that will checkin toady
+        ///     Get all reservations that will checkin toady
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
@@ -298,7 +264,7 @@ namespace BusinessLogic.Handlers
         }
 
         /// <summary>
-        /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
+        ///     get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
         /// </summary>
         /// <param name="endTime"></param>
         /// <returns></returns>

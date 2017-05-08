@@ -7,26 +7,21 @@ namespace HotelBookingWebsite.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            bool anonymous = false;
+            var anonymous = false;
             if (!filterContext.ActionParameters.ContainsKey("Anonymous"))
-            {
                 anonymous = false;
-            }
             else
-            {
                 anonymous = (bool?) filterContext.ActionParameters["Anonymous"] ?? false;
-            }
 
-            if (!anonymous && (filterContext.HttpContext.User.Identity == null || !filterContext.HttpContext.User.Identity.IsAuthenticated))
-            {
+            if (!anonymous && (filterContext.HttpContext.User.Identity == null ||
+                               !filterContext.HttpContext.User.Identity.IsAuthenticated))
                 filterContext.Result = new RedirectToRouteResult(
-                new RouteValueDictionary
-                {
-                    { "controller", "Account" },
-                    { "action", "Login" },
-                    { "returnUrl",    filterContext.HttpContext.Request.RawUrl }
-                });
-            }
+                    new RouteValueDictionary
+                    {
+                        {"controller", "Account"},
+                        {"action", "Login"},
+                        {"returnUrl", filterContext.HttpContext.Request.RawUrl}
+                    });
         }
     }
 
@@ -37,15 +32,13 @@ namespace HotelBookingWebsite.Filters
             if (filterContext.HttpContext.User.Identity == null ||
                 !filterContext.HttpContext.User.Identity.IsAuthenticated ||
                 !filterContext.HttpContext.User.IsInRole("staff")
-                )
-            {
+            )
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary
                     {
-                        {"controller", "Home" },
-                        {"action", "Index" }
+                        {"controller", "Home"},
+                        {"action", "Index"}
                     });
-            }
         }
     }
 }

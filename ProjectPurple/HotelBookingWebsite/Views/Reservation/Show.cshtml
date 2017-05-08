@@ -4,7 +4,9 @@
     if (Model.IsCanceled)
     {
         ViewBag.Title = "Your Reservation is Canceled";
-    } else {
+    }
+    else
+    {
         ViewBag.Title = "Your Reservation";
     }
     //Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,7 +17,7 @@
 @Html.AntiForgeryToken()
 <div>
     <h4>You reservation details</h4>
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.Label("Check-in:")
@@ -70,10 +72,11 @@
             @Html.Label("Guests")
         </dt>
         <dd>
-            @for (int i = 0; i < Model.Guests.Count; i++)
+            @for (var i = 0; i < Model.Guests.Count; i++)
             {
-                @Model.Guests[i].FirstName @Model.Guests[i].LastName
-                <br />
+                @Model.Guests[i].FirstName
+                @Model.Guests[i].LastName
+                <br/>
             }
         </dd>
 
@@ -85,7 +88,7 @@
         {
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Cancel" class="btn btn-default" />
+                    <input type="submit" value="Cancel" class="btn btn-default"/>
                 </div>
             </div>
         }

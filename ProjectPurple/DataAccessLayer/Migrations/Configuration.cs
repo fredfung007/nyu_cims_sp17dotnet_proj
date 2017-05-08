@@ -1,13 +1,11 @@
+using System;
+using System.Data.Entity.Migrations;
+using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
+
 namespace DataAccessLayer.Migrations
 {
-    using Constants;
-    using EF;
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.EF.HotelModelContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<HotelModelContext>
     {
         public Configuration()
         {
@@ -16,7 +14,7 @@ namespace DataAccessLayer.Migrations
 
         protected override void Seed(HotelModelContext context)
         {
-            RoomType room = new RoomType
+            var room = new RoomType
             {
                 Id = new Guid("0805a77d-4952-44a3-9e32-606a4f418e99"),
                 BaseRate = 20000,
@@ -54,7 +52,8 @@ SPACIOUS MARBLE BATH
 
 Luxurious bath with soaking tub and separate stall shower",
 
-                ImageUrl = @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/supporting-images/RCNYCPK_00092_conversion.png?$XlargeViewport100pct$"
+                ImageUrl =
+                    @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/supporting-images/RCNYCPK_00092_conversion.png?$XlargeViewport100pct$"
             };
             context.RoomTypes.AddOrUpdate(room);
 
@@ -87,7 +86,8 @@ Exclusive Asprey amenities
 SPACIOUS MARBLE BATHROOM
 
 Luxurious bath with soaking tub and separate stall shower",
-                ImageUrl = @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/RCNYCPK_00102_conversion.png?$XlargeViewport100pct$"
+                ImageUrl =
+                    @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/RCNYCPK_00102_conversion.png?$XlargeViewport100pct$"
             };
             context.RoomTypes.AddOrUpdate(room);
 
@@ -120,7 +120,8 @@ DVD player and LG High Definition Flat Screen Television
 SPACIOUS MARBLE BATH
 
 Luxurious bath with soaking tub and separate stall shower",
-                ImageUrl = @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/RCNYCPK_00102_conversion.png?$XlargeViewport100pct$"
+                ImageUrl =
+                    @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/guest-rooms/RCNYCPK_00102_conversion.png?$XlargeViewport100pct$"
             };
             context.RoomTypes.AddOrUpdate(room);
 
@@ -164,7 +165,8 @@ MAGNIFICENT MARBLE BATHS
 Two full marble bathrooms with separate tub and shower
 Additional half bath by living room
 Two 12-inch flat screen televisions in bathroom",
-                ImageUrl = @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/assetmigration/png-files/RCNYCPK_00166_conversion1.png?$XlargeViewport100pct$"
+                ImageUrl =
+                    @"https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/usa-and-canada/new-york/new-york-central-park/assetmigration/png-files/RCNYCPK_00166_conversion1.png?$XlargeViewport100pct$"
             };
             context.RoomTypes.AddOrUpdate(room);
 
