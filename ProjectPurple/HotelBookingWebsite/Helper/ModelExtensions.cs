@@ -31,9 +31,8 @@ namespace HotelBookingWebsite.Helper
                     Order = guest.Order
                 })
                 .ToList();
-            guestModelList.OrderBy(guest => guest.Order);
 
-            return guestModelList;
+            return guestModelList.OrderBy(guest => guest.Order).ToList();
         }
     }
 }
