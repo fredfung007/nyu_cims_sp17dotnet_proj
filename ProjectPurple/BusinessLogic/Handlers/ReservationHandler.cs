@@ -85,7 +85,7 @@ namespace BusinessLogic.Handlers
 
             // update room occupancy
             DateTime checkDate = start.Date;
-            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) < 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
                 checkDate = checkDate.AddDays(1);
