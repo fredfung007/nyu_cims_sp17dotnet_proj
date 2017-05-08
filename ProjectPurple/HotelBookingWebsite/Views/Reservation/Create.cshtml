@@ -21,13 +21,13 @@
         @for (int i = 0; i < priceList.Count; i++)
         {
             <dt>@showDate.Date.ToString("MM/dd/yyyy")</dt>
-            <dd>@Html.DisplayFor(model => priceList[i])</dd>
+            <dd>USD @((Model.PriceList[i]/100.00).ToString("C2"))</dd>
             sum += priceList[i];
             showDate = showDate.AddDays(1);
         }
     </dl>
     <hr />
-    <h4>Summary of charges: @sum</h4>
+    <h4>Summary of charges: USD @((sum/100.00).ToString("C2"))</h4>
     
 </div>
 <hr />
