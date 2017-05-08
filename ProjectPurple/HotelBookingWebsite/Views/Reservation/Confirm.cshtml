@@ -44,7 +44,7 @@
                 @Html.Label("Total:")
             </dt>
             <dd>
-                @Model.PriceList.Sum().ToString("C2")
+                USD @((Model.PriceList.Sum()/100.00).ToString("C2"))
             </dd>
 
             <dt>

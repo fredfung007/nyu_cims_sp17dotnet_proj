@@ -41,7 +41,7 @@
                         @Html.DisplayNameFor(model => model.RoomPriceDetails[i].AvaragePrice)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.RoomPriceDetails[i].AvaragePrice)
+                        USD @((Model.RoomPriceDetails[i].AvaragePrice / 100.00).ToString("C2"))
                     </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.RoomPriceDetails[i].Description)

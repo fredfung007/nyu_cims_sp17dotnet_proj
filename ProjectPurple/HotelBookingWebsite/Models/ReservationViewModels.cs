@@ -13,11 +13,13 @@ namespace HotelBookingWebsite.Models
     public class SearchInputModel
     {
         [Required(ErrorMessage = "Please select a start date")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Please select an end date")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
     }
 

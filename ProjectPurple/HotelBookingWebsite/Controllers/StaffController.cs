@@ -34,8 +34,10 @@ namespace HotelBookingWebsite.Controllers
             {
                 CheckInList = getViewCheckInList(),
                 CheckOutList = getViewCheckoutListAll(),
-                Inventory = getInventory(date?? DateTime.Today),
-                Occupancy = getOccupancy(date?? DateTime.Today)
+                Inventory = getInventory(date ?? DateTimeHandler.GetCurrentTime()),
+                Occupancy = getOccupancy(date ?? DateTimeHandler.GetCurrentTime()),
+                CheckDate = date ?? DateTimeHandler.GetCurrentTime(),
+                CurrentTime = DateTimeHandler.GetCurrentTime()
             });
         }
 
@@ -52,7 +54,7 @@ namespace HotelBookingWebsite.Controllers
         [StaffAuthorize]
         public async Task<ActionResult> Occupancy(DateTime? date)
         {
-            DateTime checkDate = date ?? DateTime.Today;
+            DateTime checkDate = date ?? DateTimeHandler.GetCurrentTime();
             return PartialView(getOccupancy(checkDate));
         }
 
@@ -67,7 +69,7 @@ namespace HotelBookingWebsite.Controllers
             }
             Reservation reservation = _reservationHandler.GetReservation(ConfirmationNumNotNull);
             ViewBag.IsCheckedIn = reservation.CheckInDate != null;
-            ViewBag.canCancel = _reservationHandler.CanBeCanceled(ConfirmationNumNotNull, DateTime.Now);
+            ViewBag.canCancel = _reservationHandler.CanBeCanceled(ConfirmationNumNotNull, DateTimeHandler.GetCurrentTime());
 
             // TODO extension functions
             var priceList = reservation.DailyPrices.Select(x => x.BillingPrice).ToList();
@@ -91,7 +93,7 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
+                IsSuccess = _reservationHandler.CheckIn(ConfirmationNum ?? Guid.NewGuid(), DateTimeHandler.GetCurrentTime())
             });
         }
 
@@ -102,13 +104,13 @@ namespace HotelBookingWebsite.Controllers
             return View(new CheckInOutModel
             {
                 ConfirmationNum = ConfirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTime.Now)
+                IsSuccess = _reservationHandler.CheckOut(ConfirmationNum ?? Guid.NewGuid(), DateTimeHandler.GetCurrentTime())
             });
         }
 
         private List<CheckInListModel> getViewCheckInList()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTime.Today));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckInToday(DateTimeHandler.GetCurrentStartTime()));
             List<CheckInListModel> models = new List<CheckInListModel>();
             foreach (Reservation reservation in reservations)
             {
@@ -142,7 +144,7 @@ namespace HotelBookingWebsite.Controllers
 
         private List<CheckOutListModel> getViewCheckoutList()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTime.Today));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetReservationsCheckOutToday(DateTimeHandler.GetCurrentEndTime()));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
@@ -163,7 +165,7 @@ namespace HotelBookingWebsite.Controllers
                         LastName = lastName,
                         CheckInDate = reservation.StartDate,
                         CheckOutDate = reservation.EndDate,
-                        ActualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                        ActualCheckInDate = reservation.CheckInDate ?? DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
                     });
                 }
             }
@@ -179,15 +181,15 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public ActionResult CheckOutAllExpired()
         {
-            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllCheckedInReservations(DateTime.Today));
+            List<Reservation> reservations = new List<Reservation>(_reservationHandler.GetAllReservationsCanBeCheckedOut(DateTimeHandler.GetCurrentEndTime()));
 
             // check out today's reservation if passed 2:00 p.m.
-            bool includeToday = DateTime.Now > DateTime.Today.AddHours(14);
+            bool includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();
             foreach(Reservation reservation in reservations)
             {
-                if (reservation.EndDate < DateTime.Today || (reservation.EndDate == DateTime.Today && includeToday))
+                if (reservation.EndDate < DateTimeHandler.GetCurrentEndTime() || (reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday))
                 {
-                    _reservationHandler.CheckOut(reservation.Id, DateTime.Today);
+                    _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
                 }
             }
 
@@ -197,7 +199,7 @@ namespace HotelBookingWebsite.Controllers
         private List<CheckOutListModel> getViewCheckoutListAll()
         {
             List<Reservation> reservations = new List<Reservation>(
-                _reservationHandler.GetAllCheckedInReservations(DateTime.Today.AddDays(1)));
+                _reservationHandler.GetAllReservationsCanBeCheckedOut(DateTimeHandler.GetCurrentEndTime().AddDays(1)));
             List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach(Reservation reservation in reservations)
             {
@@ -218,7 +220,7 @@ namespace HotelBookingWebsite.Controllers
                         LastName = lastName,
                         CheckInDate = reservation.StartDate,
                         CheckOutDate = reservation.EndDate,
-                        ActualCheckInDate = reservation.CheckInDate ?? DateTime.Today.Subtract(TimeSpan.FromDays(1))
+                        ActualCheckInDate = reservation.CheckInDate ?? DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
                     });
                 }
             }
@@ -248,7 +250,7 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public PartialViewResult Inventory(DateTime? date)
         {
-            return PartialView(getInventory(date?? DateTime.Today));
+            return PartialView(getInventory(date?? DateTimeHandler.GetCurrentTime()));
         }
 
         [StaffAuthorize]

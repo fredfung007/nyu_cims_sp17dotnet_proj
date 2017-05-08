@@ -28,9 +28,9 @@ namespace DataAccessLayer.Repositories
         void InsertReservationWithAspnetUser(Reservation reservation, string userName);
         void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
         void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
-        IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate);
-        IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate);
-        IEnumerable<Reservation> GetReservationsCheckedInBeforeEndDate(DateTime checkInDate);
+        IEnumerable<Reservation> GetReservationsByEndDate(DateTime EndTime);
+        IEnumerable<Reservation> GetReservationsByStartDate(DateTime StartTime);
+        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime EndTime);
         void Save();
     }
 }

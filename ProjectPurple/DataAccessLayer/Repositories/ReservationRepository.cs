@@ -117,7 +117,7 @@ namespace DataAccessLayer.Repositories
                 .Where(reservation => reservation.StartDate >= StartTime && reservation.StartDate < tomorrow).ToList();
         }
 
-        public IEnumerable<Reservation> GetReservationsCheckedInBeforeEndDate(DateTime EndTime)
+        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime EndTime)
         {
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
                 .Include(rsv => rsv.DailyPrices)

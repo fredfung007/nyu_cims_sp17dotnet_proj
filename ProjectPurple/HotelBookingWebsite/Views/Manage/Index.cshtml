@@ -10,6 +10,14 @@
     @Html.ActionLink("View and Update Your Profile Information", "Index", "Profile")
     <hr />
     <h4>YOUR LOYALTY REWARDS™</h4>
+    @if (Model.LoyaltyProgress >= 5)
+    {
+        <h5 style="color: goldenrod; font-size: large">Gold Loyal Member</h5>
+    }
+    else
+    {
+        <h5 style="color: silver; font-size: large">Member</h5>
+    }
     <h5>Available Free Nights</h5>
     @Html.DisplayFor(m => m.FreeNights)
     <h5>Available Loyalty Points</h5>
