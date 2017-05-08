@@ -203,7 +203,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            if (model.StartDate.Date < DateTime.Now.Date)
+            if (model.StartDate.Date < DateTimeHandler.GetCurrentDate())
             {
                 return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "start date must be before end date" });
             }
@@ -246,7 +246,7 @@ namespace HotelBookingWebsite.Controllers
             ReservationHandler.SearchResultPool[sessionId] = new RoomSearchResultModel
             {
                 SessionId = sessionId,
-                Expiration = DateTime.Now.AddMinutes(10),
+                Expiration = DateTimeHandler.GetCurrentTime().AddMinutes(10),
                 RoomPriceDetails = availableRooms
             };
             
@@ -301,32 +301,10 @@ namespace HotelBookingWebsite.Controllers
             return RedirectToAction("InputUser", "Reservation", new { SessionId = model.SessionId, Anomyous = false });
         }
 
-
         public ActionResult AddGuest(int order)
         {
             return PartialView("_EmptyGuest", new Guest { Id = Guid.NewGuid(), Order = order });
         }
-
-        //private List<Guest> GetGuests(List<GuestViewModel> guestModels)
-        //{
-        //    List<Guest> guests = new List<Guest>();
-        //    int order = 0;
-        //    for (int i = 0; i < guestModels.Count; i++)
-        //    {
-        //        if (string.IsNullOrEmpty(guestModels[i].LastName) && string.IsNullOrEmpty(guestModels[i].FirstName))
-        //        {
-        //            continue;
-        //        }
-        //        guests.Add(new Guest
-        //        {
-        //            Id = guestModels[i].Id,
-        //            FirstName = guestModels[i].FirstName,
-        //            LastName = guestModels[i].LastName,
-        //            Order = order++,
-        //        });
-        //    }
-        //    return guests;
-        //}
 
         private List<GuestViewModel> GetEmptyGuestModelList(ROOM_TYPE type)
         {

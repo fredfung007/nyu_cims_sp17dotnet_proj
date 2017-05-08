@@ -1,4 +1,5 @@
-﻿@model HotelBookingWebsite.Models.SearchInputModel
+﻿@using BusinessLogic.Handlers
+@model HotelBookingWebsite.Models.SearchInputModel
 @using (Ajax.BeginForm("Search", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
 {
     @Html.AntiForgeryToken()
@@ -10,7 +11,7 @@
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="form-group input-group-sm">
-                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Today.Date.ToString("yyyy-MM-dd") } })
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", Value = DateTimeHandler.GetCurrentDate().ToString("yyyy-MM-dd") } })
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -19,7 +20,7 @@
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="form-group input-group-sm">
-                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Today.AddDays(1).Date.ToString("yyyy-MM-dd") } })
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", Value = DateTimeHandler.GetCurrentDate().AddDays(1).ToString("yyyy-MM-dd") } })
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 </div>
             </div>
