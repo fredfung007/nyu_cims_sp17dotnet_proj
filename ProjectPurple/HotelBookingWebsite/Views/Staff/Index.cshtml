@@ -19,9 +19,9 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            @Html.LabelFor(model => model.CheckDate, new {htmlAttributes = new {@class = "form-control"}})
-            @Html.EditorFor(model => model.CheckDate, new {htmlAttributes = new {@class = "form-control", id = "occupancyDate", Value = DateTime.Today.Date.ToString("yyyy-MM-dd")}})
-            @Html.ValidationMessageFor(model => model.CheckDate, "", new {@class = "text-danger"})
+            @Html.LabelFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @class = "form-control", id = "occupancyDate", Value = DateTime.Today.Date.ToString("yyyy-MM-dd") } })
+            @Html.ValidationMessageFor(model => model.CheckDate, "", new { @class = "text-danger" })
             @*<input class="input-group" id="occupancyDate" value="@DateTime.Today.ToString("MM-dd-yyyy")" />*@
         </div>
     </div>
@@ -30,20 +30,28 @@
     <div class="col-md-12" id="inventory">
         @Html.Partial("Inventory", Model.Inventory)
     </div>
+    @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
 </div>
-@Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
 
-<h2>Upcoming Reservations Today</h2>
+<div class="container">
+    <h2>Upcoming Reservations Today</h2>
+    <div class="col-md-12" id="inventory">
+        @Html.Partial("ViewCheckInList", Model.CheckInList)
+    </div>
+</div>
 
-@Html.Partial("ViewCheckInList", Model.CheckInList)
 
-<h2>Checked-In Reservations</h2>
+<div class="container">
+    <h2>Checked-In Reservations</h2>
+    <div class="col-md-12" id="inventory">
+        @Html.Partial("ViewCheckoutListAll", Model.CheckOutList)
+    </div>
+    @Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
+</div>
 
-@Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
-@Html.Partial("ViewCheckoutListAll", Model.CheckOutList)
 
 <script type="text/javascript">
-    $("#occupancyDate").change(function() {
+    $("#occupancyDate").change(function () {
         var checkDate = $("#occupancyDate").val();
         $("#occupancy").load('@Url.Action("Occupancy", "Staff", null, Request.Url.Scheme)?date=' + checkDate);
         $("#inventory").load('@Url.Action("Inventory", "Staff", null, Request.Url.Scheme)?date=' + checkDate);

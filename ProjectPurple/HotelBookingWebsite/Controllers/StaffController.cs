@@ -196,16 +196,35 @@ namespace HotelBookingWebsite.Controllers
 
             // check out today's reservation if passed 2:00 p.m.
             var includeToday = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentEndTime();
+            List<CheckOutListModel> models = new List<CheckOutListModel>();
             foreach (Reservation reservation in reservations)
             {
                 if (reservation.EndDate < DateTimeHandler.GetCurrentEndTime() ||
                     reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday)
                 {
                     _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
+                    Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
+                    var firstName = "";
+                    var lastName = "";
+                    if (firstGuest != null)
+                    {
+                        firstName = firstGuest.FirstName;
+                        lastName = firstGuest.LastName;
+                    }
+                    models.Add(new CheckOutListModel
+                    {
+                        Id = reservation.Id,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        CheckInDate = reservation.StartDate,
+                        CheckOutDate = reservation.EndDate,
+                        ActualCheckInDate = reservation.CheckInDate ??
+                                            DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
+                    });
                 }
             }
 
-            return View();
+            return View(models);
         }
 
         private List<CheckOutListModel> GetViewCheckoutListAll()
