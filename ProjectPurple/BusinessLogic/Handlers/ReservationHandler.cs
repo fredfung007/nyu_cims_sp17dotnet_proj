@@ -103,8 +103,6 @@ namespace BusinessLogic.Handlers
         /// <returns>true if successfully cancelled</returns>
         public bool CancelReservation(Guid confirmationNumber, DateTime now)
         {
-            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
-
             if (!CanBeCanceled(confirmationNumber, now))
             {
                 return false;
@@ -183,9 +181,9 @@ namespace BusinessLogic.Handlers
         public List<Guest> GetEmptyGuestList(ROOM_TYPE type)
         {
             var guests = new List<Guest>();
-            int guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
+            var guestMaxCount = (type == ROOM_TYPE.DoubleBedRoom || type == ROOM_TYPE.Suite) ? 4 : 2;
             
-            for (int i = 0; i < guestMaxCount; i++)
+            for (var i = 0; i < guestMaxCount; i++)
             {
                 guests.Add(new Guest() { Id = Guid.NewGuid(), Order = i});
             }
@@ -200,8 +198,7 @@ namespace BusinessLogic.Handlers
         /// <param name="today">check in date</param>
         public bool CheckIn(Guid confirmationNumber, DateTime today)
         {
-            Reservation reservation =
-                _reservationRepository.GetReservation(confirmationNumber);
+            var reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             if (reservation == null || reservation.CheckInDate != null ||  reservation.StartDate > today || reservation.EndDate < today)
             {
@@ -216,7 +213,7 @@ namespace BusinessLogic.Handlers
                 return false;
             }
 
-            DateTime checkDate = today;
+            var checkDate = today;
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
                 _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
@@ -237,15 +234,14 @@ namespace BusinessLogic.Handlers
         /// <param name="today">check out date</param>
         public bool CheckOut(Guid confirmationNumber, DateTime today)
         {
-            Reservation reservation =
-                _reservationRepository.GetReservation(confirmationNumber);
+            var reservation = _reservationRepository.GetReservation(confirmationNumber);
 
             if (reservation == null || reservation.CheckOutDate != null ||　reservation.CheckInDate == null || reservation.CheckInDate > today)
             {
                 return false;
             }
 
-            DateTime checkDate = today;
+            var checkDate = today;
             // if stay shorter, here should use today. But this is not required
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
@@ -255,11 +251,11 @@ namespace BusinessLogic.Handlers
             _roomRepository.Save();
 
             // loyalty program
-            int stayLength = 0;
-            AspNetUser user = reservation.AspNetUser;
-            DateTime checkInDate = (DateTime)reservation.CheckInDate;
+            var user = reservation.AspNetUser;
+            var checkInDate = (DateTime)reservation.CheckInDate;
             if (user != null)
             {
+                var stayLength = 0;
                 if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == today.Year)
                 {
                     // Checkout date is the same year as the loyalty program
@@ -304,11 +300,11 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
         /// </summary>
-        /// <param name="EndTime"></param>
+        /// <param name="endTime"></param>
         /// <returns></returns>
-        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime EndTime)
+        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime endTime)
         {
-            return _reservationRepository.GetReservationsCheckedInBeforeDate(EndTime);
+            return _reservationRepository.GetReservationsCheckedInBeforeDate(endTime);
         }
     }
 }

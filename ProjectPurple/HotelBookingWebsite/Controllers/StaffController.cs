@@ -2,6 +2,7 @@
 using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 using HotelBookingWebsite.Filters;
+using HotelBookingWebsite.Helper;
 using HotelBookingWebsite.Models;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace HotelBookingWebsite.Controllers
                 ConfirmationId = reservation.Id.ToString(),
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
-                Guests = reservation.Guests.ToList(),
+                Guests = reservation.Guests.ToList().ToGuestModelList(),
                 Type =  _roomHandler.GetRoomTypeName(reservation.RoomType),
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
                 IsCanceled = reservation.IsCancelled,
