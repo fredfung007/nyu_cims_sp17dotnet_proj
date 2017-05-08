@@ -15,12 +15,20 @@ namespace BusinessLogic.Handlers
             return _currentTime;
         }
 
-        public static DateTime GetCurrentCheckInTime()
+        /// <summary>
+        /// Return the time point when reservations can be checked in on the current day
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetCurrentStartTime()
         {
             return _currentTime.Date.AddHours(12);
         }
 
-        public static DateTime GetCurrentCheckOutTime()
+        /// <summary>
+        /// Return the time point when reservations must be checked out on the current day
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetCurrentEndTime()
         {
             return _currentTime.Date.AddHours(14);
         }
