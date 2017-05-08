@@ -69,23 +69,6 @@ namespace HotelBookingWebsite.Controllers
                 new {ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl});
         }
 
-        public async Task<ActionResult> Pay(Guid confirmationId, Profile billInfo)
-        {
-            // TODO guid or string
-            _reservationHandler.PayReservation(confirmationId, billInfo);
-
-            return View(new ConfirmationViewModel
-            {
-                ConfirmationId = confirmationId.ToString()
-            });
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Pay(ConfirmationViewModel model)
-        {
-            return View(model);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Cancel(ConfirmationViewModel model)
         {
@@ -120,7 +103,6 @@ namespace HotelBookingWebsite.Controllers
                 StartDate = reservation.StartDate,
                 EndDate = reservation.EndDate,
                 Guests = reservation.Guests.ToList().ToGuestModelList(),
-                //ReservationId = reservation.Id,
                 Type = _roomHandler.GetRoomTypeName(reservation.RoomType),
                 Ameneties = _roomHandler.GetRoomAmeneties(reservation.RoomType),
                 PriceList = priceList,
@@ -172,7 +154,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Show", "Reservation", new {model.ConfirmationId});
+            return RedirectToAction("Confirm", "Reservation", new {model.ConfirmationId});
         }
 
         public ActionResult Search()
@@ -300,11 +282,6 @@ namespace HotelBookingWebsite.Controllers
             }
 
             return RedirectToAction("InputUser", "Reservation", new {model.SessionId, anomyous = false});
-        }
-
-        public ActionResult AddGuest(int order)
-        {
-            return PartialView("_EmptyGuest", new Guest {Id = Guid.NewGuid(), Order = order});
         }
 
         private List<GuestViewModel> GetEmptyGuestModelList(ROOM_TYPE type)
