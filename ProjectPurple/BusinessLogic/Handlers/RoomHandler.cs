@@ -134,10 +134,10 @@ namespace BusinessLogic.Handlers
                 throw new ArgumentException("check-in date later then check-out date");
             var priceList = new List<int>();
             DateTime checkDate = startDateTime.Date;
+            int baseRate = _roomRepository.GetRoomType(type).BaseRate;
             while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
-                var baseRate = _roomRepository.GetRoomType(type).BaseRate;
-                priceList.Add(GetRoomPrice(baseRate, checkDate));
+                priceList.Add(GetRoomPrice(type, baseRate, checkDate));
                 checkDate = checkDate.AddDays(1);
             }
             return priceList;
@@ -151,10 +151,10 @@ namespace BusinessLogic.Handlers
                 throw new ArgumentException("check-in date later then check-out date");
             var priceList = new List<int>();
             DateTime checkDate = startDateTime.Date;
+            int baseRate = _roomRepository.GetRoomType(type).BaseRate;
             while (checkDate.CompareTo(endDateTime.Date) < 0)
             {
-                var baseRate = _roomRepository.GetRoomType(type).BaseRate;
-                priceList.Add(GetRoomPrice(baseRate, checkDate));
+                priceList.Add(GetRoomPrice(type, baseRate, checkDate));
                 checkDate = checkDate.AddDays(1);
             }
             return priceList;
@@ -164,13 +164,14 @@ namespace BusinessLogic.Handlers
         ///     Get price of a specific room type at date give.
         ///     Price on specific day = base price * (1 + occupation rate), ceiling if has decimals.
         /// </summary>
-        /// <param name="baseRate">Base rate of roomType</param>
+        /// <param name="baseRate">base price of the room type</param>
+        /// <param name="type">Room type</param>
         /// <param name="date">Date for DateTime</param>
         /// <returns>room price</returns>
-        private int GetRoomPrice(int baseRate, DateTime date)
+        private int GetRoomPrice(ROOM_TYPE type, int baseRate, DateTime date)
         {
             // compute price multipler
-            var rate = 1.0 + GetHotelOccupancyRate(date);
+            var rate = 1.0 + GetRoomOccupancyRate(type, date);
             return (int) Math.Ceiling(baseRate * rate);
         }
 

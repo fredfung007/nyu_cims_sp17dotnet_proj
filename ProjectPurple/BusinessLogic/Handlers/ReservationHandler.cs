@@ -82,6 +82,16 @@ namespace BusinessLogic.Handlers
                 _reservationRepository.InsertReservation(reservation);
                 _reservationRepository.Save();
             }
+
+            // update room occupancy
+            DateTime checkDate = start.Date;
+            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
+            {
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+                checkDate = checkDate.AddDays(1);
+            }
+            _roomRepository.Save();
+
             return rsvId;
         }
 
@@ -107,8 +117,14 @@ namespace BusinessLogic.Handlers
         {
             if (!CanBeCanceled(confirmationNumber, now))
                 return false;
-
+            Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
             _reservationRepository.CancelReservation(confirmationNumber);
+            DateTime checkDate = now.Date;
+            while (checkDate < reservation.EndDate)
+            {
+                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
+            }
+            _roomRepository.Save();
             _reservationRepository.Save();
             return true;
         }
@@ -180,14 +196,6 @@ namespace BusinessLogic.Handlers
             if (currentAmount >= totalAmount)
                 return false;
 
-            DateTime checkDate = today;
-            while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
-            {
-                _roomRepository.UpdateRoomOccupancy(reservation.RoomType, checkDate, 1);
-                checkDate = checkDate.AddDays(1);
-            }
-            _roomRepository.Save();
-
             reservation.CheckInDate = today;
             _reservationRepository.UpdateReservation(reservation);
             _reservationRepository.Save();
@@ -207,7 +215,7 @@ namespace BusinessLogic.Handlers
                 reservation.CheckInDate > today)
                 return false;
 
-            DateTime checkDate = today;
+            DateTime checkDate = today.Date;
             // if stay shorter, here should use today. But this is not required
             while (checkDate.Date.CompareTo(reservation.EndDate.Date) <= 0)
             {
