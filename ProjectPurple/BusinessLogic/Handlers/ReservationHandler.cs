@@ -169,6 +169,7 @@ namespace BusinessLogic.Handlers
 
             return reservations.Where(reservation => reservation.AspNetUser != null &&
                                                      reservation.AspNetUser.Id.Equals(userId) &&
+                                                     reservation.IsCancelled==false &&
                                                      reservation.EndDate.CompareTo(DateTime.Now) > 0 &&
                                                      reservation.CheckOutDate == null).ToList();
         }

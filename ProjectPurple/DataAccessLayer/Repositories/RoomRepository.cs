@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using DataAccessLayer.EF;
 using DataAccessLayer.Constants;
 
@@ -90,6 +91,11 @@ namespace DataAccessLayer.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        public Task<RoomType> GetRoomTypeAsync(ROOM_TYPE id)
+        {
+            return _context.RoomTypes.FindAsync(id);
         }
 
         public void UpdateRoomOccupancy(RoomOccupancy roomOccupancy)
