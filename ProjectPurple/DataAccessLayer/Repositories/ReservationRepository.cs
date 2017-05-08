@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
@@ -98,6 +99,15 @@ namespace DataAccessLayer.Repositories
                 .Where(rsv => rsv.EndDate <= endTime
                               && rsv.CheckOutDate == null)
                 .ToList();
+        }
+
+        public int GetRealOccupancyByTypeDate(ROOM_TYPE type, DateTime date)
+        {
+            date = date.Date;
+            return _context.Reservations.Include(rsv => rsv.DailyPrices).Include(rsv => rsv.Guests)
+                .Count(rsv => rsv.EndDate >= date
+                        && rsv.CheckInDate != null
+                        && rsv.CheckOutDate == null);
         }
 
         public void Save()
