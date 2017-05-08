@@ -101,11 +101,11 @@ namespace BusinessLogic.Handlers
         /// </summary>
         /// <param name="confirmationNumber">confirmation number of the reservation</param>
         /// <returns>true if successfully cancelled</returns>
-        public bool CancelReservation(Guid confirmationNumber, DateTime today)
+        public bool CancelReservation(Guid confirmationNumber, DateTime now)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
-            if (!CanBeCanceled(confirmationNumber, today))
+            if (!CanBeCanceled(confirmationNumber, now))
             {
                 return false;
             }
@@ -115,7 +115,7 @@ namespace BusinessLogic.Handlers
             return true;
         }
 
-        public bool CanBeCanceled(Guid confirmationNumber, DateTime today)
+        public bool CanBeCanceled(Guid confirmationNumber, DateTime now)
         {
             Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
 
@@ -126,14 +126,13 @@ namespace BusinessLogic.Handlers
             }
 
             // refuse to cancel if checkin
-            if (reservation.CheckInDate != null && reservation.CheckInDate < today)
+            if (reservation.CheckInDate != null && reservation.CheckInDate < now)
             {
                 return false;
             }
 
-            // refuse to cancel if the date is before the present date 
-            // TODO EXPRESSION IS ALWAYS TRUE.
-            if (reservation.StartDate != null && reservation.StartDate < today)
+            // refuse to cancel if the date is before the present date, now must 
+            if (reservation.StartDate == null || reservation.StartDate < now)
             {
                 return false;
             }
@@ -170,7 +169,8 @@ namespace BusinessLogic.Handlers
 
             return reservations.Where(reservation => reservation.AspNetUser != null &&
                                                      reservation.AspNetUser.Id.Equals(userId) &&
-                                                     reservation.EndDate.CompareTo(DateTimeHandler.GetCurrentTime()) > 0).ToList();
+                                                     reservation.EndDate.CompareTo(DateTimeHandler.GetCurrentTime()) > 0) &&
+                                                     reservation.CheckOutDate == null).ToList();
         }
 
         [Obsolete]
