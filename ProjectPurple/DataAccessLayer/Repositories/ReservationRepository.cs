@@ -108,23 +108,23 @@ namespace DataAccessLayer.Repositories
             CancelReservation(reservation);
         }
 
-        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
+        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime StartTime)
         {
-            DateTime tomorrow = startDate.AddDays(1);
+            DateTime tomorrow = StartTime.AddDays(1);
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
                 .Include(rsv => rsv.DailyPrices)
                 .Include(rsv => rsv.Guests)
-                .Where(reservation => reservation.StartDate >= startDate && reservation.StartDate < tomorrow).ToList();
+                .Where(reservation => reservation.StartDate >= StartTime && reservation.StartDate < tomorrow).ToList();
         }
 
-        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime date)
+        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime EndTime)
         {
             return _context.Reservations.Include(rsv => rsv.AspNetUser)
                 .Include(rsv => rsv.DailyPrices)
                 .Include(rsv => rsv.Guests)
                 .Where(reservation => reservation.CheckInDate != null
-                                                              && reservation.CheckInDate < date
-                                                              && reservation.EndDate <= date)
+                                                              && reservation.CheckInDate < EndTime
+                                                              && reservation.EndDate <= EndTime)
                 .ToList();
         }
 
