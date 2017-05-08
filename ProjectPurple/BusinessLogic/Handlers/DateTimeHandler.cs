@@ -8,11 +8,12 @@ namespace BusinessLogic.Handlers
 {
     public static class DateTimeHandler
     {
+        public static bool enabled { get; set; }
         private static DateTime _currentTime = DateTime.Now;
 
         public static DateTime GetCurrentTime()
         {
-            return _currentTime;
+            return enabled? _currentTime : DateTime.Now;
         }
 
         /// <summary>
@@ -21,7 +22,7 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public static DateTime GetCurrentStartTime()
         {
-            return _currentTime.Date.AddHours(12);
+            return enabled? _currentTime.Date.AddHours(12) : DateTime.Now.Date.AddHours(12);
         }
 
         /// <summary>
@@ -30,12 +31,12 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public static DateTime GetCurrentEndTime()
         {
-            return _currentTime.Date.AddHours(14);
+            return enabled? _currentTime.Date.AddHours(14) : DateTime.Now.Date.AddHours(14);
         }
 
         public static DateTime GetCurrentDate()
         {
-            return _currentTime.Date;
+            return enabled? _currentTime.Date : DateTime.Now.Date;
         }
 
         public static void SetCurrentTime(DateTime newDate)

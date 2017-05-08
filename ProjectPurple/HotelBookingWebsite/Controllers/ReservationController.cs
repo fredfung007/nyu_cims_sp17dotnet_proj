@@ -93,7 +93,6 @@ namespace HotelBookingWebsite.Controllers
             }
 
             bool success = _reservationHandler.CancelReservation(Guid.Parse(model.ConfirmationId), DateTimeHandler.GetCurrentTime());
-            ViewBag.ReturnUrl = returnUrl;
 
             if (!success)
             {
