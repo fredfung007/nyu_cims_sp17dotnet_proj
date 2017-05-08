@@ -34,14 +34,14 @@ namespace HotelBookingWebsite.Controllers
         public ActionResult SetCurrentTime(GlobalTimeViewModel model)
         {
             DateTimeHandler.SetCurrentTime(model.CurrentTime);
-            DateTimeHandler.enabled = true;
+            DateTimeHandler.Enabled = true;
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult DisableCustomTime()
         {
-            DateTimeHandler.enabled = false;
+            DateTimeHandler.Enabled = false;
             return RedirectToAction("Index");
         }
     }
