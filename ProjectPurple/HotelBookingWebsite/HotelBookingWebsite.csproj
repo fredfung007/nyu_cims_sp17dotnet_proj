@@ -350,7 +350,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
     <Content Include="Views\Reservation\Show.cshtml" />
-    <Content Include="Views\Reservation\Pay.cshtml" />
     <Content Include="Views\Reservation\Cancel.cshtml" />
     <Content Include="Views\Reservation\Search.cshtml" />
     <Content Include="Views\Reservation\InputUser.cshtml" />
