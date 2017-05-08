@@ -304,11 +304,11 @@ namespace BusinessLogic.Handlers
         /// <summary>
         /// get all reservations that can be checked out, which means it is checkedin and still stay in the hotel
         /// </summary>
-        /// <param name="today"></param>
+        /// <param name="EndTime"></param>
         /// <returns></returns>
-        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime today)
+        public IEnumerable<Reservation> GetAllReservationsCanBeCheckedOut(DateTime EndTime)
         {
-            return _reservationRepository.GetReservationsCheckedInBeforeDate(today);
+            return _reservationRepository.GetReservationsCheckedInBeforeDate(EndTime);
         }
     }
 }
