@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataAccessLayer.Constants;
 using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
@@ -22,6 +23,7 @@ namespace DataAccessLayer.Repositories
         IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime);
         IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime);
         IEnumerable<Reservation> GetExpiredReservations(DateTime endTime);
+        int GetRealOccupancyByTypeDate(ROOM_TYPE type, DateTime date);
         void Save();
     }
 }

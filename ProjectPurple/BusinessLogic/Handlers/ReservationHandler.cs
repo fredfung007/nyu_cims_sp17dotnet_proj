@@ -205,7 +205,7 @@ namespace BusinessLogic.Handlers
             }
 
             // check current checkedin number v.s. inventory number
-            var currentAmount = _roomRepository.GetRoomOccupancyByDate(reservation.RoomType, today);
+            var currentAmount = _reservationRepository.GetRealOccupancyByTypeDate(reservation.RoomType, today);
             var totalAmount = _roomRepository.GetRoomTotalAmount(reservation.RoomType);
             if (currentAmount >= totalAmount)
             {
