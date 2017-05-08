@@ -15,6 +15,21 @@ namespace BusinessLogic.Handlers
             return _currentTime;
         }
 
+        public static DateTime GetCurrentCheckInTime()
+        {
+            return _currentTime.Date.AddHours(12);
+        }
+
+        public static DateTime GetCurrentCheckOutTime()
+        {
+            return _currentTime.Date.AddHours(14);
+        }
+
+        public static DateTime GetCurrentDate()
+        {
+            return _currentTime.Date;
+        }
+
         public static void SetCurrentTime(DateTime newDate)
         {
             _currentTime = newDate;
