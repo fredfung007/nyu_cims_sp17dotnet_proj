@@ -12,28 +12,23 @@ namespace HotelBookingWebsite.Helper
         public override bool IsValid(object value)
         {
             var list = value as List<GuestViewModel>;
-            if (list != null)
+            if (list == null)
             {
-                var firstGuest = list[0];
-                if (firstGuest == null)
-                {
-                    return false;
-                }
-
-                if (string.IsNullOrEmpty(firstGuest.FirstName) || string.IsNullOrEmpty(firstGuest.LastName))
-                {
-                    return false;
-                }
-
-                foreach (var guest in list)
-                {
-                    if (string.IsNullOrEmpty(guest.FirstName) ^ string.IsNullOrEmpty(guest.LastName))
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
-            return true;
+
+            var validCustomer = 0;
+
+            foreach (var guest in list)
+            {
+                if (string.IsNullOrWhiteSpace(guest.FirstName) ^ string.IsNullOrWhiteSpace(guest.LastName))
+                {
+                    continue;
+                }
+                validCustomer++;
+            }
+
+            return validCustomer >= 1;
         }
     }
 

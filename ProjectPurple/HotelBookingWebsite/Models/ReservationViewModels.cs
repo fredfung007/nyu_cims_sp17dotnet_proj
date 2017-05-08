@@ -90,7 +90,7 @@ namespace HotelBookingWebsite.Models
         [HiddenInput(DisplayValue = false)]
         public string SessionId { get; set; }
 
-        [MustHaveFirstGuestAttribute(ErrorMessage = "Please input at least one guest's first and last name, input both first name and last name for any available guests")]
+        [MustHaveFirstGuestAttribute(ErrorMessage = "Please input at least one guest's first and last name pair, no whitespace")]
         public List<GuestViewModel> Guests { get; set; }
     }
 
