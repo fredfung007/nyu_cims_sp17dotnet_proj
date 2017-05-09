@@ -7,12 +7,12 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Ajax.BeginForm("Cancel", "Reservation", new AjaxOptions {HttpMethod = "Post"}))
+@using (Ajax.BeginForm("Cancel", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.ConfirmationId)
     <div>
-        <hr/>
+        <hr />
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.ConfirmationId)
@@ -31,11 +31,7 @@
             }
         </dl>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Confirm to Cancel" class="btn btn-default"/>
-        </div>
-    </div>
+    <input type="submit" value="Confirm to Cancel" class="btn btn-danger" />
 }
 
 <div>

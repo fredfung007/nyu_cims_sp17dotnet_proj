@@ -35,21 +35,14 @@ namespace HotelBookingWebsite.Controllers
         [HttpGet]
         public ActionResult Show(Guid? ConfirmationId)
         {
-            Guid confirmationId = ConfirmationId ?? Guid.Empty;
+            var confirmationId = ConfirmationId ?? Guid.Empty;
             if (!_reservationHandler.HashReservation(confirmationId.ToString()))
             {
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
             }
 
-            Reservation reservation = _reservationHandler.GetReservation(confirmationId);
-
-
-            // TODO check this, it's supposed to be not null
-            //if (reservation == null)
-            //{
-            //    return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Invalid Confirmation Id" });
-            //}
+            var reservation = _reservationHandler.GetReservation(confirmationId);
 
             ViewBag.canCancel = _reservationHandler.CanBeCanceled(reservation.Id, DateTimeHandler.GetCurrentTime());
 
@@ -64,13 +57,12 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            // return redirct to profile url TODO
             return RedirectToAction("Cancel", "Reservation",
                 new { ConfirmationViewModel = model, returnUrl = HttpContext.Request.RawUrl });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Cancel(ConfirmationViewModel model)
+        public ActionResult Cancel(ConfirmationViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -117,9 +109,8 @@ namespace HotelBookingWebsite.Controllers
                 return RedirectToAction("Error", "Reservation",
                     new ErrorViewModel { ErrorMsg = "No Confirmation Id" });
             }
-            //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Reservation reservation = _reservationHandler.GetReservation((Guid)confirmationId);
+            var reservation = _reservationHandler.GetReservation((Guid)confirmationId);
             if (reservation == null)
             {
                 return RedirectToAction("Error", "Reservation",
@@ -162,11 +153,28 @@ namespace HotelBookingWebsite.Controllers
             return View(new SearchInputModel());
         }
 
+        private RoomPriceDetail GetPriceDetails(DateTime startDate, DateTime endDate, ROOM_TYPE type)
+        {
+            var prices = _roomHandler.GetRoomPriceList(type, startDate, endDate);
+            return new RoomPriceDetail
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                Name = _roomHandler.GetRoomTypeName(type),
+                Type = type,
+                PriceList = prices,
+                AvaragePrice = prices.Sum() / (endDate - startDate).Days,
+                Description = _roomHandler.GetRoomDescription(type),
+                Ameneties = _roomHandler.GetRoomAmeneties(type),
+                PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
+            };
+        }
+
         /// <summary>
         ///     Return available room list within [start, end). The result type is AvailableRoomViewModel
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult> Search(SearchInputModel model)
+        public ActionResult Search(SearchInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -187,36 +195,21 @@ namespace HotelBookingWebsite.Controllers
             }
 
             ViewBag.NoResult = false;
-            DateTime startDate = model.StartDate.Date.AddHours(12);
-            DateTime endDate = model.EndDate.Date.AddHours(14);
+            var startDate = model.StartDate.GetStartDateTime();
+            var endDate = model.EndDate.Date.GetEndDateTime();
             var availableRooms = new List<RoomPriceDetail>();
 
             foreach (ROOM_TYPE type in Enum.GetValues(typeof(ROOM_TYPE)))
             {
-                if (!_roomHandler.IsAvailable(type, startDate, endDate))
+                if (_roomHandler.IsAvailable(type, startDate, endDate))
                 {
-                    continue;
+                    availableRooms.Add(GetPriceDetails(startDate, endDate, type));
                 }
-
-                var prices = _roomHandler.GetRoomPriceList(type, startDate, endDate);
-                availableRooms.Add(new RoomPriceDetail
-                {
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    Name = _roomHandler.GetRoomTypeName(type),
-                    Type = type,
-                    PriceList = prices,
-                    AvaragePrice = prices.Sum() / (endDate - startDate).Days,
-                    Description = _roomHandler.GetRoomDescription(type),
-                    Ameneties = _roomHandler.GetRoomAmeneties(type),
-                    PictureUlrs = _roomHandler.GetRoomPictureUrls(type)
-                });
             }
 
             if (availableRooms.Count <= 0)
             {
-                return RedirectToAction("Error", "Reservation",
-                    new ErrorViewModel { ErrorMsg = "No available room, please search again" });
+                return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "No available room, please search again" });
             }
 
             var sessionId = Guid.NewGuid().ToString();
@@ -270,7 +263,7 @@ namespace HotelBookingWebsite.Controllers
                 return View(model);
             }
 
-            if (model.Expiration < DateTimeHandler.GetCurrentTime())
+            if (model.Expiration < DateTimeHandler.GetCurrentTime() || ReservationHandler.SearchResultPool[model.SessionId] == null)
             {
                 return RedirectToAction("Expired", "Reservation");
             }
@@ -299,7 +292,7 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [CustomAuthorize]
-        public async Task<ActionResult> InputUser(string sessionId, bool? anonymous)
+        public ActionResult InputUser(string sessionId, bool? anonymous)
         {
             if (!ReservationHandler.SearchResultPool.ContainsKey(sessionId))
             {
@@ -322,13 +315,13 @@ namespace HotelBookingWebsite.Controllers
             }
 
             var result = ReservationHandler.SearchResultPool[sessionId] as RoomSearchResultModel;
-            ROOM_TYPE type = result.RoomPriceDetails[result.SelectedIndex].Type;
+            var type = result.RoomPriceDetails[result.SelectedIndex].Type;
             result.Guests = GetEmptyGuestModelList(type);
 
             // TOOD check here use extension function
             if (User.Identity.IsAuthenticated)
             {
-                Profile profile = _userHandler.GetProfile(User.Identity.Name);
+                var profile = _userHandler.GetProfile(User.Identity.Name);
                 result.Guests[0].FirstName = profile.FirstName;
                 result.Guests[0].LastName = profile.LastName;
             }
@@ -342,27 +335,27 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> InputUser(InputGuestViewModel model)
+        public ActionResult InputUser(InputGuestViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (model.Expiration < DateTimeHandler.GetCurrentTime())
+            if (model.Expiration < DateTimeHandler.GetCurrentTime() || ReservationHandler.SearchResultPool[model.SessionId] == null)
             {
                 return RedirectToAction("Expired", "Reservation");
             }
 
-            model.Guests.RemoveAll(guest => string.IsNullOrEmpty(guest.FirstName) &&
-                                            string.IsNullOrEmpty(guest.LastName));
+            //model.Guests.RemoveAll(guest => string.IsNullOrWhiteSpace(guest.FirstName) &&
+            //                                string.IsNullOrWhiteSpace(guest.LastName));
 
-            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests;
+            (ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel).Guests = model.Guests.CleanEmpty();
 
             return RedirectToAction("Create", "Reservation", new { model.SessionId });
         }
 
-        public async Task<ActionResult> Create(string sessionId)
+        public ActionResult Create(string sessionId)
         {
             if (!ReservationHandler.SearchResultPool.ContainsKey(sessionId))
             {
@@ -425,20 +418,20 @@ namespace HotelBookingWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateReservationViewModel model)
+        public ActionResult Create(CreateReservationViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (model.Expiration < DateTimeHandler.GetCurrentTime())
+            if (model.Expiration < DateTimeHandler.GetCurrentTime() || ReservationHandler.SearchResultPool[model.SessionId] == null)
             {
                 return RedirectToAction("Expired", "Reservation");
             }
 
             var result = ReservationHandler.SearchResultPool[model.SessionId] as RoomSearchResultModel;
-            RoomPriceDetail roomInfo = result.RoomPriceDetails[result.SelectedIndex];
+            var roomInfo = result.RoomPriceDetails[result.SelectedIndex];
 
             if (result.IsConfirmed && result.ConfirmationId != null)
             {
@@ -456,7 +449,6 @@ namespace HotelBookingWebsite.Controllers
                 userName = User.Identity.Name;
             }
 
-            // TODO check guests
             result.ReservationId = _reservationHandler.MakeReservation(userName, roomInfo.Type, roomInfo.StartDate,
                 roomInfo.EndDate, result.Guests.ToGuestList(), roomInfo.PriceList.ToList());
             result.IsConfirmed = true;
@@ -472,17 +464,16 @@ namespace HotelBookingWebsite.Controllers
             return View(error);
         }
 
-        public async Task<ActionResult> Confirm(Guid? confirmationId, bool? noCancel)
+        public ActionResult Confirm(Guid? confirmationId, bool? noCancel)
         {
             ViewBag.NoCancel = noCancel ?? false;
 
-            Reservation reservation = _reservationHandler.GetReservation(confirmationId ?? Guid.NewGuid());
+            var reservation = _reservationHandler.GetReservation(confirmationId ?? Guid.NewGuid());
 
             //invalid confirmation Number
             if (reservation == null)
             {
-                return RedirectToAction("Error", "Reservation",
-                    new ErrorViewModel { ErrorMsg = "Wrong confirmation number" });
+                return RedirectToAction("Error", "Reservation", new ErrorViewModel { ErrorMsg = "Wrong confirmation number" });
             }
 
             return View(GetConfirmationViewModel(reservation));

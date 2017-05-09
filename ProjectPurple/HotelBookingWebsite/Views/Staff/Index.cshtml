@@ -30,7 +30,7 @@
     <div class="col-md-12" id="inventory">
         @Html.Partial("Inventory", Model.Inventory)
     </div>
-    @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory")
+    @Html.ActionLink("Modify the Inventory", "ModifyRoomInventory", "Staff", new { @class = "btn btn-primary" })
 </div>
 
 <div class="container">
@@ -40,15 +40,15 @@
     </div>
 </div>
 
-
 <div class="container">
     <h2>Checked-In Reservations</h2>
     <div class="col-md-12" id="inventory">
         @Html.Partial("ViewCheckoutListAll", Model.CheckOutList)
     </div>
-    @Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired")
-</div>
 
+    <hr />
+    @Html.ActionLink("Check Out All Expired Reservations", "CheckOutAllExpired", "Staff", new { @class = "btn btn-warning" })
+</div>
 
 <script type="text/javascript">
     $("#occupancyDate").change(function () {

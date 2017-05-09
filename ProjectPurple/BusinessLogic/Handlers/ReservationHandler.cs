@@ -19,17 +19,12 @@ namespace BusinessLogic.Handlers
             new Dictionary<string, TimeExpirationType>();
 
         private readonly IReservationRepository _reservationRepository;
-
         private readonly IRoomRepository _roomRepository;
-        //private readonly IUserReservationQueryHandler _userReservationQueryHandler;
-
+       
         public ReservationHandler()
         {
-            // username should come from cookies
-            //var username = "";
             _reservationRepository = new ReservationRepository(new HotelModelContext());
             _roomRepository = new RoomRepository(new HotelModelContext());
-            //_userReservationQueryHandler = new UserReservationQueryHandler(username);
         }
 
         /// <summary>
@@ -98,14 +93,6 @@ namespace BusinessLogic.Handlers
         public void PayReservation(Guid confirmationNumber, Profile billingInfo)
         {
             throw new NotImplementedException();
-            //Reservation reservation = _reservationRepository.GetReservation(confirmationNumber);
-            //if (reservation != null)
-            //{
-            //    reservation.BillingInfo = billingInfo;
-            //    reservation.isPaid = true;
-            //}
-            //_reservationRepository.UpdateReservation(reservation);
-            //_reservationRepository.Save();
         }
 
         /// <summary>
@@ -244,11 +231,11 @@ namespace BusinessLogic.Handlers
 
             // loyalty program
             AspNetUser user = reservation.AspNetUser;
-            var checkInDate = (DateTime) reservation.CheckInDate;
+            var checkInDate = (DateTime)reservation.CheckInDate;
             if (user != null)
             {
                 var stayLength = 0;
-                if (user.LoyaltyYear != null && ((DateTime) user.LoyaltyYear).Year == checkOutDateTime.Year)
+                if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == checkOutDateTime.Year)
                 {
                     // Checkout date is the same year as the loyalty program
                     stayLength = Math.Min((checkOutDateTime - checkInDate).Days, checkOutDateTime.DayOfYear);
