@@ -35,7 +35,7 @@
 
 <hr />
 <div id="today">
-    <h2>Current Time is @Model.CurrentTime.ToString("yyyy-MM-dd HH:mm:ss")</h2>
+    <h2>Current Time is @Model.CurrentTime.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</h2>
 </div>
 @using (Ajax.BeginForm("SetCurrentTime", "Home", new AjaxOptions { HttpMethod = "Post" }, new { htmlAttributes = new { id = "setCurrentTimeForm" } }))
 {
