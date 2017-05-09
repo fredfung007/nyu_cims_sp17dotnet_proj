@@ -205,10 +205,11 @@ namespace HotelBookingWebsite.Controllers
                     reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday)
                 {
                     DateTime realCheckInDate = reservation.CheckInDate ?? reservation.StartDate;
-                    if (reservation.CheckInDate == null)
-                    {
-                        _reservationHandler.CheckIn(reservation.Id, realCheckInDate);
-                    }
+                    // handling no show, will conflict with the logic of "stay" so commented out
+                    //if (reservation.CheckInDate == null)
+                    //{
+                    //    _reservationHandler.CheckIn(reservation.Id, realCheckInDate);
+                    //}
                     _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
                     Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                     var firstName = "";

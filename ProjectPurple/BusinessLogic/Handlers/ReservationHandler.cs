@@ -253,6 +253,11 @@ namespace BusinessLogic.Handlers
                             reservation.AspNetUser.LoyaltyProgress = 5;
                             reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
                         }
+                        else if (reservation.AspNetUser.LoyaltyProgress == 5)
+                        {
+                            // first time to become a loyalty member
+                            reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
+                        }
                         else
                         {
                             reservation.AspNetUser.LoyaltyProgress += stayLength;
