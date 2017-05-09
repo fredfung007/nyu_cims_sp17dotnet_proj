@@ -243,6 +243,11 @@ namespace BusinessLogic.Handlers
                     {
                         // not a loyalty member
                         reservation.AspNetUser.LoyaltyProgress += stayLength;
+                        if (reservation.AspNetUser.LoyaltyProgress == 5)
+                        {
+                            // first time to become a loyalty member
+                            reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
+                        }
                     }
                     else
                     {
@@ -251,11 +256,6 @@ namespace BusinessLogic.Handlers
                         {
                             // able to + 1 year
                             reservation.AspNetUser.LoyaltyProgress = 5;
-                            reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
-                        }
-                        else if (reservation.AspNetUser.LoyaltyProgress == 5)
-                        {
-                            // first time to become a loyalty member
                             reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
                         }
                         else
