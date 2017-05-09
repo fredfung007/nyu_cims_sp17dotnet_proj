@@ -1,28 +1,25 @@
 ﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
-
 @{
-    if (Model.IsCanceled)
-    {
-        ViewBag.Title = "Your Reservation is Canceled";
-    }
-    else
-    {
-        ViewBag.Title = "Your Reservation";
-    }
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+
 @Html.AntiForgeryToken()
 <div>
-    <h4>You reservation details</h4>
     <hr/>
     @if (@Model.IsCanceled)
     {
-        @Html.Label("YOUR RESERVATION IS CANCELED");
+        @Html.Label("CANCELED");
     }
 
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal print">
+        <dt>
+            @Html.Label("Confirmation Number:")
+        </dt>
+        <dd>
+            <b>@Html.DisplayFor(model => model.ConfirmationId)</b>
+        </dd>
+
         <dt>
             @Html.Label("Check-in:")
         </dt>
@@ -42,20 +39,6 @@
         </dt>
         <dd>
             1
-        </dd>
-
-        <dt>
-            @Html.Label("Total:")
-        </dt>
-        <dd>
-            @((Model.PriceList.Sum() / 100.00).ToString("C2"))
-        </dd>
-
-        <dt>
-            @Html.Label("Confirmation Number:")
-        </dt>
-        <dd>
-            <b>@Html.DisplayFor(model => model.ConfirmationId)</b>
         </dd>
 
         <dt>
@@ -81,6 +64,16 @@
                 <p>@Model.Guests[i].FirstName @Model.Guests[i].LastName</p>
             }
         </dd>
+        
+        <dt>
+            <h3>@Html.Label("Total:")</h3>
+        </dt>
+        <dd>
+            <h3>
+                @((Model.PriceList.Sum() / 100.00).ToString("C2"))
+            </h3>
+        </dd>
+
 
     </dl>
 
@@ -99,5 +92,5 @@
 </div>
 
 <p>
-    @Html.ActionLink("Back to Index", "Index", "Home")
+    @Html.ActionLink("Back to Dashboard", "Index", "Staff")
 </p>
