@@ -1,0 +1,9 @@
+﻿@model HotelBookingWebsite.Models.CheckInOutModel
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewBag.Status = Model.IsSuccess ? "Succeeded." : "Failed. The reservation has been checked out earlier or does not exist";
+}
+
+<h2>CheckOut @ViewBag.Status</h2>
+@Html.ActionLink("Back", "Index")

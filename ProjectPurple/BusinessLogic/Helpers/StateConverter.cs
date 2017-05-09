@@ -1,12 +1,12 @@
-﻿using DataAccessLayer.Constants;
-using System;
+﻿using System.Collections.Generic;
+using DataAccessLayer.Constants;
 
 namespace BusinessLogic.Helpers
 {
     // Name Converter for U.S. States.
-    public class StateConverter : IStateConverter
+    public static class StateConverter
     {
-        public string GetState(US_STATE state)
+        public static string GetState(US_STATE state)
         {
             switch (state)
             {
@@ -186,12 +186,12 @@ namespace BusinessLogic.Helpers
 
                 case US_STATE.WY:
                     return "WYOMING";
+                default:
+                    throw new KeyNotFoundException("NO SUCH STATE FOUND");
             }
-
-            throw new Exception("Not Available");
         }
 
-        public US_STATE GetStateByName(string name)
+        public static US_STATE GetStateByName(string name)
         {
             switch (name.ToUpper())
             {
@@ -371,9 +371,9 @@ namespace BusinessLogic.Helpers
 
                 case "WYOMING":
                     return US_STATE.WY;
+                default:
+                    throw new KeyNotFoundException("Not Available");
             }
-
-            throw new Exception("Not Available");
         }
     }
 }

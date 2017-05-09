@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccessLayer;
+using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     /// <summary>
-    /// The class that is used to store all information of one reservation.
-    /// Immutable. Created once the reservation is submitted.
+    ///     The class that is used to store all information of one reservation.
+    ///     Immutable. Created once the reservation is submitted.
     /// </summary>
-    public interface IReservationRepository: IDisposable
+    public interface IReservationRepository : IDisposable
     {
         // unique ID per reservation, should be generated in the constructor
-        Reservation getReservation(Guid Id);
-        IEnumerable<Reservation> getReservations();
-        IEnumerable<Reservation> getReservationsByUserId(String Username);
-        IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate);
-        IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate);
-        // commentted for now, did not find use cases for this method
-        // IEnumerable<Reservation> getReservationsByPeriod(DateTime start, DateTime end);
+        Reservation GetReservation(Guid id);
 
+        IEnumerable<Reservation> GetReservations();
         void InsertReservation(Reservation reservation);
-        void DeleteReservation(Guid Id);
+        void CancelReservation(Guid id);
         void UpdateReservation(Reservation reservation);
-        void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate);
-        void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate);
-        IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate);
-        IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate);
-        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate);
-        void save();
+        void InsertReservationWithAspnetUser(Reservation reservation, string userName);
+        IEnumerable<Reservation> GetReservationsByEndDate(DateTime endTime);
+        IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime);
+        IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime);
+        IEnumerable<Reservation> GetExpiredReservations(DateTime endTime);
+        int GetRealOccupancyByTypeDate(ROOM_TYPE type, DateTime date);
+        void Save();
     }
 }

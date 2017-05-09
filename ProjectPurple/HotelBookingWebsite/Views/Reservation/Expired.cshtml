@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Expired";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<p> Your reservation is Expired after 10 minutes. Start a new search by clicking @Html.ActionLink("here", "Index", "Home")</p>
+
+@Html.AntiForgeryToken()
+
+<script>
+    var timer = setTimeout(function() {
+            window.location = '/Home/Index/';
+        },
+        3000);
+</script>

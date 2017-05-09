@@ -1,0 +1,97 @@
+﻿<head>
+    @Styles.RenderFormat(BundlesFormat.Print, "~/Reservation/printcss")
+</head>
+@using HotelBookingWebsite.Helper
+@model HotelBookingWebsite.Models.ConfirmationViewModel
+
+@{
+    ViewBag.Title = "Confirm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="#" class="btn btn-primary" onclick="window.print();return false;">Print</a>
+
+@using (Ajax.BeginForm("Confirm", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ConfirmationId)
+    <div id="content" class="print">
+        <h4>You reservation</h4>
+        <hr />
+        @if (@Model.IsCanceled)
+        {
+            @Html.Label("YOUR RESERVATION IS CANCELED");
+        }
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.Label("Check-in:")
+            </dt>
+            <dd>
+                @Model.StartDate.Date.ToString("MM/dd/yyyy") (12:00 pm)
+            </dd>
+
+            <dt>
+                @Html.Label("Check-out:")
+            </dt>
+            <dd>
+                @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)
+            </dd>
+
+            <dt>
+                @Html.Label("Number of Rooms:")
+            </dt>
+            <dd>
+                1
+            </dd>
+
+            <dt>
+                @Html.Label("Total:")
+            </dt>
+            <dd>
+                USD @((Model.PriceList.Sum() / 100.00).ToString("C2"))
+            </dd>
+
+            <dt>
+                @Html.Label("Confirmation Number:")
+            </dt>
+            <dd>
+                <b>@Html.DisplayFor(model => model.ConfirmationId)</b>
+            </dd>
+
+            <dt>
+                @Html.Label("Room Type:")
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Type)
+            </dd>
+
+            <dt>
+                @Html.Label("Amenities:")
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Ameneties)
+            </dd>
+
+            <dt>
+                @Html.Label("Guests")
+            </dt>
+            <dd>
+                @for (var i = 0; i < Model.Guests.Count; i++)
+                {
+                    <p>@Model.Guests[i].FirstName @Model.Guests[i].LastName</p>
+                }
+            </dd>
+        </dl>
+
+    </div>
+    if (!ViewBag.NoCancel)
+    {
+        @Html.HiddenFor(model => model.IsCanceled, new { Value = true })
+        <input type="submit" value="Cancel Reservation" class="btn btn-danger" />
+    }
+}
+<p>
+    @Html.ActionLink("Back to Index", "Index", "Home")
+</p>

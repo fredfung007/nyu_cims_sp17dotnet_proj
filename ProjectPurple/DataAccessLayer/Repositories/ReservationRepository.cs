@@ -1,125 +1,164 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer;
+using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     // TODO using async
-    public class ReservationRepository:IReservationRepository, IDisposable
+    public class ReservationRepository : IReservationRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private readonly HotelModelContext _context;
 
-        public ReservationRepository(HotelDataModelContainer context)
+        public ReservationRepository(HotelModelContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public Reservation getReservation(Guid Id)
+        public Reservation GetReservation(Guid id)
         {
-            return context.Reservations.Find(Id);
+            return _context.Reservations.Include(rsv => rsv.Guests)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.AspNetUser)
+                .FirstOrDefault(rsv => rsv.Id == id);
         }
 
-        public IEnumerable<Reservation> getReservations()
+        public IEnumerable<Reservation> GetReservations()
         {
-            return context.Reservations.ToList();
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.Guests)
+                .ToList();
         }
 
         public void InsertReservation(Reservation reservation)
         {
-            context.Reservations.Add(reservation);
-        }
-
-        public void DeleteReservation(Guid Id)
-        {
-            Reservation reservation = context.Reservations.Find(Id);
-            context.Reservations.Remove(reservation);
+            _context.Reservations.Add(reservation);
         }
 
         public void UpdateReservation(Reservation reservation)
         {
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(reservation).State = EntityState.Modified;
         }
 
-        public IEnumerable<Reservation> getReservationsByUserId(String Username)
+        public void InsertReservationWithAspnetUser(Reservation reservation, string userName)
         {
-            return context.Reservations.Where(reservation => reservation.User.Username == Username).ToList();
-        }
+            _context.Reservations.Add(reservation);
+            AspNetUser aspUser = _context.AspNetUsers.Include(user => user.Profile)
+                .FirstOrDefault(user => user.UserName == userName);
+            var attachedEntry = _context.Entry(reservation);
+            reservation.AspNetUser = aspUser;
 
-        public IEnumerable<Reservation> getReservationsByCheckOutDate(DateTime CheckOutDate)
-        {
-            return context.Reservations.Where(reservatoin => reservatoin.endDate == CheckOutDate).ToList();
-        }
-
-        public IEnumerable<Reservation> getReservationsByCheckInDate(DateTime CheckInDate)
-        {
-            return context.Reservations.Where(reservation => reservation.startDate == CheckInDate).ToList();
-        }
-
-        public void UpdateReservationCheckInDate(Reservation reservation, DateTime checkInDate)
-        {
-            reservation.checkInDate = checkInDate;
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
-        }
-        public void UpdateReservationCheckOutDate(Reservation reservation, DateTime checkOutDate)
-        {
-            reservation.checkOutDate = checkOutDate;
-            context.Entry(reservation).State = System.Data.Entity.EntityState.Modified;
+            attachedEntry.CurrentValues.SetValues(reservation);
         }
 
         public IEnumerable<Reservation> GetReservationsByEndDate(DateTime endDate)
         {
-            return context.Reservations.Where(reservation => reservation.endDate == endDate
-                                            && reservation.checkInDate != null
-                                            && reservation.checkInDate < endDate).ToList();
+            DateTime tomorrow = endDate.AddDays(1);
+            return _context.Reservations.Where(reservation => reservation.EndDate >= endDate
+                                                              && reservation.EndDate < tomorrow
+                                                              && reservation.CheckInDate != null
+                                                              && reservation.CheckInDate < endDate)
+                .ToList();
         }
 
-        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startDate)
+        public void CancelReservation(Guid id)
         {
-            return context.Reservations.Where(reservation => reservation.startDate == startDate).ToList();
+            Reservation reservation = GetReservation(id);
+            CancelReservation(reservation);
         }
 
-        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime checkInDate)
+        public IEnumerable<Reservation> GetReservationsByStartDate(DateTime startTime)
         {
-            return context.Reservations.Where(reservation => reservation.checkInDate != null
-                                            && reservation.checkInDate < checkInDate
-                                            && reservation.endDate >= checkInDate).ToList();
+            DateTime tomorrow = startTime.AddDays(1);
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(reservation => reservation.StartDate >= startTime && reservation.StartDate < tomorrow)
+                .ToList();
         }
 
-        // commentted for now, did not find use cases for this method
-        // public IEnumerable<Reservation> getReservationsByPeriod(DateTime startDate, DateTime endDate)
-        // {
-        //     return context.Reservations
-        //                 .Where(reservation => reservation.startDate == startDate && reservation.endDate == endDate)
-        //                 .ToList();
-        // }
-        public void save()
+        public IEnumerable<Reservation> GetReservationsCheckedInBeforeDate(DateTime endTime)
         {
-            context.SaveChanges();
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(reservation => reservation.CheckInDate != null
+                                      && reservation.CheckInDate < endTime
+                                      && reservation.EndDate <= endTime)
+                .ToList();
         }
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
+        public IEnumerable<Reservation> GetExpiredReservations(DateTime endTime)
         {
-            if (!disposedValue)
+            return _context.Reservations.Include(rsv => rsv.AspNetUser)
+                .Include(rsv => rsv.DailyPrices)
+                .Include(rsv => rsv.Guests)
+                .Where(rsv => rsv.EndDate <= endTime
+                              && rsv.CheckOutDate == null)
+                .ToList();
+        }
+
+        public int GetRealOccupancyByTypeDate(ROOM_TYPE type, DateTime date)
+        {
+            date = date.Date;
+            return _context.Reservations.Count(rsv => rsv.EndDate >= date
+                                                && rsv.CheckInDate != null
+                                                && rsv.CheckOutDate == null);
+        }
+
+        public void Save()
+        {
+            //_context.SaveChanges();
+            try
             {
-                if (disposing)
+                _context.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (DbEntityValidationResult validationErrors in dbEx.EntityValidationErrors)
                 {
-                    context.Dispose();
+                    foreach (DbValidationError validationError in validationErrors.ValidationErrors)
+                {
+                    var message = string.Format("{0}:{1}",
+                        validationErrors.Entry.Entity,
+                        validationError.ErrorMessage);
+                    // raise a new exception nesting
+                    // the current instance as InnerException
+                    raise = new InvalidOperationException(message, raise);
+                }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                throw raise;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        private void CancelReservation(Reservation reservation)
+        {
+            reservation.IsCancelled = true;
+            _context.Entry(reservation).State = EntityState.Modified;
+        }
+
+        #region IDisposable Support
+
+        private bool _disposedValue; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         // ~ReservationRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -130,7 +169,6 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 

@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
-    // Interface for staff, which should also be a user.
+    // Interface for Getting Users From Database.
     public interface IAuthRepository : IDisposable
     {
-        Staff getStaff(string username);
-        IEnumerable<Staff> getStaffs();
-        void InsertStaff(Staff staff);
-        void DeleteStaff(string username);
-        void UpdateStaff(Staff staff);
+        AspNetUser GetUser(string username);
 
-        User getUser(string username);
-        IEnumerable<User> getUsers();
-        void InsertUser(User user);
-        void DeleteUser(string username);
-        void UpdateUser(User user);
-        int GetLoyaltyProgressByUserId(string username);
+        void UpdateUser(AspNetUser user);
 
-        void save();
+        void Save();
     }
 }

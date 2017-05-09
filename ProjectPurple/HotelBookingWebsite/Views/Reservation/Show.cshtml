@@ -1,0 +1,96 @@
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.AntiForgeryToken()
+<div>
+    <hr/>
+    @if (@Model.IsCanceled)
+    {
+        @Html.Label("CANCELED");
+    }
+
+    <dl class="dl-horizontal print">
+        <dt>
+            @Html.Label("Confirmation Number:")
+        </dt>
+        <dd>
+            <b>@Html.DisplayFor(model => model.ConfirmationId)</b>
+        </dd>
+
+        <dt>
+            @Html.Label("Check-in:")
+        </dt>
+        <dd>
+            @Model.StartDate.Date.ToString("MM/dd/yyyy") (12:00 pm)
+        </dd>
+
+        <dt>
+            @Html.Label("Check-out:")
+        </dt>
+        <dd>
+            @Model.EndDate.Date.ToString("MM/dd/yyyy") (2:00 pm)
+        </dd>
+
+        <dt>
+            @Html.Label("Number of Rooms:")
+        </dt>
+        <dd>
+            1
+        </dd>
+
+        <dt>
+            @Html.Label("Room Type:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.Label("Amenities:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ameneties)
+        </dd>
+
+        <dt>
+            @Html.Label("Guests")
+        </dt>
+        <dd>
+            @for (var i = 0; i < Model.Guests.Count; i++)
+            {
+                <p>@Model.Guests[i].FirstName @Model.Guests[i].LastName</p>
+            }
+        </dd>
+        
+        <dt>
+            <h3>@Html.Label("Total:")</h3>
+        </dt>
+        <dd>
+            <h3>
+                @((Model.PriceList.Sum() / 100.00).ToString("C2"))
+            </h3>
+        </dd>
+
+
+    </dl>
+
+    @*@if (ViewBag.canCancel)
+    {
+        using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.ConfirmationId)
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Cancel" class="btn btn-default"/>
+                </div>
+            </div>
+        }
+    }*@
+</div>
+
+<p>
+    @Html.ActionLink("Back to Dashboard", "Index", "Staff")
+</p>

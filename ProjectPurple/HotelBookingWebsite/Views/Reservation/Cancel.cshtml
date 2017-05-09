@@ -1,0 +1,46 @@
+﻿@model HotelBookingWebsite.Models.ConfirmationViewModel
+
+@{
+    ViewBag.Title = "Cancel your reservatoin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Ajax.BeginForm("Cancel", "Reservation", new AjaxOptions { HttpMethod = "Post" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ConfirmationId)
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ConfirmationId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ConfirmationId)
+            </dd>
+            @if (ViewBag.Failed != null)
+            {
+                <dt>
+                    @Html.Label("Error")
+                </dt>
+                <dd>
+                    @Html.Label("Cannot be canceled")
+                </dd>
+            }
+        </dl>
+    </div>
+    <input type="submit" value="Confirm to Cancel" class="btn btn-danger" />
+}
+
+<div>
+    @if (ViewBag.ReturnUrl != null)
+    {
+        <a href="@ViewBag.ReturnUrl">Return</a>
+    }
+    else
+    {
+        @Html.ActionLink("Back to Index", "Index", "Home")
+    }
+</div>

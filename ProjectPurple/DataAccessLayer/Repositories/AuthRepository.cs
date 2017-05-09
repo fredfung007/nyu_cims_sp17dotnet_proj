@@ -1,101 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
+using System.Linq;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
-        private HotelDataModelContainer context;
+        private readonly HotelModelContext _context;
 
-        public AuthRepository(HotelDataModelContainer context)
+        public AuthRepository(HotelModelContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public Staff getStaff(string username)
+        public AspNetUser GetUser(string username)
         {
-            return context.Staffs.Find(username);
+            return _context.AspNetUsers.Include(user => user.Profile)
+                .Include(user => user.Profile.Address)
+                .FirstOrDefault(user => user.UserName == username);
         }
 
-        public IEnumerable<Staff> getStaffs()
+        public void UpdateUser(AspNetUser user)
         {
-            return context.Staffs.ToList();
+            _context.Entry(user).State = EntityState.Modified;
         }
 
-        public IEnumerable<User> getUsers()
+        public void Save()
         {
-            return context.Users.ToList();
+            _context.SaveChanges();
         }
 
-        public User getUser(string username)
-        {
-            return context.Users.Find(username);
-        }
-
-        public void InsertStaff(Staff staff)
-        {
-            context.Staffs.Add(staff);
-        }
-
-        public void DeleteStaff(string username)
-        {
-            Staff staff = context.Staffs.Find(username);
-            context.Staffs.Remove(staff);
-        }
-
-        public void UpdateStaff(Staff staff)
-        {
-            context.Entry(staff).State = EntityState.Modified;
-        }
-
-        public void InsertUser(User user)
-        {
-            context.Users.Add(user);
-        }
-
-        public void DeleteUser(string username)
-        {
-            User user = context.Users.Find(username);
-            context.Users.Remove(user);
-        }
-
-        public void UpdateUser(User user)
-        {
-            context.Entry(user).State = EntityState.Modified;
-        }
-
-        public int GetLoyaltyProgressByUserId(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void save()
-        {
-            context.SaveChanges();
-        }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~AuthRepository() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -106,9 +59,33 @@ namespace DataAccessLayer.Repositories
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
+
+        //public Staff GetStaff(string username)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<Staff> GetStaffs()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void InsertStaff(Staff staff)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void DeleteStaff(string username)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void UpdateStaff(Staff staff)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
     }

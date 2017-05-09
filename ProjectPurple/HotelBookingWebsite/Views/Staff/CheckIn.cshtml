@@ -1,0 +1,16 @@
+﻿@model HotelBookingWebsite.Models.CheckInOutModel
+@{
+    ViewBag.Title = "CheckIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (ViewBag.StartCheckIn)
+    {
+        ViewBag.Status = Model.IsSuccess ? "Succeeded." : "Failed. No enough rooms right now.";
+    }
+    else
+    {
+        ViewBag.Status = "Failed. The hotel has not started to check in today.";
+    }
+}
+
+<h2>CheckIn @ViewBag.Status </h2>
+@Html.ActionLink("Back", "Index")

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 
 namespace DataAccessLayer.Repositories
 {
     public interface IUserRepository : IDisposable
     {
-        User GetUser(string username);
-        void InsertUser(User u);
+        AspNetUser GetUser(string username);
+        void InsertUser(AspNetUser u);
         void DeleteUser(string username);
-        void UpdateUser(User u);
-        void save();
+        void UpdateUser(AspNetUser u);
+        void Save();
     }
 }

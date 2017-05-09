@@ -1,106 +1,93 @@
-﻿using System.Data.Entity;
-using System;
-using DataAccessLayer;
+﻿using System;
+using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogic.Handlers
 {
     /// <summary>
-    /// A handler class for maintaining profile information for user. maintain customer name, home address, room preference, loyalty program number, loyalty program status
+    ///     A handler class for maintaining profile information for user. maintain customer name, home address, room
+    ///     preference, loyalty program number, loyalty program status
     /// </summary>
-    class ProfileHandler
+    public class ProfileHandler
     {
-        IProfileRepository profileRepository;
+        private readonly IProfileRepository _profileRepository;
+
         public ProfileHandler()
         {
-            profileRepository = new ProfileRepository(new HotelDataModelContainer());
+            _profileRepository = new ProfileRepository(new HotelModelContext());
+        }
+
+        public ProfileHandler(IProfileRepository profileRepository)
+        {
+            _profileRepository = profileRepository;
         }
 
         /// <summary>
-        /// Get profile from profileId
+        ///     Get profile from profileId
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        Profile GetProfile(Guid profileId)
+        public Profile GetProfile(Guid profileId)
         {
-            return profileRepository.getProfile(profileId);
+            return _profileRepository.GetProfile(profileId);
         }
 
         /// <summary>
-        /// Get address
+        ///     Get address
         /// </summary>
         /// <param name="profileId"></param>
         /// <returns></returns>
-        Address GetAddress(Guid profileId)
+        public Address GetAddress(Guid profileId)
         {
-            return profileRepository.getProfile(profileId).Address;
-        }
-
-        /// <summary>
-        /// Get email
-        /// </summary>
-        /// <param name="profileId"></param>
-        /// <returns></returns>
-        Email GetEmail(Guid profileId)
-        {
-            return profileRepository.getProfile(profileId).Email;
-        }
-
-        /// <summary>
-        /// Get phone number
-        /// </summary>
-        /// <param name="profileId"></param>
-        /// <returns></returns>
-        PhoneNumber GetPhoneNumber(Guid profileId)
-        {
-            return profileRepository.getProfile(profileId).PhoneNumber;
+            return _profileRepository.GetProfile(profileId).Address;
         }
 
         // get room preference
         // get loyalty program number
 
         /// <summary>
-        /// set address for profile ID
+        ///     set address for profile ID
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="address"></param>
-        void SetAddress(Guid profileId, Address address)
+        public void SetAddress(Guid profileId, Address address)
         {
-            Profile profile = profileRepository.getProfile(profileId);
+            Profile profile = _profileRepository.GetProfile(profileId);
             profile.Address = address;
-            profileRepository.UpdateProfile(profile);
-            profileRepository.save();
+            _profileRepository.UpdateProfile(profile);
         }
 
         /// <summary>
-        /// update email
-        /// </summary>
-        /// <param name="profileId"></param>
-        /// <param name="email"></param>
-        void SetEmail(Guid profileId, Email email)
-        {
-            Profile profile = profileRepository.getProfile(profileId);
-            profile.Email = email;
-            profileRepository.UpdateProfile(profile);
-            profileRepository.save();
-        }
-
-        /// <summary>
-        /// update phonenumber
+        ///     update phonenumber
         /// </summary>
         /// <param name="profileId"></param>
         /// <param name="phoneNumber"></param>
-        void SetPhoneNumber(Guid profileId, PhoneNumber phoneNumber)
+        public void SetPhoneNumber(Guid profileId, string phoneNumber)
         {
-            Profile profile = profileRepository.getProfile(profileId);
+            Profile profile = _profileRepository.GetProfile(profileId);
             profile.PhoneNumber = phoneNumber;
-            profileRepository.UpdateProfile(profile);
-            profileRepository.save();
+            _profileRepository.UpdateProfile(profile);
         }
 
-        // set room preference
+        public void SetRoomPreference(Guid profileId, ROOM_TYPE roomType)
+        {
+            Profile profile = _profileRepository.GetProfile(profileId);
+            profile.PreferredRoomType = roomType;
+            _profileRepository.UpdateProfile(profile);
+        }
 
-        // set loyalty program number ?
-       
+        public void SetName(Guid profileId, string firstName, string lastName)
+        {
+            Profile profile = _profileRepository.GetProfile(profileId);
+            profile.FirstName = firstName;
+            profile.LastName = lastName;
+            _profileRepository.UpdateProfile(profile);
+        }
+
+        public void Save()
+        {
+            _profileRepository.Save();
+        }
     }
 }

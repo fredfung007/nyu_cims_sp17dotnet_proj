@@ -1,0 +1,51 @@
+﻿@model HotelBookingWebsite.Models.RoomSearchResultModel
+
+@{
+    ViewBag.Title = "Room Not Available";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> @ViewBag.Title</h2>
+
+@Html.AntiForgeryToken()
+
+<div>
+    <h4>The following room is no longer avaiable for reservation, please select another room</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.Display("Type")
+        </dt>
+
+        <dd>
+            @Html.Display(Model.RoomPriceDetails[Model.SelectedIndex].Name)
+        </dd>
+
+        <dt>
+            @Html.Display("Start Date")
+        </dt>
+
+        <dd>
+            @Html.Display(Model.RoomPriceDetails[Model.SelectedIndex].StartDate.Date.ToString("MM/dd/yyyy"))
+        </dd>
+
+        <dt>
+            @Html.Display("End Date")
+        </dt>
+
+        <dd>
+            @Html.Display(Model.RoomPriceDetails[Model.SelectedIndex].EndDate.Date.ToString("MM/dd/yyyy"))
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Search Again", "Index", "Home")
+</p>
+
+<script>
+    var timer = setTimeout(function() {
+            window.location = '/Home/Index/';
+        },
+        3000);
+</script>

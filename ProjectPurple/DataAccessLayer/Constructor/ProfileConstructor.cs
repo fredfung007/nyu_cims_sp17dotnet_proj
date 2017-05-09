@@ -1,46 +1,55 @@
-﻿namespace DataAccessLayer.Constructor
+﻿using System;
+using DataAccessLayer.Constants;
+using DataAccessLayer.EF;
+
+namespace DataAccessLayer.Constructor
 {
-    class ProfileConstructor
+    public class ProfileConstructor
     {
-        private Profile profile;
+        private readonly Profile _profile;
 
-        ProfileConstructor()
+        public ProfileConstructor(Guid id)
         {
-            profile = new Profile();
+            _profile = new Profile
+            {
+                Id = id
+            };
         }
 
-        ProfileConstructor addName(string firstName, string lastName)
+        public ProfileConstructor AddName(string firstName, string lastName)
         {
-            profile.FirstName = firstName;
-            profile.LastName = lastName;
+            _profile.FirstName = firstName;
+            _profile.LastName = lastName;
             return this;
         }
 
-        ProfileConstructor addAddress(Address address)
+        public ProfileConstructor AddAddress(Address address)
         {
-            profile.Address = address;
+            _profile.Address = address;
             return this;
         }
 
-        ProfileConstructor addEmail(string emailAddress)
+        public ProfileConstructor AddEmail(string emailAddress)
         {
-            Email email= new Email();
-            email.Address = emailAddress;
-            profile.Email = email;
+            _profile.Email = emailAddress;
             return this;
         }
 
-        ProfileConstructor addPhoneNumber(string phoneNumber)
+        public ProfileConstructor AddPhoneNumber(string phoneNumber)
         {
-            PhoneNumber number = new PhoneNumber();
-            number.Number = phoneNumber;
-            profile.PhoneNumber = number;
+            _profile.PhoneNumber = phoneNumber;
             return this;
         }
 
-        Profile build()
+        public ProfileConstructor AddPreferredRoomType(ROOM_TYPE roomType)
         {
-            return profile;
+            _profile.PreferredRoomType = roomType;
+            return this;
+        }
+
+        public Profile Build()
+        {
+            return _profile;
         }
     }
 }

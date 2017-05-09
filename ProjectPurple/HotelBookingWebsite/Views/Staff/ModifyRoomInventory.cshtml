@@ -1,0 +1,69 @@
+﻿@using HotelBookingWebsite.Models
+@model DataAccessLayer.EF.RoomType
+
+@{
+    ViewBag.Title = "ModifyRoomInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Modifiy Room Inventory</h2>
+<table class="table">
+    <tr>
+        <th>
+            Room Type
+        </th>
+        <th>
+            Total Amount
+        </th>
+    </tr>
+
+    @foreach (InventoryModel item in ViewBag.Inventory)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Inventory)
+            </td>
+        </tr>
+    }
+
+</table>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inventory, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inventory, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inventory, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<h1>@ViewBag.Status</h1>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

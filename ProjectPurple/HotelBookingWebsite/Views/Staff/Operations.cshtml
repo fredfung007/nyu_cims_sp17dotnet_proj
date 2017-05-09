@@ -1,0 +1,30 @@
+﻿@using HotelBookingWebsite.Helper
+@model HotelBookingWebsite.Models.OperationModel
+@{
+    ViewBag.Title = "Operations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    @Styles.RenderFormat(BundlesFormat.Print, "~/Reservation/printcss")
+</head>
+<h2>Reservation</h2>
+
+@{
+    if ((bool) !ViewBag.isCheckedIn)
+    {
+        @*if ((bool) ViewBag.canCancel)
+        {
+            @Html.ActionLink("Cancel", "Cancel", "Reservation", new { ConfirmationNum = Model.ConfirmationNum })
+        }*@
+        @Html.ActionLink("Check In", "CheckIn",new { ConfirmationNum = Model.Confirmation.ConfirmationId}, new { @class = "btn btn-primary btn-lg"})
+    }
+    else
+    {
+        @Html.ActionLink("Check Out", "CheckOut", new {ConfirmationNum = Model.Confirmation.ConfirmationId}, new { @class = "btn btn-primary btn-lg" })
+    }
+    
+    <a href="#" class="btn btn-primary btn-lg" onclick="window.print();return false;">Generate the Bill</a>
+}
+
+@Html.Partial("~/Views/Reservation/Show.cshtml", Model.Confirmation)

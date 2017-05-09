@@ -1,0 +1,38 @@
+﻿@model HotelBookingWebsite.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+<h2>@ViewBag.Title.</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your account settings</h4>
+    <hr/>
+    @Html.ActionLink("View and Update Your Profile Information", "Index", "Profile")
+    <hr/>
+    <h4>YOUR LOYALTY REWARDS™</h4>
+    @if (Model.LoyaltyProgress >= 5)
+    {
+        <h5 style="color: goldenrod; font-size: large">Gold Loyal Member</h5>
+        <h6>Your Loyalty Number: @ViewBag.No</h6>
+        <h6>Loyalty Points Expires on December 31st, @ViewBag.Year</h6>
+        <h5>Available Free Nights</h5>
+        @Html.DisplayFor(m => m.FreeNights)
+        <h5>Available Loyalty Points</h5>
+        @Html.DisplayFor(m => m.LoyaltyProgress)
+    }
+    else
+    {
+        <h6>Your Loyalty Number: @ViewBag.No</h6>
+        <h5>Stays(Nights) Needed Towards a Year of Gold</h5>
+        @((5-Model.LoyaltyProgress).ToString())
+    }
+
+    <hr/>
+    @Html.ActionLink("Upcoming Reservations", "UpcommingReservations", "Profile")
+    
+    @if (ViewBag.isStaff)
+    {
+        <hr />
+        @Html.ActionLink("Dashboard", "Index", "Staff")
+    }
+</div>
