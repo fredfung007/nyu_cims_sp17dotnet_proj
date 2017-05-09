@@ -234,18 +234,18 @@ namespace BusinessLogic.Handlers
             var checkInDate = (DateTime)reservation.CheckInDate;
             if (user != null)
             {
-                var stayLength = 0;
+                var stayLength = 1;
                 if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == checkOutDateTime.Year)
                 {
                     // Checkout date is the same year as the loyalty program
-                    stayLength = Math.Min((checkOutDateTime - checkInDate).Days, checkOutDateTime.DayOfYear);
+                    //stayLength = Math.Min((checkOutDateTime - checkInDate).Days, checkOutDateTime.DayOfYear);
                     reservation.AspNetUser.LoyaltyProgress += stayLength;
                 }
                 else
                 {
                     // Checkout date is a new year
                     var newYear = new DateTime(checkOutDateTime.Year, 1, 1);
-                    stayLength = (checkOutDateTime - newYear).Days;
+                    //stayLength = (checkOutDateTime - newYear).Days;
                     reservation.AspNetUser.LoyaltyProgress = stayLength;
                     reservation.AspNetUser.LoyaltyYear = newYear;
                 }
