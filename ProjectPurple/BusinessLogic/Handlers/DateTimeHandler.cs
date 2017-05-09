@@ -4,12 +4,12 @@ namespace BusinessLogic.Handlers
 {
     public static class DateTimeHandler
     {
-        private static DateTime _currentTime = DateTime.Now;
+        private static DateTime _currentTime = DateTime.UtcNow;
         public static bool Enabled { get; set; }
 
         public static DateTime GetCurrentTime()
         {
-            return Enabled ? _currentTime : DateTime.Now;
+            return Enabled ? _currentTime : DateTime.UtcNow;
         }
 
         /// <summary>
