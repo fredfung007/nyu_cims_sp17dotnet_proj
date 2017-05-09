@@ -13,11 +13,11 @@
         {
             @Html.ActionLink("Cancel", "Cancel", "Reservation", new { ConfirmationNum = Model.ConfirmationNum })
         }*@
-        @Html.ActionLink("Check In", "CheckIn", new {ConfirmationNum = Model.Confirmation.ConfirmationId})
+        @Html.ActionLink("Check In", "CheckIn",new { ConfirmationNum = Model.Confirmation.ConfirmationId}, new { @class = "btn btn-primary btn-lg"})
     }
     else
     {
-        @Html.ActionLink("Check Out", "CheckOut", new {ConfirmationNum = Model.Confirmation.ConfirmationId})
+        @Html.ActionLink("Check Out", "CheckOut", new {ConfirmationNum = Model.Confirmation.ConfirmationId}, new { @class = "btn btn-primary btn-lg" })
     }
 }
 

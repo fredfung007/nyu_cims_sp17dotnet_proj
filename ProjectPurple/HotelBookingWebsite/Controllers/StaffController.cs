@@ -236,7 +236,7 @@ namespace HotelBookingWebsite.Controllers
             var models = new List<CheckOutListModel>();
             foreach (Reservation reservation in reservations)
             {
-                Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
+                var firstGuest = reservation.Guests.ToList().ToGuestModelList().FirstOrDefault();
                 var firstName = "";
                 var lastName = "";
                 if (firstGuest != null)
