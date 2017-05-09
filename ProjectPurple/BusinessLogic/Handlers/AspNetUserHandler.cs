@@ -27,15 +27,13 @@ namespace BusinessLogic.Handlers
         public int FindLoyaltyProgramInfo(string username, DateTime today)
         {
             AspNetUser user = _userRepository.GetUser(username);
-            if (user.LoyaltyYear == null || ((DateTime) user.LoyaltyYear).Year != today.Year)
-            {
-                var newYear = new DateTime(today.Year, 1, 1);
-                user.LoyaltyProgress = 0;
-                user.LoyaltyYear = newYear;
-                _userRepository.UpdateUser(user);
-                _userRepository.Save();
-            }
             return user.LoyaltyProgress;
+        }
+
+        public int FindLoyaltyProgramExpirationYear(string username, DateTime today)
+        {
+            AspNetUser user = _userRepository.GetUser(username);
+            return ((DateTime) user.LoyaltyYear).Year;
         }
 
         /// <summary>
