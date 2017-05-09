@@ -69,34 +69,34 @@ namespace HotelBookingWebsite.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Email*")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Password*")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirm password*")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
             "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "First Name")]
+        [Display(Name = "First Name*")]
         public string FirstName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last Name*")]
         public string LastName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Address First Line")]
+        [Display(Name = "Address First Line*")]
         public string Address1 { get; set; }
 
         [DataType(DataType.Text)]
@@ -105,26 +105,26 @@ namespace HotelBookingWebsite.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "City")]
+        [Display(Name = "City*")]
         public string City { get; set; }
 
         [Required]
-        [Display(Name = "State")]
+        [Display(Name = "State*")]
         public US_STATE State { get; set; }
 
 
         [Required]
         [DataType(DataType.PostalCode)]
-        [Display(Name = "Postal Code")]
+        [Display(Name = "Postal Code*")]
         public string PostalCode { get; set; }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number*")]
         public string PhoneNumber { get; set; }
 
         [Required]
-        [Display(Name = "Preferred Room Type")]
+        [Display(Name = "Preferred Room Type*")]
         public ROOM_TYPE PreferredRoomType { get; set; }
     }
 
@@ -132,17 +132,17 @@ namespace HotelBookingWebsite.Models
     {
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "First Name")]
+        [Display(Name = "First Name*")]
         public string FirstName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last Name*")]
         public string LastName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Address First Line")]
+        [Display(Name = "Address First Line*")]
         public string Address1 { get; set; }
 
         [DataType(DataType.Text)]
@@ -151,26 +151,26 @@ namespace HotelBookingWebsite.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "City")]
+        [Display(Name = "City*")]
         public string City { get; set; }
 
         [Required]
-        [Display(Name = "State")]
+        [Display(Name = "State*")]
         public US_STATE State { get; set; }
 
 
         [Required]
         [DataType(DataType.PostalCode)]
-        [Display(Name = "Postal Code")]
+        [Display(Name = "Postal Code*")]
         public string PostalCode { get; set; }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number*")]
         public string PhoneNumber { get; set; }
 
         [Required]
-        [Display(Name = "Preferred Room Type")]
+        [Display(Name = "Preferred Room Type*")]
         public ROOM_TYPE PreferredRoomType { get; set; }
     }
 
