@@ -2,9 +2,9 @@
 @{
     ViewBag.Title = "CheckIn";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    if ((bool) ViewBag.StartCheckIn)
+    if (ViewBag.StartCheckIn)
     {
-        ViewBag.Status = Model.IsSuccess ? "Succeeded" : "Failed. No enough rooms right now.";
+        ViewBag.Status = Model.IsSuccess ? "Succeeded." : "Failed. No enough rooms right now.";
     }
     else
     {

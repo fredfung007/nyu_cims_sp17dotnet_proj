@@ -99,8 +99,8 @@ namespace HotelBookingWebsite.Controllers
             ViewBag.StartCheckIn = DateTimeHandler.GetCurrentTime() > DateTimeHandler.GetCurrentStartTime();
             return View(new CheckInOutModel
             {
-                ConfirmationNum = confirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckIn(confirmationNum ?? Guid.NewGuid(),
+                ConfirmationNum = confirmationNum ?? Guid.Empty,
+                IsSuccess = _reservationHandler.CheckIn(confirmationNum ?? Guid.Empty,
                     DateTimeHandler.GetCurrentTime())
             });
         }
@@ -111,8 +111,8 @@ namespace HotelBookingWebsite.Controllers
         {
             return View(new CheckInOutModel
             {
-                ConfirmationNum = confirmationNum ?? Guid.NewGuid(),
-                IsSuccess = _reservationHandler.CheckOut(confirmationNum ?? Guid.NewGuid(),
+                ConfirmationNum = confirmationNum ?? Guid.Empty,
+                IsSuccess = _reservationHandler.CheckOut(confirmationNum ?? Guid.Empty,
                     DateTimeHandler.GetCurrentTime())
             });
         }
@@ -204,6 +204,11 @@ namespace HotelBookingWebsite.Controllers
                 if (reservation.EndDate < DateTimeHandler.GetCurrentEndTime() ||
                     reservation.EndDate == DateTimeHandler.GetCurrentEndTime() && includeToday)
                 {
+                    DateTime realCheckInDate = reservation.CheckInDate ?? reservation.StartDate;
+                    if (reservation.CheckInDate == null)
+                    {
+                        _reservationHandler.CheckIn(reservation.Id, realCheckInDate);
+                    }
                     _reservationHandler.CheckOut(reservation.Id, DateTimeHandler.GetCurrentTime());
                     Guest firstGuest = reservation.Guests.OrderBy(guest => guest.Order).FirstOrDefault();
                     var firstName = "";
@@ -220,8 +225,7 @@ namespace HotelBookingWebsite.Controllers
                         LastName = lastName,
                         CheckInDate = reservation.StartDate,
                         CheckOutDate = reservation.EndDate,
-                        ActualCheckInDate = reservation.CheckInDate ??
-                                            DateTimeHandler.GetCurrentTime().Subtract(TimeSpan.FromDays(1))
+                        ActualCheckInDate = realCheckInDate
                     });
                 }
             }
