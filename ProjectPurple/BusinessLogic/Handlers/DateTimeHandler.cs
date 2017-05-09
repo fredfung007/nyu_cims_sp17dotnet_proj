@@ -18,7 +18,7 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public static DateTime GetCurrentStartTime()
         {
-            return Enabled ? _currentTime.Date.AddHours(12) : DateTime.Now.Date.AddHours(12);
+            return Enabled ? _currentTime.Date.AddHours(12) : DateTime.UtcNow.Date.AddHours(12);
         }
 
         /// <summary>
@@ -27,12 +27,12 @@ namespace BusinessLogic.Handlers
         /// <returns></returns>
         public static DateTime GetCurrentEndTime()
         {
-            return Enabled ? _currentTime.Date.AddHours(14) : DateTime.Now.Date.AddHours(14);
+            return Enabled ? _currentTime.Date.AddHours(14) : DateTime.UtcNow.Date.AddHours(14);
         }
 
         public static DateTime GetCurrentDate()
         {
-            return Enabled ? _currentTime.Date : DateTime.Now.Date;
+            return Enabled ? _currentTime.Date : DateTime.UtcNow.Date;
         }
 
         public static void SetCurrentTime(DateTime newDate)
