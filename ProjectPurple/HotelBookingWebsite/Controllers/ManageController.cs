@@ -76,7 +76,7 @@ namespace HotelBookingWebsite.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             ViewBag.No = User.Identity.GetUserId();
-            ViewBag.Year = DateTimeHandler.GetCurrentDate().Year;
+            ViewBag.Year = userHandler.FindLoyaltyProgramExpirationYear(username, DateTimeHandler.GetCurrentDate());
             return View(model);
         }
 

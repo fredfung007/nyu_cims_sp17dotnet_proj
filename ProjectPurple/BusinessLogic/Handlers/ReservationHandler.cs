@@ -237,17 +237,41 @@ namespace BusinessLogic.Handlers
                 var stayLength = 1;
                 if (user.LoyaltyYear != null && ((DateTime)user.LoyaltyYear).Year == checkOutDateTime.Year)
                 {
-                    // Checkout date is the same year as the loyalty program
+                    // Checkout date is the same year as the loyalty program: not a member, or the second year of member
                     //stayLength = Math.Min((checkOutDateTime - checkInDate).Days, checkOutDateTime.DayOfYear);
-                    reservation.AspNetUser.LoyaltyProgress += stayLength;
+                    if (reservation.AspNetUser.LoyaltyProgress < 5)
+                    {
+                        // not a loyalty member
+                        reservation.AspNetUser.LoyaltyProgress += stayLength;
+                        if (reservation.AspNetUser.LoyaltyProgress == 5)
+                        {
+                            // first time to become a loyalty member
+                            reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
+                        }
+                    }
+                    else
+                    {
+                        // is a loyalty member
+                        if (reservation.AspNetUser.LoyaltyProgress == 9)
+                        {
+                            // able to + 1 year
+                            reservation.AspNetUser.LoyaltyProgress = 5;
+                            reservation.AspNetUser.LoyaltyYear = new DateTime(checkOutDateTime.AddYears(1).Year, 1, 1);
+                        }
+                        else
+                        {
+                            reservation.AspNetUser.LoyaltyProgress += stayLength;
+                        }
+                    }
                 }
                 else
                 {
-                    // Checkout date is a new year
-                    var newYear = new DateTime(checkOutDateTime.Year, 1, 1);
-                    //stayLength = (checkOutDateTime - newYear).Days;
-                    reservation.AspNetUser.LoyaltyProgress = stayLength;
-                    reservation.AspNetUser.LoyaltyYear = newYear;
+                    // the first year of the loyalty program. do nothing
+
+                    //var newYear = new DateTime(checkOutDateTime.Year, 1, 1);
+                    ////stayLength = (checkOutDateTime - newYear).Days;
+                    //reservation.AspNetUser.LoyaltyProgress = stayLength;
+                    //reservation.AspNetUser.LoyaltyYear = newYear;
                 }
             }
             reservation.CheckOutDate = checkOutDateTime;
