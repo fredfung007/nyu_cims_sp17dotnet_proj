@@ -252,7 +252,7 @@ namespace BusinessLogic.Handlers
                     else
                     {
                         // is a loyalty member
-                        if (reservation.AspNetUser.LoyaltyProgress == 10)
+                        if (reservation.AspNetUser.LoyaltyProgress == 9)
                         {
                             // able to + 1 year
                             reservation.AspNetUser.LoyaltyProgress = 5;
