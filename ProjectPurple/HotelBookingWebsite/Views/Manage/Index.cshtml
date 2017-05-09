@@ -15,10 +15,6 @@
         <h5 style="color: goldenrod; font-size: large">Gold Loyal Member</h5>
         <h6>Your Loyalty Number: @ViewBag.No</h6>
         <h6>Loyalty Points Expires on December 31st, @ViewBag.Year</h6>
-        <h5>Available Free Nights</h5>
-        @Html.DisplayFor(m => m.FreeNights)
-        <h5>Available Loyalty Points</h5>
-        @Html.DisplayFor(m => m.LoyaltyProgress)
     }
     else
     {

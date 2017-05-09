@@ -38,6 +38,20 @@ namespace BusinessLogic.Handlers
             return user.LoyaltyProgress;
         }
 
+        public DateTime FindLoyaltyProgramExpiration(string username, DateTime today)
+        {
+            AspNetUser user = _userRepository.GetUser(username);
+            if (user.LoyaltyYear == null || ((DateTime)user.LoyaltyYear).Year != today.Year)
+            {
+                var newYear = new DateTime(today.Year, 1, 1);
+                user.LoyaltyProgress = 0;
+                user.LoyaltyYear = newYear;
+                _userRepository.UpdateUser(user);
+                _userRepository.Save();
+            }
+            return (DateTime) user.LoyaltyYear;
+        }
+
         /// <summary>
         ///     Find the Profile of the given user.
         /// </summary>
