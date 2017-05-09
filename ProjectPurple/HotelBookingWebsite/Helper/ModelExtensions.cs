@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer.EF;
 using HotelBookingWebsite.Models;
@@ -33,6 +34,23 @@ namespace HotelBookingWebsite.Helper
                 .ToList();
 
             return guestModelList.OrderBy(guest => guest.Order).ToList();
+        }
+
+        public static List<GuestViewModel> CleanEmpty(this List<GuestViewModel> guests)
+        {
+            guests.RemoveAll(guest => string.IsNullOrWhiteSpace(guest.FirstName) &&
+                                            string.IsNullOrWhiteSpace(guest.LastName));
+            return guests;
+        }
+
+        public static DateTime GetStartDateTime(this DateTime date)
+        {
+            return date.Date.Date.AddHours(12);
+        }
+
+        public static DateTime GetEndDateTime(this DateTime date)
+        {
+            return date.Date.Date.AddHours(14);
         }
     }
 }
