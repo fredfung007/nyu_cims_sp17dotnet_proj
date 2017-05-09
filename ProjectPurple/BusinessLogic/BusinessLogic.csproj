@@ -42,6 +42,9 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -59,6 +62,7 @@
     <Compile Include="Handlers\DateTimeHandler.cs" />
     <Compile Include="Handlers\AspNetUserHandler.cs" />
     <Compile Include="Handlers\ProfileHandler.cs" />
+    <Compile Include="Helpers\Recaptcha.cs" />
     <Compile Include="Helpers\StateConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Interface\TimeExpirationtModel.cs" />

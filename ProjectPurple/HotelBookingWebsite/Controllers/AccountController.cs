@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Handlers;
+using BusinessLogic.Helpers;
 using DataAccessLayer.Constructor;
 using DataAccessLayer.EF;
 using HotelBookingWebsite.Filters;
@@ -12,7 +12,6 @@ using HotelBookingWebsite.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Newtonsoft.Json.Linq;
 
 namespace HotelBookingWebsite.Controllers
 {
@@ -155,12 +154,7 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             var response = Request["g-recaptcha-response"];
-            var secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
-            var client = new WebClient();
-            var recap = client.DownloadString(string.Format(
-                "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
-            JObject obj = JObject.Parse(recap);
-            var status = (bool) obj.SelectToken("success");
+            var status = RecaptchaHelper.GetRecaptchaResult(response);
             if (!status)
             {
                 ViewBag.Message = "Google reCaptcha validation failed";
@@ -236,12 +230,7 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> Update(UpdateProfileViewModel model, string returnUrl)
         {
             var response = Request["g-recaptcha-response"];
-            var secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
-            var client = new WebClient();
-            var recap = client.DownloadString(string.Format(
-                "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
-            JObject obj = JObject.Parse(recap);
-            var status = (bool) obj.SelectToken("success");
+            var status = RecaptchaHelper.GetRecaptchaResult(response);
             if (!status)
             {
                 ViewBag.Message = "Google reCaptcha validation failed";
@@ -284,12 +273,7 @@ namespace HotelBookingWebsite.Controllers
         public async Task<ActionResult> RegisterStaff(RegisterViewModel model, string returnUrl)
         {
             var response = Request["g-recaptcha-response"];
-            var secretKey = "6LeM_B8UAAAAAA9ROk7EWucqvEb6Hkql5aFQoGXJ";
-            var client = new WebClient();
-            var recap = client.DownloadString(
-                $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={response}");
-            JObject obj = JObject.Parse(recap);
-            var status = (bool) obj.SelectToken("success");
+            var status = RecaptchaHelper.GetRecaptchaResult(response);
             if (!status)
             {
                 ViewBag.Message = "Google reCaptcha validation failed";
@@ -333,36 +317,7 @@ namespace HotelBookingWebsite.Controllers
 
             return View(model);
         }
-
-        //// POST: /Account/Register
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Register(RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        //            // Send an email with this link
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        AddErrors(result);
-        //    }
-
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
-
+        
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
